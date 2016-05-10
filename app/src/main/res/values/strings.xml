@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">huixiang</string>
+    <string name="tabone_title">首页</string>
+    <string name="tabthree_title">我的</string>
+    <string name="tabtwo_title">直播</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="labelAccount">账 号</string>
+    <string name="labelPwd">密 码</string>
+    <string name="etPwd">请输入密码</string>
+    <string name="loginLabel">登 录</string>
+    <string name="regLabel">注 册</string>
+    <string name="forgotPwd">忘记密码?</string>
+    <string name="inpPhone">请输入手机号</string>
+    <string name="labelVali">验证码</string>
+    <string name="inpVali">请输入验证码</string>
+    <string name="getCode">获取验证码</string>
+    <string name="etAccount">请输入手机号</string>
+    <string name="xieyi">注册代表同意回想所有条款</string>
+
+</resources>

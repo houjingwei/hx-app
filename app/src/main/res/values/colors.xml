@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="mainColor">#f84f82</color>
+    <color name="colorPrimary">#f84f82</color>
+    <color name="colorPrimaryDark">#f84f82</color>
+    <color name="colorAccent">#f84f82</color>
+
+    <color name="sysBg">#ffffff</color>
+
+
+    <color name="tab_pressed_color">#00bb9c</color>
+    <color name="tab_normal_color">#8a8a8a</color>
+    <color name="tab_bg_color">#e6e6e6</color>
+    <color name="tab_line_color">#bfbfbf</color>
+    <color name="white">#ffffff</color>
+
+    <color name="orange">#FF7919</color>
+    <color name="black">#333</color>
+    <color name="black_01">#666</color>
+    <color name="black_02">#90333333</color>
+    <color name="black_03">#80333333</color>
+    <color name="black_04">#60333333</color>
+    <color name="black_05">#50333333</color>
+    <color name="black_06">#40333333</color>
+    <color name="black_07">#30333333</color>
+    <color name="black_08">#20333333</color>
+    <color name="black_09">#10333333</color>
+    <color name="black_10">#00333333</color>
+
+
+
+    <color name="text_color1">#999999</color>
+
+
+    <color name="bolder_color_01">#999999</color>
+    <color name="trans">#00000000</color>
+    <color name="split_color">#999999</color>
+
+
+</resources>

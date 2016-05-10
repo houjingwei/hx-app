@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "/Users/hjw/Desktop/mygit/–no-metadata/huixiang/trunk/BGARefreshLayoutLibrary/build/intermediates/res/merged/release/layout/view_refresh_header_stickiness.xml",
+        "source": "/Users/hjw/Desktop/mygit/–no-metadata/huixiang/trunk/BGARefreshLayoutLibrary/src/main/res/layout/view_refresh_header_stickiness.xml"
+    },
+    {
+        "merged": "/Users/hjw/Desktop/mygit/–no-metadata/huixiang/trunk/BGARefreshLayoutLibrary/build/intermediates/res/merged/release/layout/view_refresh_header_normal.xml",
+        "source": "/Users/hjw/Desktop/mygit/–no-metadata/huixiang/trunk/BGARefreshLayoutLibrary/src/main/res/layout/view_refresh_header_normal.xml"
+    },
+    {
+        "merged": "/Users/hjw/Desktop/mygit/–no-metadata/huixiang/trunk/BGARefreshLayoutLibrary/build/intermediates/res/merged/release/layout/view_normal_refresh_footer.xml",
+        "source": "/Users/hjw/Desktop/mygit/–no-metadata/huixiang/trunk/BGARefreshLayoutLibrary/src/main/res/layout/view_normal_refresh_footer.xml"
+    },
+    {
+        "merged": "/Users/hjw/Desktop/mygit/–no-metadata/huixiang/trunk/BGARefreshLayoutLibrary/build/intermediates/res/merged/release/layout/view_refresh_header_meituan.xml",
+        "source": "/Users/hjw/Desktop/mygit/–no-metadata/huixiang/trunk/BGARefreshLayoutLibrary/src/main/res/layout/view_refresh_header_meituan.xml"
+    },
+    {
+        "merged": "/Users/hjw/Desktop/mygit/–no-metadata/huixiang/trunk/BGARefreshLayoutLibrary/build/intermediates/res/merged/release/layout/view_refresh_header_mooc_style.xml",
+        "source": "/Users/hjw/Desktop/mygit/–no-metadata/huixiang/trunk/BGARefreshLayoutLibrary/src/main/res/layout/view_refresh_header_mooc_style.xml"
+    }
+]

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:background="@color/colorPrimaryDark">
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/baseTitleHeight"
+            android:layout_height="@dimen/baseTitleHeight"
+            android:padding="15dp"
+            android:src="@mipmap/icon_close"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:src="@drawable/default_head"
+            android:layout_centerInParent="true"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/white"/>
+
+    </RelativeLayout>
+
+    <com.flyco.tablayout.CommonTabLayout
+        android:id="@+id/tl"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:background="@color/mainColor"
+        tl:tl_iconVisible="false"
+        tl:tl_indicator_color="@color/white"
+        tl:tl_indicator_width="30dp"
+        tl:tl_textSelectColor="@color/white"
+        tl:tl_textUnselectColor="@color/white"
+        android:layout_marginTop="165dp"
+        tl:tl_textsize="18sp" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rlTop"
+        android:background="@color/sysBg" />
+</RelativeLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/baseTitleHeight"
+    android:background="@color/colorPrimaryDark">
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="@dimen/baseTitleHeight"
+        android:layout_height="@dimen/baseTitleHeight"
+        android:padding="12dp"
+        android:src="@mipmap/icon_back"/>
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:text="标题"
+        android:textColor="#ffffffff"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/save"
+        android:layout_width="60dp"
+        android:layout_height="@dimen/baseTitleHeight"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:text="保存"
+        android:visibility="gone"
+        android:textColor="#ffffffff"
+        android:textSize="14dp" />
+</RelativeLayout>

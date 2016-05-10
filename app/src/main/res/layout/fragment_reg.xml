@@ -1,0 +1,153 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.FragmentLogin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            style="@style/MatchWrap">
+            <RelativeLayout
+                android:id="@+id/rlAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvAccount"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    style="@style/label_red_style"
+                    android:text="+86"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    style="@style/et_style"
+                    android:inputType="phone"
+                    android:layout_marginLeft="12dp"
+                    android:hint="@string/inpPhone"
+                    android:layout_toRightOf="@+id/tvAccount"/>
+            </RelativeLayout>
+            <View
+                style="@style/split_line"
+                android:layout_below="@+id/rlAccount"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            style="@style/MatchWrap">
+            <RelativeLayout
+                android:id="@+id/rlCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvCode"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    style="@style/label_style"
+                    android:text="@string/labelVali"/>
+                <EditText
+                    android:id="@+id/etCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    style="@style/et_style"
+                    android:layout_marginLeft="12dp"
+                    android:layout_toLeftOf="@+id/tvGetCode"
+                    android:hint="@string/inpVali"
+                    android:layout_toRightOf="@+id/tvCode"/>
+
+                <TextView
+                    android:id="@+id/tvGetCode"
+                    android:layout_width="90dp"
+                    android:layout_height="28dp"
+                    android:gravity="center"
+                    android:text="@string/getCode"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/border_bg_style_02"
+                    style="@style/txt_normal_style"
+                    android:textSize="14sp"
+                    />
+            </RelativeLayout>
+            <View
+                style="@style/split_line"
+                android:layout_below="@+id/rlCode"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            style="@style/MatchWrap">
+            <RelativeLayout
+                android:id="@+id/rlPwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvPwd"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    style="@style/label_style"
+                    android:text="账 号"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    style="@style/et_style"
+                    android:layout_marginLeft="12dp"
+                    android:hint="@string/labelPwd"
+                    android:layout_toRightOf="@+id/tvPwd"/>
+            </RelativeLayout>
+            <View
+                style="@style/split_line"
+                android:id="@+id/vSplit"
+                android:layout_below="@+id/rlPwd"/>
+            <TextView
+                android:layout_below="@+id/vSplit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="@string/forgotPwd"
+                style="@style/txt_normal_style"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tvLoginBtn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/ll_input"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/border_bg_style"
+            android:gravity="center"
+            android:text="@string/regLabel"
+            style="@style/et_style" />
+
+
+        <TextView
+            android:id="@+id/tvXieyi"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="@string/xieyi"
+            android:textSize="13sp"
+            android:textColor="@color/bolder_color_01"
+            style="@style/et_style" />
+
+
+
+    </LinearLayout>
+
+</FrameLayout>
