@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <color name="mainColor">#f84f82</color>
     <color name="colorPrimary">#222222</color>
     <color name="colorPrimaryDark">#222222</color>
@@ -37,6 +36,7 @@
     <color name="bolder_color_01">#999999</color>
     <color name="trans">#00000000</color>
     <color name="split_color">#999999</color>
+    <color name="clear">#55ffffff</color>
 
 
 </resources>

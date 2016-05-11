@@ -24,14 +24,14 @@ public class FragmentTabThree extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		mRootView =  inflater.inflate(R.layout.fragment_tab_three, container, false);
-		((MainActivity)getActivity()).setTitleBar(getString(R.string.tabthree_title));
-		txUserInfo = (TextView) mRootView.findViewById(R.id.userInfo);
-		txUserInfo.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				ForwardUtils.target(getActivity(),"huixiang://login");
-			}
-		});
+//		((MainActivity)getActivity()).setTitleBar(getString(R.string.tabthree_title));
+//		txUserInfo = (TextView) mRootView.findViewById(R.id.userInfo);
+//		txUserInfo.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View view) {
+//				ForwardUtils.target(getActivity(),"huixiang://login");
+//			}
+//		});
 		return mRootView;
 	}
 
