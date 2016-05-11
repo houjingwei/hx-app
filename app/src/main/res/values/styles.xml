@@ -188,29 +188,7 @@
 
 
 
-    <style name="TagGroup2">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="atg_isAppendMode">false</item>
-        <item name="atg_inputHint">@string/add_tag</item>
-        <item name="atg_borderColor">@color/gray_btn_bg_color</item>
-        <item name="atg_textColor">@color/black</item>
-        <item name="atg_backgroundColor">@color/trans</item>
-        <item name="atg_dashBorderColor">@color/gray_btn_bg_color</item>
-        <item name="atg_inputHintColor">@color/trans</item>
-        <item name="atg_inputTextColor">@color/trans</item>
-        <item name="atg_checkedBorderColor">@color/orange</item>
-        <item name="atg_checkedTextColor">#FFFFFF</item>
-        <item name="atg_checkedMarkerColor">#FFFFFF</item>
-        <item name="atg_checkedBackgroundColor">@color/trans</item>
-        <item name="atg_pressedBackgroundColor">#EDEDED</item>
-        <item name="atg_borderStrokeWidth">0.8dp</item>
-        <item name="atg_textSize">12sp</item>
-        <item name="atg_horizontalSpacing">8dp</item>
-        <item name="atg_verticalSpacing">8dp</item>
-        <item name="atg_horizontalPadding">12dp</item>
-        <item name="atg_verticalPadding">5dp</item>
-    </style>
+
 
 
     <style name="ColaProgress" parent="@android:style/Theme.Dialog">

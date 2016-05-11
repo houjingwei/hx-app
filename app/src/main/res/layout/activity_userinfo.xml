@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/tools"
     android:id="@+id/main"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -227,13 +228,18 @@
                         android:layout_below="@+id/rl_tag" />
 
 
-                    <me.gujun.android.taggroup.TagGroup
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tag_group"
-                        android:padding="10dp"
-                        style="@style/TagGroup2"
 
-                        android:layout_below="@+id/line" />
+                    <com.zhy.view.flowlayout.TagFlowLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/line"
+                        android:id="@+id/id_flowlayout"
+                        zhy:max_select="-1"
+                        zhy:auto_select_effect="false"
+                        android:background="@color/white"
+                        android:minHeight="150dp"
+                        android:padding="5dp">
+                    </com.zhy.view.flowlayout.TagFlowLayout>
                 </RelativeLayout>
 
 

@@ -3,6 +3,7 @@ package com.huixiang.live.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -16,20 +17,20 @@ import com.huixiang.live.pop.UpdateSexWindow;
 import com.huixiang.live.utils.ForwardUtils;
 import com.huixiang.live.utils.image.ImageUtils;
 import com.huixiang.live.utils.image.PictureHelper;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import me.gujun.android.taggroup.TagGroup;
-
 public class UserinfoActivity extends BaseBackActivity implements View.OnClickListener {
 
 
-    @ViewInject(R.id.tag_group)
-    TagGroup mTagGroup;
+    @ViewInject(R.id.id_flowlayout)
+    TagFlowLayout mFlowLayout;
+    TagAdapter<String> adapter ;
+
     @ViewInject(R.id.title)
     TextView txTitle;
     @ViewInject(R.id.save)
@@ -79,13 +80,25 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         pictureHelper.needCropPicture(true);//需要对图片进行裁剪。
     }
 
+    String[] tags = null;
     private void initTags() {
-        mTagGroup.setTagMaxLength(35);
-        List<String> tags = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            tags.add("标签" + i);
+        tags = new String[6];
+        for (int i = 0; i < 6; i++) {
+            tags[i] = "标签"+(i+1);
         }
-        mTagGroup.setTags(tags);
+        final LayoutInflater mInflater = LayoutInflater.from(UserinfoActivity.this);
+        mFlowLayout.setMaxSelectCount(5);
+        adapter = new TagAdapter<String>(tags) {
+            @Override
+            public View getView(FlowLayout parent, int position, String s) {
+                TextView tv = (TextView) mInflater.inflate(R.layout.tag,mFlowLayout, false);
+                tv.setText(s);
+                return tv;
+            }
+        };
+
+        mFlowLayout.setAdapter(adapter);
+
 
     }
 
