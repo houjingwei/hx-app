@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.huixiang.live.R;
 import com.huixiang.live.ui.ColaProgress;
 import com.huixiang.live.ui.ColaProgressTip;
+import com.huixiang.live.utils.ShowUtils;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -62,7 +63,7 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
             tags[i] = "标签"+(i+1);
         }
         final LayoutInflater mInflater = LayoutInflater.from(UserTagActivity.this);
-        mFlowLayout.setMaxSelectCount(5);
+        mFlowLayout.setMaxSelectCount(4);
         adapter = new TagAdapter<String>(tags) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
@@ -71,6 +72,15 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
                 return tv;
             }
         };
+        mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+            @Override
+            public boolean onTagClick(View view, int position, FlowLayout parent) {
+                if(mFlowLayout.getSelectedList().size()==4){
+                    ShowUtils.showTip(UserTagActivity.this, "最多选择四个标签~");
+                }
+                return false;
+            }
+        });
 
         mFlowLayout.setAdapter(adapter);
 
