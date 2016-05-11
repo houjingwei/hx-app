@@ -1,1 +1,1 @@
-include ':app', ':BGARefreshLayoutLibrary'
+include ':app', ':BGARefreshLayoutLibrary', ':keyWordsLibrary'
