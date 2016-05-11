@@ -1,11 +1,15 @@
 package com.huixiang.live.activity;
 
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.Window;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -15,6 +19,7 @@ import com.huixiang.live.fragment.FragmentLogin;
 import com.huixiang.live.fragment.FragmentReg;
 import com.huixiang.live.model.TabEntity;
 import com.huixiang.live.utils.ViewFindUtils;
+import com.umeng.socialize.UMShareAPI;
 
 import java.util.ArrayList;
 
@@ -28,10 +33,13 @@ public class LoginOrRegActivity extends BaseBackActivity implements View.OnClick
     private String[] mTitles = new String[]{"登录","注册"};
 
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_or_reg);
+        Window window = getWindow();
+        window.setStatusBarColor(getResources().getColor(R.color.mainColor));
         FragmentLogin login = new FragmentLogin();
         FragmentReg reg = new FragmentReg();
         mMyFragments.add(login);
@@ -87,6 +95,12 @@ public class LoginOrRegActivity extends BaseBackActivity implements View.OnClick
     @Override
     public void onClick(View view) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
 

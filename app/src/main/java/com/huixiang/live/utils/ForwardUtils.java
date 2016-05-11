@@ -29,55 +29,50 @@ public class ForwardUtils {
             Map<String, String> params = ForwardUtils.parseParameters(url);
             if(url.startsWith("http:")){
                 Intent intent = new Intent(oriActivity, H5Activity.class);
-                setIntentInfo(intent,params);
-                oriActivity.startActivity(intent);
-                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+                toIntent(oriActivity, params, intent);
             }else if (url.startsWith("huixiang://refresh")) {
                 Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                setIntentInfo(intent,params);
-                oriActivity.startActivity(intent);
-                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+                toIntent(oriActivity, params, intent);
             }else if (url.startsWith("huixiang://login")) {
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
-                setIntentInfo(intent,params);
-                oriActivity.startActivity(intent);
-                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+                toIntent(oriActivity, params, intent);
             }else if (url.startsWith("huixiang://register")) {
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
-                setIntentInfo(intent,params);
-                oriActivity.startActivity(intent);
-                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+                toIntent(oriActivity, params, intent);
             }else if (url.startsWith("huixiang://forgot")) {
                 Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                setIntentInfo(intent,params);
-                oriActivity.startActivity(intent);
-                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+                toIntent(oriActivity, params, intent);
             }else if (url.startsWith("huixiang://live")) {
                 Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                setIntentInfo(intent,params);
-                oriActivity.startActivity(intent);
-                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+                toIntent(oriActivity, params, intent);
             }else if (url.startsWith("huixiang://push")) {
                 Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                setIntentInfo(intent,params);
-                oriActivity.startActivity(intent);
-                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+                toIntent(oriActivity, params, intent);
             }else if (url.startsWith("huixiang://ucenter")) {
                 Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                setIntentInfo(intent,params);
-                oriActivity.startActivity(intent);
-                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+                toIntent(oriActivity, params, intent);
             }else if (url.startsWith("huixiang://charge")) {
                 Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                setIntentInfo(intent,params);
-                oriActivity.startActivity(intent);
-                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+                toIntent(oriActivity, params, intent);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
+    }
+
+
+    /**
+     * 跳转到对应的activity
+     * @param oriActivity
+     * @param params
+     * @param intent
+     */
+    private static void toIntent(Activity oriActivity, Map<String, String> params, Intent intent) {
+        setIntentInfo(intent,params);
+        oriActivity.startActivity(intent);
+        oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
     }
 
     private static void setIntentInfo(Intent intent, Map<String, String> paramsMap) {

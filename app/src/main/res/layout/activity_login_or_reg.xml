@@ -10,7 +10,7 @@
         android:id="@+id/rlTop"
         android:layout_width="match_parent"
         android:layout_height="210dp"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/mainColor">
         <ImageView
             android:id="@+id/back"
             android:layout_width="@dimen/baseTitleHeight"

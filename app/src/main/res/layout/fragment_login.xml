@@ -100,6 +100,8 @@
                 android:layout_height="40dp"
                 android:orientation="horizontal">
                 <LinearLayout
+                    android:id="@+id/llWchat"
+                    android:clickable="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -111,6 +113,8 @@
                         android:src="@mipmap/icon_wchat"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/llQQ"
+                    android:clickable="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -122,6 +126,8 @@
                         android:src="@mipmap/icon_qq"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/llSina"
+                    android:clickable="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

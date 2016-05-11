@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BGARefreshLayoutLibrary/BGARefreshLayoutLibrary.iml" filepath="$PROJECT_DIR$/BGARefreshLayoutLibrary/BGARefreshLayoutLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/trunk.iml" filepath="$PROJECT_DIR$/trunk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/huixiang-android.iml" filepath="$PROJECT_DIR$/huixiang-android.iml" />
     </modules>
   </component>
 </project>
