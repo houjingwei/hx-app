@@ -27,10 +27,13 @@ public class FragmentTabTwo extends Fragment {
 		tvLoad.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-//				Intent intent = new Intent(getActivity(),RefreshAndLoadmoreActivity.class);
-//				startActivity(intent);
-
 				ForwardUtils.target(getActivity(),"huixiang://refresh");
+			}
+		});
+		mRootView.findViewById(R.id.up).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				ForwardUtils.target(getActivity(),"huixiang://userinfo");
 			}
 		});
 		return mRootView;

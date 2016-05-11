@@ -15,23 +15,7 @@
         android:layout_height="@dimen/baseTitleHeight"
         android:background="@color/mainColor">
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:padding="10dp"
-            android:src="@mipmap/icon_back" />
-
-        <TextView
-            android:id="@+id/title"
-            style="@style/common_title_style"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="100dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="title" />
+        <include layout="@layout/activity_base_title"></include>
 
 
         <ProgressBar

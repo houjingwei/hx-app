@@ -18,5 +18,14 @@
     <string name="getCode">获取验证码</string>
     <string name="etAccount">请输入手机号</string>
     <string name="xieyi">注册代表同意回想所有条款</string>
+    <string name="labelHeadPhoto">头像</string>
+    <string name="nickName">昵称</string>
+    <string name="sex">性别</string>
+    <string name="phone">手机号</string>
+    <string name="signature">个性签名</string>
+    <string name="hobby">兴趣爱好</string>
+    <string name="tag">我的标签</string>
+    <string name="tagSearch">标签搜索</string>
+    <string name="upUserInfo">修改个人资料</string>
 
 </resources>

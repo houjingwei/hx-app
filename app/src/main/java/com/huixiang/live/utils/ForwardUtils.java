@@ -7,6 +7,8 @@ import com.huixiang.live.R;
 import com.huixiang.live.activity.H5Activity;
 import com.huixiang.live.activity.LoginOrRegActivity;
 import com.huixiang.live.activity.RefreshAndLoadmoreActivity;
+import com.huixiang.live.activity.UserTagActivity;
+import com.huixiang.live.activity.UserinfoActivity;
 
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -53,6 +55,12 @@ public class ForwardUtils {
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith("huixiang://charge")) {
                 Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.startsWith("huixiang://userinfo")) {
+                Intent intent = new Intent(oriActivity, UserinfoActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.startsWith("huixiang://userTag")) {
+                Intent intent = new Intent(oriActivity, UserTagActivity.class);
                 toIntent(oriActivity, params, intent);
             }
         } catch (Exception e) {

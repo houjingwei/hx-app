@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pop_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#60000000"
+    android:clickable="true"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:clickable="true" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/ll_album"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/listview"
+                android:clickable="true"
+                android:gravity="center" >
+
+
+
+                <TextView
+                    style="@style/common_txt_style_01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="相册" />
+            </LinearLayout>
+
+            <View style="@style/split_line" />
+
+            <LinearLayout
+                android:id="@+id/ll_capture"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/listview"
+                android:clickable="true"
+                android:gravity="center" >
+
+
+
+                <TextView
+                    style="@style/common_txt_style_01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="拍照" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

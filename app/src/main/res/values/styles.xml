@@ -160,6 +160,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">normal</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="split_line">
@@ -170,13 +171,63 @@
 
     <style name="txt_normal_style">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/bolder_color_01</item>
+        <item name="android:textColor">@color/common_txt_color</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+
+    <style name="common_txt_style_01">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/common_txt_color</item>
         <item name="android:textStyle">normal</item>
     </style>
 
 
 
 
+
+
+
+    <style name="TagGroup2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="atg_isAppendMode">false</item>
+        <item name="atg_inputHint">@string/add_tag</item>
+        <item name="atg_borderColor">@color/gray_btn_bg_color</item>
+        <item name="atg_textColor">@color/black</item>
+        <item name="atg_backgroundColor">@color/trans</item>
+        <item name="atg_dashBorderColor">@color/gray_btn_bg_color</item>
+        <item name="atg_inputHintColor">@color/trans</item>
+        <item name="atg_inputTextColor">@color/trans</item>
+        <item name="atg_checkedBorderColor">@color/orange</item>
+        <item name="atg_checkedTextColor">#FFFFFF</item>
+        <item name="atg_checkedMarkerColor">#FFFFFF</item>
+        <item name="atg_checkedBackgroundColor">@color/trans</item>
+        <item name="atg_pressedBackgroundColor">#EDEDED</item>
+        <item name="atg_borderStrokeWidth">0.8dp</item>
+        <item name="atg_textSize">12sp</item>
+        <item name="atg_horizontalSpacing">8dp</item>
+        <item name="atg_verticalSpacing">8dp</item>
+        <item name="atg_horizontalPadding">12dp</item>
+        <item name="atg_verticalPadding">5dp</item>
+    </style>
+
+
+    <style name="ColaProgress" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+
+    <style name="popupAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
 
 
 </resources>

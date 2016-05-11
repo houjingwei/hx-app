@@ -31,7 +31,7 @@ public class H5Activity extends BaseBackActivity implements View.OnClickListener
 
     @ViewInject(R.id.title)
     TextView tvTitle;
-    @ViewInject(R.id.iv_back)
+    @ViewInject(R.id.back)
     ImageView ivBack;
     @ViewInject(R.id.webView)
     WebView webview;
@@ -237,7 +237,7 @@ public class H5Activity extends BaseBackActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.iv_back){
+        if(v.getId()==R.id.back){
             onBackPressed();
         }
     }

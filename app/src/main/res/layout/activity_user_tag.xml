@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:zhy="http://schemas.android.com/tools"
+    android:background="@color/sysBg"
+    android:clipToPadding="true"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/activity_base_title" />
+
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/id_flowlayout"
+        zhy:max_select="-1"
+        zhy:auto_select_effect="true"
+        android:background="@color/sysBg"
+        android:minHeight="150dp"
+        android:padding="10dp">
+    </com.zhy.view.flowlayout.TagFlowLayout>
+
+</LinearLayout>
