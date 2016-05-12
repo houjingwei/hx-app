@@ -34,12 +34,6 @@ public class FragmentTabTwo extends Fragment {
 				ForwardUtils.target(getActivity(),"huixiang://refresh");
 			}
 		});
-		mRootView.findViewById(R.id.up).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				ForwardUtils.target(getActivity(),"huixiang://userinfo");
-			}
-		});
 		return mRootView;
 	}
 

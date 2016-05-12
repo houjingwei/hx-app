@@ -6,4 +6,9 @@ package com.huixiang.live;
 public class Constant {
 
     public static final String TAG = "request >> ";
+
+
+    public static final String BASE_PRE = "huixiang://";
+    public static final String ACCOUNT = BASE_PRE+"account";
+    public static final String LOGIN = BASE_PRE+"login";
 }

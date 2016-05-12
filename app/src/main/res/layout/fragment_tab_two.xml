@@ -11,12 +11,6 @@
         android:id="@+id/load"/>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="修改用户资料"
-        android:clickable="true"
-        android:id="@+id/up"/>
+
 
 </LinearLayout>

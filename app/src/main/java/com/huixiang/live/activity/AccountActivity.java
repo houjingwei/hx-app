@@ -1,0 +1,71 @@
+package com.huixiang.live.activity;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.huixiang.live.R;
+import com.huixiang.live.utils.widget.WidgetUtil;
+
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
+
+public class AccountActivity extends BaseBackActivity implements View.OnClickListener {
+
+
+    @ViewInject(R.id.title)
+    TextView tvTitle;
+    @ViewInject(R.id.back)
+    ImageView ivBack;
+
+
+    @ViewInject(R.id.llBuyCoin)
+    LinearLayout llBuyCoin;
+
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_account);
+        x.view().inject(this);
+        initView();
+
+        initData();
+    }
+
+    private void initData() {
+        LayoutInflater inflater = LayoutInflater.from(AccountActivity.this);
+        for (int i=0 ;i <10;i++){
+
+            View view = inflater.inflate(R.layout.buy_coin_item,null);
+            RelativeLayout rlBuy = (RelativeLayout) view.findViewById(R.id.rl_buy);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)rlBuy.getLayoutParams();
+            params.height = WidgetUtil.dip2px(AccountActivity.this,45);
+            rlBuy.setLayoutParams(params);
+            llBuyCoin.addView(view);
+        }
+
+    }
+
+    private void initView() {
+        ivBack.setOnClickListener(this);
+        tvTitle.setText(R.string.moneyBag);
+        ivBack.setOnClickListener(this);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back:
+                onBackPressed();
+                break;
+        }
+    }
+}

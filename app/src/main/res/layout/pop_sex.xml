@@ -29,7 +29,7 @@
                 android:gravity="center" >
 
                 <TextView
-                    style="@style/common_txt_style_01"
+                    style="@style/black_normal_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -49,7 +49,7 @@
 
 
                 <TextView
-                    style="@style/common_txt_style_01"
+                    style="@style/black_normal_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"

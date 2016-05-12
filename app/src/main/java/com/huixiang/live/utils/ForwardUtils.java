@@ -3,7 +3,9 @@ package com.huixiang.live.utils;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.huixiang.live.Constant;
 import com.huixiang.live.R;
+import com.huixiang.live.activity.AccountActivity;
 import com.huixiang.live.activity.H5Activity;
 import com.huixiang.live.activity.LoginOrRegActivity;
 import com.huixiang.live.activity.RefreshAndLoadmoreActivity;
@@ -61,6 +63,12 @@ public class ForwardUtils {
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith("huixiang://userTag")) {
                 Intent intent = new Intent(oriActivity, UserTagActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.ACCOUNT)){
+                Intent intent = new Intent(oriActivity, AccountActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.LOGIN)){
+                Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
                 toIntent(oriActivity, params, intent);
             }
         } catch (Exception e) {

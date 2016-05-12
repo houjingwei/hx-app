@@ -31,7 +31,7 @@
                 android:padding="7.5dp">
 
                 <TextView
-                    style="@style/common_txt_style_01"
+                    style="@style/black_normal_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -108,7 +108,7 @@
 
 
                     <TextView
-                        style="@style/common_txt_style_01"
+                        style="@style/black_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -118,7 +118,7 @@
 
                     <EditText
                         android:id="@+id/etNickName"
-                        style="@style/common_txt_style_01"
+                        style="@style/black_normal_style"
                         android:layout_width="wrap_content"
                         android:minWidth="120dp"
                         android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
 
 
                     <TextView
-                        style="@style/common_txt_style_01"
+                        style="@style/black_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -166,7 +166,7 @@
 
                     <TextView
                         android:id="@+id/tvSex"
-                        style="@style/common_txt_style_01"
+                        style="@style/black_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -204,7 +204,7 @@
                         android:layout_height="50dp">
 
                         <TextView
-                            style="@style/common_txt_style_01"
+                            style="@style/black_normal_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"

@@ -17,7 +17,8 @@
             android:gravity="center_horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/profile_image"
+                android:id="@+id/ivPhoto"
+                android:clickable="true"
                 android:layout_width="66dp"
                 android:layout_height="66dp"
                 android:layout_alignParentBottom="true"
@@ -28,13 +29,14 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/nickname"
-            style="@style/persenal_white_large"
+            android:id="@+id/tvNickName"
+            style="@style/white_bigger_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
+            android:clickable="true"
             android:text="奶茶妹妹" />
 
         <LinearLayout
@@ -46,7 +48,7 @@
 
             <TextView
                 android:id="@+id/artist"
-                style="@style/persenal_white_normal1"
+                style="@style/white_small_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/fragment_tab_three_ellipse"
@@ -89,7 +91,7 @@
 
                     <TextView
                         android:id="@+id/fanscount"
-                        style="@style/persenal_white_large"
+                        style="@style/white_bigest_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -98,7 +100,7 @@
 
                     <TextView
                         android:id="@+id/fans"
-                        style="@style/persenal_white_normal1"
+                        style="@style/white_small_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -121,14 +123,14 @@
 
                     <TextView
                         android:id="@+id/socialstatuscount"
-                        style="@style/persenal_white_large"
+                        style="@style/white_bigest_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1232" />
 
                     <TextView
                         android:id="@+id/socialstatus"
-                        style="@style/persenal_white_normal1"
+                        style="@style/white_small_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -157,15 +159,15 @@
 
                     <ImageView
                         android:id="@+id/signimg"
-                        android:layout_width="26dp"
-                        android:layout_height="26dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_centerVertical="true"
-                        android:src="@mipmap/tab4_pressed" />
+                        android:src="@mipmap/icon_check" />
 
 
                     <TextView
                         android:id="@+id/signtxt"
-                        style="@style/persenal_white_large"
+                        style="@style/white_bigger_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -211,7 +213,7 @@
 
                 <TextView
                     android:id="@+id/ordertext"
-                    style="@style/persenal_black_large"
+                    style="@style/black_bigger_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -222,7 +224,7 @@
 
                 <TextView
                     android:id="@+id/orderCount"
-                    style="@style/persenal_black_small"
+                    style="@style/gray_normal_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -235,6 +237,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/rlAccount"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -253,7 +256,7 @@
 
                 <TextView
                     android:id="@+id/accounttext"
-                    style="@style/persenal_black_large"
+                    style="@style/black_bigger_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -264,7 +267,7 @@
 
                 <TextView
                     android:id="@+id/accountnumber"
-                    style="@style/persenal_black_small"
+                    style="@style/gray_normal_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -304,7 +307,7 @@
 
                 <TextView
                     android:id="@+id/livetext"
-                    style="@style/persenal_black_large"
+                    style="@style/black_bigger_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -315,7 +318,7 @@
 
                 <TextView
                     android:id="@+id/livenumber"
-                    style="@style/persenal_black_small"
+                    style="@style/gray_normal_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -346,7 +349,7 @@
 
                 <TextView
                     android:id="@+id/lovetext"
-                    style="@style/persenal_black_large"
+                    style="@style/black_bigger_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -357,7 +360,7 @@
 
                 <TextView
                     android:id="@+id/lovenumber"
-                    style="@style/persenal_black_small"
+                    style="@style/gray_normal_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -394,7 +397,7 @@
 
             <TextView
                 android:id="@+id/settxt"
-                style="@style/persenal_black_large"
+                style="@style/black_bigger_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -429,7 +432,7 @@
 
             <TextView
                 android:id="@+id/responsetxt"
-                style="@style/persenal_black_large"
+                style="@style/black_bigger_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
