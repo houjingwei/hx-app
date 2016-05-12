@@ -28,4 +28,14 @@
     <string name="tagSearch">标签搜索</string>
     <string name="upUserInfo">修改个人资料</string>
 
+    <string name="artist">如何成为艺人~</string>
+    <string name="fan">粉丝</string>
+    <string name="value">身价</string>
+    <string name="sign">签到</string>
+    <string name="order">订单</string>
+    <string name="account">账户</string>
+    <string name="live">直播</string>
+    <string name="love">爱心</string>
+    <string name="set">设置</string>
+    <string name="response">意见反馈</string>
 </resources>
