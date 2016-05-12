@@ -131,6 +131,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:clickable="true"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
@@ -139,14 +140,19 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <RadioButton
+                        android:id="@+id/rbwx"
                         android:layout_width="72dp"
                         android:layout_height="72dp"
-                        android:src="@mipmap/icon_wx_sel" />
+                        android:background="@drawable/pay_way_wx"
+                        android:button="@null"/>
+
+
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:clickable="true"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
@@ -154,26 +160,31 @@
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="vertical">
-
-                    <ImageView
+                    <RadioButton
+                        android:id="@+id/rbzfb"
                         android:layout_width="72dp"
                         android:layout_height="72dp"
-                        android:src="@mipmap/icon_zfb" />
+                        android:background="@drawable/pay_way_zfb"
+                        android:button="@null"/>
+
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:clickable="true"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="vertical">
-
-                    <ImageView
+                    <RadioButton
+                        android:id="@+id/rbapple"
                         android:layout_width="72dp"
                         android:layout_height="72dp"
-                        android:src="@mipmap/icon_apple" />
+                        android:background="@drawable/pay_way_apple"
+                        android:button="@null"/>
+
 
                 </LinearLayout>
 
