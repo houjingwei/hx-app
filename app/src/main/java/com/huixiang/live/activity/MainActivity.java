@@ -1,5 +1,7 @@
 package com.huixiang.live.activity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
@@ -41,6 +43,7 @@ public class MainActivity extends BaseActivity {
 
     TextView txTitle;
     ImageView ivBack;
+    LinearLayout llTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,7 @@ public class MainActivity extends BaseActivity {
      * 初始化组件
      */
     private void initView() {
+        llTitle = (LinearLayout) findViewById(R.id.llTitle);
         txTitle = (TextView) findViewById(R.id.title);
         ivBack = (ImageView) findViewById(R.id.back);
 
@@ -135,6 +139,18 @@ public class MainActivity extends BaseActivity {
         } else {
             finish();
             android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void hideTitle(boolean bool) {
+        Window window = getWindow();
+        if(bool){
+            llTitle.setVisibility(View.GONE);
+            window.setStatusBarColor(getResources().getColor(R.color.mainColor));
+        }else{
+            llTitle.setVisibility(View.VISIBLE);
+            window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
         }
     }
 }

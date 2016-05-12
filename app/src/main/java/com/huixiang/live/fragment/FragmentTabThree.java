@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.huixiang.live.R;
 import com.huixiang.live.activity.MainActivity;
-import com.huixiang.live.utils.ForwardUtils;
 
 
 public class FragmentTabThree extends Fragment {
@@ -19,12 +18,15 @@ public class FragmentTabThree extends Fragment {
 
 	private TextView txUserInfo;
 
+	MainActivity activity ;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		mRootView =  inflater.inflate(R.layout.fragment_tab_three, container, false);
-//		((MainActivity)getActivity()).setTitleBar(getString(R.string.tabthree_title));
+		activity = (MainActivity)getActivity();
+		activity.hideTitle(true);
 //		txUserInfo = (TextView) mRootView.findViewById(R.id.userInfo);
 //		txUserInfo.setOnClickListener(new View.OnClickListener() {
 //			@Override

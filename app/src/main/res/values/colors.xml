@@ -35,7 +35,7 @@
 
     <color name="common_txt_color">#222222</color>
     <color name="trans">#00000000</color>
-    <color name="split_color">#999999</color>
+    <color name="split_color">#50999999</color>
     <color name="clear">#55ffffff</color>
     <color name="bolder_color_01">#999999</color>
     <color name="gray">#50999999</color>

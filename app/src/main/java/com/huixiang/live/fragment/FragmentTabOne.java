@@ -16,13 +16,17 @@ public class FragmentTabOne extends Fragment {
 
 
 	private View mRootView;
+	MainActivity activity ;
 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		mRootView = inflater.inflate(R.layout.fragment_tab_one, container, false);
-		((MainActivity)getActivity()).setTitleBar(getString(R.string.tabone_title));
+
+		activity = (MainActivity)getActivity();
+		activity.setTitleBar(getString(R.string.tabone_title));
+		activity.hideTitle(false);
 		return mRootView;
 	}
 

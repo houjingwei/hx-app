@@ -7,7 +7,14 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="false"
     tools:context=".activity.MainActivity">
-    <include layout="@layout/activity_base_title"/>
+    <LinearLayout
+        android:id="@+id/llTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_base_title"/>
+    </LinearLayout>
     <!-- 内容界面 -->
     <FrameLayout
         android:id="@+id/realtabcontent"
