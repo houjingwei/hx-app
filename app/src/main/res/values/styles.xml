@@ -185,8 +185,40 @@
 
 
 
+    <style name="persenal_white_large">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 
+    <style name="persenal_white_normal">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 
+    <style name="persenal_white_normal1">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/white_01</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="persenal_white_small">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="persenal_black_large">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="persenal_black_small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_color1</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 
 
 
