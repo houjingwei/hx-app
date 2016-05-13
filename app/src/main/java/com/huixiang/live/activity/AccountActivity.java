@@ -3,8 +3,10 @@ package com.huixiang.live.activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,7 +16,7 @@ import com.huixiang.live.utils.widget.WidgetUtil;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-public class AccountActivity extends BaseBackActivity implements View.OnClickListener {
+public class AccountActivity extends BaseBackActivity implements View.OnClickListener{
 
 
     @ViewInject(R.id.title)
@@ -25,6 +27,13 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
 
     @ViewInject(R.id.llBuyCoin)
     LinearLayout llBuyCoin;
+
+    @ViewInject(R.id.rbwx)
+    RadioButton rbwx;
+    @ViewInject(R.id.rbzfb)
+    RadioButton rbzfb;
+    @ViewInject(R.id.rbapple)
+    RadioButton rbapple;
 
 
 
@@ -57,15 +66,50 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
         ivBack.setOnClickListener(this);
         tvTitle.setText(R.string.moneyBag);
         ivBack.setOnClickListener(this);
+
+
+
+        rbwx.setOnClickListener(this);
+        rbzfb.setOnClickListener(this);
+        rbapple.setOnClickListener(this);
     }
 
 
+
+    int payWay = 0;
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
                 onBackPressed();
                 break;
+            case R.id.rbwx:
+                choisePayWay(1);
+                break;
+            case R.id.rbzfb:
+                choisePayWay(2);
+                break;
+            case R.id.rbapple:
+                choisePayWay(3);
+                break;
         }
     }
+
+    private void choisePayWay(int way) {
+        payWay = way;
+        if(payWay==1){
+            rbwx.setSelected(true);
+            rbzfb.setSelected(false);
+            rbapple.setSelected(false);
+        }else if(payWay==2){
+            rbwx.setSelected(false);
+            rbzfb.setSelected(true);
+            rbapple.setSelected(false);
+        }else if(payWay==3){
+            rbwx.setSelected(false);
+            rbzfb.setSelected(false);
+            rbapple.setSelected(true);
+        }
+    }
+
 }

@@ -40,6 +40,9 @@ public class LoginOrRegActivity extends BaseBackActivity implements View.OnClick
         setContentView(R.layout.activity_login_or_reg);
         Window window = getWindow();
         window.setStatusBarColor(getResources().getColor(R.color.mainColor));
+
+        findViewById(R.id.back).setOnClickListener(this);
+
         FragmentLogin login = new FragmentLogin();
         FragmentReg reg = new FragmentReg();
         mMyFragments.add(login);
@@ -93,8 +96,12 @@ public class LoginOrRegActivity extends BaseBackActivity implements View.OnClick
     }
 
     @Override
-    public void onClick(View view) {
-
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back:
+                onBackPressed();
+                break;
+        }
     }
 
     @Override
