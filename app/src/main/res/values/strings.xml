@@ -55,4 +55,9 @@
     <string name="shareToFriend">分享给小伙伴</string>
     <string name="startLive">开始直播</string>
 
+
+    <string name="index_button_live">LIVE</string>
+    <string name="index_button_video">视频回放</string>
+    <string name="input_your_favorite_video">搜索喜欢的艺人或直播</string>
+
 </resources>
