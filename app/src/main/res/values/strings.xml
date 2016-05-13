@@ -43,4 +43,6 @@
     <string name="takeMoney">提现</string>
     <string name="myRedBag">我的红包</string>
     <string name="zfxieyi">支付协议</string>
+
+    <string name="today_rm">今日推荐</string>
 </resources>

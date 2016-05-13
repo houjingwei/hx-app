@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="bottom" >
+
+    <com.huixiang.live.utils.widget.PictureViewPager
+        android:id="@+id/pic_vp"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:layout_gravity="bottom" >
+        <!--
+                <TextView
+                    android:id="@+id/banner_subject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:layout_centerVertical="true"
+                    android:ellipsize="end"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="70dp"
+                    android:singleLine="true"
+                    android:textColor="@color/color1"
+                    android:textSize="15sp" /> -->
+
+        <LinearLayout
+            android:id="@+id/index_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="21dp"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>
