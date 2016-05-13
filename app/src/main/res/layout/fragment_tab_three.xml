@@ -421,6 +421,7 @@
             android:layout_height="50dp"
             android:background="@drawable/listview"
             android:clickable="true"
+            android:focusable="true"
             android:padding="10dp">
 
             <ImageView
