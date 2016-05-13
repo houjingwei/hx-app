@@ -12,4 +12,5 @@ public class Constant {
     public static final String ACCOUNT = BASE_PRE+"account";
     public static final String LOGIN = BASE_PRE+"login";
     public static final String START_LIVE = BASE_PRE+"push";
+    public static final String SET = BASE_PRE+"set";
 }
