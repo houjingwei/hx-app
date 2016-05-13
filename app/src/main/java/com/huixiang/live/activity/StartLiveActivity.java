@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.huixiang.live.Constant;
@@ -19,6 +20,11 @@ import com.huixiang.live.utils.KeyBoardUtils;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class StartLiveActivity extends BaseBackActivity implements View.OnClickListener {
 
@@ -35,6 +41,21 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
     @ViewInject(R.id.tvTheme)
     TextView tvTheme;
 
+
+    @ViewInject(R.id.rbPhone)
+    RadioButton rbPhone;
+    @ViewInject(R.id.rbWx)
+    RadioButton rbwx;
+    @ViewInject(R.id.rbCircle)
+    RadioButton rbCircle;
+    @ViewInject(R.id.rbSina)
+    RadioButton rbSina;
+    @ViewInject(R.id.rbQq)
+    RadioButton rbQq;
+    @ViewInject(R.id.rbQzone)
+    RadioButton rbQzone;
+
+    LinkedList<RadioButton> buttons;
 
 
 
@@ -55,6 +76,18 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
         llRoot.setOnClickListener(this);
         ivClose.setOnClickListener(this);
         tvTheme.setOnClickListener(this);
+
+
+        rbPhone.setSelected(true);
+        rbPhone.setOnClickListener(this);
+        rbwx.setOnClickListener(this);
+        rbCircle.setOnClickListener(this);
+        rbSina.setOnClickListener(this);
+        rbQq.setOnClickListener(this);
+        rbQzone.setOnClickListener(this);
+
+
+
     }
 
 
@@ -72,8 +105,73 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
                 hideKeyBoard();
                 choiseTheme();
                 break;
+            case R.id.rbPhone:
+                hideKeyBoard();
+                shareTo(1);
+                break;
+            case R.id.rbQq:
+                hideKeyBoard();
+                shareTo(2);
+                break;
+            case R.id.rbQzone:
+                hideKeyBoard();
+                shareTo(3);
+                break;
+            case R.id.rbWx:
+                hideKeyBoard();
+                shareTo(4);
+                break;
+            case R.id.rbCircle:
+                hideKeyBoard();
+                shareTo(5);
+                break;
+            case R.id.rbSina:
+                hideKeyBoard();
+                shareTo(6);
+                break;
         }
     }
+
+    int platform = 1;
+    private void shareTo(int flag) {
+
+        buttons = new LinkedList<RadioButton>();
+        RadioButton[] btns = new RadioButton[]{rbPhone,rbQq,rbQzone,rbwx,rbCircle,rbSina};
+        for (int i=0;i<btns.length;i++){
+            buttons.add(i,btns[i]);
+        }
+        platform = flag;
+        if(platform==1){
+            setSharePlatformStyle(buttons,0);
+        }else if(platform==2){
+            setSharePlatformStyle(buttons,1);
+        }else if(platform==3){
+            setSharePlatformStyle(buttons,2);
+        }else if(platform==4){
+            setSharePlatformStyle(buttons,3);
+        }else if(platform==5){
+            setSharePlatformStyle(buttons,4);
+        }else if(platform==6){
+            setSharePlatformStyle(buttons,5);
+        }
+    }
+
+
+    /**
+     * 设置radiobutton 选中或者不选中
+     * @param buttons
+     * @param flag
+     */
+    private void setSharePlatformStyle(List<RadioButton> buttons, int flag) {
+        buttons.get(flag).setSelected(true);
+        buttons.remove(flag);
+        for (RadioButton rb : buttons) {
+            rb.setSelected(false);
+        }
+    }
+
+
+
 
     /**
      * 选择主题

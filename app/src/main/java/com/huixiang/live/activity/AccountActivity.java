@@ -68,7 +68,7 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
         ivBack.setOnClickListener(this);
 
 
-
+        rbwx.setSelected(true);
         rbwx.setOnClickListener(this);
         rbzfb.setOnClickListener(this);
         rbapple.setOnClickListener(this);

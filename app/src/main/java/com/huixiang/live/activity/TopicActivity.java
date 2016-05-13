@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.huixiang.live.Api;
@@ -32,6 +33,8 @@ public class TopicActivity extends BaseBackActivity implements BGARefreshLayout.
     TextView txTitle;
     @ViewInject(R.id.back)
     ImageView ivBack;
+
+
 
     private BGARefreshLayout mRefreshLayout;
     private ListView mDataLv;
@@ -60,8 +63,8 @@ public class TopicActivity extends BaseBackActivity implements BGARefreshLayout.
                 intent.putExtra("tid",topic.getTid());
                 intent.putExtra("topic",topic.getTopic());
                 setResult(RESULT_OK, intent);
-                overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-                finish();
+                onBackPressed();
+
             }
         });
         loadTopic();
@@ -128,5 +131,9 @@ public class TopicActivity extends BaseBackActivity implements BGARefreshLayout.
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
+    }
 }
