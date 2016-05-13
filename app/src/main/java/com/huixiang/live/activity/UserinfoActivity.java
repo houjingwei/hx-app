@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.huixiang.live.R;
-import com.huixiang.live.common.CommonUtil;
 import com.huixiang.live.pop.SelectPicWayWindow;
 import com.huixiang.live.pop.UpdateSexWindow;
 import com.huixiang.live.utils.ForwardUtils;
+import com.huixiang.live.utils.KeyBoardUtils;
 import com.huixiang.live.utils.image.ImageUtils;
 import com.huixiang.live.utils.image.PictureHelper;
 import com.zhy.view.flowlayout.FlowLayout;
@@ -68,7 +68,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         tvSave.setVisibility(View.VISIBLE);
 
         //隐藏键盘
-        CommonUtil.hideKeyBoard(this,etNickName);
+        KeyBoardUtils.closeKeybord(etNickName,UserinfoActivity.this);
 
         findViewById(R.id.rl_tag).setOnClickListener(this);
         findViewById(R.id.rl_sex).setOnClickListener(this);

@@ -2,25 +2,278 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:background="@drawable/start_live_bg"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/start_live_bg">
 
 
     </FrameLayout>
+
     <LinearLayout
+        android:id="@+id/llRoot"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_01">
+        android:background="@color/black_01"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
 
+            <ImageView
+                android:id="@+id/ivCamera"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:padding="10dp"
+                android:layout_toLeftOf="@+id/ivClose"
+                android:clickable="true"
+                android:src="@mipmap/icon_live_camera" />
+
+            <ImageView
+                android:layout_centerVertical="true"
+                android:id="@+id/ivClose"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="5dp"
+                android:clickable="true"
+                android:padding="10dp"
+                android:src="@mipmap/icon_close" />
 
         </RelativeLayout>
-        
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvTt"
+                style="@style/white_bigest_x_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="填写个吸引人的标题吧~" />
+
+            <EditText
+                android:id="@+id/etTitle"
+                android:layout_below="@+id/tvTt"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:gravity="center"
+                style="@style/white_bigger_style"
+                android:layout_marginTop="5dp"
+                android:layout_alignLeft="@+id/tvTt"
+                android:layout_alignRight="@+id/tvTt"/>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0.8dp"
+                android:background="#979797"
+                android:layout_alignLeft="@+id/etTitle"
+                android:layout_alignRight="@+id/etTitle"
+                android:layout_below="@+id/etTitle"/>
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tvTheme"
+                android:clickable="true"
+                style="@style/white_bigger_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/selTheme" />
+            <LinearLayout
+                android:id="@+id/llLocal"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_toLeftOf="@+id/ivClose"
+                    android:clickable="true"
+                    android:src="@mipmap/icon_live_local" />
+
+                <TextView
+                    style="@style/white_bigger_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/local" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginBottom="50dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+                <View
+                    android:layout_toLeftOf="@+id/tvShare"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#979797"
+                    android:layout_marginLeft="20dp"
+                    android:layout_centerInParent="true"
+                    />
+                <TextView
+                    android:id="@+id/tvShare"
+                    style="@style/white_normal_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:padding="10dp"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="@string/shareToFriend" />
+                <View
+                    android:layout_toRightOf="@+id/tvShare"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#979797"
+                    android:layout_marginRight="20dp"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/rbPhone"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="5dp"
+                        android:background="@drawable/share_phone_select"
+                        android:button="@null"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/rbQq"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="5dp"
+                        android:background="@drawable/share_qq_select"
+                        android:button="@null"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/rbQzone"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="5dp"
+                        android:background="@drawable/share_qzone_select"
+                        android:button="@null"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/rbWx"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="5dp"
+                        android:background="@drawable/share_wx_select"
+                        android:button="@null"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/rbCircle"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="5dp"
+                        android:background="@drawable/share_circle_select"
+                        android:button="@null"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/rbSina"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="5dp"
+                        android:background="@drawable/share_sina_select"
+                        android:button="@null"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvLoginBtn"
+                style="@style/white_bigger_style"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/ll_input"
+                android:layout_margin="30dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/start_live_btn_style"
+                android:gravity="center"
+                android:text="@string/startLive" />
+        </LinearLayout>
     </LinearLayout>
+
+
 
 </RelativeLayout>

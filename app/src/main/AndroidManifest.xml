@@ -34,8 +34,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-
-
         <activity
             android:name="com.umeng.socialize.editorpage.ShareActivity"
             android:excludeFromRecents="true"
@@ -88,7 +86,6 @@
 
         <!-- 新浪微博 -->
 
-
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -114,14 +111,13 @@
         <activity
             android:name=".activity.UserTagActivity"
             android:theme="@style/backStyle" />
-
-
         <activity
             android:name=".activity.AccountActivity"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.StartLiveActivity"
-            android:theme="@style/backStyle"/>
+            android:theme="@style/backStyle" />
+        <activity android:name=".activity.TopicActivity"></activity>
     </application>
 
 </manifest>

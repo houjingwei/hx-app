@@ -4,6 +4,7 @@ package com.huixiang.live.service;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.huixiang.live.Constant;
 
@@ -12,7 +13,6 @@ import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,26 +71,19 @@ public class RequestUtils {
             @Override
             public void onSuccess(String result) {
                 Log.d(Constant.TAG, "解析后内容 >> " + result);
-                BaseResponse response = gson.fromJson(result, BaseResponse.class);
-                if (response != null) {
-                    response.dailData(clazz);
-                }
+                BaseResponse response = JSON.parseObject(result,BaseResponse.class);
                 try {
                     if (response == null) {
                         if (callBack != null) {
-                            callBack.onFailure(new ServiceException("未知错误"));
+                            callBack.onFailure(new ServiceException("未请求到数据"));
                         }
                         return;
                     }
                     if (callBack != null) {
-                        if (!response.isSuccess()) {
-                            callBack.onFailure(new ServiceException(response.getRealMsg()));
-                            return;
-                        }
-                        if (response.isDataArray()) {
-                            callBack.onSuccessList((List) response.getRealData(clazz));
-                        } else {
-                            callBack.onSuccess(response.getRealData(clazz));
+                        try{
+                            callBack.onSuccessList(JSON.parseArray(String.valueOf(response.getData()),clazz));
+                        }catch(Exception e){
+                            callBack.onSuccess(JSON.parseObject(String.valueOf(response.getData()),clazz));
                         }
                     }
                 } catch (Exception e) {

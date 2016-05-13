@@ -11,6 +11,7 @@ import com.huixiang.live.activity.LoginOrRegActivity;
 import com.huixiang.live.activity.RefreshAndLoadmoreActivity;
 import com.huixiang.live.activity.SetActivity;
 import com.huixiang.live.activity.StartLiveActivity;
+import com.huixiang.live.activity.TopicActivity;
 import com.huixiang.live.activity.UserTagActivity;
 import com.huixiang.live.activity.UserinfoActivity;
 
@@ -70,7 +71,7 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, AccountActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.LOGIN)){
-                Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
+                Intent intent = new Intent(oriActivity, UserinfoActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith("huixiang://set")){
                 Intent intent = new Intent(oriActivity, SetActivity.class);
@@ -78,6 +79,11 @@ public class ForwardUtils {
             }else if (url.startsWith(Constant.START_LIVE)){
                 Intent intent = new Intent(oriActivity, StartLiveActivity.class);
                 toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.LIVE_TOPIC)){
+                Intent intent = new Intent(oriActivity, TopicActivity.class);
+                setIntentInfo(intent,params);
+                oriActivity.startActivityForResult(intent, 1);
+                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
             }
 
         } catch (Exception e) {

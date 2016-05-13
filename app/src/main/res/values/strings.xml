@@ -50,5 +50,9 @@
     <string name="clearcache">清除缓存</string>
     <string name="cachelarge">22.5M</string>
     <string name="exitlogin">退出登录</string>
+    <string name="selTheme"># 选择主题</string>
+    <string name="local">定位</string>
+    <string name="shareToFriend">分享给小伙伴</string>
+    <string name="startLive">开始直播</string>
 
 </resources>

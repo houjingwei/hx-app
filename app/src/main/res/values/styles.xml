@@ -161,6 +161,11 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">normal</item>
     </style>
+    <style name="white_bigest_x_style">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 
     <style name="gray_small_style">
         <item name="android:textSize">12sp</item>
@@ -289,6 +294,9 @@
     </style>
 
 
+
+
+
     <style name="normal_style">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/normal_color</item>
@@ -336,4 +344,5 @@
     </style>
 
 
+    <color name="mask_txt_color">#c5c6c5</color>
 </resources>
