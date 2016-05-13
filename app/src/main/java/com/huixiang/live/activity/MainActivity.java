@@ -3,43 +3,55 @@ package com.huixiang.live.activity;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTabHost;
-import android.view.LayoutInflater;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.huixiang.live.Constant;
 import com.huixiang.live.R;
 import com.huixiang.live.fragment.FragmentTabOne;
 import com.huixiang.live.fragment.FragmentTabThree;
 import com.huixiang.live.fragment.FragmentTabTwo;
-import com.huixiang.live.utils.widget.WidgetUtil;
+import com.huixiang.live.utils.ForwardUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-public class MainActivity extends BaseActivity {
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
+
+public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 
-    //定义FragmentTabHost对象
-    private FragmentTabHost mTabHost;
 
-    // 定义一个布局
-    private LayoutInflater mLayoutInflater;
+    @ViewInject(R.id.tab1)
+    RelativeLayout tab1;
+    @ViewInject(R.id.iv1)
+    ImageView iv1;
 
-    // 定义数组来存放Fragment界面
-    private Class mFragmentArray[] = { FragmentTabOne.class,
-            FragmentTabTwo.class, FragmentTabThree.class};
+    @ViewInject(R.id.tab2)
+    RelativeLayout tab2;
+    @ViewInject(R.id.iv2)
+    ImageView iv2;
 
-    // 定义数组来存放按钮图片
-    private int mImageViewArray[] = { R.drawable.main_item_tab1,
-            R.drawable.main_item_tab2, R.drawable.main_item_tab3 };
+    @ViewInject(R.id.tab3)
+    RelativeLayout tab3;
+    @ViewInject(R.id.iv3)
+    ImageView iv3;
 
-    // Tab选项卡的文字
-    private String mTextviewArray[] = { "tab1", "tab2", "tab3" };
+
+    FragmentTabOne fragmentOne;
+    FragmentTabTwo fragmentTwo;
+    FragmentTabThree fragmentThree;
+
+
+    FragmentTransaction trx = null;
+
+
 
     TextView txTitle;
     ImageView ivBack;
@@ -49,7 +61,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        x.view().inject(this);
         initWindow();
 
         initView();
@@ -59,7 +71,6 @@ public class MainActivity extends BaseActivity {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //           setTranslucentStatus(true);
 //        }
-
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.colorPrimary);
@@ -86,43 +97,79 @@ public class MainActivity extends BaseActivity {
         txTitle = (TextView) findViewById(R.id.title);
         ivBack = (ImageView) findViewById(R.id.back);
 
-        // 实例化布局对象
-        mLayoutInflater = LayoutInflater.from(this);
-        // 实例化TabHost对象，得到TabHost
-        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-        mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
+        tab1.setOnClickListener(this);
+        tab2.setOnClickListener(this);
+        tab3.setOnClickListener(this);
+        iv2.setOnClickListener(this);
+        initFragment();
 
-        // 得到fragment的个数
-        int count = mFragmentArray.length;
-        for (int i = 0; i < count; i++) {
-            // 为每一个Tab按钮设置图标、文字和内容
-            TabHost.TabSpec tabSpec = mTabHost.newTabSpec(mTextviewArray[i]).setIndicator(getTabItemView(i));
-            // 将Tab按钮添加进Tab选项卡中
-            mTabHost.addTab(tabSpec, mFragmentArray[i], null);
-            //去掉分割线
-            mTabHost.getTabWidget().setDividerDrawable(null);
+    }
+
+    private void initFragment() {
+        fragmentOne = new FragmentTabOne();
+        fragmentTwo = new FragmentTabTwo();
+        fragmentThree = new FragmentTabThree();
+
+        // 把第一个tab设为选中状态
+        setTabSelection(0);
+    }
+
+
+
+    private void setTabSelection(int index) {
+        trx = getSupportFragmentManager().beginTransaction();
+        hideFragments(trx);
+        switch (index) {
+            case 0:
+                if (!fragmentOne.isAdded()) {
+                    trx.add(R.id.content, fragmentOne);
+                }
+                trx.show(fragmentOne);
+                addSelection(0);
+                break;
+            case 1:
+                if (!fragmentThree.isAdded()) {
+                    trx.add(R.id.content, fragmentThree);
+                }
+                trx.show(fragmentThree);
+                addSelection(1);
+                break;
+        }
+        //防止一个状态丢失崩溃.
+        trx.commitAllowingStateLoss();
+    }
+
+
+
+    private void addSelection(int index) {
+        if (index == 0) {
+            hideTitle(false);
+            iv1.setImageResource(R.mipmap.tab1_pressed);
+            iv3.setImageResource(R.mipmap.tab3);
+
+        } else if (index == 1) {
+            hideTitle(true);
+            iv1.setImageResource(R.mipmap.tab1);
+            iv3.setImageResource(R.mipmap.tab3_pressed);
         }
     }
 
 
     /**
-     * 给Tab按钮设置图标和文字
+     * 将所有的Fragment都置为隐藏状态。
+     *
+     * @param transaction 用于对Fragment执行操作的事务
      */
-    private View getTabItemView(int index) {
-        View view = mLayoutInflater.inflate(R.layout.tab_item_view, null);
-
-        ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
-        imageView.setImageResource(mImageViewArray[index]);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
-        if(index==1){
-            params.height = WidgetUtil.dip2px(this,40);
-        }else{
-            params.height = WidgetUtil.dip2px(this,24);
+    private void hideFragments(FragmentTransaction transaction) {
+        if (fragmentOne != null) {
+            transaction.hide(fragmentOne);
         }
-        imageView.setLayoutParams(params);
-
-        return view;
+        if (fragmentThree != null) {
+            transaction.hide(fragmentThree);
+        }
     }
+
+
 
     public void setTitleBar(String title){
         txTitle.setText(title);
@@ -152,5 +199,33 @@ public class MainActivity extends BaseActivity {
             llTitle.setVisibility(View.VISIBLE);
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tab1:
+                setTabSelection(0);
+                break;
+            case R.id.tab2:
+                startLive();
+                break;
+            case R.id.iv2:
+                startLive();
+                break;
+            case R.id.tab3:
+                setTabSelection(1);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    /**
+     * 开启直播
+     */
+    private void startLive() {
+        ForwardUtils.target(MainActivity.this, Constant.START_LIVE);
     }
 }

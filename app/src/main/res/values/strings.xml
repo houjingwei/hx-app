@@ -43,6 +43,17 @@
     <string name="takeMoney">提现</string>
     <string name="myRedBag">我的红包</string>
     <string name="zfxieyi">支付协议</string>
+<<<<<<< HEAD
 
     <string name="today_rm">今日推荐</string>
+=======
+    <string name="sage">账号与安全</string>
+    <string name="aboutus">关于我们</string>
+    <string name="help">帮助中心</string>
+    <string name="clearcache">清除缓存</string>
+    <string name="cachelarge">22.5M</string>
+    <string name="exitlogin">退出登录</string>
+
+
+>>>>>>> c07883e0635ffba22e6b67e9dfbd7eb75167fbf2
 </resources>

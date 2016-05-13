@@ -36,6 +36,7 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
 		mRootView.findViewById(R.id.ivPhoto).setOnClickListener(this);
 		mRootView.findViewById(R.id.rlAccount).setOnClickListener(this);
 		mRootView.findViewById(R.id.tvNickName).setOnClickListener(this);
+//		mRootView.findViewById(R.id.setting).setOnClickListener(this);
 	}
 
 	@Override
@@ -48,9 +49,27 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
 				ForwardUtils.target(getActivity(), Constant.ACCOUNT);
 				break;
 			case R.id.tvNickName:
+//				RequestUtils.sendGetRequest("http://119.29.94.122:8888/live/applyLiveshow", null, new ResponseCallBack<BaseResponse>() {
+//					@Override
+//					public void onSuccess(BaseResponse data) {
+//						super.onSuccess(data);
+//					}
+//
+//					@Override
+//					public void onSuccessList(List<BaseResponse> data) {
+//						super.onSuccessList(data);
+//					}
+//
+//					@Override
+//					public void onFailure(ServiceException e) {
+//						super.onFailure(e);
+//					}
+//				}, BaseResponse.class);
 				ForwardUtils.target(getActivity(), Constant.LOGIN);
 				break;
-
+//            case R.id.setting:
+//				ForwardUtils.target(getActivity(),"huixiang://set");
+//				break;
 
 		}
 	}

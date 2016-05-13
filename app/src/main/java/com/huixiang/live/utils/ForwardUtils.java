@@ -9,6 +9,8 @@ import com.huixiang.live.activity.AccountActivity;
 import com.huixiang.live.activity.H5Activity;
 import com.huixiang.live.activity.LoginOrRegActivity;
 import com.huixiang.live.activity.RefreshAndLoadmoreActivity;
+import com.huixiang.live.activity.SetActivity;
+import com.huixiang.live.activity.StartLiveActivity;
 import com.huixiang.live.activity.UserTagActivity;
 import com.huixiang.live.activity.UserinfoActivity;
 
@@ -70,7 +72,14 @@ public class ForwardUtils {
             }else if (url.startsWith(Constant.LOGIN)){
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
                 toIntent(oriActivity, params, intent);
+            }else if (url.startsWith("huixiang://set")){
+                Intent intent = new Intent(oriActivity, SetActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.START_LIVE)){
+                Intent intent = new Intent(oriActivity, StartLiveActivity.class);
+                toIntent(oriActivity, params, intent);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

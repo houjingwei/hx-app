@@ -34,31 +34,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity
-            android:name=".activity.SplashActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.BaseActivity" />
-        <activity
-            android:name=".activity.RefreshAndLoadmoreActivity"
-            android:theme="@style/backStyle" />
-        <activity
-            android:name=".activity.LoginOrRegActivity"
-            android:theme="@style/backStyle" />
-        <activity android:name=".activity.BaseBackActivity" />
-        <activity
-            android:name=".activity.UserinfoActivity"
-            android:theme="@style/backStyle"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity
-            android:name=".activity.UserTagActivity"
-            android:theme="@style/backStyle" />
+
         <activity
             android:name="com.umeng.socialize.editorpage.ShareActivity"
             android:excludeFromRecents="true"
@@ -111,7 +88,40 @@
 
         <!-- 新浪微博 -->
 
-        <activity android:name=".activity.AccountActivity"></activity>
+
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.BaseActivity" />
+        <activity
+            android:name=".activity.RefreshAndLoadmoreActivity"
+            android:theme="@style/backStyle" />
+        <activity
+            android:name=".activity.LoginOrRegActivity"
+            android:theme="@style/backStyle" />
+        <activity android:name=".activity.BaseBackActivity" />
+        <activity
+            android:name=".activity.UserinfoActivity"
+            android:theme="@style/backStyle"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".activity.UserTagActivity"
+            android:theme="@style/backStyle" />
+
+
+        <activity
+            android:name=".activity.AccountActivity"
+            android:theme="@style/backStyle" />
+        <activity
+            android:name=".activity.StartLiveActivity"
+            android:theme="@style/backStyle"/>
     </application>
 
 </manifest>
