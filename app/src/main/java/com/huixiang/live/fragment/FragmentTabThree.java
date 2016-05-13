@@ -36,6 +36,7 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
 		mRootView.findViewById(R.id.ivPhoto).setOnClickListener(this);
 		mRootView.findViewById(R.id.rlAccount).setOnClickListener(this);
 		mRootView.findViewById(R.id.tvNickName).setOnClickListener(this);
+//		mRootView.findViewById(R.id.setting).setOnClickListener(this);
 	}
 
 	@Override
@@ -50,7 +51,9 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
 			case R.id.tvNickName:
 				ForwardUtils.target(getActivity(), Constant.LOGIN);
 				break;
-
+//            case R.id.setting:
+//				ForwardUtils.target(getActivity(),"huixiang://set");
+//				break;
 
 		}
 	}
