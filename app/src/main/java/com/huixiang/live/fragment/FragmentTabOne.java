@@ -15,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.huixiang.live.App;
 import com.huixiang.live.R;
 import com.huixiang.live.activity.MainActivity;
@@ -55,7 +57,7 @@ public class FragmentTabOne extends Fragment implements BGARefreshLayout.BGARefr
         activity.hideTitle(false);
 
         findView();
-        BindData();
+        BindBinnerData();
         initAdapter();
         setListener();
         processLogic(savedInstanceState);
@@ -82,14 +84,15 @@ public class FragmentTabOne extends Fragment implements BGARefreshLayout.BGARefr
         for (int i = 0; i < 5; i++) {
             CommonModel commonModel1 = new CommonModel();
             //commonModel1.iconUrl = "http://f1.jgyes.com/4,013f52a5e0fd91";
-            commonModel1.title = "超级女生2016排位赛";
-            commonModel1.setTime("5月30日 17：50");
+            commonModel1.title = "超级女生2016排位赛"+i;
+            commonModel1.setTime("5月30日 17：5"+i);
             commonModel1.img_id = img_arr[i];
             commonModelList.add(commonModel1);
         }
         adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
 
         listview.setAdapter(adapter);
+
 
     }
 
@@ -111,7 +114,6 @@ public class FragmentTabOne extends Fragment implements BGARefreshLayout.BGARefr
         }
 
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-        @Override
         public void convert(ViewHolder helper, int position, CommonModel item) {
 
             TextView tvTitle = helper.getView(R.id.tvTitle);
@@ -126,13 +128,12 @@ public class FragmentTabOne extends Fragment implements BGARefreshLayout.BGARefr
     }
 
 
-    private void BindData() {
+    private void BindBinnerData() {
 
         PositionAdvertBO positionAdvertBO = new PositionAdvertBO();
         positionAdvertBO.setAdImgPath("http://f1.jgyes.com/4,013f52a5e0fd91");
         PositionAdvertBO positionAdvertBO1 = new PositionAdvertBO();
-        positionAdvertBO1.setAdImgPath("http://f1.jgyes.com/2,013f0683266bc0");
-
+        positionAdvertBO1.setAdImgPath("http://img3.imgtn.bdimg.com/it/u=1206514979,2546214886&fm=21&gp=0.jpg");
         PositionAdvertBO positionAdvertBO2 = new PositionAdvertBO();
         positionAdvertBO2.setAdImgPath("http://f1.jgyes.com/3,013e1fcbd9d368");
 
@@ -151,6 +152,12 @@ public class FragmentTabOne extends Fragment implements BGARefreshLayout.BGARefr
         bannerView = (BannerView) mRootView.findViewById(R.id.banner);
         mRefreshLayout = (BGARefreshLayout) mRootView.findViewById(R.id.mRefreshLayout);
         listview = (LinearLayoutForListView) mRootView.findViewById(R.id.listview);
+        listview.setOnItemClickListener(new LinearLayoutForListView.OnItemClickListener() {
+            @Override
+            public void onItemClicked(View v, Object item, int position) {
+                Toast.makeText(getActivity(),"gotoLive",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 

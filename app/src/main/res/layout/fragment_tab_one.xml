@@ -77,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         app:mydivider="@color/self_line"
-                        app:mydividerHeight="0.5dp" />
+                        app:mydividerHeight="0dp" />
 
                 </LinearLayout>
             </LinearLayout>

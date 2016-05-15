@@ -237,6 +237,7 @@ public class BannerView extends FrameLayout implements Runnable {
                 @Override
                 public void onClick(View v) {
 
+                    Toast.makeText(mContext,"doing", Toast.LENGTH_LONG).show();
 
                 }
             });

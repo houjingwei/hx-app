@@ -4,6 +4,7 @@ import android.os.Parcel;
 
 /**
  * Created by apple on 16/5/14.
+ * 公共实体类 Parcelable
  */
 public class CommonModel extends ImageModel{
 

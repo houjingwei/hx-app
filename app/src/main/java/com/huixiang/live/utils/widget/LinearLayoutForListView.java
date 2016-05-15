@@ -36,7 +36,7 @@ public class LinearLayoutForListView<B> extends LinearLayout {
 //						.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
 //								dirviderHeight, getResources()
 //										.getDisplayMetrics()));
-        dirviderHeight=(int) a.getDimension(R.styleable.LinearLayoutForListView_mydividerHeight,0.5f);
+        dirviderHeight=(int) a.getDimension(R.styleable.LinearLayoutForListView_mydividerHeight,0.0f);
         a.recycle();
     }
     public void setAdapter(BaseAdapter adapter) {

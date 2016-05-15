@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by stone on 16/5/14.
+ * Created by stone on 16/5/14.  公共适配器
  */public abstract class CommonAdapter<B> extends BaseAdapter {
     protected LayoutInflater mInflater;
     protected Context mContext;
