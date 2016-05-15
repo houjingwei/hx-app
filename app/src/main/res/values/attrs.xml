@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="LinearLayoutForListView">
+        <attr name="mydivider" format="color"/>
+        <attr name="mydividerHeight" format="dimension"/>
+    </declare-styleable>
+
+</resources>
