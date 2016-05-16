@@ -31,7 +31,7 @@ public class FragmentTabTwo extends Fragment {
 		tvLoad.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				ForwardUtils.target(getActivity(),"huixiang://refresh");
+				ForwardUtils.target(getActivity(),"huixiang://refresh",null);
 			}
 		});
 		return mRootView;

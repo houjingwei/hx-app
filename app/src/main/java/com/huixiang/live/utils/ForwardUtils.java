@@ -7,6 +7,7 @@ import com.huixiang.live.Constant;
 import com.huixiang.live.R;
 import com.huixiang.live.activity.AccountActivity;
 import com.huixiang.live.activity.H5Activity;
+import com.huixiang.live.activity.LiveActivity;
 import com.huixiang.live.activity.LoginOrRegActivity;
 import com.huixiang.live.activity.RefreshAndLoadmoreActivity;
 import com.huixiang.live.activity.SetActivity;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 public class ForwardUtils {
 
-    public static void target(Activity oriActivity, String url){
+    public static void target(Activity oriActivity, String url,Map<String, String> params){
 
         try {
             if ("".equals(url)) {
@@ -33,7 +34,6 @@ public class ForwardUtils {
             if(oriActivity==null){
                 return;
             }
-            Map<String, String> params = ForwardUtils.parseParameters(url);
             if(url.startsWith("http:")){
                 Intent intent = new Intent(oriActivity, H5Activity.class);
                 toIntent(oriActivity, params, intent);
@@ -73,7 +73,7 @@ public class ForwardUtils {
             }else if (url.startsWith(Constant.LOGIN)){
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.SET)){
+            }else if (url.startsWith(Constant.SETINT)){
                 Intent intent = new Intent(oriActivity, SetActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.START_LIVE)){
@@ -84,6 +84,9 @@ public class ForwardUtils {
                 setIntentInfo(intent,params);
                 oriActivity.startActivityForResult(intent, 1);
                 oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+            }else if (url.startsWith(Constant.LIVE)){
+                Intent intent = new Intent(oriActivity, LiveActivity.class);
+                toIntent(oriActivity, params, intent);
             }
 
         } catch (Exception e) {

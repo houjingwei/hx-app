@@ -3,7 +3,9 @@ package com.huixiang.live.activity;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,7 +28,7 @@ import org.xutils.x;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
-
+    private final String TAG = "MainActivity";
 
     @ViewInject(R.id.tab1)
     RelativeLayout tab1;
@@ -226,6 +228,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
      * 开启直播
      */
     private void startLive() {
-        ForwardUtils.target(MainActivity.this, Constant.START_LIVE);
+        ForwardUtils.target(MainActivity.this, Constant.START_LIVE,null);
     }
+
+
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        // TODO Auto-generated method stub
+        super.onAttachFragment(fragment);
+
+
+        Log.d(TAG,"onAttachFragment");
+
+        if (fragmentOne == null && fragment instanceof FragmentTabOne) {
+            fragmentOne = (FragmentTabOne)fragment;
+        }else if (fragmentThree == null && fragment instanceof FragmentTabThree) {
+            fragmentThree = (FragmentTabThree)fragment;
+        }
+    }
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+//        //阻止activity保存fragment的状态
+//        //super.onSaveInstanceState(outState, outPersistentState);
+//    }
 }

@@ -54,7 +54,8 @@
     <string name="question2">问题2</string>
     <string name="sure">确定</string>
     <string name="selTheme"># 选择主题</string>
-    <string name="local">定位</string>
+    <string name="localClose">定位关闭</string>
+    <string name="localOpen">定位打开</string>
     <string name="shareToFriend">分享给小伙伴</string>
     <string name="startLive">开始直播</string>
 

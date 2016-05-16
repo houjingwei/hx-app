@@ -90,7 +90,7 @@ public class H5Activity extends BaseBackActivity implements View.OnClickListener
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             //处理代码
             if(url.startsWith("mglive://")){
-                ForwardUtils.target(H5Activity.this,url);
+                ForwardUtils.target(H5Activity.this,url,null);
                 return true ;
             }
             return super.shouldOverrideUrlLoading(view, url);

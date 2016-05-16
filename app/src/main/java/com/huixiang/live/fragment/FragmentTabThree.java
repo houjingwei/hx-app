@@ -2,7 +2,6 @@ package com.huixiang.live.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,32 +43,16 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
 	public void onClick(View view) {
 		switch (view.getId()){
 			case R.id.ivPhoto:
-				ForwardUtils.target(getActivity(),"huixiang://userinfo");
+				ForwardUtils.target(getActivity(),"huixiang://userinfo",null);
 				break;
 			case R.id.rlAccount:
-				ForwardUtils.target(getActivity(), Constant.ACCOUNT);
+				ForwardUtils.target(getActivity(), Constant.ACCOUNT,null);
 				break;
 			case R.id.tvNickName:
-//				RequestUtils.sendGetRequest("http://119.29.94.122:8888/live/applyLiveshow", null, new ResponseCallBack<BaseResponse>() {
-//					@Override
-//					public void onSuccess(BaseResponse data) {
-//						super.onSuccess(data);
-//					}
-//
-//					@Override
-//					public void onSuccessList(List<BaseResponse> data) {
-//						super.onSuccessList(data);
-//					}
-//
-//					@Override
-//					public void onFailure(ServiceException e) {
-//						super.onFailure(e);
-//					}
-//				}, BaseResponse.class);
-				ForwardUtils.target(getActivity(), Constant.LOGIN);
+				ForwardUtils.target(getActivity(), Constant.LOGIN,null);
 				break;
             case R.id.setting:
-                ForwardUtils.target(getActivity(), Constant.SET);
+                ForwardUtils.target(getActivity(), Constant.SETINT,null);
                 break;
 
 		}

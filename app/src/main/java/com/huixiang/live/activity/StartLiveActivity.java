@@ -21,10 +21,10 @@ import com.huixiang.live.utils.KeyBoardUtils;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class StartLiveActivity extends BaseBackActivity implements View.OnClickListener {
 
@@ -54,8 +54,25 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
     RadioButton rbQq;
     @ViewInject(R.id.rbQzone)
     RadioButton rbQzone;
+    @ViewInject(R.id.llLocal)
+    LinearLayout llLocal;
+    @ViewInject(R.id.tvLocal)
+    TextView tvLocal;
+
+
+    @ViewInject(R.id.tvStart)
+    TextView tvStart;
+
 
     LinkedList<RadioButton> buttons;
+
+
+
+    //要分享的平台
+    int platform = 0;
+    //是否定位
+    int local = 0;
+
 
 
 
@@ -85,6 +102,8 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
         rbSina.setOnClickListener(this);
         rbQq.setOnClickListener(this);
         rbQzone.setOnClickListener(this);
+        llLocal.setOnClickListener(this);
+        tvStart.setOnClickListener(this);
 
 
 
@@ -129,10 +148,24 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
                 hideKeyBoard();
                 shareTo(6);
                 break;
+            case R.id.llLocal:
+                if(local==1){
+                    tvLocal.setText(R.string.localClose);
+                    local = 0;
+                }else{
+                    tvLocal.setText(R.string.localOpen);
+                    local = 1;
+                }
+                break;
+            case R.id.tvStart:
+               Map<String,String> params = new HashMap<String,String>();
+                params.put("local",local+"");
+                params.put("platform",platform+"");
+               ForwardUtils.target(StartLiveActivity.this,Constant.LIVE,params);
         }
     }
 
-    int platform = 1;
+
     private void shareTo(int flag) {
 
         buttons = new LinkedList<RadioButton>();
@@ -177,7 +210,7 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
      * 选择主题
      */
     private void choiseTheme() {
-        ForwardUtils.target(StartLiveActivity.this, Constant.LIVE_TOPIC);
+        ForwardUtils.target(StartLiveActivity.this, Constant.LIVE_TOPIC,null);
     }
 
 

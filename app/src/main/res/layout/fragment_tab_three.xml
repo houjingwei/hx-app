@@ -60,19 +60,12 @@
         </LinearLayout>
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="30dp"
-            android:background="@color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="30dp"
 
             android:orientation="horizontal">
 
@@ -112,6 +105,7 @@
                     android:layout_width="0.1dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
+                    android:visibility="gone"
                     android:background="@color/white" />
 
                 <LinearLayout
@@ -147,11 +141,9 @@
 
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="100dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
                     android:background="@drawable/fragment_tab_three_rectangle"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -159,15 +151,15 @@
 
                     <ImageView
                         android:id="@+id/signimg"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_centerVertical="true"
                         android:src="@mipmap/icon_check" />
 
 
                     <TextView
                         android:id="@+id/signtxt"
-                        style="@style/white_bigger_style"
+                        style="@style/white_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
