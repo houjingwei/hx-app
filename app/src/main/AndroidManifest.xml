@@ -117,10 +117,14 @@
         <activity
             android:name=".activity.StartLiveActivity"
             android:theme="@style/backStyle" />
-        <activity android:name=".activity.TopicActivity"
+        <activity
+            android:name=".activity.TopicActivity"
             android:theme="@style/backStyle" />
-        <activity android:name=".activity.SetActivity"
-            android:theme="@style/backStyle"/>
+        <activity
+            android:name=".activity.SetActivity"
+            android:theme="@style/backStyle" />
+        <activity android:name=".activity.LiveActivity"
+            android:theme="@style/backStyle" />
     </application>
 
 </manifest>

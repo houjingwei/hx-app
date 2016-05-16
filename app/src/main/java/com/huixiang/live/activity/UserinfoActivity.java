@@ -107,7 +107,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.rl_tag:
-                ForwardUtils.target(UserinfoActivity.this,"huixiang://userTag");
+                ForwardUtils.target(UserinfoActivity.this,"huixiang://userTag",null);
                 break;
             case R.id.back:
                 onBackPressed();

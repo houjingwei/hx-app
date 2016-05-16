@@ -43,16 +43,16 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
 	public void onClick(View view) {
 		switch (view.getId()){
 			case R.id.ivPhoto:
-				ForwardUtils.target(getActivity(),"huixiang://userinfo");
+				ForwardUtils.target(getActivity(),"huixiang://userinfo",null);
 				break;
 			case R.id.rlAccount:
-				ForwardUtils.target(getActivity(), Constant.ACCOUNT);
+				ForwardUtils.target(getActivity(), Constant.ACCOUNT,null);
 				break;
 			case R.id.tvNickName:
-				ForwardUtils.target(getActivity(), Constant.LOGIN);
+				ForwardUtils.target(getActivity(), Constant.LOGIN,null);
 				break;
             case R.id.setting:
-                ForwardUtils.target(getActivity(), Constant.SETINT);
+                ForwardUtils.target(getActivity(), Constant.SETINT,null);
                 break;
 
 		}

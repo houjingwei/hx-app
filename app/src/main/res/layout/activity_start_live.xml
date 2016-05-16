@@ -115,12 +115,14 @@
                     android:src="@mipmap/icon_live_local" />
 
                 <TextView
+                    android:id="@+id/tvLocal"
+                    android:layout_marginLeft="5dp"
                     style="@style/white_bigger_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:layout_alignParentLeft="true"
-                    android:text="@string/local" />
+                    android:text="@string/localClose" />
             </LinearLayout>
 
         </RelativeLayout>
@@ -260,7 +262,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tvLoginBtn"
+                android:id="@+id/tvStart"
                 style="@style/white_bigger_style"
                 android:layout_width="150dp"
                 android:layout_height="50dp"

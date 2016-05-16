@@ -228,7 +228,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
      * 开启直播
      */
     private void startLive() {
-        ForwardUtils.target(MainActivity.this, Constant.START_LIVE);
+        ForwardUtils.target(MainActivity.this, Constant.START_LIVE,null);
     }
 
 
