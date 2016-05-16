@@ -73,7 +73,7 @@ public class ForwardUtils {
             }else if (url.startsWith(Constant.LOGIN)){
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.SET)){
+            }else if (url.startsWith(Constant.SETINT)){
                 Intent intent = new Intent(oriActivity, SetActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.START_LIVE)){

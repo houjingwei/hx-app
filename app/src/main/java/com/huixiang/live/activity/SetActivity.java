@@ -10,7 +10,7 @@ import com.huixiang.live.R;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-public class SetActivity extends BaseActivity{
+public class SetActivity extends BaseBackActivity{
 
     @ViewInject(R.id.responseword)
     TextView response;
