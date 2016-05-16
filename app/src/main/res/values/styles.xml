@@ -256,7 +256,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-
+<style name="black_better_black">
+    <item name="android:textSize">16sp</item>
+    <item name="android:textColor">@color/black_12</item>
+    <item name="android:textStyle">normal</item>
+</style>
 
 
     <!--标题栏字体样式-->
