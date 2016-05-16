@@ -191,15 +191,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+
     public void hideTitle(boolean bool) {
         Window window = getWindow();
         if(bool){
             llTitle.setVisibility(View.GONE);
-            window.setStatusBarColor(getResources().getColor(R.color.mainColor));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.setStatusBarColor(getResources().getColor(R.color.mainColor));
+            }
         }else{
             llTitle.setVisibility(View.VISIBLE);
-            window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+            }
         }
     }
 

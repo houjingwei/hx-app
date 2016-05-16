@@ -8,7 +8,10 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/activity_base_title" />
+    <com.huixiang.live.ui.CommonTitle
+        android:id="@+id/myTitle"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
 
     <com.zhy.view.flowlayout.TagFlowLayout
         android:layout_width="match_parent"
