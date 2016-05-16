@@ -15,7 +15,7 @@
     <color name="tab_line_color">#bfbfbf</color>
     <color name="white">#ffffff</color>
     <color name="white_01">#aaffffff</color>
-     <color name="white02">#f2f2f2</color>
+    <color name="white02">#f2f2f2</color>
     <color name="orange">#FF7919</color>
     <color name="black">#333</color>
     <color name="black_01">#90666666</color>
@@ -31,8 +31,6 @@
     <color name="black_11">#07333333</color>
 
 
-
-
     <color name="normal_color">#222222</color>
     <color name="trans">#00000000</color>
     <color name="split_color">#50999999</color>
@@ -42,5 +40,5 @@
     <color name="gray">#999999</color>
 
     <color name="blue">#3d7eed</color>
-
+    <color name="self_line">#e8e8e8</color>
 </resources>
