@@ -11,10 +11,12 @@ import android.support.v4.app.Fragment;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.huixiang.live.Api;
+import com.huixiang.live.Constant;
 import com.huixiang.live.model.Topic;
 import com.huixiang.live.service.RequestUtils;
 import com.huixiang.live.service.ResponseCallBack;
 import com.huixiang.live.service.ServiceException;
+import com.huixiang.live.utils.ForwardUtils;
 import com.huixiang.live.utils.widget.LinearLayoutForListView;
 
 import android.view.LayoutInflater;
@@ -300,7 +302,20 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
                 initAdapter();
             }
         });
+
+        ll_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearch();
+            }
+        });
     }
 
+    /**
+     * Open Search
+     */
+    private void startSearch() {
+        ForwardUtils.target(getActivity(), Constant.SEARCH, null);
+    }
 
 }

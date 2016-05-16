@@ -123,8 +123,12 @@
         <activity
             android:name=".activity.SetActivity"
             android:theme="@style/backStyle" />
-        <activity android:name=".activity.LiveActivity"
+        <activity
+            android:name=".activity.LiveActivity"
             android:theme="@style/backStyle" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:theme="@style/backStyle"></activity>
     </application>
 
 </manifest>
