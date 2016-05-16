@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.huixiang.live.R;
 
-public class HelpActivity extends AppCompatActivity {
+public class HelpActivity extends BaseBackActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
