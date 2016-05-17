@@ -10,6 +10,7 @@ import com.huixiang.live.activity.H5Activity;
 import com.huixiang.live.activity.LiveActivity;
 import com.huixiang.live.activity.LoginOrRegActivity;
 import com.huixiang.live.activity.RefreshAndLoadmoreActivity;
+import com.huixiang.live.activity.SearchActivity;
 import com.huixiang.live.activity.SetActivity;
 import com.huixiang.live.activity.StartLiveActivity;
 import com.huixiang.live.activity.TopicActivity;
@@ -86,6 +87,9 @@ public class ForwardUtils {
                 oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
             }else if (url.startsWith(Constant.LIVE)){
                 Intent intent = new Intent(oriActivity, LiveActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.SEARCH)){
+                Intent intent = new Intent(oriActivity, SearchActivity.class);
                 toIntent(oriActivity, params, intent);
             }
 

@@ -61,4 +61,6 @@
     <string name="index_button_video">视频回放</string>
     <string name="input_your_favorite_video">搜索喜欢的艺人或直播</string>
 
+    <string name="input_search">功能待定</string>
+
 </resources>

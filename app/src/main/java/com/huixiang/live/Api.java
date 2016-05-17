@@ -9,4 +9,6 @@ public class Api {
 
 
     public static final String TOPIC = BASE_URL+"live/getUserLiveTopics";
+    public static final String LIVE_BANNER = BASE_URL+"content/getBanner";
+    public static final String LIVE_LIST = BASE_URL+"live/getUserLive";
 }
