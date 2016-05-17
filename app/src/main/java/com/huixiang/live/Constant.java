@@ -15,5 +15,5 @@ public class Constant {
     public static final String LIVE_TOPIC = BASE_PRE+"topic";
     public static final String SETINT = BASE_PRE+"set";
     public static final String LIVE = BASE_PRE+"live";
-    public static final String HELP =BASE_PRE+"help";
+    public static final String SEARCH = BASE_PRE +"search";
 }

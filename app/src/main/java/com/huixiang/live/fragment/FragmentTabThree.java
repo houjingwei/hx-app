@@ -12,24 +12,29 @@ import com.huixiang.live.activity.MainActivity;
 import com.huixiang.live.utils.ForwardUtils;
 
 
-public class FragmentTabThree extends Fragment implements View.OnClickListener{
+public class FragmentTabThree extends RootFragment{
 
 
 	private View mRootView;
-
-
-
 	MainActivity activity ;
 
-
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
+	protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mRootView =  inflater.inflate(R.layout.fragment_tab_three, container, false);
 		activity = (MainActivity)getActivity();
 		activity.hideTitle(true);
 		initView();
 		return mRootView;
+	}
+
+	@Override
+	protected void initLayout(View view) {
+
+	}
+
+	@Override
+	protected void initData() {
+
 	}
 
 	private void initView() {
@@ -40,7 +45,7 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
 	}
 
 	@Override
-	public void onClick(View view) {
+	protected void onNoDoubleClick(View view) {
 		switch (view.getId()){
 			case R.id.ivPhoto:
 				ForwardUtils.target(getActivity(),"huixiang://userinfo",null);
@@ -51,10 +56,11 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
 			case R.id.tvNickName:
 				ForwardUtils.target(getActivity(), Constant.LOGIN,null);
 				break;
-            case R.id.setting:
-                ForwardUtils.target(getActivity(), Constant.SETINT,null);
-                break;
-
+			case R.id.setting:
+				ForwardUtils.target(getActivity(), Constant.SETINT,null);
+				break;
 		}
 	}
+
+
 }

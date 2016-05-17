@@ -22,3 +22,14 @@
 -verbose                # 混淆时是否记录日志
 
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*  # 混淆时所采用的算法
+
+#APM集成混淆 BEGIN
+-keep class org.apache.http.impl.client.**
+-dontwarn org.apache.commons.**
+-keep class com.blueware.** { *; }
+-dontwarn com.blueware.**
+-keep class com.oneapm.** {*;}
+-dontwarn com.oneapm.**
+-keepattributes Exceptions, Signature, InnerClasses
+-keepattributes SourceFile, LineNumberTable
+#APM集成混淆 END

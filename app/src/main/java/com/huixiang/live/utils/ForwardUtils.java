@@ -7,10 +7,10 @@ import com.huixiang.live.Constant;
 import com.huixiang.live.R;
 import com.huixiang.live.activity.AccountActivity;
 import com.huixiang.live.activity.H5Activity;
-import com.huixiang.live.activity.HelpActivity;
 import com.huixiang.live.activity.LiveActivity;
 import com.huixiang.live.activity.LoginOrRegActivity;
 import com.huixiang.live.activity.RefreshAndLoadmoreActivity;
+import com.huixiang.live.activity.SearchActivity;
 import com.huixiang.live.activity.SetActivity;
 import com.huixiang.live.activity.StartLiveActivity;
 import com.huixiang.live.activity.TopicActivity;
@@ -88,8 +88,8 @@ public class ForwardUtils {
             }else if (url.startsWith(Constant.LIVE)){
                 Intent intent = new Intent(oriActivity, LiveActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.HELP)){
-                Intent intent = new Intent(oriActivity, HelpActivity.class);
+            }else if (url.startsWith(Constant.SEARCH)){
+                Intent intent = new Intent(oriActivity, SearchActivity.class);
                 toIntent(oriActivity, params, intent);
             }
 
