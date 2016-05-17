@@ -1,11 +1,13 @@
 package com.huixiang.live.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
 import com.huixiang.live.R;
+import com.huixiang.live.activity.StartLiveActivity;
 import com.huixiang.live.model.Live;
 
 /**
@@ -14,6 +16,7 @@ import com.huixiang.live.model.Live;
 public class LiveView extends RelativeLayout {
 
     Context ct;
+    Activity activity;
 
 
     public LiveView(Context context) {
@@ -28,5 +31,9 @@ public class LiveView extends RelativeLayout {
 
     public void loadLive(Live live) {
 
+    }
+
+public void setActivity(StartLiveActivity activity) {
+        this.activity = activity;
     }
 }

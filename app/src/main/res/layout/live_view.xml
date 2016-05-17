@@ -3,16 +3,71 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="20dp"
-    android:background="@color/black_01">
+    android:background="@color/trans">
 
     <LinearLayout
         android:layout_alignParentTop="true"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="40dp">
+            <RelativeLayout
+                android:background="@drawable/live_user_bg"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_width="120dp"
+                android:layout_height="match_parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/ivPhoto"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/default_head"
+                    app:civ_border_color="@color/white" />
+                <LinearLayout
+                    android:id="@+id/llUser"
+                    android:layout_toRightOf="@+id/ivPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="123"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="567"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_alignParentRight="true"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_margin="1dp"
+                    android:gravity="center"
+                    android:background="@drawable/live_add_fen_bg"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/orderimg"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/icon_order" />
+                    </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="50dp">
 
         </LinearLayout>
     </LinearLayout>

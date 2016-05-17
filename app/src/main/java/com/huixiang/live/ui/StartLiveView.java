@@ -10,15 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.huixiang.live.Constant;
 import com.huixiang.live.R;
-import com.huixiang.live.utils.ForwardUtils;
 import com.huixiang.live.utils.KeyBoardUtils;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by hjw on 16/5/17.
@@ -141,11 +137,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
                     local = 1;
                 }
                 break;
-            case R.id.tvStart:
-                Map<String,String> params = new HashMap<String,String>();
-                params.put("local",local+"");
-                params.put("platform",platform+"");
-                ForwardUtils.target(activity, Constant.LIVE,params);
+
         }
     }
 
@@ -202,5 +194,18 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
 
     public TextView getTvTheme() {
         return tvTheme;
+    }
+
+    public TextView getTvStart(){
+        return tvStart;
+    }
+
+
+    public int getLocal() {
+        return local;
+    }
+
+    public int getPlatform() {
+        return platform;
     }
 }
