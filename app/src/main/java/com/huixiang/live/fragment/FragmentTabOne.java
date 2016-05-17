@@ -16,6 +16,7 @@ import com.huixiang.live.service.ServiceException;
 import com.huixiang.live.utils.BitmapHelper;
 import com.huixiang.live.utils.EnumUpdateTag;
 import com.huixiang.live.utils.ForwardUtils;
+import com.huixiang.live.utils.image.ImageUtils;
 import com.huixiang.live.utils.widget.LinearLayoutForListView;
 
 import android.view.LayoutInflater;
@@ -46,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,  View.OnClickListener {
+public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private final int PAGE_SIZE = 12;
     private int currPage = 1;
@@ -64,21 +65,90 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
     private LinearLayoutForListView listview;
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
 
+    @Override
+    protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_tab_one, container, false);
         activity = (MainActivity) getActivity();
         activity.setTitleBar(getString(R.string.today_rm));
         activity.hideTitle(false);
 
-        findView();
-        BindBinnerData();
+        return mRootView;
+    }
+
+    @Override
+    protected void initLayout(View view) {
+
+        ll_search = (LinearLayout) view.findViewById(R.id.ll_search);
+        bannerView = (BannerView) view.findViewById(R.id.banner);
+        mRefreshLayout = (PullToRefreshScrollView) view.findViewById(R.id.refreshLayout);
+        listview = (LinearLayoutForListView) view.findViewById(R.id.listview);
+        listview.setOnItemClickListener(new LinearLayoutForListView.OnItemClickListener() {
+            @Override
+            public void onItemClicked(View v, Object item, int position) {
+                showToast("gotolive");
+            }
+        });
+        mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
+        sv = (ScrollView) view.findViewById(R.id.sv);
+
+        mRefreshLayout.setIsUpListen(new PullToRefreshScrollView.isUpListen() {
+            @Override
+            public void isUp(boolean isUp) {
+                if (isUp) {
+//                    if(ll_search.getVisibility() ==View.VISIBLE || mRefreshLayout.getMode() == PullToRefreshBase.Mode.MANUAL_REFRESH_ONLY) {
+//                        mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
+//                    }
+
+                }
+            }
+
+            @Override
+            public void isTouch(boolean isTouch) {
+
+            }
+        });
+
+        //待用 莫删除
+        //mRefreshLayout.setOnTouchListener(new TouchListenerImpl());
+
+    }
+
+    @Override
+    protected void initData() {
+
         initAdapter(EnumUpdateTag.UPDATE);
         setListener();
 
-        return mRootView;
+        PositionAdvertBO positionAdvertBO = new PositionAdvertBO();
+        positionAdvertBO.setAdImgPath("http://f1.jgyes.com/4,013f52a5e0fd91");
+        PositionAdvertBO positionAdvertBO1 = new PositionAdvertBO();
+        positionAdvertBO1.setAdImgPath("http://img3.imgtn.bdimg.com/it/u=1206514979,2546214886&fm=21&gp=0.jpg");
+        PositionAdvertBO positionAdvertBO2 = new PositionAdvertBO();
+        positionAdvertBO2.setAdImgPath("http://f1.jgyes.com/3,013e1fcbd9d368");
+
+        List<PositionAdvertBO> positionAdvertBOList = new ArrayList<PositionAdvertBO>();
+        positionAdvertBOList.add(positionAdvertBO);
+        positionAdvertBOList.add(positionAdvertBO1);
+        positionAdvertBOList.add(positionAdvertBO2);
+        guangGao.clear();
+        guangGao.addAll(positionAdvertBOList);
+        bannerView.setPositionAdvertBO(guangGao);
+
+//        RequestUtils.sendPostRequest(Api.INDEX_BANNER, null, new ResponseCallBack<PositionAdvertBO>() {
+//            @Override
+//            public void onSuccessList(List<PositionAdvertBO> data) {
+//
+//                PositionAdvertBO positionAdvertBO = new PositionAdvertBO();
+//
+//                positionAdvertBO = data.get(0);
+//            }
+//            @Override
+//            public void onFailure(ServiceException e) {
+//                super.onFailure(e);
+//            }
+//        }, PositionAdvertBO.class);
+
     }
 
     @Override
@@ -115,18 +185,23 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
                         commonModelList.add(commonModel);
                     }
                     Long totalCount = Long.parseLong(data.size()+"");
-                    if (null == totalCount) totalCount = 0L;
-                    if (totalCount % PAGE_SIZE == 0) {
-                        totalPage = (int) (totalCount / PAGE_SIZE);
-                    } else {
-                        totalPage = (int) (totalCount / PAGE_SIZE) + 1;
+                    if (0 == totalCount)
+                    {
+                        Toast.makeText(getActivity(),"已经没有更多内容了",Toast.LENGTH_LONG).show();
                     }
-
-
-                    adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
-                    listview.setAdapter(adapter);
-                    mRefreshLayout.onRefreshComplete();
-                    ll_search.setVisibility(View.GONE);
+                    else
+                    {
+                        adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
+                        listview.setAdapter(adapter);
+                        mRefreshLayout.onRefreshComplete();
+                        ll_search.setVisibility(View.GONE);
+                    }
+                       // totalCount = 0L;
+//                    if (totalCount % PAGE_SIZE == 0) {
+//                        totalPage = (int) (totalCount / PAGE_SIZE);
+//                    } else {
+//                        totalPage = (int) (totalCount / PAGE_SIZE) + 1;
+//                    }
                 }
 
             }
@@ -162,79 +237,11 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
             tvTitle.setText(item.nickName);
             tvTime.setText(item.getTime());
             ImageView ivIcon = helper.getView(R.id.ivIcon);
-            BitmapHelper.getInstance(mContext).display(ivIcon, item.photo, "", BitmapHelper.DefaultSize.BIG);
+            ImageUtils.display(ivIcon,item.photo);
 
         }
     }
 
-
-    private void BindBinnerData() {
-
-        PositionAdvertBO positionAdvertBO = new PositionAdvertBO();
-        positionAdvertBO.setAdImgPath("http://f1.jgyes.com/4,013f52a5e0fd91");
-        PositionAdvertBO positionAdvertBO1 = new PositionAdvertBO();
-        positionAdvertBO1.setAdImgPath("http://img3.imgtn.bdimg.com/it/u=1206514979,2546214886&fm=21&gp=0.jpg");
-        PositionAdvertBO positionAdvertBO2 = new PositionAdvertBO();
-        positionAdvertBO2.setAdImgPath("http://f1.jgyes.com/3,013e1fcbd9d368");
-
-        List<PositionAdvertBO> positionAdvertBOList = new ArrayList<PositionAdvertBO>();
-        positionAdvertBOList.add(positionAdvertBO);
-        positionAdvertBOList.add(positionAdvertBO1);
-        positionAdvertBOList.add(positionAdvertBO2);
-        guangGao.clear();
-        guangGao.addAll(positionAdvertBOList);
-        bannerView.setPositionAdvertBO(guangGao);
-
-//        RequestUtils.sendPostRequest(Api.INDEX_BANNER, null, new ResponseCallBack<PositionAdvertBO>() {
-//            @Override
-//            public void onSuccessList(List<PositionAdvertBO> data) {
-//
-//                PositionAdvertBO positionAdvertBO = new PositionAdvertBO();
-//
-//                positionAdvertBO = data.get(0);
-//            }
-//            @Override
-//            public void onFailure(ServiceException e) {
-//                super.onFailure(e);
-//            }
-//        }, PositionAdvertBO.class);
-
-    }
-
-    private void findView() {
-        ll_search = (LinearLayout) mRootView.findViewById(R.id.ll_search);
-        bannerView = (BannerView) mRootView.findViewById(R.id.banner);
-        mRefreshLayout = (PullToRefreshScrollView) mRootView.findViewById(R.id.refreshLayout);
-        listview = (LinearLayoutForListView) mRootView.findViewById(R.id.listview);
-        listview.setOnItemClickListener(new LinearLayoutForListView.OnItemClickListener() {
-            @Override
-            public void onItemClicked(View v, Object item, int position) {
-                Toast.makeText(getActivity(), "gotoLive", Toast.LENGTH_LONG).show();
-            }
-        });
-        mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
-        sv = (ScrollView) mRootView.findViewById(R.id.sv);
-
-        mRefreshLayout.setIsUpListen(new PullToRefreshScrollView.isUpListen() {
-            @Override
-            public void isUp(boolean isUp) {
-                if (isUp) {
-//                    if(ll_search.getVisibility() ==View.VISIBLE || mRefreshLayout.getMode() == PullToRefreshBase.Mode.MANUAL_REFRESH_ONLY) {
-//                        mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
-//                    }
-
-                }
-            }
-
-            @Override
-            public void isTouch(boolean isTouch) {
-
-            }
-        });
-
-        //待用 莫删除
-        //mRefreshLayout.setOnTouchListener(new TouchListenerImpl());
-    }
 
     private class TouchListenerImpl implements View.OnTouchListener {
         @Override
@@ -284,9 +291,10 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
     };
 
     @Override
-    public void onClick(View v) {
+    protected void onNoDoubleClick(View view) {
 
     }
+
 
     public void setListener() {
 
@@ -299,11 +307,6 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 currPage++;
-                if (currPage <= totalPage) {
-
-                } else {
-                    Toast.makeText(getActivity(),"已经没有更多内容了",Toast.LENGTH_LONG).show();
-                }
                 initAdapter(EnumUpdateTag.MORE);
             }
         });

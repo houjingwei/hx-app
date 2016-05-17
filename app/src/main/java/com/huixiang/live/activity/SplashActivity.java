@@ -9,6 +9,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.widget.RelativeLayout;
+import com.oneapm.agent.android.OneApmAgent;
 
 import com.huixiang.live.R;
 
@@ -24,6 +25,8 @@ public class SplashActivity extends Activity implements Animation.AnimationListe
 
         rlSplash = (RelativeLayout) findViewById(R.id.rlSplash);
         startAnim();
+
+        OneApmAgent.init(this.getApplicationContext()).setToken("B3747B7350941C879DB5765C388AA59D73").start();
     }
 
     private void startAnim() {

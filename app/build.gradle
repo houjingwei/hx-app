@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'oneapm'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -51,6 +51,7 @@ dependencies {
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile 'com.alibaba:fastjson:1.2.11'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile files('libs/oneapm-android-agent.jar')
 }
 
 
