@@ -22,11 +22,7 @@ import com.huixiang.live.service.ServiceException;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-
 import java.util.List;
-
-//import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
-//import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 public class TopicActivity extends BaseBackActivity implements View.OnClickListener{
 
@@ -38,7 +34,6 @@ public class TopicActivity extends BaseBackActivity implements View.OnClickListe
 
 
     private  PullToRefreshScrollView mPullToRefreshScrollView;
-    //private BGARefreshLayout mRefreshLayout;
     private ListView mDataLv;
 
     TopicAdapter adapter;
@@ -51,7 +46,6 @@ public class TopicActivity extends BaseBackActivity implements View.OnClickListe
         initView();
         initTopic();
         setListener();
-        processLogic(savedInstanceState);
     }
 
     private void initTopic() {
@@ -79,8 +73,6 @@ public class TopicActivity extends BaseBackActivity implements View.OnClickListe
         RequestUtils.sendPostRequest(Api.TOPIC, null, new ResponseCallBack<Topic>() {
             @Override
             public void onSuccessList(List<Topic> data) {
-                //mRefreshLayout.endRefreshing();
-               // mRefreshLayout.endLoadingMore();
                 mPullToRefreshScrollView.onRefreshComplete();
                 adapter.addList(data);
             }
@@ -98,13 +90,27 @@ public class TopicActivity extends BaseBackActivity implements View.OnClickListe
         ivBack.setOnClickListener(this);
         mPullToRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.refreshLayout);
         mDataLv = (ListView) findViewById(R.id.data);
+        mPullToRefreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
 
+
+        mPullToRefreshScrollView.setIsUpListen(new PullToRefreshScrollView.isUpListen() {
+            @Override
+            public void isUp(boolean isUp) {
+                if (isUp) {
+
+                }
+            }
+
+            @Override
+            public void isTouch(boolean isTouch) {
+
+            }
+        });
 
     }
 
 
     public void setListener() {
-       // mRefreshLayout.setDelegate(this);
 
         mPullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
             @Override
@@ -114,27 +120,11 @@ public class TopicActivity extends BaseBackActivity implements View.OnClickListe
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-
+                loadTopic();
             }
         });
     }
 
-    public void processLogic(Bundle savedInstanceState) {
-      //  mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(App.getContext(), true));
-    }
-
-
-//    @Override
-//    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-//        adapter.clear();
-//        loadTopic();
-//    }
-//
-//    @Override
-//    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-//        loadTopic();
-//        return true;
-//    }
 
     @Override
     public void onClick(View view) {

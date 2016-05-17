@@ -5,17 +5,16 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
-
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.huixiang.live.Api;
 import com.huixiang.live.Constant;
-import com.huixiang.live.model.Topic;
 import com.huixiang.live.service.RequestUtils;
 import com.huixiang.live.service.ResponseCallBack;
 import com.huixiang.live.service.ServiceException;
+import com.huixiang.live.utils.BitmapHelper;
+import com.huixiang.live.utils.EnumUpdateTag;
 import com.huixiang.live.utils.ForwardUtils;
 import com.huixiang.live.utils.widget.LinearLayoutForListView;
 
@@ -23,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -67,6 +67,7 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         mRootView = inflater.inflate(R.layout.fragment_tab_one, container, false);
         activity = (MainActivity) getActivity();
         activity.setTitleBar(getString(R.string.today_rm));
@@ -74,7 +75,7 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
 
         findView();
         BindBinnerData();
-        initAdapter();
+        initAdapter(EnumUpdateTag.UPDATE);
         setListener();
 
         return mRootView;
@@ -91,44 +92,49 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
     /**
      * loading and init list
      */
-    private void initAdapter() {
-        int img_arr[] ={R.drawable.test_pic1,R.drawable.test_pic2,R.drawable.test_pic3,R.drawable.test_pic4,R.drawable.test_pic5};
-        //模拟数据
-        commonModelList.clear();
-        for (int i = 0; i < 5; i++) {
-            CommonModel commonModel1 = new CommonModel();
-            //commonModel1.iconUrl = "http://f1.jgyes.com/4,013f52a5e0fd91";
-            commonModel1.title = "超级女生2016排位赛"+i;
-            commonModel1.setTime("5月30日 17：5"+i);
-            commonModel1.img_id = img_arr[i];
-            commonModelList.add(commonModel1);
-        }
-        adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
-        listview.setAdapter(adapter);
-        mRefreshLayout.onRefreshComplete();
-        ll_search.setVisibility(View.GONE);
+    private void initAdapter(final EnumUpdateTag enumUpdateTag) {
 
 
-//
-//
-//        Map<String, String> paramsMap = new HashMap<String,String>();
-//        paramsMap.put("page",currPage+"");
-//        paramsMap.put("pagesize",PAGE_SIZE+"");
+        //put params
+        Map<String, String> paramsMap = new HashMap<String,String>();
+        paramsMap.put("page",currPage+"");
+        paramsMap.put("pagesize",PAGE_SIZE+"");
 
 
-//        RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<CommonModel>() {
-//            @Override
-//            public void onSuccessList(List<CommonModel> data) {
-//
-//                CommonModel CommonModel = new CommonModel();
-//
-//                CommonModel = data.get(0);
-//            }
-//            @Override
-//            public void onFailure(ServiceException e) {
-//                super.onFailure(e);
-//            }
-//        }, CommonModel.class);
+        RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<CommonModel>() {
+            @Override
+            public void onSuccessList(List<CommonModel> data) {
+
+                if(data!=null && data.size()>0) {
+
+                    if (enumUpdateTag == EnumUpdateTag.UPDATE) {
+                        commonModelList.clear();
+                        listview.removeAllViews();
+                    }
+                    for (CommonModel commonModel : data) {
+                        commonModelList.add(commonModel);
+                    }
+                    Long totalCount = Long.parseLong(data.size()+"");
+                    if (null == totalCount) totalCount = 0L;
+                    if (totalCount % PAGE_SIZE == 0) {
+                        totalPage = (int) (totalCount / PAGE_SIZE);
+                    } else {
+                        totalPage = (int) (totalCount / PAGE_SIZE) + 1;
+                    }
+
+
+                    adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
+                    listview.setAdapter(adapter);
+                    mRefreshLayout.onRefreshComplete();
+                    ll_search.setVisibility(View.GONE);
+                }
+
+            }
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, CommonModel.class);
     }
 
     @Override
@@ -153,12 +159,11 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
 
             TextView tvTitle = helper.getView(R.id.tvTitle);
             TextView tvTime = helper.getView(R.id.tvTime);
-            tvTitle.setText(item.title);
+            tvTitle.setText(item.nickName);
             tvTime.setText(item.getTime());
             ImageView ivIcon = helper.getView(R.id.ivIcon);
-            //BitmapHelper.getInstance(mContext).display(ivIcon, item.iconUrl, "" , BitmapHelper.DefaultSize.BIG);
+            BitmapHelper.getInstance(mContext).display(ivIcon, item.photo, "", BitmapHelper.DefaultSize.BIG);
 
-            ivIcon.setBackground(getResources().getDrawable(item.img_id));
         }
     }
 
@@ -207,29 +212,29 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
                 Toast.makeText(getActivity(), "gotoLive", Toast.LENGTH_LONG).show();
             }
         });
-        mRefreshLayout.setMode(PullToRefreshBase.Mode.MANUAL_REFRESH_ONLY);
+        mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
         sv = (ScrollView) mRootView.findViewById(R.id.sv);
 
         mRefreshLayout.setIsUpListen(new PullToRefreshScrollView.isUpListen() {
             @Override
             public void isUp(boolean isUp) {
                 if (isUp) {
-                    if(ll_search.getVisibility() ==View.VISIBLE || mRefreshLayout.getMode() == PullToRefreshBase.Mode.MANUAL_REFRESH_ONLY) {
-                        mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
-                    }
+//                    if(ll_search.getVisibility() ==View.VISIBLE || mRefreshLayout.getMode() == PullToRefreshBase.Mode.MANUAL_REFRESH_ONLY) {
+//                        mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
+//                    }
 
                 }
             }
 
             @Override
             public void isTouch(boolean isTouch) {
-                if (isTouch) {
-                }
+
             }
         });
-        mRefreshLayout.setOnTouchListener(new TouchListenerImpl());
-    }
 
+        //待用 莫删除
+        //mRefreshLayout.setOnTouchListener(new TouchListenerImpl());
+    }
 
     private class TouchListenerImpl implements View.OnTouchListener {
         @Override
@@ -288,7 +293,7 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
         mRefreshLayout.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                 initAdapter();
+                 initAdapter(EnumUpdateTag.UPDATE);
             }
 
             @Override
@@ -299,7 +304,7 @@ public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClick
                 } else {
                     Toast.makeText(getActivity(),"已经没有更多内容了",Toast.LENGTH_LONG).show();
                 }
-                initAdapter();
+                initAdapter(EnumUpdateTag.MORE);
             }
         });
 

@@ -71,9 +71,10 @@
                     <com.huixiang.live.utils.widget.BannerView
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="150dp"
                         android:background="#d2d8ef"
                         android:paddingBottom="10dp" />
+
 
                     <com.huixiang.live.utils.widget.LinearLayoutForListView
                         android:id="@+id/listview"
@@ -86,6 +87,5 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-    <!--</cn.bingoogolapple.refreshlayout.BGARefreshLayout>-->
     </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 </LinearLayout>
