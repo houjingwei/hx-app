@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huixiang.live.R;
+import com.huixiang.live.ui.CommonTitle;
 import com.huixiang.live.utils.widget.WidgetUtil;
 
 import org.xutils.view.annotation.ViewInject;
@@ -19,10 +20,6 @@ import org.xutils.x;
 public class AccountActivity extends BaseBackActivity implements View.OnClickListener{
 
 
-    @ViewInject(R.id.title)
-    TextView tvTitle;
-    @ViewInject(R.id.back)
-    ImageView ivBack;
 
 
     @ViewInject(R.id.llBuyCoin)
@@ -34,6 +31,10 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
     RadioButton rbzfb;
     @ViewInject(R.id.rbapple)
     RadioButton rbapple;
+
+
+    @ViewInject(R.id.myTitle)
+    CommonTitle commonTitle;
 
 
 
@@ -63,9 +64,7 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
     }
 
     private void initView() {
-        ivBack.setOnClickListener(this);
-        tvTitle.setText(R.string.moneyBag);
-        ivBack.setOnClickListener(this);
+        commonTitle.setTitleText(getResources().getString(R.string.moneyBag));
 
 
         rbwx.setSelected(true);

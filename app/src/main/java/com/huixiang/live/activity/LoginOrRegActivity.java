@@ -33,13 +33,14 @@ public class LoginOrRegActivity extends BaseBackActivity implements View.OnClick
     private String[] mTitles = new String[]{"登录","注册"};
 
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_or_reg);
         Window window = getWindow();
-        window.setStatusBarColor(getResources().getColor(R.color.mainColor));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(getResources().getColor(R.color.mainColor));
+        }
 
         findViewById(R.id.back).setOnClickListener(this);
 

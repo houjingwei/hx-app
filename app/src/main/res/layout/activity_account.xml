@@ -4,7 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/activity_base_title" />
+    <com.huixiang.live.ui.CommonTitle
+        android:id="@+id/myTitle"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
 
     <ScrollView
         android:layout_width="match_parent"
