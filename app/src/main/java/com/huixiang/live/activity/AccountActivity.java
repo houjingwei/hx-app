@@ -3,12 +3,9 @@ package com.huixiang.live.activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.huixiang.live.R;
 import com.huixiang.live.ui.CommonTitle;
@@ -64,6 +61,7 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
     }
 
     private void initView() {
+        commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.moneyBag));
 
 

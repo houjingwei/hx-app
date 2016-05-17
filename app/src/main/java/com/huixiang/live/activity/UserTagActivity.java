@@ -1,15 +1,10 @@
 package com.huixiang.live.activity;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.huixiang.live.R;
@@ -54,7 +49,7 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
     }
 
     private void initView() {
-
+        commonTitle.setActivity(this);
         commonTitle.setTitleText("标签搜索");
         commonTitle.saveShow(View.VISIBLE);
         tvSave = commonTitle.getSave();
