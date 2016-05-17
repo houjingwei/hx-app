@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.huixiang.live.R;
 
-import org.xutils.view.annotation.ViewInject;
-
 /**
  * Created by Administrator on 2016/5/17.
  */
@@ -21,6 +19,7 @@ public class CommonTitle extends RelativeLayout {
     TextView tvTitle;
     ImageView ivBack;
     TextView tvSave;
+    Activity ac;
 
     public CommonTitle(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -31,8 +30,7 @@ public class CommonTitle extends RelativeLayout {
         ivBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Activity) getContext()).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-                ((Activity) getContext()).finish();
+                ac.onBackPressed();
             }
         });
     }
@@ -54,5 +52,7 @@ public class CommonTitle extends RelativeLayout {
     }
 
 
-
+    public void setActivity(Activity activity) {
+        this.ac = activity;
+    }
 }
