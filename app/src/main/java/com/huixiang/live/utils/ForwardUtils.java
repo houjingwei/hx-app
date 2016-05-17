@@ -7,6 +7,7 @@ import com.huixiang.live.Constant;
 import com.huixiang.live.R;
 import com.huixiang.live.activity.AccountActivity;
 import com.huixiang.live.activity.H5Activity;
+import com.huixiang.live.activity.HelpActivity;
 import com.huixiang.live.activity.LiveActivity;
 import com.huixiang.live.activity.LoginOrRegActivity;
 import com.huixiang.live.activity.RefreshAndLoadmoreActivity;
@@ -86,6 +87,9 @@ public class ForwardUtils {
                 oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
             }else if (url.startsWith(Constant.LIVE)){
                 Intent intent = new Intent(oriActivity, LiveActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.HELP)){
+                Intent intent = new Intent(oriActivity, HelpActivity.class);
                 toIntent(oriActivity, params, intent);
             }
 
