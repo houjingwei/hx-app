@@ -132,7 +132,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:src="@mipmap/icon_qqbind"
+            android:src="@mipmap/icon_qq_bind"
             android:id="@+id/qqbindimg"
             />
         <TextView

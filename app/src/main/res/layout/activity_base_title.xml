@@ -8,7 +8,7 @@
         android:id="@+id/back"
         android:layout_width="@dimen/baseTitleHeight"
         android:layout_height="@dimen/baseTitleHeight"
-        android:padding="12dp"
+        android:padding="13dp"
         android:src="@mipmap/icon_back"/>
     <TextView
         android:id="@+id/title"
@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:layout_centerInParent="true"
-        style="@style/common_title_style"
+        style="@style/white_bigger_style"
         android:text="标题"/>
 
     <TextView

@@ -99,6 +99,7 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
                 LiveView view = new LiveView(StartLiveActivity.this);
                 view.setActivity(StartLiveActivity.this);
                 flCover.addView(view);
+                view.loadLive(null);
                 ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);
                 animIn.setDuration(500);
                 animIn.start();
