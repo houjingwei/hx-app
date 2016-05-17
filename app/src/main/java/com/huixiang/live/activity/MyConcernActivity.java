@@ -10,14 +10,14 @@ import com.huixiang.live.R;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-public class HelpActivity extends BaseBackActivity implements View.OnClickListener{
+public class MyConcernActivity extends BaseBackActivity implements View.OnClickListener{
 
-    @ViewInject(R.id.helpback)
+    @ViewInject(R.id.myconcernback)
     ImageView back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help);
+        setContentView(R.layout.activity_my_concern);
         x.view().inject(this);
         initview();
     }
@@ -29,7 +29,7 @@ public class HelpActivity extends BaseBackActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.helpback:
+            case R.id.myconcernback:
                 onBackPressed();
                 break;
         }
