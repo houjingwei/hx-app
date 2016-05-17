@@ -4,16 +4,30 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
-
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.huixiang.live.Api;
+import com.huixiang.live.Constant;
+import com.huixiang.live.service.RequestUtils;
+import com.huixiang.live.service.ResponseCallBack;
+import com.huixiang.live.service.ServiceException;
+import com.huixiang.live.utils.BitmapHelper;
+import com.huixiang.live.utils.EnumUpdateTag;
+import com.huixiang.live.utils.ForwardUtils;
 import com.huixiang.live.utils.widget.LinearLayoutForListView;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,30 +41,33 @@ import com.huixiang.live.model.PositionAdvertBO;
 import com.huixiang.live.utils.widget.BannerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import java.util.Map;
 
 
-public class FragmentTabOne extends Fragment implements BGARefreshLayout.BGARefreshLayoutDelegate, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,  View.OnClickListener {
+public class FragmentTabOne extends Fragment implements  AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,  View.OnClickListener {
 
+    private final int PAGE_SIZE = 12;
+    private int currPage = 1;
+    private int totalPage = 1;
 
     private BannerView bannerView;
-    private BGARefreshLayout mRefreshLayout;
+    private PullToRefreshScrollView mRefreshLayout;
     private List<PositionAdvertBO> guangGao = new ArrayList<PositionAdvertBO>();
     private View mRootView;
     MainActivity activity;
+    private LinearLayout ll_search;
     private BaseAdapter adapter;
+    private ScrollView sv;
     private List<CommonModel> commonModelList = new ArrayList<CommonModel>();
     private LinearLayoutForListView listview;
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         mRootView = inflater.inflate(R.layout.fragment_tab_one, container, false);
         activity = (MainActivity) getActivity();
         activity.setTitleBar(getString(R.string.today_rm));
@@ -58,42 +75,66 @@ public class FragmentTabOne extends Fragment implements BGARefreshLayout.BGARefr
 
         findView();
         BindBinnerData();
-        initAdapter();
+        initAdapter(EnumUpdateTag.UPDATE);
         setListener();
-        processLogic(savedInstanceState);
+
         return mRootView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        Handler handler = new Handler();
+        handler.postDelayed(mScrollView, 0);
     }
 
 
     /**
      * loading and init list
      */
-    private void initAdapter() {
-        mRefreshLayout.setPullDownRefreshEnable(true);
-        mRefreshLayout.endRefreshing();
-        mRefreshLayout.endLoadingMore();
-        int img_arr[] ={R.drawable.test_pic1,R.drawable.test_pic2,R.drawable.test_pic3,R.drawable.test_pic4,R.drawable.test_pic5};
-        //模拟数据
-        commonModelList.clear();
-        for (int i = 0; i < 5; i++) {
-            CommonModel commonModel1 = new CommonModel();
-            //commonModel1.iconUrl = "http://f1.jgyes.com/4,013f52a5e0fd91";
-            commonModel1.title = "超级女生2016排位赛"+i;
-            commonModel1.setTime("5月30日 17：5"+i);
-            commonModel1.img_id = img_arr[i];
-            commonModelList.add(commonModel1);
-        }
-        adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
-
-        listview.setAdapter(adapter);
+    private void initAdapter(final EnumUpdateTag enumUpdateTag) {
 
 
+        //put params
+        Map<String, String> paramsMap = new HashMap<String,String>();
+        paramsMap.put("page",currPage+"");
+        paramsMap.put("pagesize",PAGE_SIZE+"");
+
+
+        RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<CommonModel>() {
+            @Override
+            public void onSuccessList(List<CommonModel> data) {
+
+                if(data!=null && data.size()>0) {
+
+                    if (enumUpdateTag == EnumUpdateTag.UPDATE) {
+                        commonModelList.clear();
+                        listview.removeAllViews();
+                    }
+                    for (CommonModel commonModel : data) {
+                        commonModelList.add(commonModel);
+                    }
+                    Long totalCount = Long.parseLong(data.size()+"");
+                    if (null == totalCount) totalCount = 0L;
+                    if (totalCount % PAGE_SIZE == 0) {
+                        totalPage = (int) (totalCount / PAGE_SIZE);
+                    } else {
+                        totalPage = (int) (totalCount / PAGE_SIZE) + 1;
+                    }
+
+
+                    adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
+                    listview.setAdapter(adapter);
+                    mRefreshLayout.onRefreshComplete();
+                    ll_search.setVisibility(View.GONE);
+                }
+
+            }
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, CommonModel.class);
     }
 
     @Override
@@ -118,12 +159,11 @@ public class FragmentTabOne extends Fragment implements BGARefreshLayout.BGARefr
 
             TextView tvTitle = helper.getView(R.id.tvTitle);
             TextView tvTime = helper.getView(R.id.tvTime);
-            tvTitle.setText(item.title);
+            tvTitle.setText(item.nickName);
             tvTime.setText(item.getTime());
             ImageView ivIcon = helper.getView(R.id.ivIcon);
-            //BitmapHelper.getInstance(mContext).display(ivIcon, item.iconUrl, "" , BitmapHelper.DefaultSize.BIG);
+            BitmapHelper.getInstance(mContext).display(ivIcon, item.photo, "", BitmapHelper.DefaultSize.BIG);
 
-            ivIcon.setBackground(getResources().getDrawable(item.img_id));
         }
     }
 
@@ -137,7 +177,6 @@ public class FragmentTabOne extends Fragment implements BGARefreshLayout.BGARefr
         PositionAdvertBO positionAdvertBO2 = new PositionAdvertBO();
         positionAdvertBO2.setAdImgPath("http://f1.jgyes.com/3,013e1fcbd9d368");
 
-
         List<PositionAdvertBO> positionAdvertBOList = new ArrayList<PositionAdvertBO>();
         positionAdvertBOList.add(positionAdvertBO);
         positionAdvertBOList.add(positionAdvertBO1);
@@ -146,59 +185,142 @@ public class FragmentTabOne extends Fragment implements BGARefreshLayout.BGARefr
         guangGao.addAll(positionAdvertBOList);
         bannerView.setPositionAdvertBO(guangGao);
 
+//        RequestUtils.sendPostRequest(Api.INDEX_BANNER, null, new ResponseCallBack<PositionAdvertBO>() {
+//            @Override
+//            public void onSuccessList(List<PositionAdvertBO> data) {
+//
+//                PositionAdvertBO positionAdvertBO = new PositionAdvertBO();
+//
+//                positionAdvertBO = data.get(0);
+//            }
+//            @Override
+//            public void onFailure(ServiceException e) {
+//                super.onFailure(e);
+//            }
+//        }, PositionAdvertBO.class);
+
     }
 
     private void findView() {
+        ll_search = (LinearLayout) mRootView.findViewById(R.id.ll_search);
         bannerView = (BannerView) mRootView.findViewById(R.id.banner);
-        mRefreshLayout = (BGARefreshLayout) mRootView.findViewById(R.id.mRefreshLayout);
+        mRefreshLayout = (PullToRefreshScrollView) mRootView.findViewById(R.id.refreshLayout);
         listview = (LinearLayoutForListView) mRootView.findViewById(R.id.listview);
         listview.setOnItemClickListener(new LinearLayoutForListView.OnItemClickListener() {
             @Override
             public void onItemClicked(View v, Object item, int position) {
-                Toast.makeText(getActivity(),"gotoLive",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "gotoLive", Toast.LENGTH_LONG).show();
             }
         });
+        mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
+        sv = (ScrollView) mRootView.findViewById(R.id.sv);
+
+        mRefreshLayout.setIsUpListen(new PullToRefreshScrollView.isUpListen() {
+            @Override
+            public void isUp(boolean isUp) {
+                if (isUp) {
+//                    if(ll_search.getVisibility() ==View.VISIBLE || mRefreshLayout.getMode() == PullToRefreshBase.Mode.MANUAL_REFRESH_ONLY) {
+//                        mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
+//                    }
+
+                }
+            }
+
+            @Override
+            public void isTouch(boolean isTouch) {
+
+            }
+        });
+
+        //待用 莫删除
+        //mRefreshLayout.setOnTouchListener(new TouchListenerImpl());
     }
 
+    private class TouchListenerImpl implements View.OnTouchListener {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
 
-    @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        //adapter.clearData();
-        mRootView.findViewById(R.id.ll_search).setVisibility(View.VISIBLE);
-        initAdapter();
-    }
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    int scrollY=view.getScrollY();
+                    int height=view.getHeight();
+                    int scrollViewMeasuredHeight=mRefreshLayout.getChildAt(0).getMeasuredHeight();
+                    if(scrollY>2 || scrollY<=1){
 
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        initAdapter();
-        return false;
-    }
 
-    public void beginRefreshing() {
-        mRefreshLayout.beginRefreshing();
-    }
+                        if(ll_search.getVisibility() ==View.VISIBLE) {
+                            mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
+                        }
+                        else {
+                            mRefreshLayout.setMode(PullToRefreshBase.Mode.MANUAL_REFRESH_ONLY);
+                            ll_search.setVisibility(View.VISIBLE);
+                            return true;
+                        }
+                    }
+                    if((scrollY+height)==scrollViewMeasuredHeight){
 
-    public void beginLoadingMore() {
-        mRefreshLayout.beginLoadingMore();
-    }
+                    }
+                    break;
 
+                default:
+                    break;
+            }
+            return false;
+        }
+
+    };
+
+    private Runnable mScrollView = new Runnable() {
+
+        @Override
+        public void run() {
+
+            sv.scrollTo(0,258);
+
+        }
+
+    };
 
     @Override
     public void onClick(View v) {
 
     }
 
-    public void processLogic(Bundle savedInstanceState) {
-        BGAMoocStyleRefreshViewHolder moocStyleRefreshViewHolder = new BGAMoocStyleRefreshViewHolder(getContext(), true);
-        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(App.getContext(), true));
-        moocStyleRefreshViewHolder.setSpringDistanceScale(0.2f);
-       // mRefreshLayout.setRefreshViewHolder(moocStyleRefreshViewHolder);
+    public void setListener() {
 
+        mRefreshLayout.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                 initAdapter(EnumUpdateTag.UPDATE);
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                currPage++;
+                if (currPage <= totalPage) {
+
+                } else {
+                    Toast.makeText(getActivity(),"已经没有更多内容了",Toast.LENGTH_LONG).show();
+                }
+                initAdapter(EnumUpdateTag.MORE);
+            }
+        });
+
+        ll_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearch();
+            }
+        });
     }
 
-    public void setListener() {
-        mRefreshLayout.setDelegate(FragmentTabOne.this);
-        mRefreshLayout.setIsShowLoadingMoreView(true);
+    /**
+     * Open Search
+     */
+    private void startSearch() {
+        ForwardUtils.target(getActivity(), Constant.SEARCH, null);
     }
 
 }

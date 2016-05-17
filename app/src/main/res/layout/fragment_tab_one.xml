@@ -4,12 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/mRefreshLayout"
-        style="@style/MatchMatch"
-        android:scrollbars="vertical">
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
         <ScrollView
             android:layout_width="match_parent"
+            android:id="@+id/sv"
             android:layout_height="match_parent"
             android:fillViewport="true">
 
@@ -67,9 +71,10 @@
                     <com.huixiang.live.utils.widget.BannerView
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="150dp"
                         android:background="#d2d8ef"
                         android:paddingBottom="10dp" />
+
 
                     <com.huixiang.live.utils.widget.LinearLayoutForListView
                         android:id="@+id/listview"
@@ -82,5 +87,5 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 </LinearLayout>

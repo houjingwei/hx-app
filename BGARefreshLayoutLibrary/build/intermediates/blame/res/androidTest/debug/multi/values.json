@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
+        "outputFile": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/res/merged/androidTest/debug/values/values.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 397
                 },
                 "from": {
-                    "file": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\recyclerview-v7\\23.1.1\\res\\values\\values.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.1/res/values/values.xml",
                     "position": {
                         "startLine": 5,
                         "startColumn": 4,
@@ -30,50 +30,7 @@
                     "endOffset": 463
                 },
                 "from": {
-                    "file": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\recyclerview-v7\\23.1.1\\res\\values\\values.xml",
-                    "position": {
-                        "startLine": 8,
-                        "startColumn": 4,
-                        "startOffset": 745,
-                        "endColumn": 65,
-                        "endOffset": 806
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "outputFile": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
-        "map": [
-            {
-                "to": {
-                    "startLine": 3,
-                    "startColumn": 4,
-                    "startOffset": 327,
-                    "endColumn": 74,
-                    "endOffset": 397
-                },
-                "from": {
-                    "file": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\recyclerview-v7\\23.1.1\\res\\values\\values.xml",
-                    "position": {
-                        "startLine": 5,
-                        "startColumn": 4,
-                        "startOffset": 500,
-                        "endColumn": 74,
-                        "endOffset": 570
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 4,
-                    "startColumn": 4,
-                    "startOffset": 402,
-                    "endColumn": 65,
-                    "endOffset": 463
-                },
-                "from": {
-                    "file": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\recyclerview-v7\\23.1.1\\res\\values\\values.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.1/res/values/values.xml",
                     "position": {
                         "startLine": 8,
                         "startColumn": 4,

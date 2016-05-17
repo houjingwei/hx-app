@@ -6,8 +6,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.huixiang.live.Api;
 import com.huixiang.live.App;
 import com.huixiang.live.R;
@@ -19,13 +22,9 @@ import com.huixiang.live.service.ServiceException;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-
 import java.util.List;
 
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-
-public class TopicActivity extends BaseBackActivity implements BGARefreshLayout.BGARefreshLayoutDelegate ,View.OnClickListener{
+public class TopicActivity extends BaseBackActivity implements View.OnClickListener{
 
 
     @ViewInject(R.id.title)
@@ -34,8 +33,7 @@ public class TopicActivity extends BaseBackActivity implements BGARefreshLayout.
     ImageView ivBack;
 
 
-
-    private BGARefreshLayout mRefreshLayout;
+    private  PullToRefreshScrollView mPullToRefreshScrollView;
     private ListView mDataLv;
 
     TopicAdapter adapter;
@@ -48,7 +46,6 @@ public class TopicActivity extends BaseBackActivity implements BGARefreshLayout.
         initView();
         initTopic();
         setListener();
-        processLogic(savedInstanceState);
     }
 
     private void initTopic() {
@@ -76,8 +73,7 @@ public class TopicActivity extends BaseBackActivity implements BGARefreshLayout.
         RequestUtils.sendPostRequest(Api.TOPIC, null, new ResponseCallBack<Topic>() {
             @Override
             public void onSuccessList(List<Topic> data) {
-                mRefreshLayout.endRefreshing();
-                mRefreshLayout.endLoadingMore();
+                mPullToRefreshScrollView.onRefreshComplete();
                 adapter.addList(data);
             }
 
@@ -92,33 +88,43 @@ public class TopicActivity extends BaseBackActivity implements BGARefreshLayout.
     private void initView() {
         txTitle.setText(R.string.selTheme);
         ivBack.setOnClickListener(this);
-        mRefreshLayout = (BGARefreshLayout) findViewById(R.id.refreshLayout);
+        mPullToRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.refreshLayout);
         mDataLv = (ListView) findViewById(R.id.data);
+        mPullToRefreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
 
+
+        mPullToRefreshScrollView.setIsUpListen(new PullToRefreshScrollView.isUpListen() {
+            @Override
+            public void isUp(boolean isUp) {
+                if (isUp) {
+
+                }
+            }
+
+            @Override
+            public void isTouch(boolean isTouch) {
+
+            }
+        });
 
     }
 
 
     public void setListener() {
-        mRefreshLayout.setDelegate(this);
+
+        mPullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                loadTopic();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                loadTopic();
+            }
+        });
     }
 
-    public void processLogic(Bundle savedInstanceState) {
-        mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(App.getContext(), true));
-    }
-
-
-    @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        adapter.clear();
-        loadTopic();
-    }
-
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        loadTopic();
-        return true;
-    }
 
     @Override
     public void onClick(View view) {

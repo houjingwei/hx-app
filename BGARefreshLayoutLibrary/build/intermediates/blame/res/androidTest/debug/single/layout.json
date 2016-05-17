@@ -1,42 +1,22 @@
 [
     {
-        "merged": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\view_refresh_header_stickiness.xml",
-        "source": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\bundles\\debug\\res\\layout\\view_refresh_header_stickiness.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/res/merged/androidTest/debug/layout/view_refresh_header_mooc_style.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/bundles/debug/res/layout/view_refresh_header_mooc_style.xml"
     },
     {
-        "merged": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\view_refresh_header_normal.xml",
-        "source": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\bundles\\debug\\res\\layout\\view_refresh_header_normal.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/res/merged/androidTest/debug/layout/view_refresh_header_normal.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/bundles/debug/res/layout/view_refresh_header_normal.xml"
     },
     {
-        "merged": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\view_refresh_header_mooc_style.xml",
-        "source": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\bundles\\debug\\res\\layout\\view_refresh_header_mooc_style.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/res/merged/androidTest/debug/layout/view_refresh_header_meituan.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/bundles/debug/res/layout/view_refresh_header_meituan.xml"
     },
     {
-        "merged": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\view_refresh_header_normal.xml",
-        "source": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\bundles\\debug\\res\\layout\\view_refresh_header_normal.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/res/merged/androidTest/debug/layout/view_refresh_header_stickiness.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/bundles/debug/res/layout/view_refresh_header_stickiness.xml"
     },
     {
-        "merged": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\view_refresh_header_meituan.xml",
-        "source": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\bundles\\debug\\res\\layout\\view_refresh_header_meituan.xml"
-    },
-    {
-        "merged": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\view_normal_refresh_footer.xml",
-        "source": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\bundles\\debug\\res\\layout\\view_normal_refresh_footer.xml"
-    },
-    {
-        "merged": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\view_normal_refresh_footer.xml",
-        "source": "F:\\zijing\\hx_git\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\bundles\\debug\\res\\layout\\view_normal_refresh_footer.xml"
-    },
-    {
-        "merged": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\view_refresh_header_meituan.xml",
-        "source": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\bundles\\debug\\res\\layout\\view_refresh_header_meituan.xml"
-    },
-    {
-        "merged": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\view_refresh_header_mooc_style.xml",
-        "source": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\bundles\\debug\\res\\layout\\view_refresh_header_mooc_style.xml"
-    },
-    {
-        "merged": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\view_refresh_header_stickiness.xml",
-        "source": "F:\\Users\\hjw\\Desktop\\huixiang-android\\huixiang-android\\BGARefreshLayoutLibrary\\build\\intermediates\\bundles\\debug\\res\\layout\\view_refresh_header_stickiness.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/res/merged/androidTest/debug/layout/view_normal_refresh_footer.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/BGARefreshLayoutLibrary/build/intermediates/bundles/debug/res/layout/view_normal_refresh_footer.xml"
     }
 ]
