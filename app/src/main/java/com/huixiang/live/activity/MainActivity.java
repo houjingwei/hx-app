@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.huixiang.live.App;
 import com.huixiang.live.Constant;
 import com.huixiang.live.R;
 import com.huixiang.live.fragment.FragmentTabOne;
@@ -65,7 +66,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
         x.view().inject(this);
         initWindow();
-
+        App.getContext().addActivity(this);
         initView();
     }
 
@@ -187,6 +188,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             lastTipTimeMills = System.currentTimeMillis();
         } else {
             finish();
+            App.getContext().finishAllActivity();
             android.os.Process.killProcess(android.os.Process.myPid());
         }
     }

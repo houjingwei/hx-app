@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/reg_live_title_bg"
+    android:paddingBottom="10dp"
+    android:paddingLeft="5dp"
+    android:paddingTop="10dp">
+
+
+    <TextView
+        android:id="@+id/tvRegTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:drawablePadding="0dp"
+        android:gravity="center|center_vertical"
+        android:text="@string/txt_reg_title" />
+
+
+</RelativeLayout>
