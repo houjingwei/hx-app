@@ -11,6 +11,7 @@ import com.huixiang.live.App;
 import com.huixiang.live.R;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.handler.SinaSsoHandler;
 
 import org.xutils.x;
 
@@ -25,12 +26,15 @@ public class FragmentLogin extends Fragment {
 	private View mRootView;
 
 
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 
 		x.view().inject(getActivity());
 		mRootView = inflater.inflate(R.layout.fragment_login, container, false);
+
+		//getConfig().setSsoHandler(new SinaSsoHandler());
 		mRootView.findViewById(R.id.llQQ).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
