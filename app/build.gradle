@@ -23,6 +23,7 @@ android {
             keyAlias "huixiang"
             keyPassword 'huixianglive'
         }
+
     }
     buildTypes {
         release {
