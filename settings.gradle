@@ -1,1 +1,2 @@
-include ':libraryrefresh'
+include ':app', ':libraryrefresh'
+

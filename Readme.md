@@ -8,3 +8,7 @@ x.view().inject(this);
 commonTitle.setActivity(this);
 commonTitle.setTitleText(getResources().getString(R.string.moneyBag));
 
+
+
+
+

@@ -17,4 +17,11 @@ public class Constant {
     public static final String LIVE = BASE_PRE+"live";
     public static final String SEARCH = BASE_PRE +"search";
     public static final String HELP = BASE_PRE +"help";
+
+
+
+
+
+
+    public static final int IO_BUFFER_SIZE = 256;
 }

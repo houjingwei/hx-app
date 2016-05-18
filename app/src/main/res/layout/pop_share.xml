@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pop_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#60000000"
+    android:clickable="true"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:clickable="true" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/black_normal_style"
+                android:text="分享获得爱心抢红包、送礼物"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                />
+                <ImageView
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/title"
+                    android:id="@+id/iv_share_go"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:padding="12dp"
+                    android:src="@mipmap/icon_go" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="match_parent"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:id="@+id/shareQQ"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@mipmap/login_qq"/>
+
+                        <TextView
+                            android:layout_marginTop="7.5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="QQ好友"
+                            style="@style/gray_small_style" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/shareSina"
+                        android:clickable="true"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@mipmap/login_sina"/>
+
+                        <TextView
+                            android:layout_marginTop="7.5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="新浪微博"
+                            style="@style/gray_small_style"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/shareWeixin"
+                        android:clickable="true"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@mipmap/login_wx"/>
+
+                        <TextView
+                            android:layout_marginTop="7.5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="微信"
+                            style="@style/gray_small_style" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/shareWxfriend"
+                        android:clickable="true"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_alignParentRight="true"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@mipmap/login_circle"/>
+
+                        <TextView
+                            android:layout_marginTop="7.5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="朋友圈"
+                            style="@style/gray_small_style"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/shareCopy"
+                        android:clickable="true"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@mipmap/login_copy"/>
+
+                        <TextView
+                            android:layout_marginTop="7.5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="复制链接"
+                            style="@style/gray_small_style" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

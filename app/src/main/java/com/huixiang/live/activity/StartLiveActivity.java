@@ -18,6 +18,7 @@ import com.huixiang.live.ui.ColaProgress;
 import com.huixiang.live.ui.LiveView;
 import com.huixiang.live.ui.StartLiveView;
 import com.huixiang.live.utils.ForwardUtils;
+import com.huixiang.live.utils.KeyBoardUtils;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -25,7 +26,7 @@ import org.xutils.x;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StartLiveActivity extends BaseBackActivity implements View.OnClickListener {
+public class StartLiveActivity extends BaseBackActivity implements View.OnClickListener{
 
     @ViewInject(R.id.flCover)
     FrameLayout flCover;
@@ -33,6 +34,8 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
     TextView tvTheme;
     TextView tvStart;
     StartLiveView startLiveView;
+
+    LiveView liveView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
         startLiveView.setActivity(this);
         flCover.addView(startLiveView);
         initView();
+        KeyBoardUtils.closeKeybord(startLiveView.getEtTitle(),this);
 
     }
 
@@ -96,10 +100,10 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
                 if(null!=cp){
                     cp.dismiss();
                 }
-                LiveView view = new LiveView(StartLiveActivity.this);
-                view.setActivity(StartLiveActivity.this);
-                flCover.addView(view);
-                view.loadLive(null);
+                liveView = new LiveView(StartLiveActivity.this);
+                liveView.setActivity(StartLiveActivity.this);
+                flCover.addView(liveView);
+                liveView.loadLive(null);
                 ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);
                 animIn.setDuration(500);
                 animIn.start();
@@ -154,5 +158,13 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
             winParams.flags &= ~bits;
         }
         win.setAttributes(winParams);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        liveView.removeGlobalListener();
+
     }
 }
