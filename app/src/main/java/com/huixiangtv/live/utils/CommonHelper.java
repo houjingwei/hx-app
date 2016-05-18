@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
+import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.ShareWindow;
 import com.huixiangtv.live.ui.ColaProgressTip;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -67,6 +68,18 @@ public class CommonHelper {
             ((ShareWindow)pop).setListener(listener);
         }
     }
+
+
+    public static void showCameraPopWindow(Activity activity, int atLocationId, CameraWindow.SelectListener listener) {
+        pop = new ShareWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop.showAtLocation(activity.findViewById(atLocationId), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        pop.update();
+        if (null != listener) {
+            ((CameraWindow)pop).setListener(listener);
+        }
+
+    }
+
 
     /**
      * 弹出分享面板
@@ -148,4 +161,6 @@ public class CommonHelper {
             }
         }).execute();
     }
+
+
 }

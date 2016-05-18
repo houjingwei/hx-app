@@ -1,26 +1,26 @@
-package com.huixiang.live.utils;
+package com.huixiangtv.live.utils;
 
 import android.app.Activity;
 import android.content.Intent;
 
-import com.huixiang.live.Constant;
-import com.huixiang.live.R;
-import com.huixiang.live.activity.AccountActivity;
-import com.huixiang.live.activity.H5Activity;
-import com.huixiang.live.activity.LiveActivity;
-import com.huixiang.live.activity.LoginOrRegActivity;
-import com.huixiang.live.activity.MyFansActivity;
-import com.huixiang.live.activity.RefreshAndLoadmoreActivity;
-import com.huixiang.live.activity.RegLiveActivity;
-import com.huixiang.live.activity.RegLiveMainActivity;
-import com.huixiang.live.activity.RegLiveNextActivity;
-import com.huixiang.live.activity.RegLiveSuccessActivity;
-import com.huixiang.live.activity.SearchActivity;
-import com.huixiang.live.activity.SetActivity;
-import com.huixiang.live.activity.StartLiveActivity;
-import com.huixiang.live.activity.TopicActivity;
-import com.huixiang.live.activity.UserTagActivity;
-import com.huixiang.live.activity.UserinfoActivity;
+import com.huixiangtv.live.Constant;
+import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.AccountActivity;
+import com.huixiangtv.live.activity.H5Activity;
+import com.huixiangtv.live.activity.LiveActivity;
+import com.huixiangtv.live.activity.LoginOrRegActivity;
+import com.huixiangtv.live.activity.MyFansActivity;
+import com.huixiangtv.live.activity.RefreshAndLoadmoreActivity;
+import com.huixiangtv.live.activity.RegLiveActivity;
+import com.huixiangtv.live.activity.RegLiveMainActivity;
+import com.huixiangtv.live.activity.RegLiveNextActivity;
+import com.huixiangtv.live.activity.RegLiveSuccessActivity;
+import com.huixiangtv.live.activity.SearchActivity;
+import com.huixiangtv.live.activity.SetActivity;
+import com.huixiangtv.live.activity.StartLiveActivity;
+import com.huixiangtv.live.activity.TopicActivity;
+import com.huixiangtv.live.activity.UserTagActivity;
+import com.huixiangtv.live.activity.UserinfoActivity;
 
 import java.net.URLDecoder;
 import java.util.HashMap;

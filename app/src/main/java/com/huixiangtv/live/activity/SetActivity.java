@@ -1,19 +1,17 @@
-package com.huixiang.live.activity;
+package com.huixiangtv.live.activity;
 
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.huixiangtv.live.Constant;
+import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.BaseBackActivity;
+import com.huixiangtv.live.utils.ForwardUtils;
 
-import com.huixiang.live.Constant;
-
-import com.huixiang.live.utils.ForwardUtils;
-import com.huixiang.live.R;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 

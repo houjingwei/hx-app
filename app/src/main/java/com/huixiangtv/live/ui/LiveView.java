@@ -31,6 +31,7 @@ import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.LiveChatMsg;
 import com.huixiangtv.live.model.Star;
+import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.ShareWindow;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.KeyBoardUtils;
@@ -123,7 +124,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         //初始化消息
         initMsg();
 
-
         new Thread(new MyThread()).start();
     }
 
@@ -142,7 +142,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             LiveChatMsg msg = new LiveChatMsg("doudou", "今晚吃什么饭呀+" + i, "1");
             msgList.add(msg);
         }
-
         return msgList;
     }
 
@@ -176,9 +175,26 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             case R.id.ivShare:
                 shareWin();
                 break;
+            case R.id.ivCamera:
+                showCameraWin();
+                break;
 
 
         }
+    }
+
+
+    /**
+     * 相机面板
+     */
+    private void showCameraWin() {
+        CommonHelper.showCameraPopWindow(activity, R.id.liveMain, new CameraWindow.SelectListener() {
+            @Override
+            public void select(int flag) {
+                super.select(flag);
+                CommonHelper.showTip(activity,"choise" + flag);
+            }
+        });
     }
 
 
