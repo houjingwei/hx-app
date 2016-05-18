@@ -9,6 +9,7 @@ import com.huixiang.live.activity.AccountActivity;
 import com.huixiang.live.activity.H5Activity;
 import com.huixiang.live.activity.LiveActivity;
 import com.huixiang.live.activity.LoginOrRegActivity;
+import com.huixiang.live.activity.MyFansActivity;
 import com.huixiang.live.activity.RefreshAndLoadmoreActivity;
 import com.huixiang.live.activity.RegLiveActivity;
 import com.huixiang.live.activity.RegLiveMainActivity;
@@ -107,6 +108,9 @@ public class ForwardUtils {
             }else if (url.startsWith(Constant.REG_LIVE_MAIN)){
                 Intent intent = new Intent(oriActivity, RegLiveMainActivity.class);
                 toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.FANS)){
+                Intent intent = new Intent(oriActivity, MyFansActivity.class);
+                toIntent(oriActivity,params,intent);
             }
 
         } catch (Exception e) {
