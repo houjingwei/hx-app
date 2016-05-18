@@ -52,6 +52,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
         LayoutInflater.from(context).inflate(R.layout.live_start_view, this);
         ct = context;
         initView();
+
     }
 
     public void setActivity(Activity ac){
@@ -74,7 +75,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
 
         llLocal = (LinearLayout) findViewById(R.id.llLocal);
         tvLocal = (TextView) findViewById(R.id.tvLocal);
-        tvStart= (TextView) findViewById(R.id.tvStart);
+        tvStart = (TextView) findViewById(R.id.tvStart);
 
 
         llRoot.setOnClickListener(this);
@@ -207,5 +208,9 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
 
     public int getPlatform() {
         return platform;
+    }
+
+    public EditText getEtTitle() {
+        return etTitle;
     }
 }

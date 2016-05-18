@@ -1,2 +1,2 @@
-include ':app', ':BGARefreshLayoutLibrary'
-include ':libraryrefresh'
+include ':app', ':libraryrefresh'
+
