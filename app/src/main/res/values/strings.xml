@@ -44,19 +44,29 @@
     <string name="myRedBag">我的红包</string>
     <string name="zfxieyi">支付协议</string>
     <string name="today_rm">今日推荐</string>
-    <string name="sage">账号与安全</string>
+    <string name="safe">账号与安全</string>
     <string name="aboutus">关于我们</string>
     <string name="help">帮助中心</string>
     <string name="clearcache">清除缓存</string>
     <string name="cachelarge">22.5M</string>
     <string name="exitlogin">退出登录</string>
+    <string name="question1">1、怎么认证艺人。</string>
+    <string name="question2">2、如何体现？</string>
+    <string name="question3">3、金币怎么兑换礼物？</string>
+    <string name="question4">4、如何开启直播？</string>
+    <string name="sure">确定</string>
     <string name="selTheme"># 选择主题</string>
     <string name="localClose">定位关闭</string>
     <string name="localOpen">定位打开</string>
     <string name="shareToFriend">分享给小伙伴</string>
     <string name="startLive">开始直播</string>
-
-
+    <string name="phonebind">手机绑定</string>
+    <string name="changepassword">修改密码</string>
+    <string name="qqbind">QQ绑定</string>
+    <string name="weibobind">微博绑定</string>
+    <string name="weixinbind">微信绑定</string>
+    <string name="bind">绑定</string>
+    <string name="exit">退出</string>
     <string name="index_button_live">LIVE</string>
     <string name="index_button_video">视频回放</string>
     <string name="input_your_favorite_video">搜索喜欢的艺人或直播</string>
@@ -77,8 +87,14 @@
     <string name="txt_next_step">下一步</string>
     <string name="txt_authentication">身份认证</string>
     <string name="txt_reg_success_msg">认证申请提交成功</string>
-    <string name="txt_reg_success_info"><Data><![CDATA[我们会在<font color="#EE5383">5个工作日内</font>审核]]></Data></string>
+    <string name="txt_reg_success_info"><![CDATA[我们会在<font color="#EE5383">5个工作日内</font>审核]]></string>
     <string name="txt_card_number">证件号码</string>
     <string name="txt_card_save">保存资料</string>
     <string name="txt_return_index">返回首页</string>
+    <string name="myconcern"></string>
+    <string name="searchfans"></string>
+    <string name="fansname2"></string>
+    <string name="myfans"></string>
+    <string name="fansname1"></string>
+    <string name="fansname3"></string>
 </resources>

@@ -20,4 +20,5 @@ public class Constant {
     public static final String REG_LIVE_NEXT = BASE_PRE+"next";
     public static final String REG_LIVE_MAIN = BASE_PRE+"main";
     public static final String REG_LIVE_DES = BASE_PRE+"details";
+    public static final String HELP = BASE_PRE +"help";
 }
