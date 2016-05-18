@@ -225,6 +225,7 @@
         android:paddingRight="10dp"
         >
 <Button
+    android:id="@+id/setexit"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:text="@string/exit"
