@@ -1,5 +1,6 @@
 package com.huixiang.live;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.view.Display;
@@ -12,6 +13,8 @@ import com.umeng.socialize.UMShareAPI;
 import org.xutils.x;
 
 import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by hjw on 16/5/4.
@@ -19,7 +22,7 @@ import java.lang.reflect.Field;
 public class App extends Application {
     private static App sContext;
     public static UMShareAPI mShareAPI ;
-
+    private List<Activity> listActivity = new LinkedList<Activity>();
     //屏幕宽度，屏幕高度
     public static int screenWidth, screenHeight, statuBarHeight;
 
@@ -75,5 +78,19 @@ public class App extends Application {
 
     public void show(String msg){
         Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+    }
+
+    public void addActivity(Activity activity)
+    {
+        listActivity.add(activity);
+    }
+
+    public void finishAllActivity()
+    {
+        for(Activity activity:listActivity)
+        {
+            activity.finish();
+        }
+        listActivity.clear();
     }
 }
