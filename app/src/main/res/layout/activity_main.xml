@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:clipToPadding="true"
     android:fitsSystemWindows="false"
-    tools:context=".activity.MainActivity">
+    tools:context="com.huixiangtv.live.activity.MainActivity">
     <LinearLayout
         android:id="@+id/llTitle"
         android:layout_width="match_parent"

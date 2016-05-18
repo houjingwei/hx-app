@@ -68,7 +68,7 @@
 
                     android:orientation="vertical">
 
-                    <com.huixiang.live.utils.widget.BannerView
+                    <com.huixiangtv.live.utils.widget.BannerView
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
@@ -76,7 +76,7 @@
                         android:paddingBottom="10dp" />
 
 
-                    <com.huixiang.live.utils.widget.LinearLayoutForListView
+                    <com.huixiangtv.live.utils.widget.LinearLayoutForListView
                         android:id="@+id/listview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

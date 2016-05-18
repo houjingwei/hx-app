@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.huixiang.live">
+    package="com.huixiangtv.live">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -25,7 +25,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    s
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -48,6 +48,7 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="573c2fbee0f55a36e00001c8" />
+
         <!-- QQ空间 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"

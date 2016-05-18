@@ -1,15 +1,6 @@
 package com.huixiang.live;
 
-import com.huixiang.live.service.ResponseCallBack;
-import com.huixiang.live.service.ServiceException;
-import com.huixiang.live.service.RequestUtils;
-
 import org.junit.Test;
-import org.xutils.http.HttpMethod;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 

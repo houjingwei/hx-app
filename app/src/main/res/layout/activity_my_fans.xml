@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.huixiang.live.activity.MyFansActivity"
+    tools:context="com.huixiangtv.live.activity.MyFansActivity"
     android:background="@color/black_11"
     android:orientation="vertical">
     <RelativeLayout

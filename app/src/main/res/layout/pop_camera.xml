@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pop_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#60000000"
+    android:clickable="true"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white_02"
+        android:clickable="true" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:id="@+id/llCamera"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@mipmap/icon_camera_fz"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/llCut"
+                        android:clickable="true"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@mipmap/icon_cut_img"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/llMeiyan"
+                        android:clickable="true"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@mipmap/icon_meiyan"/>
+
+
+                    </LinearLayout>
+
+
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

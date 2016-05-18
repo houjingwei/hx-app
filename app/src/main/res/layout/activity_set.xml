@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/tab_bg_color"
-    tools:context="com.huixiang.live.activity.SetActivity">
+    tools:context="com.huixiangtv.live.activity.SetActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -225,6 +225,7 @@
         android:paddingRight="10dp"
         >
 <Button
+    android:id="@+id/setexit"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:text="@string/exit"

@@ -5,17 +5,36 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.huixiang.live"
+        applicationId "com.huixiangtv.live"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            def storePw = ""
+            def console = System.console()
+            if (console != null) {
+                storePw = new String(console.readPassword("\nKeystore password: "))
+            }
+            storeFile file("huixiangtv.keystore")
+            storePassword 'huixianglive'
+            keyAlias "huixiang"
+            keyPassword 'huixianglive'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
+        debug {
+            signingConfig signingConfigs.release
+        }
+
+
     }
 }
 
