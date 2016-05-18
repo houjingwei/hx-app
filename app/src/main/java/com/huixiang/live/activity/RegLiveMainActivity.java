@@ -131,7 +131,7 @@ public class RegLiveMainActivity extends BaseBackActivity {
                 tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        etJob.setText(tv.getText());
+                       // etJob.setText(tv.getText());
                     }
                 });
                 return tv;
