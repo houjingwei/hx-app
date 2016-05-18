@@ -15,6 +15,7 @@
             android:id="@+id/helpback"
             android:layout_width="@dimen/baseTitleHeight"
             android:layout_height="@dimen/baseTitleHeight"
+            android:clickable="true"
             android:padding="12dp"
             android:src="@mipmap/icon_back"/>
         <TextView
