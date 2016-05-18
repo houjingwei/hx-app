@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/black_11"
-    tools:context="com.huixiang.live.activity.MyConcernActivity">
+    tools:context="com.huixiangtv.live.activity.MyConcernActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"

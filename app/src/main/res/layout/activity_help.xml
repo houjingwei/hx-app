@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/tab_bg_color"
-    tools:context="com.huixiang.live.activity.HelpActivity">
+    tools:context="com.huixiangtv.live.activity.HelpActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"

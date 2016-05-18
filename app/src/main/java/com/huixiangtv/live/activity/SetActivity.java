@@ -1,0 +1,49 @@
+package com.huixiangtv.live.activity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+
+import com.huixiangtv.live.Constant;
+import com.huixiangtv.live.R;
+import com.huixiangtv.live.utils.ForwardUtils;
+
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
+
+public class SetActivity extends BaseBackActivity implements View.OnClickListener{
+
+
+    @ViewInject(R.id.setback)
+    ImageView back;
+    @ViewInject(R.id.qqbind)
+    TextView qqbind;
+    @ViewInject(R.id.helpcentre)
+    RelativeLayout helpcentre;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_set);
+        x.view().inject(this);
+        initview();
+    }
+
+    private void initview() {
+     back.setOnClickListener(this);
+        helpcentre.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.setback:
+               onBackPressed();
+                break;
+            case R.id.helpcentre:
+                ForwardUtils.target(this, Constant.HELP,null);
+                break;
+        }
+    }
+}
