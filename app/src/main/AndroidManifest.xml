@@ -47,7 +47,7 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="56dfd3aa67e58e35950023cd" />
+            android:value="573c2fbee0f55a36e00001c8" />
         <!-- QQ空间 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
