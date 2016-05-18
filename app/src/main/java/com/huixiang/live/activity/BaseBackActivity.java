@@ -1,19 +1,29 @@
 package com.huixiang.live.activity;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.huixiang.live.R;
+import com.huixiang.live.pop.SelectPicWayWindow;
 import com.huixiang.live.utils.MeizuSmartBarUtils;
+import com.huixiang.live.utils.image.PictureHelper;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
-public class BaseBackActivity extends SwipeBackActivity {
+public class BaseBackActivity extends SwipeBackActivity implements View.OnClickListener{
 
     private SwipeBackLayout mSwipeBackLayout;
 
@@ -59,4 +69,27 @@ public class BaseBackActivity extends SwipeBackActivity {
         overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
         finish();
     }
+
+    /**
+     * 事件处理
+     */
+    public static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
+
+    protected  void onNoDoubleClick(View view){
+
+    }
+    @Override
+    public void onClick(View v) {
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            onNoDoubleClick(v);
+        }
+    }
+
+
+
+
+
 }

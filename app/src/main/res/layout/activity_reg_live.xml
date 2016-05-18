@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F5F9"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.huixiang.live.ui.CommonTitle
+            android:id="@+id/myTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <include
+            layout="@layout/reg_live_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp" />
+
+
+        <com.huixiang.live.utils.widget.MySeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:changeVal="3"
+            app:processVal="57"
+            app:textHight="170cm"
+            app:textName="@string/txt_hight"
+            app:unit="cm"></com.huixiang.live.utils.widget.MySeekBar>
+
+        <com.huixiang.live.utils.widget.MySeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:changeVal="3"
+            app:processVal="70"
+            app:textHight="50kg"
+            app:textName="@string/txt_weight"
+            app:unit="kg"></com.huixiang.live.utils.widget.MySeekBar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="0.1"
+                android:text="@string/txt_size"
+                android:textSize="16sp" />
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null" />
+
+
+        </LinearLayout>
+
+        <com.huixiang.live.utils.widget.MySeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:processVal="70"
+            app:textHight="50cm"
+            app:textName="@string/txt_tunwei"
+            app:unit="cm"></com.huixiang.live.utils.widget.MySeekBar>
+
+        <com.huixiang.live.utils.widget.MySeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:processVal="70"
+            app:textHight="50cm"
+            app:textName="@string/txt_yaowei"
+            app:unit="cm"></com.huixiang.live.utils.widget.MySeekBar>
+
+        <com.huixiang.live.utils.widget.MySeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:processVal="70"
+            app:textHight="50cm"
+            app:textName="@string/txt_xw"
+            app:unit="cm"
+
+            ></com.huixiang.live.utils.widget.MySeekBar>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/self_line" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/button_radius"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/txt_next_step"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

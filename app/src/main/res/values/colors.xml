@@ -41,4 +41,7 @@
 
     <color name="blue">#3d7eed</color>
     <color name="self_line">#e8e8e8</color>
+    <color name="reg_live_title_bg">#F4E5CF</color>
+    <color name="color_while">#ffffff</color>
+    <color name="lv_selector">#efefef</color>
 </resources>

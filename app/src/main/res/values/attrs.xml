@@ -6,4 +6,12 @@
         <attr name="mydividerHeight" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="MySeekBar">
+        <attr name="textName" format="reference|string"/>
+        <attr name="unit" format="reference|string"/>
+        <attr name="textHight" format="reference|string"/>
+        <attr name="processVal" format="reference|integer"/>
+        <attr name="changeVal" format="reference|integer"/>
+    </declare-styleable>
+
 </resources>

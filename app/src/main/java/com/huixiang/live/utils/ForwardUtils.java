@@ -10,6 +10,10 @@ import com.huixiang.live.activity.H5Activity;
 import com.huixiang.live.activity.LiveActivity;
 import com.huixiang.live.activity.LoginOrRegActivity;
 import com.huixiang.live.activity.RefreshAndLoadmoreActivity;
+import com.huixiang.live.activity.RegLiveActivity;
+import com.huixiang.live.activity.RegLiveMainActivity;
+import com.huixiang.live.activity.RegLiveNextActivity;
+import com.huixiang.live.activity.RegLiveSuccessActivity;
 import com.huixiang.live.activity.SearchActivity;
 import com.huixiang.live.activity.SetActivity;
 import com.huixiang.live.activity.StartLiveActivity;
@@ -90,6 +94,18 @@ public class ForwardUtils {
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.SEARCH)){
                 Intent intent = new Intent(oriActivity, SearchActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.REG_LIVE)){
+                Intent intent = new Intent(oriActivity, RegLiveActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.REG_LIVE_NEXT)){
+                Intent intent = new Intent(oriActivity, RegLiveNextActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.REG_LIVE_DES)){
+                Intent intent = new Intent(oriActivity, RegLiveSuccessActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.REG_LIVE_MAIN)){
+                Intent intent = new Intent(oriActivity, RegLiveMainActivity.class);
                 toIntent(oriActivity, params, intent);
             }
 

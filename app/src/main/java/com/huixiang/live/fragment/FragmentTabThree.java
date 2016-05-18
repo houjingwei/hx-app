@@ -15,7 +15,7 @@ import com.huixiang.live.utils.ForwardUtils;
 public class FragmentTabThree extends RootFragment{
 
 
-	private View mRootView;
+	private View mRootView,llTitle;
 	MainActivity activity ;
 
 	@Override
@@ -42,6 +42,7 @@ public class FragmentTabThree extends RootFragment{
 		mRootView.findViewById(R.id.rlAccount).setOnClickListener(this);
 		mRootView.findViewById(R.id.tvNickName).setOnClickListener(this);
 		mRootView.findViewById(R.id.setting).setOnClickListener(this);
+		mRootView.findViewById(R.id.llTitle).setOnClickListener(this);
 	}
 
 	@Override
@@ -58,6 +59,9 @@ public class FragmentTabThree extends RootFragment{
 				break;
 			case R.id.setting:
 				ForwardUtils.target(getActivity(), Constant.SETINT,null);
+				break;
+			case R.id.llTitle:
+				ForwardUtils.target(getActivity(), Constant.REG_LIVE_MAIN,null);
 				break;
 		}
 	}
