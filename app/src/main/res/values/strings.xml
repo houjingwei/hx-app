@@ -72,11 +72,11 @@
     <string name="input_your_favorite_video">搜索喜欢的艺人或直播</string>
 
     <string name="input_search">功能待定</string>
-    <string name="myconcern" />
-    <string name="searchfans">###</string>
-    <string name="fansname2">###</string>
-    <string name="myfans">###</string>
-    <string name="fansname1">###</string>
-    <string name="fansname3">###</string>
+    <string name="myconcern">我关注的人</string>
+    <string name="searchfans">搜索喜欢的艺人或直播</string>
+    <string name="fansname2">旺仔小苹果</string>
+    <string name="myfans">我的粉丝</string>
+    <string name="fansname1">葫芦娃</string>
+    <string name="fansname3">深圳第一家</string>
 
 </resources>
