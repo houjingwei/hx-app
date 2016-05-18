@@ -21,12 +21,8 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
 
     @ViewInject(R.id.setback)
     ImageView back;
-    @ViewInject(R.id.phonenumber)
-    TextView phonenumber;
     @ViewInject(R.id.qqbind)
     TextView qqbind;
-    @ViewInject(R.id.changebind)
-    TextView chagebind;
     @ViewInject(R.id.helpcentre)
     RelativeLayout helpcentre;
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +44,7 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
                onBackPressed();
                 break;
             case R.id.helpcentre:
-                Log.e("111111","22222222");
                 ForwardUtils.target(this, Constant.HELP,null);
-                Log.e("00000000","444444");
                 break;
         }
     }
