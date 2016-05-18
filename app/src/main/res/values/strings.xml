@@ -62,5 +62,23 @@
     <string name="input_your_favorite_video">搜索喜欢的艺人或直播</string>
 
     <string name="input_search">功能待定</string>
-
+    <string name="txt_reg_title">以下信息均为必填,为了保证您的利益,请如实填写</string>
+    <string name="txt_name">姓名</string>
+    <string name="txt_job">职业</string>
+    <string name="txt_hight">身高</string>
+    <string name="txt_weight">体重</string>
+    <string name="txt_tunwei">臀围</string>
+    <string name="txt_yaowei">腰围</string>
+    <string name="txt_xw">胸围</string>
+    <string name="txt_size">三围</string>
+    <string name="txt_mobile">手机</string>
+    <string name="txt_validate_code">验证码</string>
+    <string name="txt_get_code">获取验证码</string>
+    <string name="txt_next_step">下一步</string>
+    <string name="txt_authentication">身份认证</string>
+    <string name="txt_reg_success_msg">认证申请提交成功</string>
+    <string name="txt_reg_success_info"><Data><![CDATA[我们会在<font color="#EE5383">5个工作日内</font>审核]]></Data></string>
+    <string name="txt_card_number">证件号码</string>
+    <string name="txt_card_save">保存资料</string>
+    <string name="txt_return_index">返回首页</string>
 </resources>

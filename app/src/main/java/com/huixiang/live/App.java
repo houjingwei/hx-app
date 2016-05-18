@@ -1,5 +1,6 @@
 package com.huixiang.live;
 
+import android.app.Activity;
 import android.app.Application;
 import android.widget.Toast;
 
@@ -8,13 +9,16 @@ import com.umeng.socialize.UMShareAPI;
 
 import org.xutils.x;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by hjw on 16/5/4.
  */
 public class App extends Application {
     private static App sContext;
     public static UMShareAPI mShareAPI ;
-
+    private List<Activity> listActivity = new LinkedList<Activity>();
     @Override
     public void onCreate() {
         super.onCreate();
@@ -35,5 +39,20 @@ public class App extends Application {
 
     public void show(String msg){
         Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void addActivity(Activity activity)
+    {
+        listActivity.add(activity);
+    }
+
+    public void finishAllActivity()
+    {
+        for(Activity activity:listActivity)
+        {
+            activity.finish();
+        }
+        listActivity.clear();
     }
 }

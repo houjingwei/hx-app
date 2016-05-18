@@ -46,9 +46,6 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     @ViewInject(R.id.ivPhoto)
     ImageView ivPhoto;
 
-
-
-
     PictureHelper pictureHelper;
 
 
