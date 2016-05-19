@@ -30,4 +30,10 @@ public class Constant {
 
     public static final int IO_BUFFER_SIZE = 256;
 
+    public final static String LOGIN_INFO = "login_info";
+
+    //礼物类型
+    public static final String GIFT_TYPE_NORMAL = "1";//普通礼物
+    public static final String GIFT_TYPE_SHOUT = "2";//喊话礼物
+    public static final String GIFT_TYPE_GUARD = "3";//守护礼物
 }

@@ -71,7 +71,7 @@ public class CommonHelper {
 
 
     public static void showCameraPopWindow(Activity activity, int atLocationId, CameraWindow.SelectListener listener) {
-        pop = new ShareWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop = new CameraWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         pop.showAtLocation(activity.findViewById(atLocationId), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
         pop.update();
         if (null != listener) {

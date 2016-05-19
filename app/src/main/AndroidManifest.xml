@@ -98,9 +98,9 @@
         </activity>
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.BaseActivity" />
-        <!--<activity-->
-        <!--android:name=".activity.RefreshAndLoadmoreActivity"-->
-        <!--android:theme="@style/backStyle" />-->
+        <!-- <activity -->
+        <!-- android:name=".activity.RefreshAndLoadmoreActivity" -->
+        <!-- android:theme="@style/backStyle" /> -->
         <activity
             android:name=".activity.LoginOrRegActivity"
             android:theme="@style/backStyle" />
@@ -117,8 +117,7 @@
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.StartLiveActivity"
-            android:theme="@style/backStyle"
-            android:windowSoftInputMode="adjustResize"/>
+            android:theme="@style/backStyle" />
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/backStyle" />
@@ -130,22 +129,26 @@
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.SearchActivity"
-            android:theme="@style/backStyle"></activity>
+            android:theme="@style/backStyle" />
         <activity
             android:name=".activity.RegLiveActivity"
-            android:theme="@style/backStyle"></activity>
-
-        <activity android:name=".activity.RegLiveNextActivity"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"
-            android:theme="@style/backStyle"/>
-
-        <activity android:name=".activity.RegLiveMainActivity" android:theme="@style/backStyle"/>
-
-        <activity android:name=".activity.RegLiveSuccessActivity" android:theme="@style/backStyle"/>
+            android:theme="@style/backStyle" />
+        <activity
+            android:name=".activity.RegLiveNextActivity"
+            android:theme="@style/backStyle"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".activity.RegLiveMainActivity"
+            android:theme="@style/backStyle" />
+        <activity
+            android:name=".activity.RegLiveSuccessActivity"
+            android:theme="@style/backStyle" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".activity.GuideActivity"></activity>
     </application>
 
 </manifest>

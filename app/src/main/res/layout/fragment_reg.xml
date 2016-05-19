@@ -27,6 +27,7 @@
                     style="@style/red_bigest_style"
                     android:text="+86"/>
                 <EditText
+                    android:id="@+id/etAccount"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@null"
@@ -100,6 +101,7 @@
                     style="@style/label_style"
                     android:text="密 码"/>
                 <EditText
+                    android:id="@+id/etPwd"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@null"
@@ -115,7 +117,7 @@
 
         </RelativeLayout>
         <TextView
-            android:id="@+id/tvLoginBtn"
+            android:id="@+id/tvRegBtn"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@+id/ll_input"

@@ -98,5 +98,9 @@
     <string name="txt_card_number">证件号码</string>
     <string name="txt_card_save">保存资料</string>
     <string name="txt_return_index">返回首页</string>
+    <string name="payCoin">充值:￥</string>
+    <string name="payMoney">充值</string>
+    <string name="haveFans">已粉</string>
+    <string name="labenSj">身价</string>
 
 </resources>
