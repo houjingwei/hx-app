@@ -5,14 +5,15 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.ui.CommonTitle;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-public class MyConcernActivity extends BaseBackActivity implements View.OnClickListener{
+public class MyConcernActivity extends BaseBackActivity {
 
-    @ViewInject(R.id.myconcernback)
-    ImageView back;
+    @ViewInject(R.id.myTitle)
+    CommonTitle commonTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,15 +23,9 @@ public class MyConcernActivity extends BaseBackActivity implements View.OnClickL
     }
 
     private void initview() {
-        back.setOnClickListener(this);
+        commonTitle.setActivity(this);
+       commonTitle.setTitleText(getResources().getString(R.string.myconcern));
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.myconcernback:
-                onBackPressed();
-                break;
-        }
-    }
+
 }
