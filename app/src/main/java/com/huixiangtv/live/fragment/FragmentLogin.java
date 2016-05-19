@@ -32,8 +32,6 @@ public class FragmentLogin extends Fragment {
 
 		x.view().inject(getActivity());
 		mRootView = inflater.inflate(R.layout.fragment_login, container, false);
-
-		//getConfig().setSsoHandler(new SinaSsoHandler());
 		mRootView.findViewById(R.id.llQQ).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -55,7 +53,10 @@ public class FragmentLogin extends Fragment {
 		return mRootView;
 	}
 	private void login(SHARE_MEDIA platform) {
+
+
 		App.mShareAPI.doOauthVerify(getActivity(), platform, umAuthListener);
+
 	}
 
 
@@ -64,6 +65,13 @@ public class FragmentLogin extends Fragment {
 		public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
 			Toast.makeText(getActivity(), "Authorize succeed"+data, Toast.LENGTH_SHORT).show();
 			//App.mShareAPI.deleteOauth(getActivity(), platform, umAuthListener);
+			if( null != data && data.size()>0) {
+				String refresh_token = data.get("refresh_token");
+				String access_token = data.get("access_token");
+				String uid = data.get("uid");
+				Toast.makeText(getActivity(),refresh_token+"   "+access_token+"  "+uid,Toast.LENGTH_LONG).show();
+				//doing to db waiting
+			}
 		}
 
 		@Override
@@ -76,8 +84,5 @@ public class FragmentLogin extends Fragment {
 			Toast.makeText( getActivity(), "Authorize cancel", Toast.LENGTH_SHORT).show();
 		}
 	};
-
-
-
 
 }

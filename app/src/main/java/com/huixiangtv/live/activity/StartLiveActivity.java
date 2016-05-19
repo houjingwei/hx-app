@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.huixiangtv.live.Constant;
@@ -36,6 +37,9 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
     StartLiveView startLiveView;
 
     LiveView liveView;
+
+    RadioButton rbQq,rbQzone,rbWx,rbCircle,rbSina;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

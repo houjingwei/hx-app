@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:theme="@android:style/Theme.Translucent"
+    android:id="@+id/rotRl"
     android:layout_height="@dimen/baseTitleHeight"
-    android:background="@color/colorPrimaryDark">
+    android:background="#e0000000">
     <ImageView
         android:id="@+id/back"
         android:layout_width="@dimen/baseTitleHeight"

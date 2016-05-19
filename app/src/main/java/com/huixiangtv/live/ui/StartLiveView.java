@@ -9,9 +9,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.StartLiveActivity;
 import com.huixiangtv.live.utils.KeyBoardUtils;
+import com.huixiangtv.live.utils.ShareSdk;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -165,18 +170,47 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
         platform = flag;
         if(platform==1){
             setSharePlatformStyle(buttons,0);
+            ShareSdk.startShare(activity,"title","content", SHARE_MEDIA.SMS,"http://www.baidu.com",umShareListener);
         }else if(platform==2){
             setSharePlatformStyle(buttons,1);
+            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.QQ, "http://www.baidu.com", umShareListener);
         }else if(platform==3){
             setSharePlatformStyle(buttons,2);
+            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.QZONE, "http://www.baidu.com", umShareListener);
         }else if(platform==4){
             setSharePlatformStyle(buttons,3);
+            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.WEIXIN, "http://www.baidu.com", umShareListener);
         }else if(platform==5){
             setSharePlatformStyle(buttons,4);
+            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.WEIXIN_CIRCLE, "http://www.baidu.com", umShareListener);
         }else if(platform==6){
             setSharePlatformStyle(buttons,5);
+            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.SINA, "http://www.baidu.com", umShareListener);
         }
     }
+
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+
+            if(platform.name().equals("WEIXIN_FAVORITE")){
+                Toast.makeText(activity, platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(activity, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(activity,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(activity,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
 
 
 
