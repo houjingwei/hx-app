@@ -15,8 +15,10 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.StartLiveActivity;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.ShareSdk;
+import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -170,22 +172,30 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
         platform = flag;
         if(platform==1){
             setSharePlatformStyle(buttons,0);
-            ShareSdk.startShare(activity,"title","content", SHARE_MEDIA.SMS,"http://www.baidu.com",umShareListener);
+            ShareSdk.startShare(activity,"title","content", SHARE_MEDIA.SMS,"http://www.umeng.com/images/pic/social/integrated_3.png",umShareListener);
         }else if(platform==2){
             setSharePlatformStyle(buttons,1);
-            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.QQ, "http://www.baidu.com", umShareListener);
+            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.QQ, "http://www.umeng.com/images/pic/social/integrated_3.png", umShareListener);
         }else if(platform==3){
             setSharePlatformStyle(buttons,2);
-            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.QZONE, "http://www.baidu.com", umShareListener);
+            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.QZONE, "http://www.umeng.com/images/pic/social/integrated_3.png", umShareListener);
         }else if(platform==4){
-            setSharePlatformStyle(buttons,3);
-            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.WEIXIN, "http://www.baidu.com", umShareListener);
+            setSharePlatformStyle(buttons, 3);
+            UMImage image = new UMImage(activity, "http://www.umeng.com/images/pic/social/integrated_3.png");
+           // ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.WEIXIN, "http://www.baidu.com", umShareListener);
+            new ShareAction(activity).setPlatform(SHARE_MEDIA.WEIXIN).setCallback(umShareListener)
+                    .withMedia(image)
+                            //.withMedia(new UMEmoji(ShareActivity.this,"http://img.newyx.net/news_img/201306/20/1371714170_1812223777.gif"))
+                    .withText("hello umeng")
+                            //.withTargetUrl(url)
+                    .share();
+
         }else if(platform==5){
             setSharePlatformStyle(buttons,4);
-            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.WEIXIN_CIRCLE, "http://www.baidu.com", umShareListener);
+            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.WEIXIN_CIRCLE, "http://www.umeng.com/images/pic/social/integrated_3.png", umShareListener);
         }else if(platform==6){
             setSharePlatformStyle(buttons,5);
-            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.SINA, "http://www.baidu.com", umShareListener);
+            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.SINA, "http://www.umeng.com/images/pic/social/integrated_3.png", umShareListener);
         }
     }
 
@@ -193,22 +203,34 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
     private UMShareListener umShareListener = new UMShareListener() {
         @Override
         public void onResult(SHARE_MEDIA platform) {
-
+            clearRadButton();
             if(platform.name().equals("WEIXIN_FAVORITE")){
                 Toast.makeText(activity, platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(activity, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
             }
+
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
+            clearRadButton();
             Toast.makeText(activity,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
+            clearRadButton();
             Toast.makeText(activity,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+
+        private void clearRadButton() {
+
+            if(buttons!=null && buttons.size()>0) {
+                for (RadioButton rb : buttons) {
+                    rb.setSelected(false);
+                }
+            }
         }
     };
 
