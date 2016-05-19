@@ -5,11 +5,10 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.activity.StartLiveActivity;
 import com.huixiangtv.live.adapter.LiveMsgAdapter;
 import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
 import com.huixiangtv.live.model.Live;
@@ -33,6 +31,7 @@ import com.huixiangtv.live.model.LiveChatMsg;
 import com.huixiangtv.live.model.Star;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.ShareWindow;
+import com.huixiangtv.live.utils.AnimHelper;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
@@ -74,6 +73,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     EditText etChatMsg;
 
 
+    //礼物面板
+    RelativeLayout rlGift;
+    GiftView giftView;
+
+    RelativeLayout rlMenu;
+
+
     public LiveView(Context context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.live_view, this);
@@ -83,6 +89,11 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     }
 
     private void initView() {
+
+
+        rlMenu = (RelativeLayout) findViewById(R.id.rlMenu);
+
+
         ivMsg = (ImageView) findViewById(R.id.ivMsg);
         ivShare = (ImageView) findViewById(R.id.ivShare);
         ivCamera = (ImageView) findViewById(R.id.ivCamera);
@@ -112,6 +123,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
         flLive = (FrameLayout) findViewById(R.id.flLive);
         flLive.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
+        flLive.setOnClickListener(this);
+
+
+        rlGift = (RelativeLayout) findViewById(R.id.rlGift);
 
 
     }
@@ -124,9 +139,37 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         //初始化消息
         initMsg();
 
-        new Thread(new MyThread()).start();
+        //初始化礼物面板
+        initGift();
+
+//        new Thread(new MyThread()).start();
     }
 
+
+    /**
+     * 初始化礼物面板
+     */
+    private void initGift() {
+        giftView = new GiftView(activity);
+        giftView.setActivity(activity);
+        giftView.initView();
+        rlGift.addView(giftView);
+        loadGift();
+    }
+
+    /**
+     * 加载礼物
+     */
+    private void loadGift() {
+
+    }
+
+
+
+
+    /**
+     * 初始化消息
+     */
     private void initMsg() {
         msgListView = (ListView) findViewById(R.id.msgList);
         msgAdapter = new LiveMsgAdapter(activity);
@@ -178,9 +221,33 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             case R.id.ivCamera:
                 showCameraWin();
                 break;
+            case R.id.ivGift:
+                showGift();
+                break;
+            case R.id.flLive:
+                hideGift();
+                break;
+
 
 
         }
+    }
+
+    /**
+     * 隐藏礼物面板
+     */
+    private void hideGift() {
+        rlMenu.setVisibility(View.VISIBLE);
+        AnimHelper.viewDownToBottom(rlGift,WidgetUtil.dip2px(activity,150),300);
+    }
+
+    /**
+     * 显示礼物面板
+     */
+    private void showGift() {
+        rlGift.setVisibility(VISIBLE);
+        AnimHelper.viewDownToBottom(rlMenu, WidgetUtil.dip2px(activity,60),300);
+        AnimHelper.viewUpToMiddle(rlGift, WidgetUtil.dip2px(activity,150),500);
     }
 
 
@@ -266,49 +333,51 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
      * 显示聊天区域
      */
     private void showChatInputView() {
-        rlChatView.setVisibility(VISIBLE);
+
         KeyBoardUtils.openKeybord(etChatMsg, ct);
     }
 
 
     public void removeGlobalListener() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            flLive.getViewTreeObserver().removeGlobalOnLayoutListener(globalLayoutListener);
-        } else {
-            flLive.getViewTreeObserver().removeOnGlobalLayoutListener(globalLayoutListener);
-        }
-    }
-
-
-    public class MyThread implements Runnable {
-        @Override
-        public void run() {
-            // TODO Auto-generated method stub
-            while (true) {
-                try {
-                    Thread.sleep(3000);// 线程暂停10秒，单位毫秒
-                    Message message = new Message();
-                    message.what = 1;
-                    handler.sendMessage(message);// 发送消息
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+        if(null!=globalLayoutListener) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                flLive.getViewTreeObserver().removeGlobalOnLayoutListener(globalLayoutListener);
+            } else {
+                flLive.getViewTreeObserver().removeOnGlobalLayoutListener(globalLayoutListener);
             }
         }
     }
 
 
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            mAdapter.addData(new Star("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3869864100,3728042084&fm=21&gp=0.jpg"));
-            mAdapter.removeData(0);
-            java.util.Random random = new java.util.Random();// 定义随机类
+//    public class MyThread implements Runnable {
+//        @Override
+//        public void run() {
+//            // TODO Auto-generated method stub
+//            while (true) {
+//                try {
+//                    Thread.sleep(3000);// 线程暂停10秒，单位毫秒
+//                    Message message = new Message();
+//                    message.what = 1;
+//                    handler.sendMessage(message);// 发送消息
+//                } catch (InterruptedException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
-            msgAdapter.addList(loadMsg());
-            msgListView.setSelection(msgAdapter.getCount() - 1);
-        }
-    };
+
+//    Handler handler = new Handler() {
+//        public void handleMessage(Message msg) {
+//            mAdapter.addData(new Star("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3869864100,3728042084&fm=21&gp=0.jpg"));
+//            mAdapter.removeData(0);
+//            java.util.Random random = new java.util.Random();// 定义随机类
+//
+//            msgAdapter.addList(loadMsg());
+//            msgListView.setSelection(msgAdapter.getCount() - 1);
+//        }
+//    };
 
 
     // 状态栏的高度
@@ -337,7 +406,12 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             // 所以heightDiff大于状态栏高度时表示软键盘出现了，
             // 这时可算出软键盘的高度，即heightDiff减去状态栏的高度
             if (keyboardHeight == 0 && heightDiff > statusBarHeight) {
-                keyboardHeight = heightDiff - statusBarHeight;
+
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    keyboardHeight = heightDiff - statusBarHeight;
+                }else{
+                    keyboardHeight = heightDiff;
+                }
             }
 
             if (isShowKeyboard) {
@@ -359,8 +433,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     };
 
     private void onShowKeyboard() {
+        rlChatView.setVisibility(VISIBLE);
         ViewGroup.MarginLayoutParams margin = new ViewGroup.MarginLayoutParams(rlChatView.getLayoutParams());
         //左上右下
+        Log.i("rinima",App.screenHeight - keyboardHeight - WidgetUtil.dip2px(ct, 40)+"");
         margin.setMargins(0, App.screenHeight - keyboardHeight - WidgetUtil.dip2px(ct, 40), 0, 0);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         rlChatView.setLayoutParams(layoutParams);
@@ -368,9 +444,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
     private void onHideKeyboard() {
+        rlChatView.setVisibility(GONE);
         ViewGroup.MarginLayoutParams margin = new ViewGroup.MarginLayoutParams(rlChatView.getLayoutParams());
         //左上右下
-        margin.setMargins(0, App.screenHeight, 0, 0);
+        margin.setMargins(0,0, 0, 0);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         rlChatView.setLayoutParams(layoutParams);
     }
@@ -379,7 +456,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         super(context, attrs);
     }
 
-    public void setActivity(StartLiveActivity activity) {
+    public void setActivity(Activity activity) {
         this.activity = activity;
     }
 

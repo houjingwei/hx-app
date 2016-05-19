@@ -20,6 +20,7 @@ import com.huixiangtv.live.ui.LiveView;
 import com.huixiangtv.live.ui.StartLiveView;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
+import com.huixiangtv.live.utils.MeizuSmartBarUtils;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -46,6 +47,10 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_live);
         x.view().inject(this);
+        if (MeizuSmartBarUtils.hasSmartBar()) {
+            View decorView = getWindow().getDecorView();
+            MeizuSmartBarUtils.hide(decorView);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
         }
@@ -168,7 +173,9 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        liveView.removeGlobalListener();
+        if(null!=liveView) {
+            liveView.removeGlobalListener();
+        }
 
     }
 }

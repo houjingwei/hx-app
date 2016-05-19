@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+
+
+    <RelativeLayout
+        android:id="@+id/rlGiftList"
+        android:layout_width="match_parent"
+        android:layout_height="110dp">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/guidePages"
+            android:paddingBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+        <LinearLayout
+            android:id="@+id/llPointView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            >
+
+
+        </LinearLayout>
+        <View
+            android:layout_alignParentBottom="true"
+            style="@style/split_line"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"/>
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:id="@+id/tvPayLavel"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/payCoin"
+            style="@style/black_normal_style"/>
+        <TextView
+            android:id="@+id/payNum"
+            android:layout_toRightOf="@+id/tvPayLavel"
+            android:layout_marginLeft="3dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1280"
+            style="@style/red_normal_style"/>
+
+        <TextView
+            android:id="@+id/artist"
+            style="@style/white_small_style"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/comm_text_border"
+            android:gravity="center"
+            android:minHeight="25dp"
+            android:text="@string/payMoney" />
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

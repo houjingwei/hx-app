@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/giftTipsWrapper"
+    android:layout_width="wrap_content"
+    android:layout_height="60dp"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    android:gravity="center"
+    android:visibility="visible">
+
+    <RelativeLayout
+        android:id="@+id/giftTips"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/gift_send_tips_style">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/senderIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:clickable="false"
+            android:src="@drawable/default_head"
+            app:civ_border_color="@color/white"
+             />
+
+        <LinearLayout
+            android:id="@+id/senderReamrk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/senderIcon"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/gift_tips_sender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kimi"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/gift_tips_remark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="送给王婷婷"
+                android:textColor="@color/white"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/hotsGained"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:text="x34"
+        android:visibility="invisible"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/giftIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/hotsGained"
+        android:scaleType="fitStart"
+        android:src="@mipmap/flower_icon" />
+
+</RelativeLayout>
