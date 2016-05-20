@@ -178,4 +178,6 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
         }
 
     }
+
+
 }
