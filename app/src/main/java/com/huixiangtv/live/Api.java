@@ -16,4 +16,5 @@ public class Api {
     public static final String AUTH_THIRDLOGIN = BASE_URL + "auth/thirdlogin";
     public static final String AUTH_GETACCOUNT_BINDINFO = BASE_URL + "auth/getAccountBindInfo";
     public static final String AUTH_ACCOUNTBIND = BASE_URL + "/auth/accountBind";
+    public static final String CONTENT_GET_BANNER = BASE_URL +"content/getBanner";
 }

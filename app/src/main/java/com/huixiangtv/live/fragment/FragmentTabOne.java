@@ -30,6 +30,8 @@ import com.huixiangtv.live.model.PositionAdvertBO;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.ui.ColaProgress;
+import com.huixiangtv.live.ui.CustomProgressDialog;
 import com.huixiangtv.live.utils.EnumUpdateTag;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
@@ -47,7 +49,7 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
     private final int PAGE_SIZE = 12;
     private int currPage = 1;
     private int totalPage = 1;
-
+    private ColaProgress cp = null;
     private BannerView bannerView;
     private PullToRefreshScrollView mRefreshLayout;
     private List<PositionAdvertBO> guangGao = new ArrayList<PositionAdvertBO>();
@@ -108,9 +110,12 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
         //mRefreshLayout.setOnTouchListener(new TouchListenerImpl());
 
     }
-
+    private CustomProgressDialog dialog;
     @Override
     protected void initData() {
+
+//        dialog =new CustomProgressDialog(getActivity(), "正在加载中",R.anim.loading_frame);
+//        dialog.show();
 
         initAdapter(EnumUpdateTag.UPDATE);
         setListener();
@@ -191,6 +196,8 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
                         mRefreshLayout.onRefreshComplete();
 
                         ll_search.setVisibility(View.GONE);
+//                        if(dialog.isShowing())
+//                            dialog.cancel();
                     }
                        // totalCount = 0L;
 //                    if (totalCount % PAGE_SIZE == 0) {
@@ -320,6 +327,47 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
      */
     private void startSearch() {
         ForwardUtils.target(getActivity(), Constant.SEARCH, null);
+    }
+
+    private void getBanner(){
+
+//        RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<CommonModel>() {
+//            @Override
+//            public void onSuccessList(List<CommonModel> data) {
+//
+//                if(data!=null && data.size()>0) {
+//
+//                    if (enumUpdateTag == EnumUpdateTag.UPDATE) {
+//                        commonModelList.clear();
+//                        listview.removeAllViews();
+//                    }
+//                    for (CommonModel commonModel : data) {
+//                        commonModelList.add(commonModel);
+//                    }
+//                    Long totalCount = Long.parseLong(data.size()+"");
+//                    if (0 == totalCount)
+//                    {
+//                        Toast.makeText(getActivity(),"已经没有更多内容了",Toast.LENGTH_LONG).show();
+//                    }
+//                    else
+//                    {
+//                        adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
+//                        listview.setAdapter(adapter);
+//                        mRefreshLayout.onRefreshComplete();
+//
+//                        ll_search.setVisibility(View.GONE);
+//                    }
+//
+//                }
+//
+//            }
+//            @Override
+//            public void onFailure(ServiceException e) {
+//                super.onFailure(e);
+//            }
+//        }, CommonModel.class);
+
+
     }
 
 }
