@@ -19,6 +19,8 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -181,15 +183,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
             ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.QZONE, "http://www.umeng.com/images/pic/social/integrated_3.png", umShareListener);
         }else if(platform==4){
             setSharePlatformStyle(buttons, 3);
-            UMImage image = new UMImage(activity, "http://www.umeng.com/images/pic/social/integrated_3.png");
-           // ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.WEIXIN, "http://www.baidu.com", umShareListener);
-            new ShareAction(activity).setPlatform(SHARE_MEDIA.WEIXIN).setCallback(umShareListener)
-                    .withMedia(image)
-                            //.withMedia(new UMEmoji(ShareActivity.this,"http://img.newyx.net/news_img/201306/20/1371714170_1812223777.gif"))
-                    .withText("hello umeng")
-                            //.withTargetUrl(url)
-                    .share();
-
+            ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.WEIXIN, "http://www.umeng.com/images/pic/social/integrated_3.png", umShareListener);
         }else if(platform==5){
             setSharePlatformStyle(buttons,4);
             ShareSdk.startShare(activity, "title", "content", SHARE_MEDIA.WEIXIN_CIRCLE, "http://www.umeng.com/images/pic/social/integrated_3.png", umShareListener);
@@ -209,7 +203,6 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
             }else{
                 Toast.makeText(activity, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
             }
-
         }
 
         @Override

@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.ui.LiveView;
+import com.umeng.socialize.Config;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -21,6 +22,7 @@ public class LiveActivity extends BaseBackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live);
+        Config.OpenEditor = true;
         x.view().inject(this);
         platform = getIntent().getStringExtra("platform");
         local = getIntent().getStringExtra("local");

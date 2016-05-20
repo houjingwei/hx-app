@@ -49,7 +49,8 @@
             android:name="UMENG_APPKEY"
             android:value="573d35e767e58eb762002e12" />
 
-        <service android:name="com.sina.weibo.sdk.net.DownloadService"
+        <service
+            android:name="com.sina.weibo.sdk.net.DownloadService"
             android:exported="false"></service>
         <!-- QQ空间 -->
         <activity
@@ -119,7 +120,11 @@
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.StartLiveActivity"
-            android:theme="@style/backStyle" />
+            android:theme="@style/backStyle">
+
+        </activity>
+
+
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/backStyle" />

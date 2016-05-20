@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
@@ -21,6 +22,10 @@ import com.huixiangtv.live.ui.StartLiveView;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -85,7 +90,6 @@ public class StartLiveActivity extends BaseBackActivity implements View.OnClickL
                 //切换视图
                 changeToLive();
                 break;
-
         }
     }
 
