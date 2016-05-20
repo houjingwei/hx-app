@@ -14,26 +14,19 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.activity.BaseBackActivity;
 import com.huixiangtv.live.model.AccountBindInfoModel;
-import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
+import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.ForwardUtils;
-import com.huixiangtv.live.utils.PreferencesHelper;
-import com.huixiangtv.live.utils.StringUtil;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-
-import org.w3c.dom.Text;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class SetActivity extends BaseBackActivity implements View.OnClickListener{
 
@@ -42,6 +35,10 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
 
     @ViewInject(R.id.setback)
     ImageView back;
+
+    @ViewInject(R.id.myTitle)
+    CommonTitle commonTitle;
+
     @ViewInject(R.id.qqbind)
     TextView qqbind;
 
@@ -63,7 +60,8 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
     }
 
     private void initview() {
-     back.setOnClickListener(this);
+        commonTitle.setActivity(this);
+        commonTitle.setTitleText(getResources().getString(R.string.set));
         helpcentre.setOnClickListener(this);
         setexit.setOnClickListener(this);
     }
@@ -77,9 +75,6 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.setback:
-               onBackPressed();
-                break;
             case R.id.setexit:
                 onBackPressed();
                 break;
