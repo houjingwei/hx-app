@@ -144,6 +144,14 @@
             android:name=".activity.RegLiveSuccessActivity"
             android:theme="@style/backStyle" />
 
+        <activity
+            android:name=".activity.HelpActivity"
+            android:theme="@style/backStyle"/>
+
+        <activity
+            android:name=".activity.MyFansActivity"
+            android:theme="@style/backStyle"/>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

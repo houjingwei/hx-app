@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.BaseBackActivity;
+import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.ForwardUtils;
 
 import org.xutils.view.annotation.ViewInject;
@@ -18,8 +19,8 @@ import org.xutils.x;
 public class SetActivity extends BaseBackActivity implements View.OnClickListener{
 
 
-    @ViewInject(R.id.setback)
-    ImageView back;
+    @ViewInject(R.id.myTitle)
+    CommonTitle commonTitle;
     @ViewInject(R.id.qqbind)
     TextView qqbind;
     @ViewInject(R.id.helpcentre)
@@ -34,7 +35,8 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
     }
 
     private void initview() {
-     back.setOnClickListener(this);
+        commonTitle.setActivity(this);
+        commonTitle.setTitleText(getResources().getString(R.string.set));
         helpcentre.setOnClickListener(this);
         setexit.setOnClickListener(this);
     }
@@ -42,9 +44,6 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.setback:
-               onBackPressed();
-                break;
             case R.id.setexit:
                 onBackPressed();
                 break;
