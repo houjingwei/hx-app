@@ -51,7 +51,7 @@
 
         <service
             android:name="com.sina.weibo.sdk.net.DownloadService"
-            android:exported="false"></service>
+            android:exported="false"/>
         <!-- QQ空间 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -150,20 +150,18 @@
         <activity
             android:name=".activity.RegLiveSuccessActivity"
             android:theme="@style/backStyle" />
-
         <activity
             android:name=".activity.HelpActivity"
-            android:theme="@style/backStyle"/>
-
+            android:theme="@style/backStyle" />
         <activity
             android:name=".activity.MyFansActivity"
-            android:theme="@style/backStyle"/>
+            android:theme="@style/backStyle" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activity.GuideActivity"></activity>
+        <activity android:name=".activity.GuideActivity" />
     </application>
 
 </manifest>

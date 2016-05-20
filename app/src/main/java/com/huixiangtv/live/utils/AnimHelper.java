@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -58,42 +59,80 @@ public class AnimHelper {
      * @param gift
      */
     public void showSendGift(ViewGroup rootContainer, View baseLocationView, View barrageArea, Gift gift){
+
+//        //缩放率
+//        float rate =1.5f;
+//
+//        int[] locations=new int[2];
+//        baseLocationView.getLocationOnScreen(locations);
+//        int x = locations[0];
+//        int y = locations[1];
+//        int width = baseLocationView.getWidth();
+//        int height = baseLocationView.getHeight();
+//
+//        ImageView imageView = new ImageView(context);
+//        rootContainer.addView(imageView);
+//        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width,height);
+//        layoutParams.setMargins(x, y, 0, 0);
+//        imageView.setLayoutParams(layoutParams);
+//        ImageUtils.displayAvator(imageView,gift.getIcon());
+//
+//
+//        int animImageWidth = (int) (width*rate);
+//        int animImageHeight = (int) (height*rate);
+//
+//        float toX = (App.screenWidth - animImageWidth)/2;
+//        float toY = (App.screenHeight - animImageHeight)/2;
+
         //自己送的礼物
-        float expandRate =1.5f;
+        float rate =1.5f;
         int[] locations=new int[2];
         baseLocationView.getLocationOnScreen(locations);
+
         int heightOffset = App.statuBarHeight;
 
-        //int topw = App.screenWidth;
-        //int toph = barrageArea.getLayoutParams().height;
-        int topw = barrageArea.getWidth();
-        int toph = barrageArea.getHeight();
+
+
+        //x坐标
         float topx = barrageArea.getX();
+        //宽度
+        int topw = barrageArea.getWidth();
+        //y坐标
         float topy = barrageArea.getY();
+        //高度
+        int toph = barrageArea.getHeight();
 
-        int width = baseLocationView.getWidth();
-        int height = baseLocationView.getHeight();
-        int giftALeft = locations[0];
-        int giftATop = locations[1];
 
-        float giftDestALeft = topx + topw / 2;
-        float giftDestATop = topy + toph / 2;
+        //原始图片宽度
+        int oriImageWidth = baseLocationView.getWidth();
+        //原始图片高度
+        int oriImageHeight = baseLocationView.getHeight();
+        int oriImageX = locations[0];
+        int oriImageY = locations[1];
 
-        float toXDelta=giftDestALeft - giftALeft - width*expandRate /2;
-        float toYDelta=giftDestATop - giftATop-heightOffset;
+        //目标距离左边距离
+        float destCenterX = topx + topw / 2;
+        //目标距离上边距离
+        float destCenterY = topy + toph / 2;
+
+
+        //目标图片X距离左边的距离
+        float toXDelta=destCenterX - oriImageX - oriImageWidth*rate/2;
+        float toYDelta=destCenterY - oriImageY-oriImageHeight*rate/2;
 
         ImageView flowerAnim = new ImageView(context);
-        RelativeLayout.LayoutParams giftLayout = new RelativeLayout.LayoutParams((int)(width*expandRate), (int)(height*expandRate));
-        int giftAnimLeft = (int)(giftALeft-(expandRate-1)*width/2);
-        int giftAnimTop = (int)(giftATop-(expandRate-1)*height/2);
-
+        rootContainer.addView(flowerAnim);
+        FrameLayout.LayoutParams giftLayout = new FrameLayout.LayoutParams((int)(oriImageWidth*rate), (int)(oriImageHeight*rate));
+        int giftAnimLeft = (int)(oriImageX-(rate-1)*oriImageWidth/2);
+        int giftAnimTop = (int)(oriImageY-(rate-1)*oriImageWidth/2);
         giftLayout.setMargins(giftAnimLeft, giftAnimTop, 0, 0);
         flowerAnim.setLayoutParams(giftLayout);
-        ImageUtils.displayAvator(flowerAnim,gift.getPhoto());
-        rootContainer.addView(flowerAnim);
+        ImageUtils.displayAvator(flowerAnim,gift.getIcon());
 
         this.showTransiteAnim(flowerAnim, toXDelta, toYDelta, 1.2f, gift,barrageArea);
     }
+
+
 
     /**
      * 送免费礼物动画(看妹子)
@@ -160,7 +199,7 @@ public class AnimHelper {
                 msg.what = ANIM_SHOW_MARKS;
                 Map<String,Object> data = new HashMap<String,Object>();
                 data.put("animView",animView);
-                data.put("remarks",null==gift.getHots()?0: Long.parseLong(gift.getHots()));
+                data.put("remarks",null==gift.getPrice()?0: Long.parseLong(gift.getPrice()));
                 data.put("barrageArea",barrageArea);
                 msg.obj = data;
                 animHandler.sendMessage(msg);
@@ -209,15 +248,15 @@ public class AnimHelper {
         float giftDestATop = topy + toph / 2;
 
         final TextView remarkView = new TextView(context);
+        rootContainer.addView(remarkView);
         remarkView.setText("+" + marks);
         remarkView.setTextSize(25);
         remarkView.setTextColor(context.getResources().getColor(R.color.orange));
-        RelativeLayout.LayoutParams tipsLayout =
-                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams tipsLayout =new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         remarkView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         tipsLayout.setMargins(0, (int) giftDestATop - 100, 0, 0);
         remarkView.setLayoutParams(tipsLayout);
-        rootContainer.addView(remarkView);
+
 
 
         AnimationSet tipsAnimSet = new AnimationSet(false);

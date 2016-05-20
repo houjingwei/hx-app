@@ -33,8 +33,8 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
 
     private ColaProgress cp = null;
 
-    @ViewInject(R.id.setback)
-    ImageView back;
+    //@ViewInject(R.id.setback)
+    //ImageView back;
 
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;

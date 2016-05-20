@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:id="@+id/rotRl"
     android:layout_height="@dimen/baseTitleHeight"
-    android:background="#e0000000">
+    android:background="@color/black">
     <ImageView
         android:id="@+id/back"
         android:layout_width="@dimen/baseTitleHeight"

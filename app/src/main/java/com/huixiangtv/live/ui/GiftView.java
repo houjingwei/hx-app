@@ -2,31 +2,46 @@ package com.huixiangtv.live.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.GiftAdapter;
+import com.huixiangtv.live.message.GiftMessage;
+import com.huixiangtv.live.message.MessageBase;
 import com.huixiangtv.live.model.Gift;
+import com.huixiangtv.live.model.Post;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.ApiCallback;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.utils.AnimHelper;
 import com.huixiangtv.live.utils.CommonHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hjw on 16/5/19.
@@ -36,6 +51,8 @@ public class GiftView extends RelativeLayout {
 
     Context ct;
     Activity activity;
+
+    FrameLayout rootView;
 
 
     private int giftViewCount = 0;
@@ -81,9 +98,8 @@ public class GiftView extends RelativeLayout {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Gift gift = (Gift) giftAdapter.getItem(position);
-                    CommonHelper.showTip(activity,gift.getName());
 
-                    sendConcreteGift(gift,view,null);
+                    sendConcreteGift(gift,view,rootView);
                 }
             });
             giftAdapter.addList(getGiftPagerData(i,5));
@@ -160,62 +176,63 @@ public class GiftView extends RelativeLayout {
             Toast.makeText(activity, "礼物不存在!", Toast.LENGTH_SHORT).show();
             return;
         }
-//        giftType=null==giftType?"1":giftType;
-//        User loginUser = App.getLoginUser();
-//        Map<String,String> params= new HashMap<String,String>();
-//        params.put("gid",gift.getGid()+"");//礼物ID
-//        params.put("count","1");//数量
-//        params.put("gift",giftType);//礼物类型：1：普通礼物 2：喊话 3: 守护礼物
-//        params.put("amount",gift.getPrice()+"");//总金币
-//        params.put("buid",loginUser.getUid());//购买人
-//        params.put("cuid",currentArtist.getUid());//使用人
-//        params.put("token",loginUser.getToken());//令牌
-//        params.put("tip",null==tip?(String.format("送给%s", currentArtist.getNickName())):tip);//提示信息
-//        params.put("clientId",null==messageConnector.getChatToken()?"":messageConnector.getChatToken().getClientId());
-//        params.put("flag",messageConnector.getFlag());
-//        params.put("key",messageConnector.getKey());
-//        //礼物消费接口
-//        ApiService.giftPayment(params, new ResponseCallBack<String>() {
-//            @Override
-//            public void onSuccess(String data) {
-//                if(needClientAnim){
-//                    //启动客户端礼物特效动画
-//                    AnimHelper animHelper = new AnimHelper(VideoActivity.this, videoHandler);
-//                    animHelper.showSendGift(rootContainer, baseLocationView, barrageArea, gift);
-//                }
-//
-//                //更新金币数量
-//                App.userCoin-=gift.getPrice();
-//                myCoins.setText(App.userCoin+"");
-//                myCoinsFS.setText(App.userCoin+"");
-//
-//                //回调
-//                if(null!=callback){
-//                    callback.onSuccess(data);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(ServiceException e) {
-//                Log.e(Constant.TAG,"消费礼物出错!",e);
-//                Toast.makeText(VideoActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                if(null!=callback){
-//                    callback.onFailure(e);
-//                }
-//            }
-//        });
+        giftType=null==giftType?"1":giftType;
+        User loginUser = App.getLoginUser();
+        Map<String,String> params= new HashMap<String,String>();
+        params.put("gid",gift.getGid()+"");//礼物ID
+        params.put("count","1");//数量
+        params.put("gift",giftType);//礼物类型：1：普通礼物 2：喊话 3: 守护礼物
+        params.put("amount",gift.getPrice()+"");//总金币
+        params.put("buid",loginUser.getUid());//购买人
+        params.put("chatroom","728005");//聊天室编号
+        params.put("cuid","728005");//使用人
+        params.put("nickName",loginUser.getNickName());//用户名
+        params.put("photo",loginUser.getPhoto());//用户头像
+
+        //礼物消费接口
+        RequestUtils.sendPostRequest(Api.POST, params, new ResponseCallBack<Post>() {
+            @Override
+            public void onSuccess(Post data) {
+                super.onSuccess(data);
+                if(needClientAnim){
+                    //启动客户端礼物特效动画
+                    AnimHelper animHelper = new AnimHelper(activity, videoHandler);
+                    animHelper.showSendGift(rootView, baseLocationView, barrageArea, gift);
+                }
+
+                //更新金币数量
+                App.userCoin = Integer.parseInt(App.userCoin)-Integer.parseInt(gift.getPrice())+"";
+
+
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                Log.e(Constant.TAG,"消费礼物出错!",e);
+                Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                if(null!=callback){
+                    callback.onFailure(e);
+                }
+            }
+        },Post.class);
+
+
+
 
     }
 
     //验证当前用户的金币余额
     private boolean checkCoinsBalance(long requiredNum){
         //验证金币
-        if(requiredNum>App.userCoin){
-            Toast.makeText(activity, "剩余金币不足，请充值!", Toast.LENGTH_SHORT).show();
-            return false;
-        }else{
-            return true;
-        }
+//        if(requiredNum>Integer.parseInt(App.userCoin)){
+//            Toast.makeText(activity, "剩余金币不足，请充值!", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }else{
+//            return true;
+//        }
+
+        return true;
     }
 
 
@@ -236,6 +253,14 @@ public class GiftView extends RelativeLayout {
         return giftList.subList(minIndex,maxIndex);
     }
 
+
+    /**
+     * 设置直播页最大的view
+     * @param rootView
+     */
+    public void setRootView(FrameLayout rootView) {
+        this.rootView = rootView;
+    }
 
 
     // 指引页面数据适配器
@@ -310,4 +335,51 @@ public class GiftView extends RelativeLayout {
     public void setActivity(Activity activity) {
         this.activity = activity;
     }
+
+
+
+
+
+    private final int ANIM_SHOW_GIFT=1;
+    private final int ANIM_SHOW_MARKS=2;
+    private final int ANIM_REMOVE_MARKS=3;
+    private final int ANIM_SEND_GIFT=4;
+    private Handler videoHandler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            try {
+                Map<String, Object> data = (Map<String, Object>) msg.obj;
+                MessageBase messageBase = null == data ? null : (MessageBase) data.get("message");
+                AnimHelper animHelper = new AnimHelper(activity, videoHandler);
+                switch (msg.what) {
+                    case ANIM_SHOW_GIFT:
+                        break;
+                    case ANIM_REMOVE_MARKS:
+                        TextView view = (TextView) data.get("animView");
+                        rootView.removeView(view);
+                        break;
+                    case ANIM_SEND_GIFT:
+                        GiftMessage giftMsg = (GiftMessage) messageBase;
+                        animHelper.showGiftRightTips(rootView, giftMsg);
+                        //添加人气
+                        if (null != giftMsg.getProduct()) {
+                            //addHotValue(giftMsg.getProduct());
+                        }
+                        break;
+                    case ANIM_SHOW_MARKS:
+                        View barrageArea = (View) data.get("barrageArea");
+                        ImageView animView = (ImageView) data.get("animView");
+                        rootView.removeView(animView);
+                        Long remarks = Long.parseLong(data.get("remarks").toString());
+                        animHelper.showGiftMarksAnim(rootView, barrageArea, remarks);
+                        break;
+
+
+                }
+            }catch (Exception ex){
+                ex.printStackTrace();;
+            }
+        }
+    };
 }

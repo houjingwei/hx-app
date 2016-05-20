@@ -84,6 +84,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     RelativeLayout rlMenu;
 
 
+
+
     public LiveView(Context context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.live_view, this);
@@ -133,6 +135,23 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         rlGift = (RelativeLayout) findViewById(R.id.rlGift);
 
 
+        ivLove.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Log.i("sysout","ok");
+                int[] locations=new int[2];
+                ivLove.getLocationInWindow(locations);
+                int x = locations[0];
+                if(x>0){
+                    new BubbleView(activity,ivLove,flLive,false);
+                    ivLove.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+
+
+            }
+        });
+
+
     }
 
     public void loadLive(Live live) {
@@ -146,6 +165,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         //初始化礼物面板
         initGift();
 
+
+
+
+
+
+
+
 //        new Thread(new MyThread()).start();
     }
 
@@ -157,6 +183,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         giftView = new GiftView(activity);
         giftView.setActivity(activity);
         giftView.initView();
+        giftView.setRootView(flLive);
         rlGift.addView(giftView);
         loadGift();
     }
@@ -230,6 +257,9 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 break;
             case R.id.flLive:
                 hideGift();
+                break;
+            case R.id.ivLove:
+                new BubbleView(activity,ivLove,flLive,true);
                 break;
 
 
@@ -487,6 +517,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     public void setActivity(Activity activity) {
         this.activity = activity;
     }
+
 
 
 }

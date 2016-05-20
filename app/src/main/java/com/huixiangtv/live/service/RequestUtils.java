@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 
 import org.xutils.common.Callback;
@@ -59,6 +60,11 @@ public class RequestUtils {
         Log.d(Constant.TAG, "originl params >" + paramsMap);
 
         RequestParams reParams = new RequestParams(url);
+        if(null!= App.getLoginUser()){
+            reParams.addQueryStringParameter("uid", paramsMap.get(App.getLoginUser().getUid()+""));
+            reParams.addQueryStringParameter("token", paramsMap.get(App.getLoginUser().getToken()+""));
+        }
+
         //解析封装参数
         if(null!=paramsMap && paramsMap.size()>0) {
             for (String key : paramsMap.keySet()) {
@@ -88,7 +94,7 @@ public class RequestUtils {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    callBack.onFailure(new ServiceException("未知错误"));
+                    callBack.onFailure(new ServiceException(e.getMessage()));
                 }
 
 

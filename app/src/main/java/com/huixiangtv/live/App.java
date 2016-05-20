@@ -43,7 +43,7 @@ public class App extends Application {
     private static User loginUser;
     private static PreferencesHelper loginHelper;
 
-    public static long userCoin = 0;
+    public static String userCoin = "0";
 
     @Override
     public void onCreate() {
@@ -76,7 +76,7 @@ public class App extends Application {
      * 加载我的金币
      */
     private void loadMyCoin() {
-
+        userCoin = getLoginUser().getCoins();
     }
 
 
