@@ -7,27 +7,11 @@
     android:orientation="vertical"
     android:background="@color/black_11"
     tools:context="com.huixiangtv.live.activity.MyConcernActivity">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimaryDark"
-        >
-        <ImageView
-            android:id="@+id/myconcernback"
-            android:layout_width="@dimen/baseTitleHeight"
-            android:layout_height="@dimen/baseTitleHeight"
-            android:clickable="true"
-            android:padding="12dp"
-            android:src="@mipmap/icon_back"/>
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_centerInParent="true"
-            style="@style/common_title_style"
-            android:text="@string/myconcern"/>
-    </RelativeLayout>
+    <com.huixiangtv.live.ui.CommonTitle
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/myTitle"
+        />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"

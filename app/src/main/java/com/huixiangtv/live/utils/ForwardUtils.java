@@ -7,6 +7,7 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.AccountActivity;
 import com.huixiangtv.live.activity.H5Activity;
+import com.huixiangtv.live.activity.HelpActivity;
 import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.activity.LoginOrRegActivity;
 import com.huixiangtv.live.activity.MyFansActivity;
@@ -110,6 +111,9 @@ public class ForwardUtils {
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.FANS)){
                 Intent intent = new Intent(oriActivity, MyFansActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.startsWith(Constant.HELP)){
+                Intent intent = new Intent(oriActivity, HelpActivity.class);
                 toIntent(oriActivity,params,intent);
             }
 
