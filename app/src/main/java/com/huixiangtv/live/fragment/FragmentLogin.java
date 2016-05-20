@@ -44,7 +44,6 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 							 Bundle savedInstanceState) {
 
 		mRootView = inflater.inflate(R.layout.fragment_login, container, false);
-
 		initView();
 		return mRootView;
 	}
@@ -55,7 +54,6 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 		etPwd = (EditText) mRootView.findViewById(R.id.etPwd);
 		mRootView.findViewById(R.id.tvLoginBtn).setOnClickListener(this);
 
-		//getConfig().setSsoHandler(new SinaSsoHandler());
 		mRootView.findViewById(R.id.llQQ).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -78,14 +76,24 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
 
 	private void login(SHARE_MEDIA platform) {
+
+
 		App.mShareAPI.doOauthVerify(getActivity(), platform, umAuthListener);
+
 	}
 
 
 	private UMAuthListener umAuthListener = new UMAuthListener() {
 		@Override
 		public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-			Toast.makeText(getActivity(), "Authorize succeed"+data, Toast.LENGTH_SHORT).show();
+			//App.mShareAPI.deleteOauth(getActivity(), platform, umAuthListener);
+			if( null != data && data.size()>0) {
+				String refresh_token = data.get("refresh_token");
+				String access_token = data.get("access_token");
+				String uid = data.get("uid");
+				Toast.makeText(getActivity(),refresh_token+"   "+access_token+"  "+uid,Toast.LENGTH_LONG).show();
+				//doing to db waiting
+			}
 		}
 
 		@Override
