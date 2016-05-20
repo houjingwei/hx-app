@@ -189,6 +189,7 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
                         adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
                         listview.setAdapter(adapter);
                         mRefreshLayout.onRefreshComplete();
+
                         ll_search.setVisibility(View.GONE);
                     }
                        // totalCount = 0L;

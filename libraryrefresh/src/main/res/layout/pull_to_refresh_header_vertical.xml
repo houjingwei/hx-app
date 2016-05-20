@@ -13,7 +13,7 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical" >
+            android:layout_gravity="center_horizontal" >
 
             <ImageView
                 android:id="@+id/pull_to_refresh_image"
@@ -31,29 +31,29 @@
                 android:visibility="gone" />
         </FrameLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:orientation="vertical" >
+        <!--    <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center"
+               android:gravity="center_horizontal"
+               android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/pull_to_refresh_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearance"
-                android:textStyle="bold" />
+               <TextView
+                   android:id="@+id/pull_to_refresh_text"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:singleLine="true"
+                   android:textAppearance="?android:attr/textAppearance"
+                   android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/pull_to_refresh_sub_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:visibility="gone" />
-        </LinearLayout>
+               <TextView
+                   android:id="@+id/pull_to_refresh_sub_text"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:singleLine="true"
+                   android:textAppearance="?android:attr/textAppearanceSmall"
+                   android:visibility="gone" />
+           </LinearLayout> -->
     </FrameLayout>
 
 </merge>
