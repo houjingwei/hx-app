@@ -20,9 +20,6 @@ import org.xutils.x;
 public class RegLiveActivity extends BaseBackActivity {
 
 
-    @ViewInject(R.id.back)
-    ImageView ivBack;
-
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 
@@ -43,7 +40,7 @@ public class RegLiveActivity extends BaseBackActivity {
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         tvRegTitle.setCompoundDrawables(drawable, null, null, null);
         tvNext.setOnClickListener(this);
-        ivBack.setOnClickListener(this);
+
     }
 
     @Override
@@ -51,21 +48,11 @@ public class RegLiveActivity extends BaseBackActivity {
         super.onNoDoubleClick(view);
 
         switch (view.getId()) {
-
-            case R.id.back:
-                onBackPressed();
-                break;
-
             case R.id.tvNext:
                 ForwardUtils.target(RegLiveActivity.this, Constant.REG_LIVE_NEXT, null);
                 break;
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-    }
 
 }

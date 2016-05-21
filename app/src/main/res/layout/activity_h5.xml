@@ -7,15 +7,18 @@
     android:layout_height="match_parent"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
+    android:background="@color/sysBg"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/comm_head"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/baseTitleHeight"
-        android:background="@color/mainColor">
+        android:layout_height="@dimen/baseTitleHeight">
 
-        <include layout="@layout/activity_base_title"></include>
+        <com.huixiangtv.live.ui.CommonTitle
+            android:id="@+id/myTitle"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
 
 
         <ProgressBar

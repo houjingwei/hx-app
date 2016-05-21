@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +27,7 @@ import org.xutils.x;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SetActivity extends BaseBackActivity implements View.OnClickListener{
+public class SettingActivity extends BaseBackActivity implements View.OnClickListener{
 
 
     private ColaProgress cp = null;
@@ -50,8 +49,10 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
 
     @ViewInject(R.id.helpcentre)
     RelativeLayout helpcentre;
-    @ViewInject(R.id.setexit)
-    Button setexit;
+
+    @ViewInject(R.id.tvLoginOut)
+    TextView tvLoginOut;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set);
@@ -63,7 +64,7 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.set));
         helpcentre.setOnClickListener(this);
-        setexit.setOnClickListener(this);
+        tvLoginOut.setOnClickListener(this);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.setexit:
+            case R.id.tvLoginOut:
                 onBackPressed();
                 break;
             case R.id.helpcentre:
@@ -89,7 +90,7 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
 
         String token = App.getPreferencesValue("token");
         String uid = App.getPreferencesValue("uid");
-        cp = ColaProgress.show(SetActivity.this, "正在加载...", false, true, null);
+        cp = ColaProgress.show(SettingActivity.this, "正在加载...", false, true, null);
         cp.setCancelable(false);
         Map<String,String> params = new HashMap<String, String>();
         params.put("token",token);
@@ -104,7 +105,7 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
                     setBindandUnbandGB("qq",data.qq);
                     setBindandUnbandGB("wx",data.wx);
                     setBindandUnbandGB("wb",data.wb);
-                    Toast.makeText(SetActivity.this, "Loading BindInfo is Successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SettingActivity.this, "Loading BindInfo is Successfully", Toast.LENGTH_LONG).show();
                 }
 
                 if (null != cp) {
@@ -119,7 +120,7 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
                 if (null != cp) {
                     cp.dismiss();
                 }
-                Toast.makeText(SetActivity.this, "Loading BindInfo is Failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(SettingActivity.this, "Loading BindInfo is Failed", Toast.LENGTH_LONG).show();
             }
         }, AccountBindInfoModel.class);
 
@@ -131,7 +132,7 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
 
         String token = App.getPreferencesValue("token");
         String uid = App.getPreferencesValue("uid");
-        cp = ColaProgress.show(SetActivity.this, "正在加载...", false, true, null);
+        cp = ColaProgress.show(SettingActivity.this, "正在加载...", false, true, null);
         cp.setCancelable(false);
         Map<String,String> params = new HashMap<String, String>();
         params.put("token",token);
@@ -152,7 +153,7 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
                     setBindandUnbandGB("qq",data.qq);
                     setBindandUnbandGB("wx",data.wx);
                     setBindandUnbandGB("wb",data.wb);
-                    Toast.makeText(SetActivity.this, "Bind is Successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SettingActivity.this, "Bind is Successfully", Toast.LENGTH_LONG).show();
                 }
 
                 if (null != cp) {
@@ -166,7 +167,7 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
                 if (null != cp) {
                     cp.dismiss();
                 }
-                Toast.makeText(SetActivity.this, "Bind is Failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(SettingActivity.this, "Bind is Failed", Toast.LENGTH_LONG).show();
             }
         }, AccountBindInfoModel.class);
     }
@@ -177,13 +178,13 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
      * @param platform
      */
     private void login_Platform(SHARE_MEDIA platform) {
-        App.mShareAPI.doOauthVerify(SetActivity.this, platform, umAuthListener);
+        App.mShareAPI.doOauthVerify(SettingActivity.this, platform, umAuthListener);
     }
 
     private UMAuthListener umAuthListener = new UMAuthListener() {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            App.mShareAPI.getPlatformInfo(SetActivity.this,platform,umAuthListener);
+            App.mShareAPI.getPlatformInfo(SettingActivity.this,platform,umAuthListener);
             //App.mShareAPI.deleteOauth(getActivity(), platform, umAuthListener);
             if( null != data && data.size()>0) {
                 String refresh_token = data.get("refresh_token");
@@ -196,12 +197,12 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
 
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-            Toast.makeText(SetActivity.this, "Authorize fail", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SettingActivity.this, "Authorize fail", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform, int action) {
-            Toast.makeText(SetActivity.this, "Authorize cancel", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SettingActivity.this, "Authorize cancel", Toast.LENGTH_SHORT).show();
         }
     };
 

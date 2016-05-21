@@ -20,6 +20,7 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.fragment.FragmentTabOne;
 import com.huixiangtv.live.fragment.FragmentTabThree;
 import com.huixiangtv.live.fragment.FragmentTabTwo;
+import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -55,9 +56,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 
 
-    TextView txTitle;
-    ImageView ivBack;
+
     LinearLayout llTitle;
+
+    @ViewInject(R.id.myTitle)
+    CommonTitle commonTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +99,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
      */
     private void initView() {
         llTitle = (LinearLayout) findViewById(R.id.llTitle);
-        txTitle = (TextView) findViewById(R.id.title);
-        ivBack = (ImageView) findViewById(R.id.back);
-
         tab1.setOnClickListener(this);
         tab2.setOnClickListener(this);
         tab3.setOnClickListener(this);
@@ -174,8 +174,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 
     public void setTitleBar(String title){
-        txTitle.setText(title);
-        ivBack.setVisibility(View.GONE);
+        commonTitle.setTitleText(title);
+        commonTitle.backShow(View.GONE);
     }
 
 

@@ -1,47 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout
-        android:id="@+id/rl_buy"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/white"
-        android:paddingBottom="0dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_buy"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/white"
+    android:paddingBottom="0dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="10dp">
+
+    <ImageView
+        android:id="@+id/ivCoin"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/icon_my_sj"/>
+    <TextView
+        android:layout_toRightOf="@+id/ivCoin"
+        android:id="@+id/tvCoin"
+        android:layout_marginLeft="5dp"
+        style="@style/black_bigger_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="100金币" />
+
+
+
+
+    <TextView
+        android:id="@+id/tvCoinBuy"
+        android:layout_width="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="10dp">
+        android:minWidth="45dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        style="@style/red_normal_style"
+        android:background="@drawable/pay_coin_bg"
+        android:text="$20" />
 
-        <TextView
-            android:id="@+id/tvCoinNum"
-            style="@style/black_bigger_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="100金币" />
-
-
-        <TextView
-            android:id="@+id/tvMoney"
-            style="@style/red_bigger_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:text="￥20" />
-
-        <CheckBox
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:padding="25dp"
-            android:background="@drawable/checkbox_style"
-            android:button="@null" />
-
-        <View
-            style="@style/split_line"
-            android:layout_alignParentBottom="true" />
-    </RelativeLayout>
-</LinearLayout>
+    <View
+        style="@style/split_line"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

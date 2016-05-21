@@ -55,4 +55,6 @@ public class CommonTitle extends RelativeLayout {
     public void setActivity(Activity activity) {
         this.ac = activity;
     }
+
+
 }

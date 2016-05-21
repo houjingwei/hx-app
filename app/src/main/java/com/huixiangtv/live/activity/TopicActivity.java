@@ -18,18 +18,18 @@ import com.huixiangtv.live.model.Topic;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.ui.CommonTitle;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 import java.util.List;
 
-public class TopicActivity extends BaseBackActivity implements View.OnClickListener{
+public class TopicActivity extends BaseBackActivity{
 
 
-    @ViewInject(R.id.title)
-    TextView txTitle;
-    @ViewInject(R.id.back)
-    ImageView ivBack;
+    @ViewInject(R.id.myTitle)
+    CommonTitle commonTitle;
+
 
 
     private  PullToRefreshScrollView mPullToRefreshScrollView;
@@ -85,8 +85,10 @@ public class TopicActivity extends BaseBackActivity implements View.OnClickListe
     }
 
     private void initView() {
-        txTitle.setText(R.string.selTheme);
-        ivBack.setOnClickListener(this);
+        commonTitle.setActivity(this);
+        commonTitle.setTitleText(getResources().getString(R.string.selTheme));
+
+
         mPullToRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.refreshLayout);
         mDataLv = (ListView) findViewById(R.id.data);
         mPullToRefreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
@@ -125,15 +127,6 @@ public class TopicActivity extends BaseBackActivity implements View.OnClickListe
     }
 
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.back:
-                onBackPressed();
-                break;
-
-        }
-    }
 
     @Override
     public void onBackPressed() {

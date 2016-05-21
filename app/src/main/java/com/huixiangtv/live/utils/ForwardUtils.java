@@ -17,12 +17,13 @@ import com.huixiangtv.live.activity.RegLiveMainActivity;
 import com.huixiangtv.live.activity.RegLiveNextActivity;
 import com.huixiangtv.live.activity.RegLiveSuccessActivity;
 import com.huixiangtv.live.activity.SearchActivity;
-import com.huixiangtv.live.activity.SetActivity;
+import com.huixiangtv.live.activity.SettingActivity;
 import com.huixiangtv.live.activity.StartLiveActivity;
 import com.huixiangtv.live.activity.TopicActivity;
 import com.huixiangtv.live.activity.UserTagActivity;
 import com.huixiangtv.live.activity.UserinfoActivity;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class ForwardUtils {
             }
             if(url.startsWith("http:")){
                 Intent intent = new Intent(oriActivity, H5Activity.class);
-                toIntent(oriActivity, params, intent);
+                toH5Intent(oriActivity, url, intent);
             }else if (url.startsWith("huixiang://refresh")) {
                 Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
                 toIntent(oriActivity, params, intent);
@@ -81,7 +82,7 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.SETINT)){
-                Intent intent = new Intent(oriActivity, SetActivity.class);
+                Intent intent = new Intent(oriActivity, SettingActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.START_LIVE)){
                 Intent intent = new Intent(oriActivity, StartLiveActivity.class);
@@ -122,6 +123,23 @@ public class ForwardUtils {
         }
 
 
+    }
+
+    private static void toH5Intent(Activity oriActivity,String url, Intent intent) throws Exception {
+        int index = url.indexOf("?");
+        String s1 = url.substring(0,index);
+        Map params = new HashMap();
+        params.put("url",URLDecoder.decode(s1,"utf-8"));
+
+        String s2 = url.substring(index+1,url.length());
+        if(StringUtil.isNotEmpty(s2)){
+            String[] s = s2.split("&");
+            for (String param : s) {
+                String[] s3 = param.split("=");
+                params.put(s3[0],s3[1]);
+            }
+        }
+        toIntent(oriActivity, params, intent);
     }
 
 

@@ -61,8 +61,8 @@ public class RequestUtils {
 
         RequestParams reParams = new RequestParams(url);
         if(null!= App.getLoginUser()){
-            reParams.addQueryStringParameter("uid", paramsMap.get(App.getLoginUser().getUid()+""));
-            reParams.addQueryStringParameter("token", paramsMap.get(App.getLoginUser().getToken()+""));
+            reParams.addQueryStringParameter("uid", App.getLoginUser().getUid()+"");
+            reParams.addQueryStringParameter("token",App.getLoginUser().getToken()+"");
         }
 
         //解析封装参数

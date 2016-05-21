@@ -30,8 +30,6 @@ public class RegLiveNextActivity extends BaseBackActivity  {
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 
-    @ViewInject(R.id.back)
-    ImageView ivBack;
 
     @ViewInject(R.id.ivPhoto)
     ImageView ivPhoto;
@@ -56,7 +54,7 @@ public class RegLiveNextActivity extends BaseBackActivity  {
         x.view().inject(this);
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.txt_authentication));
-        ivBack.setOnClickListener(this);
+
         rlcanvers.setOnClickListener(this);
         tvNext.setOnClickListener(this);
         pictureHelper = new PictureHelper(this);
@@ -69,11 +67,6 @@ public class RegLiveNextActivity extends BaseBackActivity  {
         super.onNoDoubleClick(view);
 
         switch (view.getId()) {
-
-            case R.id.back:
-                onBackPressed();
-                break;
-
             case R.id.tvNext:
                 ForwardUtils.target(RegLiveNextActivity.this, Constant.REG_LIVE_DES, null);
                 break;

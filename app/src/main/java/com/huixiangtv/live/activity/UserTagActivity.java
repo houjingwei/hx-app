@@ -29,11 +29,7 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
     @ViewInject(R.id.id_flowlayout)
     TagFlowLayout mFlowLayout;
     TagAdapter<String> adapter;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+
 
 
     @Override
@@ -43,9 +39,8 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
         x.view().inject(this);
         initView();
         initData();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
     }
 
     private void initView() {

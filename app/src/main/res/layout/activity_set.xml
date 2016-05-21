@@ -3,218 +3,215 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/sysBg"
     android:orientation="vertical"
-    android:background="@color/tab_bg_color"
-    tools:context="com.huixiangtv.live.activity.SetActivity">
+    tools:context=".activity.SettingActivity">
 
-   <com.huixiangtv.live.ui.CommonTitle
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:id="@+id/myTitle"
-       />
+    <com.huixiangtv.live.ui.CommonTitle
+        android:id="@+id/myTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="15dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical"
-        >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/safe"
-        style="@style/label_small_style"
-        />
+        android:paddingLeft="10dp">
+
+        <TextView
+            style="@style/label_small_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/safe" />
     </RelativeLayout>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@drawable/listview"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:background="@drawable/listview"
 
         >
+
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_weixinbind"
             android:id="@+id/weixinbindimg"
-            />
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_weixinbind" />
+
         <TextView
+            style="@style/black_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/weixinbindimg"
-            android:layout_centerVertical="true"
-            android:text="@string/weixinbind"
-            style="@style/black_bigger_style"
-            />
+            android:text="@string/weixinbind" />
+
         <TextView
             android:id="@+id/weixinbind"
+            style="@style/white_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:clickable="true"
-            android:text="@string/bind"
-            style="@style/white_bigger_style"
+            android:layout_centerVertical="true"
             android:background="@drawable/set_bind"
-            />
+            android:clickable="true"
+            android:text="@string/bind" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:background="@drawable/listview"
         android:layout_marginTop="0.1dp"
-        >
+        android:background="@drawable/listview"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_qq_bind"
             android:id="@+id/qqbindimg"
-            />
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_qq_bind" />
+
         <TextView
+            style="@style/black_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/qqbindimg"
-            android:layout_centerVertical="true"
-            android:text="@string/qqbind"
-            style="@style/black_bigger_style"
-            />
+            android:text="@string/qqbind" />
+
         <TextView
             android:id="@+id/qqbind"
+            style="@style/black_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:text="@string/bind"
-            style="@style/black_better_black"
+            android:layout_centerVertical="true"
             android:background="@drawable/set_qqbind"
-            />
+            android:clickable="true"
+            android:text="@string/bind" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:background="@drawable/listview"
         android:layout_marginTop="0.1dp"
-        >
+        android:background="@drawable/listview"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_weibobind"
             android:id="@+id/weibobindimg"
-            />
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_weibobind" />
+
         <TextView
+            style="@style/black_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/weibobindimg"
-            android:layout_centerVertical="true"
-            android:text="@string/weibobind"
-            style="@style/black_bigger_style"
-            />
+            android:text="@string/weibobind" />
+
         <TextView
             android:id="@+id/weibobind"
+            style="@style/white_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:text="@string/bind"
-            style="@style/white_bigger_style"
+            android:layout_centerVertical="true"
             android:background="@drawable/set_bind"
-            />
+            android:clickable="true"
+            android:text="@string/bind" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="15dp"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/set"
-            style="@style/label_small_style"
-            />
-    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:clickable="true"
-        android:background="@drawable/listview"
-        >
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp">
 
         <TextView
+            style="@style/label_small_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:text="@string/set" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/listview"
+        android:clickable="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            style="@style/black_normal_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/aboutus"
-            style="@style/black_bigger_style"
-            />
+            android:layout_marginLeft="5dp"
+            android:text="@string/aboutus" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/icon_go"
-            />
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_go" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/helpcentre"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:clickable="true"
-        android:background="@drawable/listview"
         android:layout_marginTop="5dp"
-        >
+        android:background="@drawable/listview"
+        android:clickable="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <TextView
+            style="@style/black_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
-            android:text="@string/help"
-            style="@style/black_bigger_style"
-            />
+            android:layout_marginLeft="5dp"
+            android:text="@string/help" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/icon_go"
-            />
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_go" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        >
-<Button
-    android:id="@+id/setexit"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:text="@string/exit"
-    android:background="@drawable/set_exit"
-    style="@style/white_bigger_style"
-    />
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/tvLoginOut"
+            style="@style/white_bigger_style"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/set_exit"
+            android:gravity="center"
+            android:text="@string/exit" />
     </RelativeLayout>
 </LinearLayout>

@@ -24,7 +24,7 @@ public class MyConcernActivity extends BaseBackActivity {
 
     private void initview() {
         commonTitle.setActivity(this);
-       commonTitle.setTitleText(getResources().getString(R.string.myconcern));
+        commonTitle.setTitleText(getResources().getString(R.string.myconcern));
     }
 
 

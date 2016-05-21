@@ -38,9 +38,6 @@ public class RegLiveMainActivity extends BaseBackActivity {
     @ViewInject(R.id.tvRegTitle)
     TextView tvRegTitle;
 
-    @ViewInject(R.id.back)
-    ImageView ivBack;
-
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 
@@ -71,7 +68,7 @@ public class RegLiveMainActivity extends BaseBackActivity {
         Drawable drawable = getResources().getDrawable(R.drawable.res_ioc);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         tvRegTitle.setCompoundDrawables(drawable, null, null, null);
-        ivBack.setOnClickListener(this);
+
         tvNext.setOnClickListener(this);
         hqyzm.setOnClickListener(this);
         initTags();
@@ -84,9 +81,6 @@ public class RegLiveMainActivity extends BaseBackActivity {
 
         switch (view.getId()) {
 
-            case R.id.back:
-                onBackPressed();
-                break;
 
             case R.id.tvNext:
                 ForwardUtils.target(RegLiveMainActivity.this, Constant.REG_LIVE, null);

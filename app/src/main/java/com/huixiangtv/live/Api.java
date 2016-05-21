@@ -18,4 +18,9 @@ public class Api {
     public static final String AUTH_ACCOUNTBIND = BASE_URL + "auth/accountBind";
     public static final String CONTENT_GET_BANNER = BASE_URL +"content/getBanner";
     public static final String POST = BASE_URL+"pay/giftPayment";
+
+
+
+    public static final String COIN_LIST = BASE_URL+"pay/getCoinRule";
+    public static final String PAY_MODE = BASE_URL+"pay/getPaymentMode";
 }
