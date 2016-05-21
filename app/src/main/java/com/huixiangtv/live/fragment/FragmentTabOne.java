@@ -2,6 +2,7 @@ package com.huixiangtv.live.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,18 +27,18 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.adapter.CommonAdapter;
 import com.huixiangtv.live.adapter.ViewHolder;
+import com.huixiangtv.live.model.BannerModel;
 import com.huixiangtv.live.model.CommonModel;
-import com.huixiangtv.live.model.PositionAdvertBO;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
-import com.huixiangtv.live.ui.CustomProgressDialog;
 import com.huixiangtv.live.utils.EnumUpdateTag;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.BannerView;
 import com.huixiangtv.live.utils.widget.LinearLayoutForListView;
+import com.huixiangtv.live.utils.widget.LoadingView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,15 +54,16 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
     private ColaProgress cp = null;
     private BannerView bannerView;
     private PullToRefreshScrollView mRefreshLayout;
-    private List<PositionAdvertBO> guangGao = new ArrayList<PositionAdvertBO>();
+    private List<BannerModel> guangGao = new ArrayList<BannerModel>();
     private View mRootView;
     MainActivity activity;
     private LinearLayout ll_search;
+    private LoadingView loadView;
     private BaseAdapter adapter;
     private ScrollView sv;
     private List<CommonModel> commonModelList = new ArrayList<CommonModel>();
     private LinearLayoutForListView listview;
-
+    RelativeLayout rlpd;
 
 
     @Override
@@ -75,17 +78,21 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
 
     @Override
     protected void initLayout(View view) {
-
+        loadView = (LoadingView) view.findViewById(R.id.loadView);
+        loadView.setVisibility(View.VISIBLE);
         ll_search = (LinearLayout) view.findViewById(R.id.ll_search);
         bannerView = (BannerView) view.findViewById(R.id.banner);
         mRefreshLayout = (PullToRefreshScrollView) view.findViewById(R.id.refreshLayout);
         listview = (LinearLayoutForListView) view.findViewById(R.id.listview);
+        listview.setVisibility(View.GONE);
         listview.setOnItemClickListener(new LinearLayoutForListView.OnItemClickListener() {
             @Override
             public void onItemClicked(View v, Object item, int position) {
                 showToast("gotolive");
             }
         });
+        listview.setVisibility(View.GONE);
+        loadView.setVisibility(View.VISIBLE);
         mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
         sv = (ScrollView) view.findViewById(R.id.sv);
 
@@ -110,7 +117,6 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
         //mRefreshLayout.setOnTouchListener(new TouchListenerImpl());
 
     }
-    private CustomProgressDialog dialog;
     @Override
     protected void initData() {
 
@@ -120,21 +126,7 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
         initAdapter(EnumUpdateTag.UPDATE);
         setListener();
 
-        PositionAdvertBO positionAdvertBO = new PositionAdvertBO();
-        positionAdvertBO.setAdImgPath("http://f1.jgyes.com/4,013f52a5e0fd91");
-        PositionAdvertBO positionAdvertBO1 = new PositionAdvertBO();
-        positionAdvertBO1.setAdImgPath("http://img3.imgtn.bdimg.com/it/u=1206514979,2546214886&fm=21&gp=0.jpg");
-        PositionAdvertBO positionAdvertBO2 = new PositionAdvertBO();
-        positionAdvertBO2.setAdImgPath("http://f1.jgyes.com/3,013e1fcbd9d368");
-
-        List<PositionAdvertBO> positionAdvertBOList = new ArrayList<PositionAdvertBO>();
-        positionAdvertBOList.add(positionAdvertBO);
-        positionAdvertBOList.add(positionAdvertBO1);
-        positionAdvertBOList.add(positionAdvertBO2);
-        guangGao.clear();
-        guangGao.addAll(positionAdvertBOList);
-        bannerView.setPositionAdvertBO(guangGao);
-
+        getBanner();
 //        RequestUtils.sendPostRequest(Api.INDEX_BANNER, null, new ResponseCallBack<PositionAdvertBO>() {
 //            @Override
 //            public void onSuccessList(List<PositionAdvertBO> data) {
@@ -177,6 +169,11 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
 
                 if(data!=null && data.size()>0) {
 
+                    if(currPage==1)
+                    {
+                        listview.setVisibility(View.VISIBLE);
+                        loadView.setVisibility(View.GONE);
+                    }
                     if (enumUpdateTag == EnumUpdateTag.UPDATE) {
                         commonModelList.clear();
                         listview.removeAllViews();
@@ -189,28 +186,23 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
                     {
                         Toast.makeText(getActivity(),"已经没有更多内容了",Toast.LENGTH_LONG).show();
                     }
-                    else
-                    {
+                    else {
                         adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
                         listview.setAdapter(adapter);
-                        mRefreshLayout.onRefreshComplete();
-
-                        ll_search.setVisibility(View.GONE);
-//                        if(dialog.isShowing())
-//                            dialog.cancel();
                     }
-                       // totalCount = 0L;
-//                    if (totalCount % PAGE_SIZE == 0) {
-//                        totalPage = (int) (totalCount / PAGE_SIZE);
-//                    } else {
-//                        totalPage = (int) (totalCount / PAGE_SIZE) + 1;
-//                    }
                 }
+                else
+                {
 
+                }
+                mRefreshLayout.onRefreshComplete();
+                ll_search.setVisibility(View.GONE);
             }
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
+                mRefreshLayout.onRefreshComplete();
+                showToast("当有网络不可用，请检查您的网络设置");
             }
         }, CommonModel.class);
     }
@@ -304,7 +296,10 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
         mRefreshLayout.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                 initAdapter(EnumUpdateTag.UPDATE);
+                listview.setVisibility(View.GONE);
+                loadView.setVisibility(View.VISIBLE);
+                currPage = 1;
+                initAdapter(EnumUpdateTag.UPDATE);
             }
 
             @Override
@@ -331,41 +326,27 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
 
     private void getBanner(){
 
-//        RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<CommonModel>() {
-//            @Override
-//            public void onSuccessList(List<CommonModel> data) {
-//
-//                if(data!=null && data.size()>0) {
-//
-//                    if (enumUpdateTag == EnumUpdateTag.UPDATE) {
-//                        commonModelList.clear();
-//                        listview.removeAllViews();
-//                    }
-//                    for (CommonModel commonModel : data) {
-//                        commonModelList.add(commonModel);
-//                    }
-//                    Long totalCount = Long.parseLong(data.size()+"");
-//                    if (0 == totalCount)
-//                    {
-//                        Toast.makeText(getActivity(),"已经没有更多内容了",Toast.LENGTH_LONG).show();
-//                    }
-//                    else
-//                    {
-//                        adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
-//                        listview.setAdapter(adapter);
-//                        mRefreshLayout.onRefreshComplete();
-//
-//                        ll_search.setVisibility(View.GONE);
-//                    }
-//
-//                }
-//
-//            }
-//            @Override
-//            public void onFailure(ServiceException e) {
-//                super.onFailure(e);
-//            }
-//        }, CommonModel.class);
+        Map<String, String> paramsMap = new HashMap<String,String>();
+        paramsMap.put("page",currPage+"");
+        paramsMap.put("pagesize",PAGE_SIZE+"");
+        RequestUtils.sendPostRequest(Api.CONTENT_GET_BANNER, paramsMap, new ResponseCallBack<BannerModel>() {
+            @Override
+            public void onSuccessList(List<BannerModel> data) {
+
+                if(data!=null && data.size()>0) {
+
+                    guangGao.clear();
+                    guangGao.addAll(data);
+                    bannerView.setPositionAdvertBO(guangGao);
+
+                }
+
+            }
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, BannerModel.class);
 
 
     }
