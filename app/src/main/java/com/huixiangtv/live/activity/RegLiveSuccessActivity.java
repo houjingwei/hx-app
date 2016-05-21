@@ -17,10 +17,6 @@ import org.xutils.x;
  */
 public class RegLiveSuccessActivity extends BaseBackActivity {
 
-
-    @ViewInject(R.id.back)
-    ImageView ivBack;
-
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 
@@ -40,7 +36,6 @@ public class RegLiveSuccessActivity extends BaseBackActivity {
         x.view().inject(this);
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.txt_authentication));
-        ivBack.setOnClickListener(this);
         tvNext.setOnClickListener(this);
         String exchange = getResources().getString(R.string.txt_reg_success_info);
 
@@ -55,14 +50,8 @@ public class RegLiveSuccessActivity extends BaseBackActivity {
         super.onNoDoubleClick(view);
 
         switch (view.getId()) {
-
-            case R.id.back:
-                onBackPressed();
-                break;
-
             case R.id.tvNext:
-finish();
-                //ForwardUtils.target(RegLiveSuccessActivity.this, Constant., null);
+                finish();
                 break;
         }
     }

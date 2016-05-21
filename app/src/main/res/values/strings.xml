@@ -55,7 +55,7 @@
     <string name="question3">3、金币怎么兑换礼物？</string>
     <string name="question4">4、如何开启直播？</string>
     <string name="sure">确定</string>
-    <string name="selTheme"># 选择主题</string>
+    <string name="selTheme">#选择话题#</string>
     <string name="localClose">定位关闭</string>
     <string name="localOpen">定位打开</string>
     <string name="shareToFriend">分享给小伙伴</string>

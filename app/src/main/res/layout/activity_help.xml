@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/tab_bg_color"
+    android:background="@color/sysBg"
     tools:context="com.huixiangtv.live.activity.HelpActivity">
     <com.huixiangtv.live.ui.CommonTitle
         android:id="@+id/myTitle"
@@ -12,10 +12,10 @@
         android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="202dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:background="@color/white"
         android:layout_marginTop="10dp"
         >

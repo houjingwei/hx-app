@@ -26,7 +26,6 @@ public class CommonTitle extends RelativeLayout {
         LayoutInflater.from(context).inflate(R.layout.activity_base_title, this);
         tvTitle = (TextView) findViewById(R.id.title);
         ivBack = (ImageView) findViewById(R.id.back);
-        findViewById(R.id.rotRl).getBackground().setAlpha(100);
         tvSave = (TextView) findViewById(R.id.save);
         ivBack.setOnClickListener(new OnClickListener() {
             @Override
@@ -56,4 +55,6 @@ public class CommonTitle extends RelativeLayout {
     public void setActivity(Activity activity) {
         this.ac = activity;
     }
+
+
 }

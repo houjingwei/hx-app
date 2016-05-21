@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/tab_bg_color"
-    tools:context="com.huixiangtv.live.activity.SetActivity">
+    android:background="@color/sysBg"
+    tools:context=".activity.SettingActivity">
 
    <com.huixiangtv.live.ui.CommonTitle
        android:layout_width="wrap_content"
@@ -14,8 +14,8 @@
        />
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="15dp"
+        android:layout_height="50dp"
+        android:paddingLeft="10dp"
         android:gravity="center_vertical"
         >
     <TextView
@@ -36,8 +36,8 @@
 
         >
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_weixinbind"
             android:id="@+id/weixinbindimg"
@@ -49,7 +49,7 @@
             android:layout_toRightOf="@id/weixinbindimg"
             android:layout_centerVertical="true"
             android:text="@string/weixinbind"
-            style="@style/black_bigger_style"
+            style="@style/black_normal_style"
             />
         <TextView
             android:id="@+id/weixinbind"
@@ -59,7 +59,7 @@
             android:layout_alignParentRight="true"
             android:clickable="true"
             android:text="@string/bind"
-            style="@style/white_bigger_style"
+            style="@style/white_normal_style"
             android:background="@drawable/set_bind"
             />
     </RelativeLayout>
@@ -72,8 +72,8 @@
         android:layout_marginTop="0.1dp"
         >
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_qq_bind"
             android:id="@+id/qqbindimg"
@@ -85,7 +85,7 @@
             android:layout_toRightOf="@id/qqbindimg"
             android:layout_centerVertical="true"
             android:text="@string/qqbind"
-            style="@style/black_bigger_style"
+            style="@style/black_normal_style"
             />
         <TextView
             android:id="@+id/qqbind"
@@ -95,7 +95,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:text="@string/bind"
-            style="@style/black_better_black"
+            style="@style/black_normal_style"
             android:background="@drawable/set_qqbind"
             />
     </RelativeLayout>
@@ -108,8 +108,8 @@
         android:layout_marginTop="0.1dp"
         >
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_weibobind"
             android:id="@+id/weibobindimg"
@@ -121,7 +121,7 @@
             android:layout_toRightOf="@id/weibobindimg"
             android:layout_centerVertical="true"
             android:text="@string/weibobind"
-            style="@style/black_bigger_style"
+            style="@style/black_normal_style"
             />
         <TextView
             android:id="@+id/weibobind"
@@ -131,15 +131,15 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:text="@string/bind"
-            style="@style/white_bigger_style"
+            style="@style/white_normal_style"
             android:background="@drawable/set_bind"
             />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="15dp"
+        android:layout_height="50dp"
+        android:paddingLeft="10dp"
         android:gravity="center_vertical"
         >
         <TextView
@@ -164,7 +164,7 @@
             android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
             android:text="@string/aboutus"
-            style="@style/black_bigger_style"
+            style="@style/black_normal_style"
             />
         <ImageView
             android:layout_width="wrap_content"
@@ -191,7 +191,7 @@
             android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
             android:text="@string/help"
-            style="@style/black_bigger_style"
+            style="@style/black_normal_style"
             />
         <ImageView
             android:layout_width="wrap_content"
@@ -204,15 +204,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         >
-<Button
-    android:id="@+id/setexit"
+    <TextView
+    android:id="@+id/tvLoginOut"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="45dp"
     android:text="@string/exit"
+    android:gravity="center"
     android:background="@drawable/set_exit"
     style="@style/white_bigger_style"
     />

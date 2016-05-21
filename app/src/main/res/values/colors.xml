@@ -7,6 +7,7 @@
     <color name="colorAccent">#f84f82</color>
 
     <color name="sysBg">#f4f5f9</color>
+    <color name="sys_click_Bg">#e6e6e6</color>
 
 
     <color name="tab_pressed_color">#00bb9c</color>

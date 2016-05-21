@@ -17,7 +17,7 @@ import com.huixiangtv.live.activity.RegLiveMainActivity;
 import com.huixiangtv.live.activity.RegLiveNextActivity;
 import com.huixiangtv.live.activity.RegLiveSuccessActivity;
 import com.huixiangtv.live.activity.SearchActivity;
-import com.huixiangtv.live.activity.SetActivity;
+import com.huixiangtv.live.activity.SettingActivity;
 import com.huixiangtv.live.activity.StartLiveActivity;
 import com.huixiangtv.live.activity.TopicActivity;
 import com.huixiangtv.live.activity.UserTagActivity;
@@ -81,7 +81,7 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.SETINT)){
-                Intent intent = new Intent(oriActivity, SetActivity.class);
+                Intent intent = new Intent(oriActivity, SettingActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.START_LIVE)){
                 Intent intent = new Intent(oriActivity, StartLiveActivity.class);

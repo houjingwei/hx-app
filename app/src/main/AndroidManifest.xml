@@ -125,7 +125,7 @@
             android:name=".activity.TopicActivity"
             android:theme="@style/backStyle" />
         <activity
-            android:name=".activity.SetActivity"
+            android:name=".activity.SettingActivity"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.LiveActivity"

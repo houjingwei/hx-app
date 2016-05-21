@@ -3,30 +3,30 @@ package com.huixiangtv.live.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.activity.BaseBackActivity;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.ForwardUtils;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-public class SetActivity extends BaseBackActivity implements View.OnClickListener{
+public class SettingActivity extends BaseBackActivity implements View.OnClickListener{
 
 
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
+
     @ViewInject(R.id.qqbind)
     TextView qqbind;
+
     @ViewInject(R.id.helpcentre)
     RelativeLayout helpcentre;
-    @ViewInject(R.id.setexit)
-    Button setexit;
+    @ViewInject(R.id.tvLoginOut)
+    Button tvLoginOut;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set);
@@ -38,13 +38,13 @@ public class SetActivity extends BaseBackActivity implements View.OnClickListene
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.set));
         helpcentre.setOnClickListener(this);
-        setexit.setOnClickListener(this);
+        tvLoginOut.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.setexit:
+            case R.id.tvLoginOut:
                 onBackPressed();
                 break;
             case R.id.helpcentre:

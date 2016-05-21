@@ -13,7 +13,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/activity_base_title"/>
+        <com.huixiangtv.live.ui.CommonTitle
+            android:id="@+id/myTitle"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
     </LinearLayout>
     <!-- 内容界面 -->
     <FrameLayout

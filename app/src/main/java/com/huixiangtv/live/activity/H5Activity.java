@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.webview.WVJBWebViewClient;
 
@@ -23,21 +24,22 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class H5Activity extends BaseBackActivity implements View.OnClickListener {
+public class H5Activity extends BaseBackActivity{
 
     public static final String support = "support,getUserInfo,login,closeWebView,getDeviceInfo,copy,setShareInfo,jumpPage,getUserAgent,setBgColor,uploadCallback,loginSuccess,payCallback";
 
     String url = "", title = "";
 
-    @ViewInject(R.id.title)
-    TextView tvTitle;
-    @ViewInject(R.id.back)
+
     ImageView ivBack;
     @ViewInject(R.id.webView)
     WebView webview;
     @ViewInject(R.id.progress)
     ProgressBar progress;
     private WVJBWebViewClient webViewClient;
+
+    @ViewInject(R.id.myTitle)
+    CommonTitle commonTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +49,15 @@ public class H5Activity extends BaseBackActivity implements View.OnClickListener
         ivBack.setOnClickListener(this);
         url = getIntent().getStringExtra("url");
         title = getIntent().getStringExtra("title");
-        tvTitle.setText(title);
+        commonTitle.setActivity(this);
+
 
         WebChromeClient webChromeClient = new WebChromeClient(){
 
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                tvTitle.setText(title);
+                commonTitle.setTitleText(title);
             }
 
             @Override
@@ -235,19 +238,6 @@ public class H5Activity extends BaseBackActivity implements View.OnClickListener
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        if(v.getId()==R.id.back){
-            onBackPressed();
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-        finish();
-    }
 
     @Override
     protected void onResume() {
