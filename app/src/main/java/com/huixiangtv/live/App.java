@@ -33,6 +33,11 @@ public class App extends Application {
     private static App sContext;
     public static UMShareAPI mShareAPI ;
 
+    //设备版本
+    public static String deviceVersion;
+    //设备型号
+    public static String model;
+
     private List<Activity> listActivity = new LinkedList<Activity>();
     //屏幕宽度，屏幕高度
     public static int screenWidth, screenHeight, statuBarHeight;
@@ -44,6 +49,7 @@ public class App extends Application {
     private static PreferencesHelper loginHelper;
 
     public static String userCoin = "0";
+
 
     @Override
     public void onCreate() {
@@ -65,6 +71,13 @@ public class App extends Application {
         statuBarHeight = getStatusBarHeight(sContext);
         //加载免费礼物数据
         loadFreeGiftList();
+
+
+
+        model=android.os.Build.MODEL; // 手机型号
+        deviceVersion=android.os.Build.VERSION.RELEASE; // android系统版本号
+
+
 
         if(null!=App.getLoginUser()){
             loadMyCoin();

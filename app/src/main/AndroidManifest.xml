@@ -152,6 +152,7 @@
         <activity
             android:name=".activity.MyFansActivity"
             android:theme="@style/backStyle" />
+        <activity android:name=".activity.H5Activity" android:theme="@style/backStyle"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

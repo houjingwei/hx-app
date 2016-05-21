@@ -31,7 +31,6 @@ public class H5Activity extends BaseBackActivity{
     String url = "", title = "";
 
 
-    ImageView ivBack;
     @ViewInject(R.id.webView)
     WebView webview;
     @ViewInject(R.id.progress)
@@ -46,7 +45,6 @@ public class H5Activity extends BaseBackActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_h5);
         x.view().inject(this);
-        ivBack.setOnClickListener(this);
         url = getIntent().getStringExtra("url");
         title = getIntent().getStringExtra("title");
         commonTitle.setActivity(this);

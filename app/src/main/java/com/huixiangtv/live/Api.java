@@ -18,4 +18,9 @@ public class Api {
     public static final String LOGIN = BASE_URL+"auth/login";
     //礼物消费
     public static final String POST = BASE_URL+"pay/giftPayment";
+
+
+
+    public static final String COIN_LIST = BASE_URL+"pay/getCoinRule";
+    public static final String PAY_MODE = BASE_URL+"pay/getPaymentMode";
 }
