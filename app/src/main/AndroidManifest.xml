@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.huixiangtv.live">
 
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -119,7 +120,7 @@
             android:name=".activity.AccountActivity"
             android:theme="@style/backStyle" />
         <activity
-            android:name=".activity.StartLiveActivity"
+            android:name=".activity.LiveActivity"
             android:theme="@style/backStyle">
 
         </activity>

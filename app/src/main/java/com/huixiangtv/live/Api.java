@@ -23,4 +23,7 @@ public class Api {
 
     public static final String COIN_LIST = BASE_URL+"pay/getCoinRule";
     public static final String PAY_MODE = BASE_URL+"pay/getPaymentMode";
+
+    //申请个人直播
+    public static final String LIVE_SHOW =BASE_URL+ "live/applyLiveshow";
 }

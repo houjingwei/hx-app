@@ -12,15 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.activity.StartLiveActivity;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.ShareSdk;
-import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -61,6 +56,14 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
         LayoutInflater.from(context).inflate(R.layout.live_start_view, this);
         ct = context;
         initView();
+        initLocalInfo();
+
+    }
+
+    /**
+     * 获取经纬度信息
+     */
+    private void initLocalInfo() {
 
     }
 

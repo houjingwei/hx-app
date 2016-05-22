@@ -18,12 +18,10 @@ import com.huixiangtv.live.activity.RegLiveNextActivity;
 import com.huixiangtv.live.activity.RegLiveSuccessActivity;
 import com.huixiangtv.live.activity.SearchActivity;
 import com.huixiangtv.live.activity.SettingActivity;
-import com.huixiangtv.live.activity.StartLiveActivity;
 import com.huixiangtv.live.activity.TopicActivity;
 import com.huixiangtv.live.activity.UserTagActivity;
 import com.huixiangtv.live.activity.UserinfoActivity;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -85,7 +83,7 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, SettingActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.START_LIVE)){
-                Intent intent = new Intent(oriActivity, StartLiveActivity.class);
+                Intent intent = new Intent(oriActivity, LiveActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.LIVE_TOPIC)){
                 Intent intent = new Intent(oriActivity, TopicActivity.class);
