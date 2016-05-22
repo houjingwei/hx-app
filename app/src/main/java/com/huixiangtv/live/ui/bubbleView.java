@@ -57,6 +57,7 @@ public class BubbleView {
             handler.postDelayed(runnable, 500);
         }
 
+
         Log.i("rilegoule","***********"+baseWidth+"****"+baseHeight);
     }
 

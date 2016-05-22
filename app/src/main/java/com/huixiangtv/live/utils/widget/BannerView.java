@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.model.PositionAdvertBO;
+import com.huixiangtv.live.model.BannerModel;
 import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.BitmapHelper.DefaultSize;
 import com.huixiangtv.live.utils.BitmapHelper.ImageSize;
@@ -33,7 +33,7 @@ import java.util.TimerTask;
 public class BannerView extends FrameLayout implements Runnable {
     public final int FAKE_BANNER_SIZE = 100;
 
-    private List<PositionAdvertBO> positionAdvertBO;
+    private List<BannerModel> bannerModel;
     private GuideImgViewPagerAdapter guideImgViewPagerAdapter;
     private Context context;
     private PictureViewPager viewPager;
@@ -108,8 +108,8 @@ public class BannerView extends FrameLayout implements Runnable {
         mTimer = null;
     }
 
-    public void setPositionAdvertBO(List<PositionAdvertBO> PositionAdvertBO) {
-        this.positionAdvertBO = PositionAdvertBO;
+    public void setPositionAdvertBO(List<BannerModel> bannerModel) {
+        this.bannerModel = bannerModel;
         bannerShow(context);
     }
 
@@ -121,8 +121,8 @@ public class BannerView extends FrameLayout implements Runnable {
 
         // 记清理掉之前数据，避免反复加载造成点数无限增多
         index_ll.removeAllViews();
-        if (positionAdvertBO != null) {
-            for (int i = 0; i < positionAdvertBO.size(); i++) {
+        if (bannerModel != null) {
+            for (int i = 0; i < bannerModel.size(); i++) {
                 ImageView iv = new ImageView(context);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -138,7 +138,7 @@ public class BannerView extends FrameLayout implements Runnable {
             }
         }
 
-        guideImgViewPagerAdapter = new GuideImgViewPagerAdapter(context, viewPager, positionAdvertBO);
+        guideImgViewPagerAdapter = new GuideImgViewPagerAdapter(context, viewPager, bannerModel);
         viewPager.setAdapter(guideImgViewPagerAdapter);
 
         // 切换监听
@@ -194,20 +194,20 @@ public class BannerView extends FrameLayout implements Runnable {
 
         private int mBannerCount = 1;
 
-        private List<PositionAdvertBO> listPositionAdvertBO;
+        private List<BannerModel> listbannerModel;
 
-        public GuideImgViewPagerAdapter(Context context, ViewPager viewPager, List<PositionAdvertBO> PositionAdvertBO) {
+        public GuideImgViewPagerAdapter(Context context, ViewPager viewPager, List<BannerModel> bannerModel) {
             mInflater = LayoutInflater.from(context);
             mViewPager = viewPager;
             mContext = context;
 
-            refreshData(PositionAdvertBO);
+            refreshData(bannerModel);
         }
 
-        public void refreshData(List<PositionAdvertBO> PositionAdvertBO) {
-            if (PositionAdvertBO != null) {
-                this.listPositionAdvertBO = PositionAdvertBO;
-                mBannerCount = listPositionAdvertBO.size();
+        public void refreshData(List<BannerModel> bannerModel) {
+            if (bannerModel != null) {
+                this.listbannerModel = bannerModel;
+                mBannerCount = listbannerModel.size();
                 notifyDataSetChanged();
             }
         }
@@ -229,8 +229,8 @@ public class BannerView extends FrameLayout implements Runnable {
             ImageView imageView = new ImageView(mContext);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(720, 360));
             imageView.setScaleType(ScaleType.FIT_XY);
-            final PositionAdvertBO ps = listPositionAdvertBO.get(position);
-            BitmapHelper.getInstance(mContext).display(imageView, ps.getAdImgPath(), ImageSize.BANNER, DefaultSize.BIG);
+            final BannerModel ps = listbannerModel.get(position);
+            BitmapHelper.getInstance(mContext).display(imageView, ps.image, ImageSize.BANNER, DefaultSize.BIG);
 
             final int pos = position;
 

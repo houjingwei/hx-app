@@ -27,18 +27,9 @@ import java.util.Map;
 
 public class FragmentLogin extends Fragment implements View.OnClickListener {
 
-
-
-
 	private View mRootView;
-
-
 	EditText etAccount;
 	EditText etPwd;
-
-
-
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -76,10 +67,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
 
 	private void login(SHARE_MEDIA platform) {
-
-
 		App.mShareAPI.doOauthVerify(getActivity(), platform, umAuthListener);
-
 	}
 
 
@@ -91,8 +79,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 				String refresh_token = data.get("refresh_token");
 				String access_token = data.get("access_token");
 				String uid = data.get("uid");
-				Toast.makeText(getActivity(),refresh_token+"   "+access_token+"  "+uid,Toast.LENGTH_LONG).show();
-				//doing to db waiting
+				AuthThirdlogin(access_token, platform.toString());
 			}
 		}
 
@@ -114,10 +101,8 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 			case R.id.tvLoginBtn:
 				accountLogin();
 				break;
-
 		}
 	}
-
 
 	/**
 	 * 账号登录
@@ -151,7 +136,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 			public void onFailure(ServiceException e) {
 				super.onFailure(e);
 				if(null!=cp){
-					cp.dismiss();;
+					cp.dismiss();
 				}
 			}
 		},User.class);
@@ -161,4 +146,34 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 		App.saveLoginUser(data);
 		getActivity().finish();
 	}
+
+	private void AuthThirdlogin(String code,String platform){
+		cp = ColaProgress.show(getActivity(), "第三方登录中...", false, true, null);
+		cp.setCancelable(true);
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("code",code);
+		params.put("platform",platform);
+		RequestUtils.sendPostRequest(Api.AUTH_THIRDLOGIN, params, new ResponseCallBack<User>() {
+			@Override
+			public void onSuccess(User data) {
+				super.onSuccess(data);
+				Toast.makeText(getActivity(),"Successfully",Toast.LENGTH_LONG).show();
+				saveLoginInfo(data);
+				if (null != cp) {
+					cp.dismiss();
+				}
+			}
+
+			@Override
+			public void onFailure(ServiceException e) {
+				super.onFailure(e);
+				if (null != cp) {
+					cp.dismiss();
+				}
+			}
+		}, User.class);
+
+	}
+
+
 }

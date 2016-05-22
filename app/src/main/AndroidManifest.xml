@@ -51,7 +51,7 @@
 
         <service
             android:name="com.sina.weibo.sdk.net.DownloadService"
-            android:exported="false" />
+            android:exported="false"/>
         <!-- QQ空间 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -120,7 +120,11 @@
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.StartLiveActivity"
-            android:theme="@style/backStyle" />
+            android:theme="@style/backStyle">
+
+        </activity>
+
+
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/backStyle" />
