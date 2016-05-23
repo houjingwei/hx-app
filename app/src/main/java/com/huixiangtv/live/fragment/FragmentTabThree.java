@@ -24,7 +24,7 @@ import static com.huixiangtv.live.common.CommonUtil.showSignAlert;
 public class FragmentTabThree extends RootFragment{
 
 
-	private View mRootView,llTitle;
+	private View mRootView;
 	MainActivity activity ;
 
 	ImageView ivPhoto;
@@ -63,6 +63,8 @@ public class FragmentTabThree extends RootFragment{
 		mRootView.findViewById(R.id.tvUserName).setOnClickListener(this);
 		mRootView.findViewById(R.id.setting).setOnClickListener(this);
 		mRootView.findViewById(R.id.llTitle).setOnClickListener(this);
+		mRootView.findViewById(R.id.llMyfans).setOnClickListener(this);
+		mRootView.findViewById(R.id.llfaned).setOnClickListener(this);
 
 
 		ivPhoto = (ImageView) mRootView.findViewById(R.id.ivPhoto);
@@ -102,6 +104,13 @@ public class FragmentTabThree extends RootFragment{
 			case R.id.llTitle:
 				ForwardUtils.target(getActivity(), Constant.REG_LIVE_MAIN,null);
 				break;
+			case R.id.llMyfans:
+				ForwardUtils.target(getActivity(), Constant.MY_FANS,null);
+				break;
+			case R.id.llfaned:
+				ForwardUtils.target(getActivity(), Constant.FANED_ME,null);
+				break;
+
 		}
 	}
 

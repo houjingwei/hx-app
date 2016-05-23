@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sysBg"
+    android:orientation="vertical">
+    <com.huixiangtv.live.ui.CommonTitle
+        android:id="@+id/myTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:id="@+id/tvNewPhone"
+                style="@style/black_normal_style"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/labelNewPhoen" />
+
+            <EditText
+                android:id="@+id/etNewPhone"
+                android:paddingLeft="3dp"
+                style="@style/gray_normal_style"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:layout_toRightOf="@+id/tvNewPhone"
+                android:background="@null"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/tvGetCode"
+                style="@style/white_small_style"
+                android:layout_width="90dp"
+                android:layout_height="28dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/border_bg_style_03"
+                android:gravity="center"
+                android:text="@string/getCode" />
+        </RelativeLayout>
+
+        <View
+            android:layout_alignParentBottom="true"
+            style="@style/split_line" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:id="@+id/tvCode"
+                style="@style/black_normal_style"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/labelVali" />
+
+            <EditText
+                android:id="@+id/etCode"
+                style="@style/et_style"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:layout_toRightOf="@+id/tvCode"
+                android:background="@null"
+                android:gravity="center_vertical" />
+
+
+        </RelativeLayout>
+
+        <View
+            style="@style/split_line"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:id="@+id/tvPwd"
+                style="@style/black_normal_style"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/labelPwd" />
+
+            <EditText
+                android:id="@+id/etPwd"
+                style="@style/black_normal_style"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:layout_toRightOf="@+id/tvPwd"
+                android:background="@null"
+                android:gravity="center_vertical" />
+
+
+        </RelativeLayout>
+
+        <View
+            style="@style/split_line" android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/tvLoginOut"
+        style="@style/white_bigger_style"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/set_exit"
+        android:gravity="center"
+        android:text="@string/newPhoneBind" />
+
+</LinearLayout>

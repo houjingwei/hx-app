@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
@@ -30,6 +31,11 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 	private View mRootView;
 	EditText etAccount;
 	EditText etPwd;
+
+	LinearLayout llLogin;
+	LinearLayout llForgot;
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -40,10 +46,14 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 	}
 
 	private void initView() {
-
+		mRootView.findViewById(R.id.tvForgotPwd).setOnClickListener(this);
+		mRootView.findViewById(R.id.tvHaveAccount).setOnClickListener(this);
 		etAccount = (EditText) mRootView.findViewById(R.id.etAccount);
 		etPwd = (EditText) mRootView.findViewById(R.id.etPwd);
 		mRootView.findViewById(R.id.tvLoginBtn).setOnClickListener(this);
+
+		llLogin = (LinearLayout) mRootView.findViewById(R.id.llLogin);
+		llForgot = (LinearLayout) mRootView.findViewById(R.id.llForgot);
 
 		mRootView.findViewById(R.id.llQQ).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -101,7 +111,23 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 			case R.id.tvLoginBtn:
 				accountLogin();
 				break;
+			case R.id.tvForgotPwd:
+				showForgotPwd(true);
+				break;
+			case R.id.tvHaveAccount:
+				showForgotPwd(false);
 		}
+	}
+
+	private void showForgotPwd(boolean bool) {
+		if(bool){
+			llLogin.setVisibility(View.GONE);
+			llForgot.setVisibility(View.VISIBLE);
+		}else{
+			llLogin.setVisibility(View.VISIBLE);
+			llForgot.setVisibility(View.GONE);
+		}
+
 	}
 
 	/**

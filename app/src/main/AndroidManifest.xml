@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.huixiangtv.live">
 
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -52,7 +51,7 @@
 
         <service
             android:name="com.sina.weibo.sdk.net.DownloadService"
-            android:exported="false"/>
+            android:exported="false" />
         <!-- QQ空间 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -121,11 +120,7 @@
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.LiveActivity"
-            android:theme="@style/backStyle">
-
-        </activity>
-
-
+            android:theme="@style/backStyle"></activity>
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/backStyle" />
@@ -155,15 +150,20 @@
             android:name=".activity.HelpActivity"
             android:theme="@style/backStyle" />
         <activity
-            android:name=".activity.MyFansActivity"
+            android:name=".activity.FanedMeActivity"
             android:theme="@style/backStyle" />
-        <activity android:name=".activity.H5Activity" android:theme="@style/backStyle"/>
+        <activity
+            android:name=".activity.H5Activity"
+            android:theme="@style/backStyle" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".activity.GuideActivity" />
+        <activity android:name=".activity.PhoneBindActivity"
+            android:theme="@style/backStyle" />
+        <activity android:name=".activity.MyFansActivity" android:theme="@style/backStyle"/>
     </application>
 
 </manifest>
