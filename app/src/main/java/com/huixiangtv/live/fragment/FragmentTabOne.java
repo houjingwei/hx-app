@@ -63,7 +63,8 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
     private ScrollView sv;
     private List<Live> commonModelList = new ArrayList<Live>();
     private LinearLayoutForListView listview;
-    RelativeLayout rlpd;
+
+
 
 
     @Override
@@ -217,6 +218,10 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         return false;
+    }
+
+    public void setMainPadding() {
+
     }
 
 

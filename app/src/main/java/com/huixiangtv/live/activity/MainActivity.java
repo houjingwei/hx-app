@@ -23,6 +23,7 @@ import com.huixiangtv.live.fragment.FragmentTabTwo;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.ui.VProgressDialog;
 import com.huixiangtv.live.utils.ForwardUtils;
+import com.huixiangtv.live.utils.widget.WidgetUtil;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.xutils.view.annotation.ViewInject;
@@ -46,6 +47,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     RelativeLayout tab3;
     @ViewInject(R.id.iv3)
     ImageView iv3;
+
+    @ViewInject(R.id.main)
 
 
     FragmentTabOne fragmentOne;
@@ -204,7 +207,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
             }
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)llTitle.getLayoutParams();
+            params.topMargin = WidgetUtil.dip2px(this,20);
+            llTitle.setLayoutParams(params);
             window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         }
     }
 
