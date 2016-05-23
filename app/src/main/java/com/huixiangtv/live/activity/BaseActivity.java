@@ -17,14 +17,15 @@ public class BaseActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         AnalysisModule.onResume();
-    }
 
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
         AnalysisModule.onPause();
     }
+
 
 
 }

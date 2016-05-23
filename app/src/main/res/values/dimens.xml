@@ -5,4 +5,5 @@
     <dimen name="test_padding_margin">8dp</dimen>
 
     <dimen name="baseTitleHeight">50dp</dimen>
+    <dimen name="sign_title_size">24sp</dimen>
 </resources>

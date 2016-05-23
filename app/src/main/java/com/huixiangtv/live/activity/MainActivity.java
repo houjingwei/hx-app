@@ -21,6 +21,7 @@ import com.huixiangtv.live.fragment.FragmentTabOne;
 import com.huixiangtv.live.fragment.FragmentTabThree;
 import com.huixiangtv.live.fragment.FragmentTabTwo;
 import com.huixiangtv.live.ui.CommonTitle;
+import com.huixiangtv.live.ui.VProgressDialog;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -53,9 +54,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 
     FragmentTransaction trx = null;
-
-
-
 
     LinearLayout llTitle;
 
@@ -239,7 +237,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 
     @Override
-    public void onAttachFragment(Fragment fragment) {
+    public void onAttachFragment(Fragment fragment)  {
         // TODO Auto-generated method stub
         super.onAttachFragment(fragment);
 
@@ -258,4 +256,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 //        //阻止activity保存fragment的状态
 //        //super.onSaveInstanceState(outState, outPersistentState);
 //    }
+
+
 }

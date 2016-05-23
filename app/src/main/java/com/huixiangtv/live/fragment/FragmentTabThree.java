@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huixiangtv.live.App;
@@ -16,6 +17,8 @@ import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
+
+import static com.huixiangtv.live.common.CommonUtil.showSignAlert;
 
 
 public class FragmentTabThree extends RootFragment{
@@ -31,6 +34,7 @@ public class FragmentTabThree extends RootFragment{
 	TextView haveFans;
 	TextView tvAccount;
 	TextView tvLoves;
+	private RelativeLayout rlSign;
 	LinearLayout llUserTop;
 
 	@Override
@@ -69,6 +73,15 @@ public class FragmentTabThree extends RootFragment{
 		tvAccount = (TextView) mRootView.findViewById(R.id.tvAccount);
 		tvLoves = (TextView) mRootView.findViewById(R.id.tvLoves);
 		llUserTop = (LinearLayout) mRootView.findViewById(R.id.llUserTop);
+
+		rlSign = (RelativeLayout) mRootView.findViewById(R.id.rlSign);
+		rlSign.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showSignAlert(getActivity());
+			}
+		});
+
 	}
 
 	@Override
