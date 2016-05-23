@@ -26,4 +26,6 @@ public class Api {
 
     //申请个人直播
     public static final String LIVE_SHOW =BASE_URL+ "live/applyLiveshow";
+    //版本升级
+    public static final String UPGRADE_LEVEL = BASE_URL + "config/getUpgradeInfo";
 }

@@ -1,10 +1,20 @@
 package com.huixiangtv.live.common;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.huixiangtv.live.App;
+import com.huixiangtv.live.R;
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,5 +45,67 @@ public class CommonUtil {
     }
 
 
-    
+    /**
+     * 签名入口
+     * @param context
+     */
+    public static void showSignAlert(final Context context) {
+
+        Date currentDate = new Date();
+        Date date = App.getDailyCheckInDate("time");
+        int d = daysOfTwo(currentDate, date);
+        if (d != 0) { // no sign the next
+
+                final AlertDialog dlg = new AlertDialog.Builder(context).create();
+                dlg.show();
+                dlg.setCancelable(false);
+                Window window = dlg.getWindow();
+                window.setContentView(R.layout.activity_sign_in);
+
+                ImageView btnClosed = (ImageView) window.findViewById(R.id.btnClosed);
+                btnClosed.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        dlg.dismiss();
+                    }
+                });
+
+        }
+        else
+        {
+
+             //no operator
+
+        }
+
+    }
+
+
+
+    /**
+     * Data Computer
+     * @param fDate
+     * @param oDate
+     * @return
+     */
+    public static int daysOfTwo(Date fDate, Date oDate) {
+        if (fDate == null || oDate == null) {
+            return -1;
+        }
+
+        Calendar aCalendar = Calendar.getInstance();
+
+        aCalendar.setTime(fDate);
+        int day1 = aCalendar.get(Calendar.DAY_OF_YEAR);
+        aCalendar.setTime(oDate);
+        int day2 = aCalendar.get(Calendar.DAY_OF_YEAR);
+
+        return day2 - day1;
+
+    }
+
+
+
+
 }

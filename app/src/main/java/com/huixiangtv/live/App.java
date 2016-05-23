@@ -3,6 +3,7 @@ package com.huixiangtv.live;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.WindowManager;
@@ -21,6 +22,7 @@ import org.xutils.x;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -214,6 +216,32 @@ public class App extends Application {
 
 
     }
+
+    /**
+     * 签到时间
+     * @param context
+     * @param date
+     */
+    public static void setDailyCheckInDate(Context context, Date date) {
+        long time = date.getTime();
+        loginHelper.setLongValue("time", time);
+    }
+
+    /**
+     * 签到时间
+     * @param context
+     * @param date
+     */
+    public static Date getDailyCheckInDate(String key)
+    {
+        long time = loginHelper.getLongValue(key,-1);
+        if(time != -1) {
+            Date date = new Date(time);
+            return date;
+        }
+        return null;
+    }
+
 
     public static  String getPreferencesValue(String key)
     {

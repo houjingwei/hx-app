@@ -152,7 +152,8 @@
 
 
                     <RelativeLayout
-                        android:layout_width="100dp"
+                        android:layout_width="120dp"
+                        android:id="@+id/rlSign"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:background="@drawable/fragment_tab_three_rectangle"

@@ -39,6 +39,18 @@ public class PreferencesHelper {
 		return sp.getBoolean(key, defaultValue);
 	}
 
+
+	public void setLongValue(String key,long time) {
+		editor = sp.edit();
+		editor.putLong(key, time);
+		editor.commit();
+	}
+
+	public long getLongValue(String key, long defaultValue) {
+		return sp.getLong(key, defaultValue);
+	}
+
+
 	public void remove(String name) {
 		editor.remove(name);
 	}
