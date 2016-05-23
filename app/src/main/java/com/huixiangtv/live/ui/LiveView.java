@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -23,12 +25,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.Fans;
 import com.huixiangtv.live.adapter.LiveMsgAdapter;
 import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
 import com.huixiangtv.live.model.Live;
-import com.huixiangtv.live.model.LiveChatMsg;
+import com.huixiangtv.live.model.LiveMsg;
 import com.huixiangtv.live.model.Star;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.ShareWindow;
@@ -41,8 +45,12 @@ import com.huixiangtv.live.utils.widget.WidgetUtil;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by hjw on 16/5/17.
@@ -60,7 +68,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
     ListView msgListView;
-    List<LiveChatMsg> msgList;
+    List<LiveMsg> msgList;
     LiveMsgAdapter msgAdapter;
 
     ImageView ivMsg;
@@ -151,7 +159,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         ivLove.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                Log.i("sysout","ok");
+
                 int[] locations=new int[2];
                 ivLove.getLocationInWindow(locations);
                 int x = locations[0];
@@ -228,19 +236,68 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     private void initMsg() {
         msgListView = (ListView) findViewById(R.id.msgList);
         msgAdapter = new LiveMsgAdapter(activity);
-        msgList = new ArrayList<LiveChatMsg>();
+        msgList = new ArrayList<LiveMsg>();
         loadMsg();
         msgAdapter.addList(msgList);
         msgListView.setAdapter(msgAdapter);
 
+        //启动定时器
+        timer.schedule(task, 0, 2000);
+
     }
 
-    private List loadMsg() {
-        for (int i = 1; i < 10; i++) {
-            LiveChatMsg msg = new LiveChatMsg("doudou", "今晚吃什么饭呀+" + i, "1");
-            msgList.add(msg);
+
+    private Handler handler  = new Handler(){
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(msg.obj == 1){
+                LiveMsg m = getOneMsg();
+                if(null!=m){
+                    msgAdapter.add(m);
+                    msgListView.setSelection(msgAdapter.getCount()-1);
+                }
+            }
         }
-        return msgList;
+    };
+
+    public LiveMsg getOneMsg() {
+        if(null!=msgList){
+            int index=(int)(Math.random()*msgList.size());
+            return msgList.get(index);
+        }
+
+        return null;
+    }
+
+
+    private Timer timer = new Timer(true);
+
+    //任务
+    private TimerTask task = new TimerTask() {
+        public void run() {
+            Message msg = new Message();
+            msg.obj = 1;
+            handler.sendMessage(msg);
+        }
+    };
+
+
+
+    private void loadMsg() {
+        try {
+            InputStreamReader inputStreamReader = new InputStreamReader(activity.getAssets().open("liveMsg.json"), "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String line;
+            StringBuilder stringBuilder = new StringBuilder();
+            while((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            bufferedReader.close();
+            inputStreamReader.close();
+            msgList = JSON.parseArray(stringBuilder.toString(),LiveMsg.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

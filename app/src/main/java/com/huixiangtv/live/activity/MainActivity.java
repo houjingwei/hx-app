@@ -196,13 +196,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         if(bool){
             llTitle.setVisibility(View.GONE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                window.setStatusBarColor(getResources().getColor(R.color.mainColor));
+                //window.setStatusBarColor(getResources().getColor(R.color.mainColor));
             }
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }else{
             llTitle.setVisibility(View.VISIBLE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
             }
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
     }
 

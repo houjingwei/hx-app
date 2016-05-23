@@ -3,19 +3,19 @@ package com.huixiangtv.live.model;
 /**
  * Created by hjw on 16/5/17.
  */
-public class LiveChatMsg {
+public class LiveMsg {
 
     private String userName;
     private String msg;
     private String type;
 
-    public LiveChatMsg(String userName, String msg, String type) {
+    public LiveMsg(String userName, String msg, String type) {
         this.userName = userName;
         this.msg = msg;
         this.type = type;
     }
 
-    public LiveChatMsg() {
+    public LiveMsg() {
     }
 
     public String getUserName() {

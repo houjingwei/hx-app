@@ -5,15 +5,19 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/llUserTop"
         android:layout_width="match_parent"
+        android:background="@color/mainColor"
+        android:paddingTop="20dp"
         android:layout_height="wrap_content">
 
+
+
         <LinearLayout
-            android:id="@+id/llUserTop"
+            android:paddingTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@color/mainColor"
             android:orientation="vertical">
 
             <RelativeLayout
