@@ -23,6 +23,7 @@ public class Live {
     private String fansCount;
     private String followCount;
     private String chatroom;
+    private String time;
 
     public String getLid() {
         return lid;
@@ -166,5 +167,14 @@ public class Live {
 
     public void setChatroom(String chatroom) {
         this.chatroom = chatroom;
+    }
+
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

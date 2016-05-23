@@ -2,7 +2,6 @@ package com.huixiangtv.live.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,13 +21,14 @@ import android.widget.Toast;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.huixiangtv.live.Api;
+import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.adapter.CommonAdapter;
 import com.huixiangtv.live.adapter.ViewHolder;
 import com.huixiangtv.live.model.BannerModel;
-import com.huixiangtv.live.model.CommonModel;
+import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -61,7 +61,7 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
     private LoadingView loadView;
     private BaseAdapter adapter;
     private ScrollView sv;
-    private List<CommonModel> commonModelList = new ArrayList<CommonModel>();
+    private List<Live> commonModelList = new ArrayList<Live>();
     private LinearLayoutForListView listview;
     RelativeLayout rlpd;
 
@@ -161,11 +161,13 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
         Map<String, String> paramsMap = new HashMap<String,String>();
         paramsMap.put("page",currPage+"");
         paramsMap.put("pagesize",PAGE_SIZE+"");
+        paramsMap.put("cNo","");
 
 
-        RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<CommonModel>() {
+
+        RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<Live>() {
             @Override
-            public void onSuccessList(List<CommonModel> data) {
+            public void onSuccessList(List<Live> data) {
 
                 if(data!=null && data.size()>0) {
 
@@ -178,8 +180,8 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
                         commonModelList.clear();
                         listview.removeAllViews();
                     }
-                    for (CommonModel commonModel : data) {
-                        commonModelList.add(commonModel);
+                    for (Live live : data) {
+                        commonModelList.add(live);
                     }
                     Long totalCount = Long.parseLong(data.size()+"");
                     if (0 == totalCount)
@@ -204,7 +206,7 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
                 mRefreshLayout.onRefreshComplete();
                 showToast("当有网络不可用，请检查您的网络设置");
             }
-        }, CommonModel.class);
+        }, Live.class);
     }
 
     @Override
@@ -218,21 +220,27 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
     }
 
 
-    private class TabOneAdapter extends CommonAdapter<CommonModel> {
+    private class TabOneAdapter extends CommonAdapter<Live> {
 
-        public TabOneAdapter(Context context, List<CommonModel> listData, int itemLayoutId) {
+        public TabOneAdapter(Context context, List<Live> listData, int itemLayoutId) {
             super(context, listData, itemLayoutId);
         }
 
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-        public void convert(ViewHolder helper, int position, CommonModel item) {
+        public void convert(ViewHolder helper, int position, Live item) {
 
             TextView tvTitle = helper.getView(R.id.tvTitle);
             TextView tvTime = helper.getView(R.id.tvTime);
-            tvTitle.setText(item.nickName);
+            tvTitle.setText(item.getNickName());
             tvTime.setText(item.getTime());
             ImageView ivIcon = helper.getView(R.id.ivIcon);
-            ImageUtils.display(ivIcon,item.photo);
+
+
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ivIcon.getLayoutParams();
+            params.height = (int) (App.screenWidth*0.75);
+            ivIcon.setLayoutParams(params);
+
+            ImageUtils.display(ivIcon,item.getPhoto());
 
         }
     }
@@ -329,6 +337,7 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
         Map<String, String> paramsMap = new HashMap<String,String>();
         paramsMap.put("page",currPage+"");
         paramsMap.put("pagesize",PAGE_SIZE+"");
+        paramsMap.put("groupName","");
         RequestUtils.sendPostRequest(Api.CONTENT_GET_BANNER, paramsMap, new ResponseCallBack<BannerModel>() {
             @Override
             public void onSuccessList(List<BannerModel> data) {
