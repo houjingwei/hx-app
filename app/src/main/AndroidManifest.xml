@@ -52,7 +52,7 @@
 
         <service
             android:name="com.sina.weibo.sdk.net.DownloadService"
-            android:exported="false"/>
+            android:exported="false" />
         <!-- QQ空间 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -93,6 +93,7 @@
 
         <activity
             android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -100,27 +101,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.BaseActivity" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BaseActivity"
+            android:screenOrientation="portrait" />
         <!-- <activity -->
         <!-- android:name=".activity.RefreshAndLoadmoreActivity" -->
         <!-- android:theme="@style/backStyle" /> -->
         <activity
             android:name=".activity.LoginOrRegActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
         <activity android:name=".activity.BaseBackActivity" />
         <activity
             android:name=".activity.UserinfoActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".activity.UserTagActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.AccountActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.LiveActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle">
 
         </activity>
@@ -128,42 +138,57 @@
 
         <activity
             android:name=".activity.TopicActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.SettingActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.LiveActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.SearchActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.RegLiveActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.RegLiveNextActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".activity.RegLiveMainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.RegLiveSuccessActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.HelpActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.MyFansActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-        <activity android:name=".activity.H5Activity" android:theme="@style/backStyle"/>
+        <activity
+            android:name=".activity.H5Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activity.GuideActivity" />
+        <activity
+            android:name=".activity.GuideActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

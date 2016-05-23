@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="500dp"
+    android:layout_height="495dp"
     android:layout_gravity="center"
     android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
 
         <LinearLayout
@@ -21,22 +21,83 @@
 
             <ImageView
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
-                android:layout_height="wrap_content"
                 android:src="@drawable/sign_pic" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sgin_title"
+                android:textColor="@color/black"
                 android:textSize="@dimen/sign_title_size"
                 android:textStyle="bold" />
 
+            <LinearLayout
+                android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:orientation="horizontal">
 
+                <com.huixiangtv.live.utils.widget.SignListLinearLayout
+                    android:layout_marginLeft="5dp"
+                    app:txtTitle="第1天"
+                    app:valImage="@drawable/sign_inner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.huixiangtv.live.utils.widget.SignListLinearLayout
+                    android:layout_marginLeft="8dp"
+                    app:txtTitle="第2天"
+                    app:valImage="@drawable/sign_inner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.huixiangtv.live.utils.widget.SignListLinearLayout
+                    android:layout_marginLeft="8dp"
+                    app:valImage="@drawable/sign_inner"
+                    app:txtTitle="第3天"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.huixiangtv.live.utils.widget.SignListLinearLayout
+                    android:layout_marginLeft="8dp"
+                    app:txtTitle="第4天"
+                    app:valImage="@drawable/sign_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:orientation="horizontal">
+
+            <com.huixiangtv.live.utils.widget.SignListLinearLayout
+                android:layout_marginLeft="8dp"
+                app:txtTitle="第5天"
+                app:valImage="@drawable/sign_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.huixiangtv.live.utils.widget.SignListLinearLayout
+                android:layout_marginLeft="8dp"
+                app:txtTitle="第6天"
+                app:valImage="@drawable/sign_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.huixiangtv.live.utils.widget.SignListLinearLayout
+                android:layout_marginLeft="8dp"
+                app:txtTitle="第7天"
+                app:valImage="@drawable/sign_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            </LinearLayout>
 
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,19 +117,24 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:background="@android:color/transparent"
-            android:layout_alignParentRight="true"
+            android:id="@+id/rlSignBotton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:id="@+id/btnClosed"
-            android:layout_marginTop="10dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/sign_close" />
+            android:background="@android:color/transparent">
+
+            <ImageView
+                android:id="@+id/btnClosed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/sign_close" />
         </RelativeLayout>
 
+
     </RelativeLayout>
+
+
 </LinearLayout>
