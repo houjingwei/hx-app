@@ -3,6 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.huixiangtv.live">
 
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 录音 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -49,9 +66,11 @@
             android:name="UMENG_APPKEY"
             android:value="573d35e767e58eb762002e12" />
 
-        <service
-            android:name="com.sina.weibo.sdk.net.DownloadService"
-            android:exported="false" />
+
+
+        <!--<service-->
+            <!--android:name="com.sina.weibo.sdk.net.DownloadService"-->
+            <!--android:exported="false" />-->
         <!-- QQ空间 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -129,8 +148,8 @@
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.LiveActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/backStyle">
+            android:theme="@style/backStyle"
+            android:windowSoftInputMode="adjustResize|stateHidden">
 
         </activity>
 
@@ -143,10 +162,7 @@
             android:name=".activity.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-        <activity
-            android:name=".activity.LiveActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/backStyle" />
+
         <activity
             android:name=".activity.SearchActivity"
             android:screenOrientation="portrait"
@@ -199,6 +215,28 @@
             android:name=".activity.FanedMeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
+
+
+
+
+
+        <meta-data
+            android:name="RONG_CLOUD_APP_KEY"
+            android:value="pwe86ga5ebwp6" />
+        <service
+            android:process=":ipc"
+            android:exported="true"
+            android:name="io.rong.imlib.ipc.RongService">
+        </service>
+
+        <service android:name="io.rong.imlib.ReConnectService"/>
+        <receiver android:name="io.rong.imlib.ConnectChangeReceiver"/>
+
+        <receiver android:name="io.rong.imlib.HeartbeatReceiver"
+            android:process=":ipc"/>
+
+
+
     </application>
 
 </manifest>

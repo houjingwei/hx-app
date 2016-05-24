@@ -1,20 +1,23 @@
 package com.huixiangtv.live;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.huixiangtv.live.model.Gift;
 import com.huixiangtv.live.model.User;
+import com.huixiangtv.live.service.ChatTokenCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.PreferencesHelper;
+import com.huixiangtv.live.utils.RongyunUtils;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -28,6 +31,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import io.rong.imlib.RongIMClient;
+
 /**
  * Created by hjw on 16/5/4.
  */
@@ -39,6 +44,7 @@ public class App extends Application {
     public static String deviceVersion;
     //设备型号
     public static String model;
+    public static RongIMClient imClient;
 
     private List<Activity> listActivity = new LinkedList<Activity>();
     //屏幕宽度，屏幕高度
@@ -52,6 +58,8 @@ public class App extends Application {
 
     public static String userCoin = "0";
 
+    private String chatToken = "";
+
 
     @Override
     public void onCreate() {
@@ -60,7 +68,7 @@ public class App extends Application {
         x.Ext.init(this);
         x.Ext.setDebug(false); // 是否输出debug日志, 开启debug会影响性能.
         PlatformConfig.setSinaWeibo("1912474872", "5ba10f129f1e5cdf37abd2c41bb7fd06");
-        PlatformConfig.setWeixin("wx1e48313855ee1630", "4d395bee2cc7ce077773e0cc9d93da97");
+        PlatformConfig.setWeixin("wxd42ecbf70403ea6e", "74e3218222aab649f12a0f7511957413");
         PlatformConfig.setQQZone("1105010761", "QWCN9CxD0blbth4M");
 //      PlatformConfig.setSinaWeibo("3833863944", "dfea615e3114cf87412da53b2d3df173"); //自己的
         loginHelper = new PreferencesHelper(sContext, Constant.LOGIN_INFO);
@@ -84,7 +92,42 @@ public class App extends Application {
         if(null!=App.getLoginUser()){
             loadMyCoin();
         }
+
+        /**
+         * OnCreate 会被多个进程重入，这段保护代码，确保只有您需要使用 RongIMClient 的进程和 Push 进程执行了 init。
+         * io.rong.push 为融云 push 进程名称，不可修改。
+         */
+        if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext())) ||
+                "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
+            RongIMClient.init(this);
+        }
+        imClient = RongIMClient.getInstance();
+
+        final RongyunUtils rongyun = new RongyunUtils(this);
+        rongyun.chatToken(new ChatTokenCallBack() {
+            @Override
+            public void getTokenSuccess(String token) {
+                rongyun.connect(token,null);
+            }
+        });
+
     }
+
+
+
+    public static String getCurProcessName(Context context) {
+        int pid = android.os.Process.myPid();
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager .getRunningAppProcesses()) {
+            if (appProcess.pid == pid) {
+                return appProcess.processName;
+            }
+        }
+        return null;
+    }
+
+
+
 
 
     /**
@@ -229,8 +272,7 @@ public class App extends Application {
 
     /**
      * 签到时间
-     * @param context
-     * @param date
+     * @param key
      */
     public static Date getDailyCheckInDate(String key)
     {
@@ -249,4 +291,10 @@ public class App extends Application {
     }
 
 
+    public static void clearLoginUser() {
+        loginHelper.setValue("token","");
+        loginHelper.setValue("uid","");
+        App.loginUser = null;
+
+    }
 }

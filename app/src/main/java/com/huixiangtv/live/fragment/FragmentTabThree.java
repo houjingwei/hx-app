@@ -138,6 +138,8 @@ public class FragmentTabThree extends RootFragment{
 			haveFans.setText("0");
 			tvAccount.setText("0");
 			tvLoves.setText("0");
+			ivPhoto.setImageResource(R.drawable.default_head);
+			tvUserName.setText("未登录");
 			llUserTop.setBackgroundColor(getActivity().getResources().getColor(R.color.mainColor));
 
 		}

@@ -64,14 +64,14 @@ public class LiveMsgAdapter extends BaseAdapter {
         View rowView = convertView;
         final LiveMsg message = (LiveMsg) getItem(position);
         if (null == rowView) {
-            Log.i("rinima",position+"******"+message.getMsg());
+            Log.i("rinima",position+"******"+message.getContent());
             rowView = LayoutInflater.from(context).inflate(R.layout.live_msg_item, parent, false);
 
         }
         TextView msg = (TextView) rowView.findViewById(R.id.tvMsg);
 
-        SpannableString ss = new SpannableString(message.getUserName()+": "+message.getMsg());
-        ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getUserName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
+        ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         msg.setText(ss);
         return rowView;
     }

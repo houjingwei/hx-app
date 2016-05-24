@@ -16,7 +16,9 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
 import com.huixiangtv.live.pop.CameraWindow;
+import com.huixiangtv.live.pop.LoginWindow;
 import com.huixiangtv.live.pop.ShareWindow;
+import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.ui.ColaProgressTip;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
@@ -79,6 +81,17 @@ public class CommonHelper {
         }
 
     }
+
+    public static void showLoginPopWindow(Activity activity, int atLocationId, LoginCallBack callBack) {
+        pop = new LoginWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop.showAtLocation(activity.findViewById(atLocationId), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        pop.update();
+        if (null != callBack) {
+            ((LoginWindow)pop).setListener(callBack);
+        }
+
+    }
+
 
 
     /**
