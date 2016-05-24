@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
@@ -70,6 +71,8 @@ public class CommonUtil {
                         dlg.dismiss();
                     }
                 });
+
+            //RelativeLayout
 
         }
         else

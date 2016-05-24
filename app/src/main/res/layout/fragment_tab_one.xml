@@ -67,7 +67,6 @@
                     android:layout_height="match_parent"
                     android:background="#efefef"
                     android:orientation="vertical">
-
                     <com.huixiangtv.live.utils.widget.BannerView
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
