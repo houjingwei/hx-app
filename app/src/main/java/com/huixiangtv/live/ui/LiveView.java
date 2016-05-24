@@ -250,7 +250,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     private Handler handler  = new Handler(){
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.obj == 1){
+            if(msg!=null && Integer.parseInt(msg.obj.toString()) == 1){
                 LiveMsg m = getOneMsg();
                 if(null!=m){
                     msgAdapter.add(m);
