@@ -120,4 +120,74 @@ public class RequestUtils {
     }
 
 
+
+    public static <T> void getIOToken(final String url, Map<String, String> paramsMap,final ResponseCallBack<T> callBack) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
+
+        Log.d(Constant.TAG, "--------------------------------------------------------");
+        Log.d(Constant.TAG, "preparing call >" + url);
+        Log.d(Constant.TAG, "originl params >" + paramsMap);
+
+        RequestParams reParams = new RequestParams(url);
+        if(null!= App.getLoginUser()){
+            reParams.addQueryStringParameter("uid", App.getLoginUser().getUid()+"");
+            reParams.addQueryStringParameter("token",App.getLoginUser().getToken()+"");
+        }else{
+            reParams.addQueryStringParameter("uid", "");
+            reParams.addQueryStringParameter("token","");
+        }
+
+        //解析封装参数
+        if(null!=paramsMap && paramsMap.size()>0) {
+            for (String key : paramsMap.keySet()) {
+                reParams.addQueryStringParameter(key, paramsMap.get(key));
+            }
+        }
+        x.http().request(HttpMethod.POST, reParams, new Callback.CommonCallback<String>() {
+
+
+            @Override
+            public void onSuccess(String result) {
+                Log.d(Constant.TAG, "解析后内容 >> " + result);
+                BaseResponse response = JSON.parseObject(result,BaseResponse.class);
+                try {
+                    if (response == null) {
+                        if (callBack != null) {
+                            callBack.onFailure(new ServiceException("未请求到数据"));
+                        }
+                        return;
+                    }
+                    if (callBack != null) {
+                        callBack.onSuccessString(String.valueOf(response.getData()));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    callBack.onFailure(new ServiceException(e.getMessage()));
+                }
+
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                callBack.onFailure(new ServiceException(ex.getMessage()));
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                callBack.onFailure(new ServiceException(cex.getMessage()));
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+
+
+    }
+
+
 }

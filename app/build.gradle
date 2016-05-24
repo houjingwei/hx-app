@@ -34,13 +34,12 @@ android {
         debug {
             signingConfig signingConfigs.release
         }
-
-
     }
+
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:recyclerview-v7:21.0.+'
@@ -73,9 +72,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile files('libs/oneapm-android-agent.jar')
     compile 'com.demievil.library:refreshlayout:1.0.0@aar'
-    compile files('libs/nineoldandroids-2.4.0.jar')
-    //compile 'com.android.support:android-support-v7-appcompat'
-    //compile 'com.android.support:android-support-v4'
+    compile files('libs/Rong_IMLib_v2_6_0.jar')
 }
 
 

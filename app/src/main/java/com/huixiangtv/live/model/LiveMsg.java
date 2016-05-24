@@ -4,41 +4,122 @@ package com.huixiangtv.live.model;
  * Created by hjw on 16/5/17.
  */
 public class LiveMsg {
+    private String msgType;
+    private String nickName;
+    private String uid;
+    private String photo;
+    private String role;
+    private String online;
+    private String addhot;
+    private String gid;
+    private String count;
+    private String pid;
+    private String pname;
+    private String url;
+    private String content;
 
-    private String userName;
-    private String msg;
-    private String type;
 
-    public LiveMsg(String userName, String msg, String type) {
-        this.userName = userName;
-        this.msg = msg;
-        this.type = type;
+    public String getMsgType() {
+        return msgType;
     }
 
-    public LiveMsg() {
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getUid() {
+        return uid;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getType() {
-        return type;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getOnline() {
+        return online;
+    }
+
+    public void setOnline(String online) {
+        this.online = online;
+    }
+
+    public String getAddhot() {
+        return addhot;
+    }
+
+    public void setAddhot(String addhot) {
+        this.addhot = addhot;
+    }
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

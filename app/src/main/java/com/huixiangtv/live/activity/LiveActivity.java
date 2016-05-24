@@ -226,6 +226,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         super.onDestroy();
         if(null!=liveView) {
             liveView.removeGlobalListener();
+            liveView.removeMsgListener();
         }
 
     }

@@ -103,6 +103,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvLoginOut:
+                App.clearLoginUser();
                 onBackPressed();
                 break;
             case R.id.helpcentre:

@@ -51,5 +51,8 @@ public class Constant {
     public static final String PAGE_SIZE = "10";
 
 
-
+    /**
+     * 消息类型
+     */
+    public static final String MSG_TYPE_BASE = "base";
 }

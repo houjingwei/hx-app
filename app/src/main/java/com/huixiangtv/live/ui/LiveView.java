@@ -27,8 +27,8 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.huixiangtv.live.App;
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.activity.Fans;
 import com.huixiangtv.live.adapter.LiveMsgAdapter;
 import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
 import com.huixiangtv.live.model.Live;
@@ -36,9 +36,12 @@ import com.huixiangtv.live.model.LiveMsg;
 import com.huixiangtv.live.model.Star;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.ShareWindow;
+import com.huixiangtv.live.service.ChatTokenCallBack;
+import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.utils.AnimHelper;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.KeyBoardUtils;
+import com.huixiangtv.live.utils.RongyunUtils;
 import com.huixiangtv.live.utils.ShareSdk;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
@@ -51,6 +54,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import io.rong.imlib.RongIMClient;
+import io.rong.message.TextMessage;
 
 /**
  * Created by hjw on 16/5/17.
@@ -97,6 +103,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     TextView tvHot;
     TextView tvLove;
     TextView tvOnline;
+
+    private Live live;
 
 
 
@@ -159,7 +167,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         ivLove.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-
                 int[] locations=new int[2];
                 ivLove.getLocationInWindow(locations);
                 int x = locations[0];
@@ -167,8 +174,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     new BubbleView(activity,ivLove,flLive,false);
                     ivLove.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
-
-
             }
         });
 
@@ -180,6 +185,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     public void setInfo(Live info) {
         if(null!=info){
+            live = info;
             ImageUtils.displayAvator(ivPhoto,info.getPhoto());
             tvNickName.setText(info.getNickName());
             tvHot.setText(info.getHotValue());
@@ -240,10 +246,43 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         loadMsg();
         msgAdapter.addList(msgList);
         msgListView.setAdapter(msgAdapter);
-
         //启动定时器
         timer.schedule(task, 0, 2000);
 
+        App.imClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
+        int flag = App.imClient.getCurrentConnectionStatus().getValue();
+        if(flag==0 || flag==1){
+            joinRoom();
+        }else{
+            App.imClient.logout();
+            final RongyunUtils utils = new RongyunUtils(App.getContext());
+            utils.chatToken(new ChatTokenCallBack() {
+                @Override
+                public void getTokenSuccess(String token) {
+                    utils.connect(token, new ChatTokenCallBack() {
+                        @Override
+                        public void getTokenSuccess(String token) {
+                            joinRoom();
+                        }
+                    });
+                }
+            });
+        }
+
+    }
+
+    private void joinRoom() {
+        App.imClient.joinChatRoom("123456", -1, new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+               CommonHelper.showTip(activity,"进入聊天室成功");
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+        });
     }
 
 
@@ -322,24 +361,79 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivMsg:
+                if(null==App.getLoginUser()){
+                    CommonHelper.showLoginPopWindow(activity, R.id.liveMain,new LoginCallBack(){
+                        @Override
+                        public void loginSuccess() {
+                            showChatInputView();
+                        }
+
+                    });
+                    return;
+                }
                 showChatInputView();
                 break;
             case R.id.switchWrapper:
+                if(null==App.getLoginUser()){
+                    CommonHelper.showLoginPopWindow(activity, R.id.liveMain,new LoginCallBack(){
+                        @Override
+                        public void loginSuccess() {
+                            changeHanhua();
+                        }
+                    });
+                    return;
+                }
                 changeHanhua();
                 break;
             case R.id.ivShare:
+                if(null==App.getLoginUser()){
+                    CommonHelper.showLoginPopWindow(activity, R.id.liveMain,new LoginCallBack(){
+                        @Override
+                        public void loginSuccess() {
+                            shareWin();
+                        }
+                    });
+                    return;
+                }
                 shareWin();
                 break;
             case R.id.ivCamera:
+                if(null==App.getLoginUser()){
+                    CommonHelper.showLoginPopWindow(activity, R.id.liveMain,new LoginCallBack(){
+                        @Override
+                        public void loginSuccess() {
+                            showCameraWin();
+                        }
+                    });
+                    return;
+                }
                 showCameraWin();
                 break;
             case R.id.ivGift:
+                if(null==App.getLoginUser()){
+                    CommonHelper.showLoginPopWindow(activity, R.id.liveMain,new LoginCallBack(){
+                        @Override
+                        public void loginSuccess() {
+                            showGift();
+                        }
+                    });
+                    return;
+                }
                 showGift();
                 break;
             case R.id.flLive:
                 hideGift();
                 break;
             case R.id.ivLove:
+                if(null==App.getLoginUser()){
+                    CommonHelper.showLoginPopWindow(activity, R.id.liveMain,new LoginCallBack(){
+                        @Override
+                        public void loginSuccess() {
+                            new BubbleView(activity,ivLove,flLive,true);
+                        }
+                    });
+                    return;
+                }
                 new BubbleView(activity,ivLove,flLive,true);
                 break;
 
@@ -472,7 +566,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
      * 显示聊天区域
      */
     private void showChatInputView() {
-
         KeyBoardUtils.openKeybord(etChatMsg, ct);
     }
 
@@ -568,6 +661,41 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         this.activity = activity;
     }
 
+    public void removeMsgListener() {
+        App.imClient.setOnReceiveMessageListener(null);
+        App.imClient.quitChatRoom("123456", new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+                Log.i("outout","ok");
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+        });
+    }
 
 
+    /**
+     * 接收消息监听
+     */
+    private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
+        @Override
+        public boolean onReceived(io.rong.imlib.model.Message message, int i) {
+            if(message.getContent() instanceof  TextMessage){
+                TextMessage tm = (TextMessage) message.getContent();
+                LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()),LiveMsg.class);
+                msg.setContent(tm.getContent().toString());
+                if(msg.getMsgType().equals(Constant.MSG_TYPE_BASE)){
+                    msgAdapter.add(msg);
+                }
+                Log.i("msgmsg",msg.toString());
+            }
+
+
+
+            return false;
+        }
+    }
 }

@@ -89,7 +89,17 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 				String refresh_token = data.get("refresh_token");
 				String access_token = data.get("access_token");
 				String uid = data.get("uid");
-				AuthThirdlogin(access_token, platform.toString());
+				String openId = "";
+				String flag = "";
+				if(platform==SHARE_MEDIA.QQ){
+					flag="2";
+				}else if(platform==SHARE_MEDIA.WEIXIN){
+					flag="3";
+					openId = data.get("openid");
+				}else if(platform==SHARE_MEDIA.SINA){
+					flag="4";
+				}
+				AuthThirdlogin(access_token, flag,openId);
 			}
 		}
 
@@ -173,12 +183,13 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 		getActivity().finish();
 	}
 
-	private void AuthThirdlogin(String code,String platform){
+	private void AuthThirdlogin(String code,String platform,String openid){
 		cp = ColaProgress.show(getActivity(), "第三方登录中...", false, true, null);
 		cp.setCancelable(true);
 		Map<String,String> params = new HashMap<String, String>();
 		params.put("code",code);
 		params.put("platform",platform);
+		params.put("openid",openid);
 		RequestUtils.sendPostRequest(Api.AUTH_THIRDLOGIN, params, new ResponseCallBack<User>() {
 			@Override
 			public void onSuccess(User data) {

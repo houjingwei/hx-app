@@ -28,4 +28,7 @@ public class Api {
     public static final String LIVE_SHOW =BASE_URL+ "live/applyLiveshow";
     //版本升级
     public static final String UPGRADE_LEVEL = BASE_URL + "config/getUpgradeInfo";
+
+    //获取聊天室token
+    public static final String CHAT_TOKEN = BASE_URL+"chat/getToken";
 }

@@ -79,14 +79,11 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         activity = (MainActivity) getActivity();
         activity.setTitleBar(getString(R.string.today_rm));
         activity.hideTitle(false);
-
-
         receiver = new LiveListBroadcast();
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION);
         //动态注册BroadcastReceiver
         getActivity().registerReceiver(receiver, filter);
-
         return mRootView;
     }
 
@@ -124,29 +121,12 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
         initAdapter(EnumUpdateTag.UPDATE);
         setListener();
-
         getBanner();
-//        RequestUtils.sendPostRequest(Api.INDEX_BANNER, null, new ResponseCallBack<PositionAdvertBO>() {
-//            @Override
-//            public void onSuccessList(List<PositionAdvertBO> data) {
-//
-//                PositionAdvertBO positionAdvertBO = new PositionAdvertBO();
-//
-//                positionAdvertBO = data.get(0);
-//            }
-//            @Override
-//            public void onFailure(ServiceException e) {
-//                super.onFailure(e);
-//            }
-//        }, PositionAdvertBO.class);
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Handler handler = new Handler();
-        handler.postDelayed(mScrollView, 0);
     }
 
 
@@ -288,18 +268,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
     }
 
-    ;
-
-    private Runnable mScrollView = new Runnable() {
-
-        @Override
-        public void run() {
-
-            sv.scrollTo(0, 258);
-
-        }
-
-    };
 
     @Override
     protected void onNoDoubleClick(View view) {
