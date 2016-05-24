@@ -69,7 +69,11 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
      */
     private void initLocalInfo() {
         LocationTool tool = new LocationTool(ct);
-        jwd =  tool.jwd();
+        try{
+            jwd =  tool.jwd();
+        }catch(Exception e){
+            jwd = new String[3];
+        }
     }
 
     public void setActivity(Activity ac){

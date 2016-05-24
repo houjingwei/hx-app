@@ -1,36 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:clipToPadding="true"
     android:fitsSystemWindows="false"
+    android:orientation="vertical"
     tools:context="com.huixiangtv.live.activity.MainActivity">
-    <LinearLayout
-        android:id="@+id/llTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <com.huixiangtv.live.ui.CommonTitle
-            android:id="@+id/myTitle"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+
+            android:id="@+id/llTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <com.huixiangtv.live.ui.CommonTitle
+                android:id="@+id/myTitle"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
     <!-- 内容界面 -->
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"></FrameLayout>
-    <View
-        style="@style/split_line"/>
+
+    <View style="@style/split_line" />
+
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:background="@color/sysBg"
-        android:gravity="bottom"
-        android:layout_height="50dp">
+        android:gravity="bottom">
 
         <LinearLayout
             android:id="@+id/main_bottom"
@@ -63,12 +74,13 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center">
+
                 <ImageView
                     android:id="@+id/iv2"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:focusable="false"
                     android:layout_centerInParent="true"
+                    android:focusable="false"
                     android:src="@mipmap/tab2" />
             </RelativeLayout>
 

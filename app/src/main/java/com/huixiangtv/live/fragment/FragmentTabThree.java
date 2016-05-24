@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -14,6 +15,7 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.model.User;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
@@ -35,7 +37,7 @@ public class FragmentTabThree extends RootFragment{
 	TextView tvAccount;
 	TextView tvLoves;
 	private RelativeLayout rlSign;
-	LinearLayout llUserTop;
+	RelativeLayout llUserTop;
 
 	@Override
 	protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class FragmentTabThree extends RootFragment{
 
 
 	private void initView() {
+
 		mRootView.findViewById(R.id.ivPhoto).setOnClickListener(this);
 		mRootView.findViewById(R.id.llAccount).setOnClickListener(this);
 		mRootView.findViewById(R.id.tvUserName).setOnClickListener(this);
@@ -74,7 +77,7 @@ public class FragmentTabThree extends RootFragment{
 		haveFans = (TextView) mRootView.findViewById(R.id.haveFans);
 		tvAccount = (TextView) mRootView.findViewById(R.id.tvAccount);
 		tvLoves = (TextView) mRootView.findViewById(R.id.tvLoves);
-		llUserTop = (LinearLayout) mRootView.findViewById(R.id.llUserTop);
+		llUserTop = (RelativeLayout) mRootView.findViewById(R.id.llUserTop);
 
 		rlSign = (RelativeLayout) mRootView.findViewById(R.id.rlSign);
 		rlSign.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +124,7 @@ public class FragmentTabThree extends RootFragment{
 			tvUserName.setText(user.getNickName());
 			if (null != user.getPhoto() && user.getPhoto().length() > 0) {
 				ImageUtils.displayAvator(ivPhoto, user.getPhoto());
-				//CommonHelper.viewSetBackage(user.getPhoto(),llUserTop);
+				CommonHelper.viewSetBackageImag(user.getPhoto(),llUserTop);
 			}
 
 			tvMySj.setText(user.getCoins());
