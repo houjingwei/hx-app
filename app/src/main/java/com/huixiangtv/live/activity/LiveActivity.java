@@ -26,7 +26,6 @@ import com.huixiangtv.live.ui.StartLiveView;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
-import com.huixiangtv.live.utils.LocationTool;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
 
 import org.xutils.view.annotation.ViewInject;
@@ -46,7 +45,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
     LiveView liveView;
 
-    String[] jwd;
+
 
 
 
@@ -62,8 +61,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
         }
-        LocationTool tool = new LocationTool(LiveActivity.this);
-        jwd =  tool.jwd();
+
         startLiveView = new StartLiveView(this);
         startLiveView.setActivity(this);
         flCover.addView(startLiveView);
@@ -119,6 +117,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         }
         params.put("title",startLiveView.getEtTitle().getText().toString());
         params.put("topic",startLiveView.getTvTheme().getText().toString());
+        String[] jwd = startLiveView.getJwd();
         params.put("lon",jwd[0]);
         params.put("lat",jwd[1]);
         params.put("address",jwd[2]);
@@ -169,6 +168,8 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 }
                 liveView = new LiveView(LiveActivity.this);
                 liveView.setActivity(LiveActivity.this);
+                liveView.setInfo(data);
+
                 flCover.addView(liveView);
                 liveView.loadLive(null);
                 ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.utils.KeyBoardUtils;
+import com.huixiangtv.live.utils.LocationTool;
 import com.huixiangtv.live.utils.ShareSdk;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -50,6 +51,9 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
     int platform = 0;
     //是否定位
     int local = 0;
+
+    String[] jwd;
+
     Context ct;
     public StartLiveView(Context context) {
         super(context);
@@ -64,7 +68,8 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
      * 获取经纬度信息
      */
     private void initLocalInfo() {
-
+        LocationTool tool = new LocationTool(ct);
+        jwd =  tool.jwd();
     }
 
     public void setActivity(Activity ac){
@@ -94,7 +99,6 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
         ivClose.setOnClickListener(this);
         tvTheme.setOnClickListener(this);
 
-        rbPhone.setSelected(true);
         rbPhone.setOnClickListener(this);
         rbwx.setOnClickListener(this);
         rbCircle.setOnClickListener(this);
@@ -264,5 +268,10 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
 
     public EditText getEtTitle() {
         return etTitle;
+    }
+
+    public String[] getJwd() {
+        initLocalInfo();
+        return jwd;
     }
 }

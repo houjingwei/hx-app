@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +36,7 @@ import com.huixiangtv.live.utils.AnimHelper;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.ShareSdk;
+import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -84,6 +84,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     RelativeLayout rlMenu;
 
 
+    ImageView ivPhoto;
+    TextView tvNickName;
+    TextView tvHot;
+    TextView tvLove;
+    TextView tvOnline;
+
+
 
 
     public LiveView(Context context) {
@@ -96,9 +103,15 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     private void initView() {
 
+        ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
+        tvNickName = (TextView) findViewById(R.id.tvNickName);
+        tvHot = (TextView) findViewById(R.id.tvHot);
+        tvLove = (TextView) findViewById(R.id.tvLove);
+        tvOnline = (TextView) findViewById(R.id.tvOnline);
+
+
 
         rlMenu = (RelativeLayout) findViewById(R.id.rlMenu);
-
 
         ivMsg = (ImageView) findViewById(R.id.ivMsg);
         ivShare = (ImageView) findViewById(R.id.ivShare);
@@ -154,6 +167,26 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     }
 
+
+
+
+    public void setInfo(Live info) {
+        if(null!=info){
+            ImageUtils.displayAvator(ivPhoto,info.getPhoto());
+            tvNickName.setText(info.getNickName());
+            tvHot.setText(info.getHotValue());
+            tvLove.setText(info.getLoveCount());
+            tvOnline.setText(info.getCount());
+        }
+
+        ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
+        tvNickName = (TextView) findViewById(R.id.tvNickName);
+        tvHot = (TextView) findViewById(R.id.tvHot);
+        tvLove = (TextView) findViewById(R.id.tvLove);
+        tvOnline = (TextView) findViewById(R.id.tvOnline);
+
+    }
+
     public void loadLive(Live live) {
 
         //加载在线用户
@@ -185,16 +218,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         giftView.initView();
         giftView.setRootView(flLive);
         rlGift.addView(giftView);
-        loadGift();
     }
-
-    /**
-     * 加载礼物
-     */
-    private void loadGift() {
-
-    }
-
 
 
 
@@ -405,37 +429,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             }
         }
     }
-
-
-//    public class MyThread implements Runnable {
-//        @Override
-//        public void run() {
-//            // TODO Auto-generated method stub
-//            while (true) {
-//                try {
-//                    Thread.sleep(3000);// 线程暂停10秒，单位毫秒
-//                    Message message = new Message();
-//                    message.what = 1;
-//                    handler.sendMessage(message);// 发送消息
-//                } catch (InterruptedException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
-
-
-//    Handler handler = new Handler() {
-//        public void handleMessage(Message msg) {
-//            mAdapter.addData(new Star("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3869864100,3728042084&fm=21&gp=0.jpg"));
-//            mAdapter.removeData(0);
-//            java.util.Random random = new java.util.Random();// 定义随机类
-//
-//            msgAdapter.addList(loadMsg());
-//            msgListView.setSelection(msgAdapter.getCount() - 1);
-//        }
-//    };
 
 
     // 状态栏的高度

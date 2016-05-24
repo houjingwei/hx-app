@@ -1,8 +1,6 @@
 package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.ui.CommonTitle;
@@ -10,22 +8,21 @@ import com.huixiangtv.live.ui.CommonTitle;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-public class MyConcernActivity extends BaseBackActivity {
+public class PhoneBindActivity extends BaseBackActivity {
 
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_concern);
+        setContentView(R.layout.activity_phone_bind);
         x.view().inject(this);
-        initview();
+        initView();
     }
 
-    private void initview() {
+    private void initView() {
         commonTitle.setActivity(this);
-        commonTitle.setTitleText(getResources().getString(R.string.myconcern));
+        commonTitle.setTitleText(getResources().getString(R.string.newPhoneBind));
     }
-
-
 }

@@ -71,6 +71,7 @@ public class LoginOrRegActivity extends BaseBackActivity implements View.OnClick
             @Override
             public void onPageSelected(int position) {
                 mTabLayout.setCurrentTab(position);
+
             }
 
             @Override

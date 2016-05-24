@@ -5,6 +5,7 @@
     tools:context="com.huixiangtv.live.fragment.FragmentLogin">
 
     <LinearLayout
+        android:id="@+id/llLogin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -73,6 +74,7 @@
                 android:id="@+id/vSplit"
                 android:layout_below="@+id/rlPwd"/>
             <TextView
+                android:id="@+id/tvForgotPwd"
                 android:layout_below="@+id/vSplit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -144,6 +146,157 @@
 
             </LinearLayout>
         </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llForgot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingLeft="30dp"
+        android:visibility="gone"
+        android:paddingRight="30dp"
+
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlPhoen"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <RelativeLayout
+                android:id="@+id/rlPhone"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    style="@style/red_bigest_style"
+                    android:text="+86"/>
+                <EditText
+                    android:id="@+id/etPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    style="@style/et_style"
+                    android:inputType="phone"
+                    android:layout_marginLeft="12dp"
+                    android:hint="@string/inpPhone"
+                    android:layout_toRightOf="@+id/tvPhone"/>
+            </RelativeLayout>
+            <View
+                style="@style/split_line"
+                android:layout_alignParentBottom="true"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <RelativeLayout
+                android:id="@+id/rlCode"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/tvCode"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    style="@style/label_style"
+                    android:text="@string/labelVali"/>
+                <EditText
+                    android:id="@+id/etCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    style="@style/et_style"
+                    android:layout_marginLeft="12dp"
+                    android:layout_toLeftOf="@+id/llGetCode"
+                    android:hint="@string/inpVali"
+                    android:layout_toRightOf="@+id/tvCode"/>
+                <LinearLayout
+                    android:id="@+id/llGetCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:layout_alignParentRight="true">
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="28dp"
+                        android:gravity="center"
+                        android:text="@string/getCode"
+                        android:background="@drawable/border_bg_style_02"
+                        style="@style/label_small_style"
+                        />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+            <View
+                style="@style/split_line"
+                android:layout_alignParentBottom="true"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/myFor"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:id="@+id/tvForgotpwd"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    style="@style/label_style"
+                    android:text="密 码"/>
+                <EditText
+                    android:id="@+id/etForgotPwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    style="@style/et_style"
+                    android:layout_marginLeft="12dp"
+                    android:hint="@string/etPwd"
+                    android:layout_toRightOf="@+id/tvForgotpwd"/>
+            </RelativeLayout>
+            <View
+                android:layout_below="@+id/myFor"
+                style="@style/split_line"
+                android:id="@+id/spline"/>
+
+            <TextView
+                android:padding="10dp"
+                android:id="@+id/tvHaveAccount"
+                android:layout_below="@+id/spline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/haveAccount"
+                style="@style/label_small_style"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tvRegBtn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/ll_input"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/border_bg_style"
+            android:gravity="center"
+            android:text="@string/commit"
+            style="@style/gray_normal_style" />
 
     </LinearLayout>
 

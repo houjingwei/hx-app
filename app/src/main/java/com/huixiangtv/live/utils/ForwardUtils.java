@@ -10,7 +10,9 @@ import com.huixiangtv.live.activity.H5Activity;
 import com.huixiangtv.live.activity.HelpActivity;
 import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.activity.LoginOrRegActivity;
+import com.huixiangtv.live.activity.FanedMeActivity;
 import com.huixiangtv.live.activity.MyFansActivity;
+import com.huixiangtv.live.activity.PhoneBindActivity;
 import com.huixiangtv.live.activity.RefreshAndLoadmoreActivity;
 import com.huixiangtv.live.activity.RegLiveActivity;
 import com.huixiangtv.live.activity.RegLiveMainActivity;
@@ -109,10 +111,19 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, RegLiveMainActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.FANS)){
-                Intent intent = new Intent(oriActivity, MyFansActivity.class);
+                Intent intent = new Intent(oriActivity, FanedMeActivity.class);
                 toIntent(oriActivity,params,intent);
             }else if (url.startsWith(Constant.HELP)){
                 Intent intent = new Intent(oriActivity, HelpActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.startsWith(Constant.PHONE_BIND)){
+                Intent intent = new Intent(oriActivity, PhoneBindActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.startsWith(Constant.MY_FANS)){
+                Intent intent = new Intent(oriActivity, MyFansActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.startsWith(Constant.FANED_ME)){
+                Intent intent = new Intent(oriActivity, FanedMeActivity.class);
                 toIntent(oriActivity,params,intent);
             }
 
