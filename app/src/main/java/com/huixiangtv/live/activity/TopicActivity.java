@@ -93,21 +93,6 @@ public class TopicActivity extends BaseBackActivity{
         mDataLv = (ListView) findViewById(R.id.data);
         mPullToRefreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
 
-
-        mPullToRefreshScrollView.setIsUpListen(new PullToRefreshScrollView.isUpListen() {
-            @Override
-            public void isUp(boolean isUp) {
-                if (isUp) {
-
-                }
-            }
-
-            @Override
-            public void isTouch(boolean isTouch) {
-
-            }
-        });
-
     }
 
 

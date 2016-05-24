@@ -199,6 +199,7 @@
             android:name=".activity.FanedMeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
+
     </application>
 
 </manifest>

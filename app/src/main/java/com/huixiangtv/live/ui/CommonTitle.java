@@ -20,7 +20,6 @@ public class CommonTitle extends RelativeLayout {
     ImageView ivBack;
     TextView tvSave;
     Activity ac;
-
     public CommonTitle(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.activity_base_title, this);
@@ -33,6 +32,7 @@ public class CommonTitle extends RelativeLayout {
                 ac.onBackPressed();
             }
         });
+
     }
 
     public void setTitleText(String str) {

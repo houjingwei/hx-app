@@ -60,7 +60,7 @@ public class App extends Application {
         x.Ext.init(this);
         x.Ext.setDebug(false); // 是否输出debug日志, 开启debug会影响性能.
         PlatformConfig.setSinaWeibo("1912474872", "5ba10f129f1e5cdf37abd2c41bb7fd06");
-        PlatformConfig.setWeixin("wx1e48313855ee1630", "4d395bee2cc7ce077773e0cc9d93da97");
+        PlatformConfig.setWeixin("wxd42ecbf70403ea6e", "74e3218222aab649f12a0f7511957413");
         PlatformConfig.setQQZone("1105010761", "QWCN9CxD0blbth4M");
 //      PlatformConfig.setSinaWeibo("3833863944", "dfea615e3114cf87412da53b2d3df173"); //自己的
         loginHelper = new PreferencesHelper(sContext, Constant.LOGIN_INFO);

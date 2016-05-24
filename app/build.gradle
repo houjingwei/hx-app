@@ -72,8 +72,10 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.11'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile files('libs/oneapm-android-agent.jar')
-
     compile 'com.demievil.library:refreshlayout:1.0.0@aar'
+    compile files('libs/nineoldandroids-2.4.0.jar')
+    //compile 'com.android.support:android-support-v7-appcompat'
+    //compile 'com.android.support:android-support-v4'
 }
 
 

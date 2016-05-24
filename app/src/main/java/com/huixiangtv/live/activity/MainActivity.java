@@ -1,5 +1,6 @@
 package com.huixiangtv.live.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -219,7 +220,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tab1:
-                setTabSelection(0);
+                onDBClick();
                 break;
             case R.id.tab2:
                 startLive();
@@ -236,6 +237,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
+    private void onDBClick(){
+        if (System.currentTimeMillis() - lastTipTimeMills > 300) {
+            lastTipTimeMills = System.currentTimeMillis();
+            setTabSelection(0);
+            sendToOneFragment("1");
+        } else {
+            sendToOneFragment("0");
+            iv1.setImageResource(R.mipmap.tab1);
+        }
+    }
+
     /**
      * 开启直播
      */
@@ -244,6 +256,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
+    private void sendToOneFragment(String type)
+    {
+        Intent intent = new Intent("com.android.broadcast.RECEIVER_ACTION");
+        intent.putExtra("type",type);
+        sendBroadcast(intent);
+    }
 
     @Override
     public void onAttachFragment(Fragment fragment)  {

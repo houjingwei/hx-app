@@ -1,10 +1,14 @@
 package com.huixiangtv.live.fragment;
 
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +30,7 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.adapter.CommonAdapter;
+import com.huixiangtv.live.adapter.ListViewPagerAdapter;
 import com.huixiangtv.live.adapter.ViewHolder;
 import com.huixiangtv.live.model.BannerModel;
 import com.huixiangtv.live.model.Live;
@@ -46,7 +51,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class FragmentTabOne extends RootFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private final int PAGE_SIZE = 12;
     private int currPage = 1;
@@ -63,9 +68,10 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
     private ScrollView sv;
     private List<Live> commonModelList = new ArrayList<Live>();
     private LinearLayoutForListView listview;
-
-
-
+    private ListViewPagerAdapter listPager;
+    private ViewPager dl_pager;
+    private LiveListBroadcast receiver;
+    private String ACTION = "com.android.broadcast.RECEIVER_ACTION";
 
     @Override
     protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,13 +80,20 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
         activity.setTitleBar(getString(R.string.today_rm));
         activity.hideTitle(false);
 
+
+        receiver = new LiveListBroadcast();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION);
+        //动态注册BroadcastReceiver
+        getActivity().registerReceiver(receiver, filter);
+
         return mRootView;
     }
 
     @Override
     protected void initLayout(View view) {
-        loadView = (LoadingView) view.findViewById(R.id.loadView);
-        loadView.setVisibility(View.VISIBLE);
+        //loadView = (LoadingView) view.findViewById(R.id.loadView);
+        //loadView.setVisibility(View.VISIBLE);
         ll_search = (LinearLayout) view.findViewById(R.id.ll_search);
         bannerView = (BannerView) view.findViewById(R.id.banner);
         mRefreshLayout = (PullToRefreshScrollView) view.findViewById(R.id.refreshLayout);
@@ -93,31 +106,16 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
             }
         });
         listview.setVisibility(View.GONE);
-        loadView.setVisibility(View.VISIBLE);
         mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
         sv = (ScrollView) view.findViewById(R.id.sv);
-
-        mRefreshLayout.setIsUpListen(new PullToRefreshScrollView.isUpListen() {
-            @Override
-            public void isUp(boolean isUp) {
-                if (isUp) {
-//                    if(ll_search.getVisibility() ==View.VISIBLE || mRefreshLayout.getMode() == PullToRefreshBase.Mode.MANUAL_REFRESH_ONLY) {
-//                        mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
-//                    }
-
-                }
-            }
-
-            @Override
-            public void isTouch(boolean isTouch) {
-
-            }
-        });
+        dl_pager = (ViewPager) view.findViewById(R.id.dl_pager);
+        dl_pager.setVisibility(View.GONE);
 
         //待用 莫删除
         //mRefreshLayout.setOnTouchListener(new TouchListenerImpl());
 
     }
+
     @Override
     protected void initData() {
 
@@ -152,6 +150,12 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
     }
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(receiver);
+    }
+
     /**
      * loading and init list
      */
@@ -159,23 +163,21 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
 
 
         //put params
-        Map<String, String> paramsMap = new HashMap<String,String>();
-        paramsMap.put("page",currPage+"");
-        paramsMap.put("pagesize",PAGE_SIZE+"");
-        paramsMap.put("cNo","");
-
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("page", currPage + "");
+        paramsMap.put("pagesize", PAGE_SIZE + "");
+        paramsMap.put("cNo", "");
 
 
         RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<Live>() {
             @Override
             public void onSuccessList(List<Live> data) {
 
-                if(data!=null && data.size()>0) {
+                if (data != null && data.size() > 0) {
 
-                    if(currPage==1)
-                    {
+                    if (currPage == 1) {
                         listview.setVisibility(View.VISIBLE);
-                        loadView.setVisibility(View.GONE);
+                        //loadView.setVisibility(View.GONE);
                     }
                     if (enumUpdateTag == EnumUpdateTag.UPDATE) {
                         commonModelList.clear();
@@ -184,23 +186,23 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
                     for (Live live : data) {
                         commonModelList.add(live);
                     }
-                    Long totalCount = Long.parseLong(data.size()+"");
-                    if (0 == totalCount)
-                    {
-                        Toast.makeText(getActivity(),"已经没有更多内容了",Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    Long totalCount = Long.parseLong(data.size() + "");
+                    if (0 == totalCount) {
+                        Toast.makeText(getActivity(), "已经没有更多内容了", Toast.LENGTH_LONG).show();
+                    } else {
                         adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
                         listview.setAdapter(adapter);
+
+                        listPager = new ListViewPagerAdapter(getActivity(), data, 1);
+                        dl_pager.setAdapter(listPager);
                     }
-                }
-                else
-                {
+                } else {
 
                 }
                 mRefreshLayout.onRefreshComplete();
                 ll_search.setVisibility(View.GONE);
             }
+
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
@@ -241,11 +243,11 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
             ImageView ivIcon = helper.getView(R.id.ivIcon);
 
 
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ivIcon.getLayoutParams();
-            params.height = (int) (App.screenWidth*0.75);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIcon.getLayoutParams();
+            params.height = (int) (App.screenWidth * 0.75);
             ivIcon.setLayoutParams(params);
 
-            ImageUtils.display(ivIcon,item.getPhoto());
+            ImageUtils.display(ivIcon, item.getPhoto());
 
         }
     }
@@ -259,22 +261,21 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
 
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    int scrollY=view.getScrollY();
-                    int height=view.getHeight();
-                    int scrollViewMeasuredHeight=mRefreshLayout.getChildAt(0).getMeasuredHeight();
-                    if(scrollY>2 || scrollY<=1){
+                    int scrollY = view.getScrollY();
+                    int height = view.getHeight();
+                    int scrollViewMeasuredHeight = mRefreshLayout.getChildAt(0).getMeasuredHeight();
+                    if (scrollY > 2 || scrollY <= 1) {
 
 
-                        if(ll_search.getVisibility() ==View.VISIBLE) {
+                        if (ll_search.getVisibility() == View.VISIBLE) {
                             mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
-                        }
-                        else {
+                        } else {
                             mRefreshLayout.setMode(PullToRefreshBase.Mode.MANUAL_REFRESH_ONLY);
                             ll_search.setVisibility(View.VISIBLE);
                             return true;
                         }
                     }
-                    if((scrollY+height)==scrollViewMeasuredHeight){
+                    if ((scrollY + height) == scrollViewMeasuredHeight) {
 
                     }
                     break;
@@ -285,14 +286,16 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
             return false;
         }
 
-    };
+    }
+
+    ;
 
     private Runnable mScrollView = new Runnable() {
 
         @Override
         public void run() {
 
-            sv.scrollTo(0,258);
+            sv.scrollTo(0, 258);
 
         }
 
@@ -310,7 +313,7 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 listview.setVisibility(View.GONE);
-                loadView.setVisibility(View.VISIBLE);
+                //loadView.setVisibility(View.VISIBLE);
                 currPage = 1;
                 initAdapter(EnumUpdateTag.UPDATE);
             }
@@ -337,17 +340,17 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
         ForwardUtils.target(getActivity(), Constant.SEARCH, null);
     }
 
-    private void getBanner(){
+    private void getBanner() {
 
-        Map<String, String> paramsMap = new HashMap<String,String>();
-        paramsMap.put("page",currPage+"");
-        paramsMap.put("pagesize",PAGE_SIZE+"");
-        paramsMap.put("groupName","");
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("page", currPage + "");
+        paramsMap.put("pagesize", PAGE_SIZE + "");
+        paramsMap.put("groupName", "");
         RequestUtils.sendPostRequest(Api.CONTENT_GET_BANNER, paramsMap, new ResponseCallBack<BannerModel>() {
             @Override
             public void onSuccessList(List<BannerModel> data) {
 
-                if(data!=null && data.size()>0) {
+                if (data != null && data.size() > 0) {
 
                     guangGao.clear();
                     guangGao.addAll(data);
@@ -356,13 +359,32 @@ public class FragmentTabOne extends RootFragment implements  AdapterView.OnItemC
                 }
 
             }
+
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
             }
         }, BannerModel.class);
 
-
     }
+
+
+    private class LiveListBroadcast extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && intent.getStringExtra("type") != null) {
+                if (intent.getStringExtra("type").toString().equals("0")) {
+                    mRefreshLayout.setVisibility(View.GONE);
+                    dl_pager.setVisibility(View.VISIBLE);
+                } else if (intent.getStringExtra("type").toString().equals("1")) {
+                    dl_pager.setVisibility(View.GONE);
+                    mRefreshLayout.setVisibility(View.VISIBLE);
+                }
+            }
+
+        }
+    }
+
 
 }
