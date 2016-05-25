@@ -72,7 +72,7 @@ public class LiveBannerAdapter extends BaseAdapter {
         }
         ImageView ivIcon = holder.sigImg;
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ivIcon.getLayoutParams();
-        params.height = (int) (App.screenHeight-420);
+        params.height = (int) (App.screenHeight-415);
         ivIcon.setLayoutParams(params);
         LinearLayout llInfo = holder.llInfo;
         llInfo.setBackgroundResource(R.color.black_01);
