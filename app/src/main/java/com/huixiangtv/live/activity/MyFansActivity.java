@@ -75,19 +75,7 @@ public class MyFansActivity extends BaseBackActivity {
         tvHot3 = (TextView) findViewById(R.id.tvHot3);
 
         mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
-        mRefreshLayout.setIsUpListen(new PullToRefreshScrollView.isUpListen() {
-            @Override
-            public void isUp(boolean isUp) {
 
-            }
-
-            @Override
-            public void isTouch(boolean isTouch) {
-
-            }
-
-
-        });
         mRefreshLayout.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {

@@ -84,21 +84,13 @@ public class PullToRefreshScrollView extends PullToRefreshBase<ScrollView> {
         return false;
     }
 
-    private isUpListen isuplisten;
     private EnableBackTopListen enableBackTopListen;
 
-    public void setIsUpListen(isUpListen isUpListen) {
-        this.isuplisten = isUpListen;
-    }
 
     public void setEnableBackTopListen(EnableBackTopListen enableBackTopListen) {
         this.enableBackTopListen = enableBackTopListen;
     }
 
-    public interface isUpListen{
-        void isUp(boolean isUp);
-        void isTouch(boolean isTouch);
-    }
     public interface EnableBackTopListen {
         void enable();
         void unable();
@@ -118,15 +110,6 @@ public class PullToRefreshScrollView extends PullToRefreshBase<ScrollView> {
 
         @Override
         public boolean onInterceptTouchEvent(MotionEvent ev) {
-
-            if( ev.getAction() == MotionEvent.ACTION_DOWN)
-            {
-                isuplisten.isTouch(true);
-            }
-            else
-            {
-                isuplisten.isTouch(false);
-            }
 
             return super.onInterceptTouchEvent(ev);
         }
@@ -151,14 +134,6 @@ public class PullToRefreshScrollView extends PullToRefreshBase<ScrollView> {
             OverscrollHelper.overScrollBy(PullToRefreshScrollView.this, deltaX, scrollX, deltaY, scrollY,
                     getScrollRange(), isTouchEvent);
 
-            if(scrollY == 0)
-            {
-                isuplisten.isUp(true);
-            }
-            else
-            {
-                isuplisten.isUp(false);
-            }
             return returnValue;
         }
 

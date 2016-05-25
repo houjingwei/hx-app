@@ -67,10 +67,9 @@
             android:value="573d35e767e58eb762002e12" />
 
 
-
         <!--<service-->
-            <!--android:name="com.sina.weibo.sdk.net.DownloadService"-->
-            <!--android:exported="false" />-->
+        <!--android:name="com.sina.weibo.sdk.net.DownloadService"-->
+        <!--android:exported="false" />-->
         <!-- QQ空间 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -216,27 +215,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
 
-
-
-
-
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="pwe86ga5ebwp6" />
+
         <service
-            android:process=":ipc"
+            android:name="io.rong.imlib.ipc.RongService"
             android:exported="true"
-            android:name="io.rong.imlib.ipc.RongService">
-        </service>
+            android:process=":ipc"></service>
 
-        <service android:name="io.rong.imlib.ReConnectService"/>
-        <receiver android:name="io.rong.imlib.ConnectChangeReceiver"/>
+        <service android:name="io.rong.imlib.ReConnectService" />
 
-        <receiver android:name="io.rong.imlib.HeartbeatReceiver"
-            android:process=":ipc"/>
-
-
-
+        <receiver android:name="io.rong.imlib.ConnectChangeReceiver" />
+        <receiver
+            android:name="io.rong.imlib.HeartbeatReceiver"
+            android:process=":ipc" />
     </application>
 
 </manifest>

@@ -35,4 +35,12 @@
         <attr name="pw_barLength" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="CustomIndicator">
+        <attr name="count_ci" format="integer" />
+        <attr name="width_ci" format="dimension" />
+        <attr name="height_ci" format="dimension" />
+        <attr name="margin_ci" format="dimension" />
+        <attr name="normal_icon" format="reference" />
+        <attr name="selected_icon" format="reference" />
+    </declare-styleable>
 </resources>
