@@ -72,12 +72,12 @@ public class LiveBannerAdapter extends BaseAdapter {
         }
         ImageView ivIcon = holder.sigImg;
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ivIcon.getLayoutParams();
-        params.height = (int) (App.screenHeight-450);
+        params.height = (int) (App.screenHeight-420);
         ivIcon.setLayoutParams(params);
         LinearLayout llInfo = holder.llInfo;
         llInfo.setBackgroundResource(R.color.black_01);
-        llInfo.getBackground().mutate().setAlpha(300);
-        holder.tvInfo.setText(mType.get(pos).getTitle());
+        llInfo.getBackground().mutate().setAlpha(400);
+        holder.tvInfo.setText(mType.get(pos).getNickName());
         ImageUtils.display(ivIcon, mType.get(pos).getPhoto());
         holder.iv_goto_live.setOnClickListener(new View.OnClickListener() {
             @Override
