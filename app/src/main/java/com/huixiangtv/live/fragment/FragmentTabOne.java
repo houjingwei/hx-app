@@ -141,7 +141,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                         Live live = listPager.list.get(position);
                         tvInfo.setText(live.getNickName());
                         currentViewPage = position;
-                        if (listPager.list.size() < 20) {
+                        if (listPager.list.size() < 10) {
                             if (listPager.list.size() - 2 == position) {
                                 loadMore();
                             }
