@@ -5,9 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.ColaProgressTip;
 import com.huixiangtv.live.ui.CommonTitle;
@@ -18,6 +18,12 @@ import com.zhy.view.flowlayout.TagFlowLayout;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class UserTagActivity extends BaseBackActivity implements View.OnClickListener {
 
@@ -31,13 +37,14 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
     TagAdapter<String> adapter;
 
 
-
+    String userTags = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_tag);
         x.view().inject(this);
         initView();
+        userTags = getIntent().getStringExtra("tags");
         initData();
 
 
@@ -57,9 +64,15 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
     String[] tags = null;
 
     private void initData() {
+        Set<Integer> selectedSet = new HashSet<Integer>();
         tags = new String[50];
         for (int i = 0; i < 50; i++) {
             tags[i] = "标签" + (i + 1);
+            for (String tag:userTags.split(",")){
+                if(tag.equals(tags[i])){
+                   selectedSet.add(i);
+                }
+            }
         }
         final LayoutInflater mInflater = LayoutInflater.from(UserTagActivity.this);
         mFlowLayout.setMaxSelectCount(4);
@@ -80,10 +93,10 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
                 return false;
             }
         });
-
         mFlowLayout.setAdapter(adapter);
-
-
+        if(null!=selectedSet && selectedSet.size()>0){
+            adapter.setSelectedList(selectedSet);
+        }
     }
 
 
@@ -94,13 +107,32 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.save:
-                if (mFlowLayout.getSelectedList().size() == 4) {
-                    ShowUtils.showTip(UserTagActivity.this, "最多选择四个标签~");
+                if (mFlowLayout.getSelectedList().size() == 0) {
+                    ShowUtils.showTip(UserTagActivity.this, "请选择标签~");
                 }else{
-                    ShowUtils.showTip(UserTagActivity.this, "保存~");
+                    Map<String,String> params = new HashMap<String,String>();
+                    String tags = getTag();
+                    ShowUtils.showTip(UserTagActivity.this, "等待提供接口~"+tags);
+                    //RequestUtils.sendPostRequest(Api.SAVE_USER_TAG,params,);
                 }
                 break;
         }
+    }
+
+
+    /**
+     * 用户标签字符串
+     */
+    private String getTag(){
+        String selectTagStr = "";
+        StringBuffer sb = new StringBuffer("");
+        for(int key:mFlowLayout.getSelectedList()){
+            sb.append(tags[key]+",");
+        }
+        if(null!=sb && sb.length()>1){
+            selectTagStr = (String) sb.subSequence(0,sb.length()-1);
+        }
+        return selectTagStr;
     }
 
 

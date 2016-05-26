@@ -2,6 +2,7 @@ package com.huixiangtv.live.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,19 +11,39 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.huixiangtv.live.Api;
+import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.model.Upfeile;
+import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.SelectPicWayWindow;
 import com.huixiangtv.live.pop.UpdateSexWindow;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.ui.CommonTitle;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
+import com.huixiangtv.live.utils.ShowUtils;
+import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.image.PictureHelper;
+import com.tencent.upload.Const;
+import com.tencent.upload.UploadManager;
+import com.tencent.upload.task.ITask;
+import com.tencent.upload.task.IUploadTaskListener;
+import com.tencent.upload.task.data.FileInfo;
+import com.tencent.upload.task.impl.PhotoUploadTask;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserinfoActivity extends BaseBackActivity implements View.OnClickListener {
 
@@ -31,12 +52,9 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     TagFlowLayout mFlowLayout;
     TagAdapter<String> adapter ;
 
-    @ViewInject(R.id.title)
-    TextView txTitle;
-    @ViewInject(R.id.save)
-    TextView tvSave;
-    @ViewInject(R.id.back)
-    ImageView ivBack;
+    @ViewInject(R.id.myTitle)
+    CommonTitle commonTitle;
+    private TextView tvSave;
 
     @ViewInject(R.id.tvSex)
     TextView tvSex;
@@ -48,7 +66,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
 
     PictureHelper pictureHelper;
 
-
+    String tagStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +74,33 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         setContentView(R.layout.activity_userinfo);
         x.view().inject(this);
         initView();
-        initTags();
+        if(null!=App.getLoginUser()){
+            setUserInfo();
+        }
+    }
+
+    private void setUserInfo() {
+        User user = App.getLoginUser();
+        ImageUtils.displayAvator(ivPhoto,user.getPhoto());
+        etNickName.setText(user.getNickName());
+        tvSex.setText(user.getSex());
+        String userTags = user.getTags();
+        userTags = "小清新,校花,大美女";
+        if(StringUtil.isNotEmpty(userTags)){
+            initTags(userTags.split(","));
+
+            getTag();
+        }
+
+
     }
 
     private void initView() {
-        txTitle.setText(R.string.upUserInfo);
-        ivBack.setOnClickListener(this);
-        tvSave.setVisibility(View.VISIBLE);
+        commonTitle.setActivity(this);
+        commonTitle.setTitleText("修改个人资料");
+        commonTitle.saveShow(View.VISIBLE);
+        tvSave = commonTitle.getSave();
+        tvSave.setOnClickListener(this);
 
         //隐藏键盘
         KeyBoardUtils.closeKeybord(etNickName,UserinfoActivity.this);
@@ -77,18 +115,12 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         pictureHelper.needCropPicture(true);//需要对图片进行裁剪。
     }
 
-    String[] tags = null;
-    private void initTags() {
-        tags = new String[6];
-        for (int i = 0; i < 6; i++) {
-            tags[i] = "标签"+(i+1);
-        }
+    private void initTags(String[] tags) {
         final LayoutInflater mInflater = LayoutInflater.from(UserinfoActivity.this);
-        mFlowLayout.setMaxSelectCount(5);
         adapter = new TagAdapter<String>(tags) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
-                TextView tv = (TextView) mInflater.inflate(R.layout.tag,mFlowLayout, false);
+                TextView tv = (TextView) mInflater.inflate(R.layout.my_tag,mFlowLayout, false);
                 tv.setText(s);
                 return tv;
             }
@@ -104,7 +136,9 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.rl_tag:
-                ForwardUtils.target(UserinfoActivity.this,"huixiang://userTag",null);
+                Map<String,String> tags = new HashMap<String,String>();
+                tags.put("tags",tagStr);
+                ForwardUtils.target(UserinfoActivity.this,"huixiang://userTag",tags);
                 break;
             case R.id.back:
                 onBackPressed();
@@ -115,9 +149,58 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             case R.id.ivPhoto:
                 upHeadPhoto();
                 break;
+            case R.id.save:
+                saveUserInfo();
+                break;
             
 
         }
+    }
+
+    /**
+     * 用户标签字符串
+     */
+    private void getTag(){
+        StringBuffer sb = new StringBuffer("");
+        int tagCount = mFlowLayout.getAdapter().getCount();
+        for (int i=0;i<tagCount;i++){
+            String tag = (String) mFlowLayout.getAdapter().getItem(i);
+            sb.append(tag+",");
+        }
+        if(sb.length()>0){
+            tagStr = sb.substring(0,sb.length()-1);
+        }
+    }
+
+    /**
+     * 保存用户信息
+     */
+    private void saveUserInfo() {
+        if(TextUtils.isEmpty(etNickName.getText().toString())){
+            ShowUtils.showTip(UserinfoActivity.this, "请设置昵称~");
+        }
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("tags",tagStr);
+        params.put("photo","photo");
+        params.put("nickName",etNickName.getText().toString());
+        params.put("sex",tvSex.getText().toString());
+        params.put("signature","");
+        RequestUtils.sendPostRequest(Api.SAVE_USER, params, new ResponseCallBack<User>() {
+            @Override
+            public void onSuccess(User data) {
+                super.onSuccess(data);
+                App.saveLoginUser(data);
+                CommonHelper.showTip(UserinfoActivity.this,"用户信息保存成功");
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                CommonHelper.showTip(UserinfoActivity.this,e.getMessage());
+            }
+        },User.class);
+
+
     }
 
     private void upHeadPhoto() {
@@ -158,9 +241,64 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             if (!finished) {
                 return;
             }
-            ImageUtils.display(ivPhoto,picUri);
+            upFileInfo(picUri);
         }
     };
+
+    private void upFileInfo(final String picUri) {
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("type","1");
+        RequestUtils.sendPostRequest(Api.UPLOAD_FILE_INFO, params, new ResponseCallBack<Upfeile>() {
+            @Override
+            public void onSuccess(Upfeile data) {
+                super.onSuccess(data);
+                upFile(data,picUri);
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        },Upfeile.class);
+//        ImageUtils.display(ivPhoto,picUri);
+    }
+
+
+
+    private void upFile(Upfeile data, String picUri) {
+        UploadManager photoUploadMgr = null;
+        photoUploadMgr = new UploadManager(UserinfoActivity.this, data.getAppId(),Const.FileType.Photo,data.getPersistenceId());
+        PhotoUploadTask task = new PhotoUploadTask(picUri, new IUploadTaskListener() {
+            @Override
+            public void onUploadSucceed(FileInfo fileInfo) {
+                String photo = fileInfo.url;
+                ImageUtils.displayAvator(ivPhoto,photo);
+            }
+
+            @Override
+            public void onUploadFailed(int i, String s) {
+
+            }
+
+            @Override
+            public void onUploadProgress(long l, long l1) {
+
+            }
+
+            @Override
+            public void onUploadStateChange(ITask.TaskState taskState) {
+
+            }
+        });
+        task.setBucket(data.getBucket());  // 设置Bucket(可选)
+        task.setAuth(data.getSig());
+        photoUploadMgr.upload(task);
+
+
+    }
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {

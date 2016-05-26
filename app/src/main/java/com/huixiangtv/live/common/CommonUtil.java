@@ -4,18 +4,27 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.utils.CommonHelper;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,6 +118,27 @@ public class CommonUtil {
     }
 
 
+    /**
+     * 获取验证码
+     * @return
+     * @param
+     * @param ct
+     */
+    public static void getMsgCode(String phoneNum, final Context ct) {
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("phone",phoneNum);
+        RequestUtils.sendPostRequest(Api.MSG_CODE, params, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccess(String str) {
+                super.onSuccess(str);
+                Toast.makeText(App.getContext(), "\"验证码发送成功\"", Toast.LENGTH_SHORT).show();
+            }
 
-
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                CommonHelper.showTip(ct,e.getMessage());
+            }
+        },String.class);
+    }
 }

@@ -4,9 +4,9 @@ package com.huixiangtv.live;
  * Created by hjw on 16/5/13.
  */
 public class Api {
-
+//     public static final String BASE_URL = "http://119.29.2.57:9999/api/";
+//    public static final String BASE_URL = "http://119.29.2.57:9999/";
     public static final String BASE_URL = "http://119.29.94.122:8888/";
-//    public static final String BASE_URL = "http://119.29.2.57:9999/api/";
     public static final String TOPIC = BASE_URL+"live/getUserLiveTopics";
     public static final String LIVE_BANNER = BASE_URL+"content/getBanner";
     public static final String LIVE_LIST = BASE_URL+"live/getUserLive";
@@ -31,4 +31,16 @@ public class Api {
 
     //获取聊天室token
     public static final String CHAT_TOKEN = BASE_URL+"chat/getToken";
+    public static final String SEND_MSG = BASE_URL+"chat/sendUgcMsg";
+    public static final String HISTORY_MSG = BASE_URL+"chat/getLastMsg";
+    public static final String ONLINE_USER = BASE_URL+"chat/getLastUser";
+
+
+    //保存用户信息
+    public static final String SAVE_USER = BASE_URL+"user/userInfo/save";
+
+
+    //获取验证码
+    public static final String MSG_CODE = BASE_URL+"auth/getVerifCode";
+    public static final String UPLOAD_FILE_INFO = BASE_URL+"resource/getImageUploadInfo";
 }

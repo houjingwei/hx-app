@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Star;
+import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.List;
@@ -19,10 +20,10 @@ import java.util.List;
 public class LiveOnlineUsersAdapter extends RecyclerView.Adapter<LiveOnlineUsersAdapter.StarViewHolder> {
 
 
-    private List<Star> datas;
+    private List<User> datas;
 
-    public LiveOnlineUsersAdapter(List datas) {
-        this.datas = datas;
+    public LiveOnlineUsersAdapter(List<User> ls) {
+        this.datas = ls;
     }
 
 
@@ -35,8 +36,8 @@ public class LiveOnlineUsersAdapter extends RecyclerView.Adapter<LiveOnlineUsers
 
     @Override
     public void onBindViewHolder(StarViewHolder holder, int position) {
-        Star star = datas.get(position);
-        ImageUtils.display(holder.imageView,star.getUrl());
+        User star = datas.get(position);
+        ImageUtils.display(holder.imageView,star.getPhoto());
     }
 
     @Override
@@ -45,8 +46,8 @@ public class LiveOnlineUsersAdapter extends RecyclerView.Adapter<LiveOnlineUsers
     }
 
 
-    public void addData(Star star) {
-        datas.add(star);
+    public void addData(User user) {
+        datas.add(user);
         notifyDataSetChanged();
     }
 

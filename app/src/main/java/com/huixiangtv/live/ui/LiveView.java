@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
@@ -34,10 +36,14 @@ import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.LiveMsg;
 import com.huixiangtv.live.model.Star;
+import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.ShareWindow;
 import com.huixiangtv.live.service.ChatTokenCallBack;
 import com.huixiangtv.live.service.LoginCallBack;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.AnimHelper;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.KeyBoardUtils;
@@ -51,7 +57,9 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -154,7 +162,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         switchWrapper.setBackgroundDrawable(gd);
         switchLabel.setTextColor(getResources().getColor(R.color.gray));
         etChatMsg.setHint("和大家一起聊~");
-
+        findViewById(R.id.tvSendMsg).setOnClickListener(this);
 
         flLive = (FrameLayout) findViewById(R.id.flLive);
         flLive.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
@@ -243,11 +251,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         msgListView = (ListView) findViewById(R.id.msgList);
         msgAdapter = new LiveMsgAdapter(activity);
         msgList = new ArrayList<LiveMsg>();
-        loadMsg();
-        msgAdapter.addList(msgList);
         msgListView.setAdapter(msgAdapter);
+        loadMsg();
         //启动定时器
-        timer.schedule(task, 0, 2000);
+        timer.schedule(task, 0, 3000);
 
         App.imClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
         int flag = App.imClient.getCurrentConnectionStatus().getValue();
@@ -294,13 +301,19 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 if(null!=m){
                     msgAdapter.add(m);
                     msgListView.setSelection(msgAdapter.getCount()-1);
+                }else{
+                    m = new LiveMsg();
+                    m.setContent("还是没有真实数据....");
+                    m.setNickName("谈笑风生");
+                    msgAdapter.add(m);
+                    msgListView.setSelection(msgAdapter.getCount()-1);
                 }
             }
         }
     };
 
     public LiveMsg getOneMsg() {
-        if(null!=msgList){
+        if(null!=msgList && msgList.size()>0){
             int index=(int)(Math.random()*msgList.size());
             return msgList.get(index);
         }
@@ -323,20 +336,21 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
     private void loadMsg() {
-        try {
-            InputStreamReader inputStreamReader = new InputStreamReader(activity.getAssets().open("liveMsg.json"), "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-            StringBuilder stringBuilder = new StringBuilder();
-            while((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("chatroom",live.getChatroom());
+        RequestUtils.sendPostRequest(Api.HISTORY_MSG, params, new ResponseCallBack<LiveMsg>() {
+            @Override
+            public void onSuccess(LiveMsg data) {
+                super.onSuccess(data);
+                msgAdapter.add(data);
+                msgListView.setAdapter(msgAdapter);
             }
-            bufferedReader.close();
-            inputStreamReader.close();
-            msgList = JSON.parseArray(stringBuilder.toString(),LiveMsg.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        },LiveMsg.class);
     }
 
 
@@ -344,17 +358,30 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         mRecyclerView = (RecyclerView) findViewById(R.id.mRecylerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
-        List<Star> list = new ArrayList<Star>();
-        for (int i = 0; i < 5; i++) {
-            Star star = new Star("https://ss0.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2989677963,180662226&fm=21&gp=0.jpg");
-            list.add(star);
-        }
-
-        mAdapter = new LiveOnlineUsersAdapter(list);
-
-        mRecyclerView.setAdapter(mAdapter);
+        loadOnlineUser();
 
 
+
+
+    }
+
+    private void loadOnlineUser() {
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("chatroom",live.getChatroom());
+        RequestUtils.sendPostRequest(Api.ONLINE_USER, params, new ResponseCallBack<User>() {
+            @Override
+            public void onSuccessList(List<User> data) {
+                super.onSuccessList(data);
+                mAdapter = new LiveOnlineUsersAdapter(data);
+
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, User.class);
     }
 
     @Override
@@ -372,6 +399,9 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     return;
                 }
                 showChatInputView();
+                break;
+            case R.id.tvSendMsg:
+                sendMessage();
                 break;
             case R.id.switchWrapper:
                 if(null==App.getLoginUser()){
@@ -422,7 +452,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 showGift();
                 break;
             case R.id.flLive:
-                hideGift();
+                if(giftShow) {
+                    hideGift();
+                }
+                hideKeyBoard();
                 break;
             case R.id.ivLove:
                 if(null==App.getLoginUser()){
@@ -443,9 +476,46 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     }
 
     /**
+     * 发送消息
+     */
+    private void sendMessage() {
+        if(TextUtils.isEmpty(etChatMsg.getText().toString())){
+            CommonHelper.showTip(activity, "不可以发送空消息哦~");
+            etChatMsg.requestFocus();
+            return;
+        }
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("chatroom",live.getChatroom());
+        params.put("content",etChatMsg.getText().toString());
+        params.put("nickName",live.getNickName());
+        params.put("photo",live.getPhoto());
+        RequestUtils.sendPostRequest(Api.SEND_MSG, params, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccessString(String str) {
+                super.onSuccessString(str);
+                hideKeyBoard();
+                LiveMsg msg = new LiveMsg();
+                msg.setContent(etChatMsg.getText().toString());
+                msg.setPhoto(live.getPhoto());
+                msg.setNickName(live.getNickName());
+                msgAdapter.add(msg);
+                msgListView.setSelection(msgAdapter.getCount()-1);
+                etChatMsg.setText("");
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        },String.class);
+    }
+
+    /**
      * 隐藏礼物面板
      */
+    boolean giftShow = true;
     private void hideGift() {
+        giftShow = false;
         rlMenu.setVisibility(View.VISIBLE);
         AnimHelper.viewDownToBottom(rlGift,WidgetUtil.dip2px(activity,150),300);
     }
@@ -454,6 +524,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
      * 显示礼物面板
      */
     private void showGift() {
+        giftShow = true;
         rlGift.setVisibility(VISIBLE);
         AnimHelper.viewDownToBottom(rlMenu, WidgetUtil.dip2px(activity,60),300);
         AnimHelper.viewUpToMiddle(rlGift, WidgetUtil.dip2px(activity,150),500);
@@ -608,11 +679,11 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             // 这时可算出软键盘的高度，即heightDiff减去状态栏的高度
             if (keyboardHeight == 0 && heightDiff > statusBarHeight) {
 
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                    keyboardHeight = heightDiff - statusBarHeight;
-                }else{
+//                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+//                    keyboardHeight = heightDiff - statusBarHeight;
+//                }else{
                     keyboardHeight = heightDiff;
-                }
+//                }
             }
 
             if (isShowKeyboard) {
@@ -641,16 +712,17 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         margin.setMargins(0, App.screenHeight - keyboardHeight - WidgetUtil.dip2px(ct, 40), 0, 0);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         rlChatView.setLayoutParams(layoutParams);
+        etChatMsg.requestFocus();
     }
 
 
     private void onHideKeyboard() {
         rlChatView.setVisibility(GONE);
-        ViewGroup.MarginLayoutParams margin = new ViewGroup.MarginLayoutParams(rlChatView.getLayoutParams());
-        //左上右下
-        margin.setMargins(0,0, 0, 0);
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
-        rlChatView.setLayoutParams(layoutParams);
+//        ViewGroup.MarginLayoutParams margin = new ViewGroup.MarginLayoutParams(rlChatView.getLayoutParams());
+//        //左上右下
+//        margin.setMargins(0,0, 0, 0);
+//        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
+//        rlChatView.setLayoutParams(layoutParams);
     }
 
     public LiveView(Context context, AttributeSet attrs) {
@@ -697,5 +769,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
             return false;
         }
+    }
+
+
+    /**
+     * 隐藏键盘
+     */
+    private void hideKeyBoard() {
+        KeyBoardUtils.closeKeybord(etChatMsg,ct);
     }
 }

@@ -16,6 +16,9 @@ public class User implements Serializable {
     private String orders;
     private String lives;
     private String coins;
+    private String signature;
+    private String tags;
+    private String phoneNum;
 
 
 
@@ -119,5 +122,29 @@ public class User implements Serializable {
 
     public void setLives(String lives) {
         this.lives = lives;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 }
