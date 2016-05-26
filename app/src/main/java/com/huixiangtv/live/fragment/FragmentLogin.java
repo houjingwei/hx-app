@@ -1,24 +1,31 @@
 package com.huixiangtv.live.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.TextViewCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.callback.CodeCallBack;
+import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.KeyBoardUtils;
+import com.huixiangtv.live.utils.RSAUtils;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
@@ -33,13 +40,18 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 	EditText etPwd;
 
 	LinearLayout llLogin;
+
+
+
 	LinearLayout llForgot;
+	EditText etPhone;
+	EditText etCode;
+	EditText etForgotPwd;
+	TextView tvGetCode;
 
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
-
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		mRootView = inflater.inflate(R.layout.fragment_login, container, false);
 		initView();
 		return mRootView;
@@ -47,14 +59,11 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
 	private void initView() {
 		mRootView.findViewById(R.id.tvForgotPwd).setOnClickListener(this);
-		mRootView.findViewById(R.id.tvHaveAccount).setOnClickListener(this);
 		etAccount = (EditText) mRootView.findViewById(R.id.etAccount);
 		etPwd = (EditText) mRootView.findViewById(R.id.etPwd);
 		mRootView.findViewById(R.id.tvLoginBtn).setOnClickListener(this);
-
 		llLogin = (LinearLayout) mRootView.findViewById(R.id.llLogin);
 		llForgot = (LinearLayout) mRootView.findViewById(R.id.llForgot);
-
 		mRootView.findViewById(R.id.llQQ).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -73,6 +82,21 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 				login(SHARE_MEDIA.SINA);
 			}
 		});
+
+
+
+		//找回密码相关
+		etPhone = (EditText) mRootView.findViewById(R.id.etPhone);
+		etCode = (EditText) mRootView.findViewById(R.id.etCode);
+		etForgotPwd = (EditText) mRootView.findViewById(R.id.etForgotPwd);
+		tvGetCode = (TextView) mRootView.findViewById(R.id.tvGetCode);
+		tvGetCode.setOnClickListener(this);
+		mRootView.findViewById(R.id.tvCommitBtn).setOnClickListener(this);
+		mRootView.findViewById(R.id.tvHaveAccount).setOnClickListener(this);
+
+
+
+
 	}
 
 
@@ -86,9 +110,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 		public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
 			//App.mShareAPI.deleteOauth(getActivity(), platform, umAuthListener);
 			if( null != data && data.size()>0) {
-				String refresh_token = data.get("refresh_token");
 				String access_token = data.get("access_token");
-				String uid = data.get("uid");
 				String openId = "";
 				String flag = "";
 				if(platform==SHARE_MEDIA.QQ){
@@ -126,7 +148,58 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 				break;
 			case R.id.tvHaveAccount:
 				showForgotPwd(false);
+				break;
+			case R.id.tvCommitBtn:
+				updatePwd();
+				break;
+			case R.id.tvGetCode:
+				getCode();
+				break;
+
 		}
+	}
+
+	private void updatePwd() {
+		if(TextUtils.isEmpty(etPhone.getText().toString())){
+			CommonHelper.showTip(getActivity(), "账号为空，请输入登录账号");
+			etPhone.requestFocus();
+			return;
+		}else if(TextUtils.isEmpty(etCode.getText().toString())){
+			CommonHelper.showTip(getActivity(), "验证码为空，请输入密码");
+			etCode.requestFocus();
+			return;
+		}else if(TextUtils.isEmpty(etForgotPwd.getText().toString())){
+			CommonHelper.showTip(getActivity(), "密码为空，请输入密码");
+			etForgotPwd.requestFocus();
+			return;
+		}
+		cp = ColaProgress.show(getActivity(), "登录中", false, true, null);
+		Map<String,String> params = new HashMap<String, String>();
+		String pwd = RSAUtils.rsaPwd(etForgotPwd.getText().toString());
+		params.put("phone",etPhone.getText().toString());
+		params.put("password",pwd);
+		params.put("code",etCode.getText().toString());
+
+		RequestUtils.sendPostRequest(Api.UP_PWD, params, new ResponseCallBack<String>() {
+			@Override
+			public void onSuccess(String data) {
+				super.onSuccess(data);
+				if(null!=cp){
+					cp.dismiss();
+				}
+				CommonHelper.showTip(getActivity(),"密码重置成功，请登录");
+				showForgotPwd(false);
+			}
+
+			@Override
+			public void onFailure(ServiceException e) {
+				super.onFailure(e);
+				if(null!=cp){
+					cp.dismiss();
+				}
+				CommonHelper.showTip(getActivity(),e.getMessage());
+			}
+		},String.class);
 	}
 
 	private void showForgotPwd(boolean bool) {
@@ -155,10 +228,12 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 			return;
 		}
 		cp = ColaProgress.show(getActivity(), "登录中", false, true, null);
-		Map<String,String> giftParams = new HashMap<String, String>();
-		giftParams.put("uid","001");
-		giftParams.put("type","1");
-		RequestUtils.sendPostRequest(Api.LOGIN, giftParams, new ResponseCallBack<User>() {
+		Map<String,String> params = new HashMap<String, String>();
+		String pwd = RSAUtils.rsaPwd(etPwd.getText().toString());
+		params.put("phone",etAccount.getText().toString());
+		params.put("password",pwd);
+
+		RequestUtils.sendPostRequest(Api.LOGIN, params, new ResponseCallBack<User>() {
 			@Override
 			public void onSuccess(User data) {
 				super.onSuccess(data);
@@ -214,4 +289,88 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 	}
 
 
+	public void getCode() {
+		if(TextUtils.isEmpty(etPhone.getText().toString())){
+			CommonHelper.showTip(getActivity(),"请输入手机号码");
+			etPhone.requestFocus();
+			return;
+		}
+		KeyBoardUtils.closeKeybord(etPhone,getActivity());
+		tvGetCode.setEnabled(false);
+		cp = ColaProgress.show(getActivity(), "正在获取", false, true, null);
+		CommonUtil.getMsgCode(etAccount.getText().toString(),new CodeCallBack(){
+					@Override
+					public void sendSuccess() {
+						if(null!=cp){
+							cp.dismiss();
+						}
+						myThread = new MyThread();
+						myThread.run();
+						CommonHelper.showTip(getActivity(),"验证码发送成功");
+					}
+
+					@Override
+					public void sendError(String msg) {
+						if(null!=cp){
+							cp.dismiss();
+						}
+						tvGetCode.setEnabled(true);
+						CommonHelper.showTip(getActivity(),"验证码发送失败，失败原因："+msg);
+					}
+				}
+
+		);
+	}
+
+
+	public int state = 1; //状态 1 表示未启动线程或正在运行线程。0 停止线程
+	private MyThread myThread;
+	class MyThread extends Thread {
+		@Override
+		public void run() {
+			super.run();
+			new AsyncTask<Object, Object, Object>() {
+				@Override
+				protected Object doInBackground(Object... arg0) {
+					for (int i = 60; i >= 0; i--) {
+						if (state == 0) { // 停止线程
+							return null;
+						}
+						if (i == 0) {
+							publishProgress("获取验证码");
+						} else {
+							// 剩余多少秒
+							publishProgress("剩余" + (i - 1) + "秒");
+						}
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					return null;
+				}
+
+				@Override
+				protected void onPostExecute(Object result) {
+					super.onPostExecute(result);
+				}
+
+				@Override
+				protected void onProgressUpdate(Object... values) {
+					super.onProgressUpdate(values);
+//					GradientDrawable myGrad = (GradientDrawable) tvGetCode.getBackground();
+					if (values.length > 0 && values[0] != null) {
+						if ("剩余59秒".equals(values[0])) {
+//							myGrad.setColor(getActivity().getResources().getColor(R.color.gray));
+						} else if ("获取验证码".equals(values[0])) {
+							tvGetCode.setEnabled(true);
+//							myGrad.setColor(getActivity().getResources().getColor(R.color.orange));
+						}
+						tvGetCode.setText(values[0].toString());
+					}
+				}
+			}.execute();
+		}
+	}
 }

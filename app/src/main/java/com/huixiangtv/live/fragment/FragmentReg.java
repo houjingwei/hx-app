@@ -23,6 +23,7 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.KeyBoardUtils;
+import com.huixiangtv.live.utils.RSAUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,7 +85,7 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 				cp = ColaProgress.show(getActivity(), "正在获取", false, true, null);
 
 
-				CommonUtil.getMsgCode(etAccount.getText().toString(),getActivity(),new CodeCallBack(){
+				CommonUtil.getMsgCode(etAccount.getText().toString(),new CodeCallBack(){
 							@Override
 							public void sendSuccess() {
 								if(null!=cp){
@@ -184,7 +185,8 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 		cp = ColaProgress.show(getActivity(), "登录中", false, true, null);
 		Map<String,String> giftParams = new HashMap<String, String>();
 		giftParams.put("phone",etAccount.getText().toString());
-		giftParams.put("password",etPwd.getText().toString());
+		String pwd = RSAUtils.rsaPwd(etPwd.getText().toString());
+		giftParams.put("password",pwd);
 		giftParams.put("code",etCode.getText().toString());
 		RequestUtils.sendPostRequest(Api.REG, giftParams, new ResponseCallBack<User>() {
 

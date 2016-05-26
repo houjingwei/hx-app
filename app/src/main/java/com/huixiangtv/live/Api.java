@@ -1,10 +1,14 @@
 package com.huixiangtv.live;
 
+import Decoder.BASE64Decoder;
+
 /**
  * Created by hjw on 16/5/13.
  */
 public class Api {
 //     public static final String BASE_URL = "http://119.29.2.57:9999/api/";
+//    public static final String BASE_URL = "http://119.29.94.122:8888/";
+//    public static final String BASE_URL = "http://119.29.2.57:9999/api/";
 //    public static final String BASE_URL = "http://119.29.2.57:9999/";
     public static final String BASE_URL = "http://119.29.94.122:8888/";
     public static final String TOPIC = BASE_URL+"live/getUserLiveTopics";
@@ -43,4 +47,5 @@ public class Api {
     //获取验证码
     public static final String MSG_CODE = BASE_URL+"auth/getVerifCode";
     public static final String UPLOAD_FILE_INFO = BASE_URL+"resource/getImageUploadInfo";
+    public static String UP_PWD = BASE_URL+"auth/resetPaswd";
 }

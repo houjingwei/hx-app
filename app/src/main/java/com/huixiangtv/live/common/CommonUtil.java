@@ -123,10 +123,9 @@ public class CommonUtil {
      * 获取验证码
      * @return
      * @param
-     * @param ct
      * @param codeCallBack
      */
-    public static void getMsgCode(String phoneNum, final Context ct, final CodeCallBack codeCallBack) {
+    public static void getMsgCode(String phoneNum,final CodeCallBack codeCallBack) {
         Map<String,String> params = new HashMap<String,String>();
         params.put("phone",phoneNum);
         RequestUtils.sendPostRequest(Api.MSG_CODE, params, new ResponseCallBack<String>() {
