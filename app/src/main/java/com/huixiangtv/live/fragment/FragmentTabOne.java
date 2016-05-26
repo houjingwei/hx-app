@@ -142,7 +142,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                         tvInfo.setText(live.getNickName());
                         currentViewPage = position;
                         if (listPager.list.size() < 10) {
-                            if (listPager.list.size() - 2 == position) {
+                            if (listPager.list.size() - 3 == position) {
                                 loadMore();
                             }
                         }
@@ -434,7 +434,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                         Toast.makeText(getActivity(), "已经没有更多内容了", Toast.LENGTH_LONG).show();
                     } else {
                         if (null != listPager) {
-                            dl_pager.removeAllViews();
+                            //dl_pager.removeAllViews();
                             addViewSelf(data);
                             listPager.notifyDataSetChanged();
                             tvInfo.setText(listPager.list.get(currentViewPage).getNickName());
