@@ -15,13 +15,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.fragment.FragmentTabOne;
 import com.huixiangtv.live.fragment.FragmentTabThree;
 import com.huixiangtv.live.fragment.FragmentTabTwo;
+import com.huixiangtv.live.model.UpgradeLevel;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
+import com.huixiangtv.live.ui.UpdateApp;
 import com.huixiangtv.live.ui.VProgressDialog;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
@@ -29,6 +35,10 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
@@ -72,6 +82,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         initWindow();
         App.getContext().addActivity(this);
         initView();
+        CheckVersion();
     }
 
     private void initWindow() {
@@ -285,4 +296,43 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 //    }
 
 
+
+
+    /**
+     * 检查新版本
+     */
+    private void CheckVersion()
+    {
+        Map<String,String> paramsMap = new HashMap<String,String>();
+        paramsMap.put("osType","1");
+        paramsMap.put("appVersion","1.0");
+
+        RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
+            @Override
+            public void onSuccessList(List<UpgradeLevel> data) {
+
+                if (data != null && data.size() > 0) {
+
+                    UpgradeLevel upgradeLevel = data.get(0);
+
+                    UpdateApp updateApp = new UpdateApp(getBaseContext());
+                    if (updateApp
+                            .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
+                        // Toast.makeText(getApplicationContext(),
+                        // "当前为最新版本", Toast.LENGTH_SHORT).show();
+                        // toIntent();
+                    }
+                } else {
+                    Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
+            }
+        }, UpgradeLevel.class);
+
+    }
 }

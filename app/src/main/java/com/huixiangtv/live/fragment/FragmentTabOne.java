@@ -313,7 +313,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", currPage + "");
         paramsMap.put("pagesize", PAGE_SIZE + "");
-        paramsMap.put("groupName", "");
+        paramsMap.put("groupName", "tj");
         RequestUtils.sendPostRequest(Api.CONTENT_GET_BANNER, paramsMap, new ResponseCallBack<BannerModel>() {
             @Override
             public void onSuccessList(List<BannerModel> data) {

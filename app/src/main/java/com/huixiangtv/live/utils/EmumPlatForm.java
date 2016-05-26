@@ -7,3 +7,10 @@ public enum EmumPlatForm {
 
      qq,wx,wb,phone
 }
+
+enum PaymentType {
+     mall,
+     mc_service,
+     integral_shop,
+     none
+}
