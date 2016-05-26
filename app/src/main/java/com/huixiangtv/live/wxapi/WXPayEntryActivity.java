@@ -1,4 +1,4 @@
-package com.huixiangtv.live.activity;
+package com.huixiangtv.live.wxapi;
 
 import android.os.Bundle;
 
