@@ -269,10 +269,9 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="bottom"
-        android:background="@color/white"
         android:visibility="gone"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:background="@color/white"
+        android:paddingLeft="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -342,7 +341,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/chatBtn"
+                android:id="@+id/tvSendMsg"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"

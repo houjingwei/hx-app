@@ -13,7 +13,6 @@ public abstract class ResponseCallBack<T> implements Serializable {
 
     public void onSuccess(T data) {
     }
-
     public void onSuccessString(String str) {
     }
 

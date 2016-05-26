@@ -174,6 +174,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 				if(null!=cp){
 					cp.dismiss();
 				}
+				CommonHelper.showTip(getActivity(),e.getMessage());
 			}
 		},User.class);
 	}

@@ -5,9 +5,13 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
+import com.huixiangtv.live.utils.JsonValidator;
 
 import org.xutils.common.Callback;
 import org.xutils.http.HttpMethod;
@@ -78,26 +82,23 @@ public class RequestUtils {
             public void onSuccess(String result) {
                 Log.d(Constant.TAG, "解析后内容 >> " + result);
                 BaseResponse response = JSON.parseObject(result,BaseResponse.class);
-                try {
-                    if (response == null) {
-                        if (callBack != null) {
-                            callBack.onFailure(new ServiceException("未请求到数据"));
+                if(null!=response){
+                    if(response.getCode()!=0){
+                        callBack.onFailure(new ServiceException(response.getMsg()+",错误码:"+response.getCode()));
+                    }else{
+                        String jsonStr = "{"+String.valueOf(response.getData())+"}";
+                        boolean isJson =  new JsonValidator().validate(jsonStr);
+                        if(isJson){
+                            if(jsonStr.contains("[")){
+                                callBack.onSuccessList(JSON.parseArray(jsonStr,clazz));
+                            }else if(!jsonStr.contains("[")){
+                                callBack.onSuccess(JSON.parseObject(jsonStr,clazz));
+                            }
+                        }else{
+                            callBack.onSuccessString((String) response.getData());
                         }
-                        return;
                     }
-                    if (callBack != null) {
-                        try{
-                            callBack.onSuccessList(JSON.parseArray(String.valueOf(response.getData()),clazz));
-                        }catch(Exception e){
-                            callBack.onSuccess(JSON.parseObject(String.valueOf(response.getData()),clazz));
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    callBack.onFailure(new ServiceException(e.getMessage()));
                 }
-
-
             }
 
             @Override

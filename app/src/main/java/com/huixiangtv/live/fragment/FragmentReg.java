@@ -7,16 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.KeyBoardUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +35,8 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 	EditText etAccount;
 	EditText etPwd;
 	EditText etCode;
+
+	private TextView tvGetCode;
 
 
 	@Override
@@ -49,6 +54,9 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 		etPwd = (EditText) mRootView.findViewById(R.id.etPwd);
 		mRootView.findViewById(R.id.tvRegBtn).setOnClickListener(this);
 
+		tvGetCode = (TextView) mRootView.findViewById(R.id.tvGetCode);
+		tvGetCode.setOnClickListener(this);
+
 	}
 
 
@@ -57,6 +65,15 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 		switch (v.getId()) {
 			case R.id.tvRegBtn:
 				accountReg();
+				break;
+			case R.id.tvGetCode:
+				if(TextUtils.isEmpty(etAccount.getText().toString())){
+					CommonHelper.showTip(getActivity(),"请输入手机号码");
+					etAccount.requestFocus();
+					return;
+				}
+				KeyBoardUtils.closeKeybord(etAccount,getActivity());
+				CommonUtil.getMsgCode(etAccount.getText().toString(),getActivity());
 				break;
 
 		}

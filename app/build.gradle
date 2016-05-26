@@ -73,6 +73,8 @@ dependencies {
     compile files('libs/oneapm-android-agent.jar')
     compile 'com.demievil.library:refreshlayout:1.0.0@aar'
     compile files('libs/Rong_IMLib_v2_6_0.jar')
+    compile files('libs/upload_1.1.3.332_4478.jar')
+    compile files('libs/wup-1.0.0-SNAPSHOT.jar')
 }
 
 
