@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/black_bigger_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:text="直播间分享" />
+        <TextView
+            android:id="@+id/tvTime"
+            style="@style/gray02_small_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="05-06" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical|top"
+        android:layout_height="40dp">
+        <TextView
+            android:id="@+id/tvContent"
+            style="@style/gray_normal_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:text="由您分享的直播间获得三级用户奖励" />
+        <TextView
+            android:id="@+id/tvLoveCount"
+            style="@style/red_bigest_x_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/ivMyLove"
+            android:layout_marginRight="5dp"
+            android:text="+3" />
+        <ImageView
+            android:id="@+id/ivMyLove"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/icon_mylove"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+</LinearLayout>

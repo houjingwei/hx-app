@@ -1,5 +1,7 @@
 package com.huixiangtv.live.fragment;
 
+import android.graphics.drawable.GradientDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.callback.CodeCallBack;
 import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.RequestUtils;
@@ -73,9 +76,89 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 					return;
 				}
 				KeyBoardUtils.closeKeybord(etAccount,getActivity());
-				CommonUtil.getMsgCode(etAccount.getText().toString(),getActivity());
+
+
+
+
+				tvGetCode.setEnabled(false);
+				cp = ColaProgress.show(getActivity(), "正在获取", false, true, null);
+
+
+				CommonUtil.getMsgCode(etAccount.getText().toString(),getActivity(),new CodeCallBack(){
+							@Override
+							public void sendSuccess() {
+								if(null!=cp){
+									cp.dismiss();
+								}
+								myThread = new MyThread();
+								myThread.run();
+								CommonHelper.showTip(getActivity(),"验证码发送成功");
+							}
+
+							@Override
+							public void sendError(String msg) {
+								if(null!=cp){
+									cp.dismiss();
+								}
+								tvGetCode.setEnabled(true);
+								CommonHelper.showTip(getActivity(),"验证码发送失败，失败原因："+msg);
+							}
+						}
+
+				);
 				break;
 
+		}
+	}
+
+	public int state = 1; //状态 1 表示未启动线程或正在运行线程。0 停止线程
+	private MyThread myThread;
+	class MyThread extends Thread {
+		@Override
+		public void run() {
+			super.run();
+			new AsyncTask<Object, Object, Object>() {
+				@Override
+				protected Object doInBackground(Object... arg0) {
+					for (int i = 60; i >= 0; i--) {
+						if (state == 0) { // 停止线程
+							return null;
+						}
+						if (i == 0) {
+							publishProgress("获取验证码");
+						} else {
+							// 剩余多少秒
+							publishProgress("剩余" + (i - 1) + "秒");
+						}
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					return null;
+				}
+
+				@Override
+				protected void onPostExecute(Object result) {
+					super.onPostExecute(result);
+				}
+
+				@Override
+				protected void onProgressUpdate(Object... values) {
+					super.onProgressUpdate(values);
+//					GradientDrawable myGrad = (GradientDrawable) tvGetCode.getBackground();
+					if (values.length > 0 && values[0] != null) {
+						if ("剩余59秒".equals(values[0])) {
+//							myGrad.setColor(getActivity().getResources().getColor(R.color.gray));
+						} else if ("获取验证码".equals(values[0])) {
+							tvGetCode.setEnabled(true);
+//							myGrad.setColor(getActivity().getResources().getColor(R.color.orange));
+						}
+						tvGetCode.setText(values[0].toString());
+					}
+				}
+			}.execute();
 		}
 	}
 

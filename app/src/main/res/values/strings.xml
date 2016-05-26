@@ -124,6 +124,7 @@
     <string name="haveAccount">已有账号</string>
     <string name="newPhoneBind">新手机绑定</string>
     <string name="updatePwd">修改密码</string>
+    <string name="myLoves">我的爱心</string>
 
 
 </resources>

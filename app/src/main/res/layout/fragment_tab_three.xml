@@ -14,7 +14,7 @@
 
 
         <LinearLayout
-            android:paddingTop="20dp"
+            android:paddingTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -22,7 +22,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:gravity="center_horizontal">
 
 
@@ -77,9 +77,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
 
                 android:orientation="horizontal">
 
@@ -229,7 +229,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:background="@color/tab_bg_color"
+        android:background="@color/sysBg"
         android:orientation="vertical">
 
         <LinearLayout
@@ -281,15 +281,11 @@
                         android:text="576.8元" />
 
                 </LinearLayout>
-
-
-
-
             </LinearLayout>
 
 
             <LinearLayout
-                android:id="@+id/rlAccount"
+                android:id="@+id/llLoves"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

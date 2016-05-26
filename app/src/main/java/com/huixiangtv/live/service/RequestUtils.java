@@ -86,7 +86,7 @@ public class RequestUtils {
                     if(response.getCode()!=0){
                         callBack.onFailure(new ServiceException(response.getMsg()+",错误码:"+response.getCode()));
                     }else{
-                        String jsonStr = "{"+String.valueOf(response.getData())+"}";
+                        String jsonStr = String.valueOf(response.getData());
                         boolean isJson =  new JsonValidator().validate(jsonStr);
                         if(isJson){
                             if(jsonStr.contains("[")){

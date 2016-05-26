@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.callback.CodeCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -123,21 +124,22 @@ public class CommonUtil {
      * @return
      * @param
      * @param ct
+     * @param codeCallBack
      */
-    public static void getMsgCode(String phoneNum, final Context ct) {
+    public static void getMsgCode(String phoneNum, final Context ct, final CodeCallBack codeCallBack) {
         Map<String,String> params = new HashMap<String,String>();
         params.put("phone",phoneNum);
         RequestUtils.sendPostRequest(Api.MSG_CODE, params, new ResponseCallBack<String>() {
             @Override
             public void onSuccess(String str) {
                 super.onSuccess(str);
-                Toast.makeText(App.getContext(), "\"验证码发送成功\"", Toast.LENGTH_SHORT).show();
+                codeCallBack.sendSuccess();
             }
 
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
-                CommonHelper.showTip(ct,e.getMessage());
+                codeCallBack.sendError(e.getMessage());
             }
         },String.class);
     }
