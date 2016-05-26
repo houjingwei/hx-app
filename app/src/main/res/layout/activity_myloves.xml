@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_11"
+    android:orientation="vertical">
+
+    <com.huixiangtv.live.ui.CommonTitle
+        android:id="@+id/myTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+        <com.huixiangtv.live.utils.widget.pullView.PullableListView
+            android:id="@+id/data"
+            style="@style/MatchMatch"
+            android:background="@drawable/listview"
+            android:dividerHeight="0.3dp"
+            android:divider="@color/split_color"
+            android:scrollbars="none"/>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+</LinearLayout>

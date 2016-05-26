@@ -182,6 +182,16 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="white_bigest_x_bold_style">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="white_bigest_xx_bold_style">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 
     <style name="gray_small_style">
@@ -202,6 +212,29 @@
     <style name="gray_bigest_style">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/gray</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+
+
+    <style name="gray02_small_style">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/gray02</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="gray02_normal_style">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray02</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="gray02_bigger_style">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/gray02</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="gray02_bigest_style">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/gray02</item>
         <item name="android:textStyle">normal</item>
     </style>
 
@@ -391,6 +424,7 @@
 
 
     <color name="mask_txt_color">#c5c6c5</color>
+
 
     <!-- 弹出框样式 -->
     <style name="Dialog" parent="android:style/Theme.Dialog">

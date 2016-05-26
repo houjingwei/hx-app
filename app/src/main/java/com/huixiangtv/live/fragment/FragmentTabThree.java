@@ -63,6 +63,7 @@ public class FragmentTabThree extends RootFragment{
 
 		mRootView.findViewById(R.id.ivPhoto).setOnClickListener(this);
 		mRootView.findViewById(R.id.llAccount).setOnClickListener(this);
+		mRootView.findViewById(R.id.llLoves).setOnClickListener(this);
 		mRootView.findViewById(R.id.tvUserName).setOnClickListener(this);
 		mRootView.findViewById(R.id.setting).setOnClickListener(this);
 		mRootView.findViewById(R.id.llTitle).setOnClickListener(this);
@@ -97,6 +98,9 @@ public class FragmentTabThree extends RootFragment{
 				break;
 			case R.id.llAccount:
 				ForwardUtils.target(getActivity(), Constant.ACCOUNT,null);
+				break;
+			case R.id.llLoves:
+				ForwardUtils.target(getActivity(), Constant.MY_LOVES,null);
 				break;
 			case R.id.tvUserName:
 				ForwardUtils.target(getActivity(), Constant.LOGIN,null);

@@ -12,6 +12,7 @@ import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.activity.LoginOrRegActivity;
 import com.huixiangtv.live.activity.FanedMeActivity;
 import com.huixiangtv.live.activity.MyFansActivity;
+import com.huixiangtv.live.activity.MylovesActivity;
 import com.huixiangtv.live.activity.PhoneBindActivity;
 import com.huixiangtv.live.activity.RefreshAndLoadmoreActivity;
 import com.huixiangtv.live.activity.RegLiveActivity;
@@ -124,6 +125,9 @@ public class ForwardUtils {
                 toIntent(oriActivity,params,intent);
             }else if (url.startsWith(Constant.FANED_ME)){
                 Intent intent = new Intent(oriActivity, FanedMeActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.startsWith(Constant.MY_LOVES)){
+                Intent intent = new Intent(oriActivity, MylovesActivity.class);
                 toIntent(oriActivity,params,intent);
             }
 

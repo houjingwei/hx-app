@@ -38,7 +38,8 @@
     <color name="clear">#55ffffff</color>
     <color name="bolder_color_01">#999999</color>
 
-    <color name="gray">#999999</color>
+    <color name="gray">#666666</color>
+    <color name="gray02">#999999</color>
 
     <color name="blue">#3d7eed</color>
     <color name="self_line">#e8e8e8</color>
