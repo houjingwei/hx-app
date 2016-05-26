@@ -1,5 +1,6 @@
 package com.huixiangtv.live.activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -247,16 +248,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
+    private static boolean isSwitch = false;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void onDBClick(){
-        if (System.currentTimeMillis() - lastTipTimeMills > 300) {
-            lastTipTimeMills = System.currentTimeMillis();
+
+        if(isSwitch)
+        {
             setTabSelection(0);
             sendToOneFragment("1");
-        } else {
+            isSwitch = false;
+        }
+        else
+        {
             sendToOneFragment("0");
             iv1.setImageResource(R.mipmap.tab1);
+            isSwitch = true;
         }
+//        if (System.currentTimeMillis() - lastTipTimeMills > 300) {
+//            lastTipTimeMills = System.currentTimeMillis();
+//
+//        } else {
+//
+//
+//        }
     }
 
     /**

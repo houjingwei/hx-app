@@ -66,17 +66,18 @@ public class LiveBannerAdapter extends BaseAdapter {
             holder.sigImg = (ImageView) convertView.findViewById(R.id.ivIcon);
             holder.iv_goto_live = (ImageView) convertView.findViewById(R.id.iv_goto_live);
             holder.llInfo = (LinearLayout) convertView.findViewById(R.id.llInfo);
+            holder.rlpp = (RelativeLayout) convertView.findViewById(R.id.rlpp);
             convertView.setTag(holder);
         } else {
             holder = (myV) convertView.getTag();
         }
         ImageView ivIcon = holder.sigImg;
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ivIcon.getLayoutParams();
-        params.height = (int) (App.screenHeight-415);
-        ivIcon.setLayoutParams(params);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(App.screenWidth,App.screenHeight);
+        params.height = (int) (App.screenHeight);
+       // holder.rlpp.setLayoutParams(params);
         LinearLayout llInfo = holder.llInfo;
         llInfo.setBackgroundResource(R.color.black_01);
-        llInfo.getBackground().mutate().setAlpha(400);
+        llInfo.getBackground().mutate().setAlpha(255);
         holder.tvInfo.setText(mType.get(pos).getNickName());
         ImageUtils.display(ivIcon, mType.get(pos).getPhoto());
         holder.iv_goto_live.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +94,8 @@ public class LiveBannerAdapter extends BaseAdapter {
         LinearLayout llInfo;
         TextView tvInfo;
         ImageView iv_goto_live;
+        RelativeLayout rlpp;
 
     }
+
 }
