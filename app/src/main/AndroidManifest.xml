@@ -50,12 +50,15 @@
             android:name="com.umeng.socialize.editorpage.ShareActivity"
             android:excludeFromRecents="true"
             android:theme="@style/Theme.UMDefault" />
+
+        <!-- 微信分享 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 微信分享 -->
 
         <meta-data
             android:name="UMENG_APPKEY"
@@ -203,6 +206,14 @@
         <activity android:name=".activity.MylovesActivity" android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
 
+        <!-- 微信支付-->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait" />
+        <!-- 微信支付-->
+
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="pwe86ga5ebwp6" />
@@ -219,6 +230,11 @@
             android:process=":ipc" />
 
 
+        <receiver android:name="com.huixiangtv.live.pay.weichat.AppRegister" >
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

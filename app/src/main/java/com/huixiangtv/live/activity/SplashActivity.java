@@ -47,7 +47,6 @@ public class SplashActivity extends Activity implements Animation.AnimationListe
         //保持动画状态
         alphaAnimation.setFillAfter(true);
         animationSet.addAnimation(alphaAnimation);
-        CheckVersion();
         rlSplash.startAnimation(animationSet);
     }
 
@@ -75,46 +74,6 @@ public class SplashActivity extends Activity implements Animation.AnimationListe
 
 
 
-    /**
-     * 检查新版本
-     */
-    private void CheckVersion()
-    {
-        Map<String,String> paramsMap = new HashMap<String,String>();
-        paramsMap.put("osType","1");
-        paramsMap.put("appVersion","1.0");
 
-        RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
-            @Override
-            public void onSuccessList(List<UpgradeLevel> data) {
-
-                if (data != null && data.size() > 0) {
-
-                    UpgradeLevel upgradeLevel = data.get(0);
-
-                    UpdateApp updateApp = new UpdateApp(getBaseContext());
-                    if (updateApp
-                            .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
-                        // Toast.makeText(getApplicationContext(),
-                        // "当前为最新版本", Toast.LENGTH_SHORT).show();
-                        // toIntent();
-                    }
-                } else {
-                    Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-                Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
-            }
-        }, UpgradeLevel.class);
-
-
-
-
-
-    }
 
 }

@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.common.CommonUtil;
+import com.huixiangtv.live.pay.weichat.WeiChatConstants;
+import com.huixiangtv.live.pay.weichat.WxPayUtils;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.zhy.view.flowlayout.FlowLayout;
@@ -161,5 +163,13 @@ public class RegLiveMainActivity extends BaseBackActivity {
 
         }
     }
+
+
+//    private void startWxPay(String appId, String prepayId, String nonceStr, String partnerId,
+//                            String timeStamp, String packageValue, String paySignature) {
+//        WeiChatConstants.APP_ID = appId;
+//        WxPayUtils.pay(RegLiveMainActivity.this, appId, prepayId, nonceStr, partnerId, timeStamp, packageValue, paySignature);
+//    }
+
 
 }
