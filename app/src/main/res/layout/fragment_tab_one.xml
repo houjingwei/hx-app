@@ -106,10 +106,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/dl_pager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
+            <RelativeLayout
+                android:id="@+id/myView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <com.huixiangtv.live.utils.widget.ScrollLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/ScrollLayoutTest"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#000000"></com.huixiangtv.live.utils.widget.ScrollLayout>
+
+                <com.huixiangtv.live.utils.widget.PageControlView
+                    android:id="@+id/pageControl"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40px"
+                    android:layout_alignParentBottom="true"
+                    android:background="#8f00000f"
+                    android:gravity="center"></com.huixiangtv.live.utils.widget.PageControlView>
+
+            </RelativeLayout>
+            <!--<android.support.v4.view.ViewPager-->
+            <!--android:id="@+id/dl_pager"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"></android.support.v4.view.ViewPager>-->
 
 
             <LinearLayout
@@ -160,8 +180,17 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
+                            android:text="送爱心"
+                            android:textColor="#C1BFC0" />
+
+                        <TextView
+                            android:id="@+id/tvLoveCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
                             android:drawableRight="@drawable/love_val"
-                            android:text="送爱心  76，888"
+                            android:text=""
                             android:textColor="@color/dialog_bg" />
                         <!--<ImageView-->
                         <!--android:layout_width="wrap_content"-->
@@ -172,6 +201,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/tvWeight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="18dp"
@@ -180,9 +210,9 @@
                     android:textColor="@color/white" />
 
                 <LinearLayout
-                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -202,9 +232,9 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -224,9 +254,9 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -247,8 +277,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <TextView
