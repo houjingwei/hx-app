@@ -104,33 +104,28 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <RelativeLayout
                 android:id="@+id/myView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                <com.huixiangtv.live.utils.widget.ScrollLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                <com.huixiangtv.live.utils.widget.SwitchScrollLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/ScrollLayoutTest"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:background="#000000"></com.huixiangtv.live.utils.widget.ScrollLayout>
+                    android:background="#000000"></com.huixiangtv.live.utils.widget.SwitchScrollLayout>
 
-                <com.huixiangtv.live.utils.widget.PageControlView
+                <com.huixiangtv.live.utils.widget.SwitchPageControlView
                     android:id="@+id/pageControl"
                     android:layout_width="fill_parent"
                     android:layout_height="40px"
                     android:layout_alignParentBottom="true"
                     android:background="#8f00000f"
-                    android:gravity="center"></com.huixiangtv.live.utils.widget.PageControlView>
+                    android:gravity="center"></com.huixiangtv.live.utils.widget.SwitchPageControlView>
 
             </RelativeLayout>
-            <!--<android.support.v4.view.ViewPager-->
-            <!--android:id="@+id/dl_pager"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"></android.support.v4.view.ViewPager>-->
-
 
             <LinearLayout
                 android:id="@+id/llInfo"

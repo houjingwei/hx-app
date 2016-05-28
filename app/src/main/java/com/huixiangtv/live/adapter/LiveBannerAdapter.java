@@ -56,11 +56,9 @@ public class LiveBannerAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.index_single,
                     parent, false);
             appItem = new AppItem();
-            appItem.tvInfo = (TextView) convertView.findViewById(R.id.tvInfo);
+            appItem.sigImgs = (ImageView) convertView.findViewById(R.id.ivIcons);
             appItem.sigImg = (ImageView) convertView.findViewById(R.id.ivIcon);
             appItem.iv_goto_live = (ImageView) convertView.findViewById(R.id.iv_goto_live);
-            appItem.llInfo = (LinearLayout) convertView.findViewById(R.id.llInfo);
-            appItem.rlpp = (RelativeLayout) convertView.findViewById(R.id.rlpp);
             convertView.setTag(appItem);
         } else {
             appItem = (AppItem) convertView.getTag();
@@ -68,13 +66,13 @@ public class LiveBannerAdapter extends BaseAdapter {
 
 
         ImageView ivIcon = appItem.sigImg;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(App.screenWidth, App.screenHeight);
-        params.height = (int) (App.screenHeight);
-        LinearLayout llInfo = appItem.llInfo;
-        llInfo.setBackgroundResource(R.color.black_01);
-        llInfo.getBackground().mutate().setAlpha(255);
-        appItem.tvInfo.setText(mList.get(position).getNickName());
+
+        ImageView ivIcons = appItem.sigImgs;
+
+
         ImageGlideUtils.display(mContext, mList.get(position).getPhoto(), ivIcon);
+
+        ImageGlideUtils.display(mContext, mList.get(position).getPhoto(), ivIcons);
         appItem.iv_goto_live.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,9 +84,7 @@ public class LiveBannerAdapter extends BaseAdapter {
 
     private class AppItem {
         ImageView sigImg;
-        LinearLayout llInfo;
-        TextView tvInfo;
+        ImageView sigImgs;
         ImageView iv_goto_live;
-        RelativeLayout rlpp;
     }
 }

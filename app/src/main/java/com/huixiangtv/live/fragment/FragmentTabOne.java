@@ -45,8 +45,8 @@ import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.BannerView;
 import com.huixiangtv.live.utils.widget.LinearLayoutForListView;
 import com.huixiangtv.live.utils.widget.LoadingView;
-import com.huixiangtv.live.utils.widget.PageControlView;
-import com.huixiangtv.live.utils.widget.ScrollLayout;
+import com.huixiangtv.live.utils.widget.SwitchPageControlView;
+import com.huixiangtv.live.utils.widget.SwitchScrollLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,11 +55,11 @@ import java.util.Map;
 
 public class FragmentTabOne extends RootFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
-    private ScrollLayout mScrollLayout;
+    private SwitchScrollLayout mSwitchScrollLayout;
     private DataLoading dataLoad;
     public SwitchPicHandler switchPicHandler;
     private static final float APP_PAGE_SIZE = 1.0f;
-    private PageControlView pageControl;
+    private SwitchPageControlView pageControl;
     private int currentViewPage = 0;
     private final int PAGE_SIZE = 12;
     private int currPage = 1;
@@ -73,6 +73,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private LinearLayout ll_search;
     private LoadingView loadView;
     private BaseAdapter adapter;
+    private LinearLayout llInfo;
     private ScrollView sv;
     private List<Live> commonModelList = new ArrayList<Live>();
     private static List<Live> viewpageModelList = new ArrayList<Live>();
@@ -99,7 +100,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     protected void initLayout(View view) {
         //loadView = (LoadingView) view.findViewById(R.id.loadView);
         //loadView.setVisibility(View.VISIBLE);
-        pageControl = (PageControlView) view.findViewById(R.id.pageControl);
+        pageControl = (SwitchPageControlView) view.findViewById(R.id.pageControl);
         ll_search = (LinearLayout) view.findViewById(R.id.ll_search);
         tvInfo = (TextView) view.findViewById(R.id.tvInfo);
         tvLoveCount = (TextView) view.findViewById(R.id.tvLoveCount);
@@ -119,7 +120,9 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         sv = (ScrollView) view.findViewById(R.id.sv);
         llone_viewpager = (LinearLayout) view.findViewById(R.id.llone_viewpager);
         llone_viewpager.setVisibility(View.GONE);
-        mScrollLayout = (ScrollLayout) view.findViewById(R.id.ScrollLayoutTest);
+        mSwitchScrollLayout = (SwitchScrollLayout) view.findViewById(R.id.ScrollLayoutTest);
+        llInfo = (LinearLayout) view.findViewById(R.id.llInfo);
+        //llInfo.getBackground().setAlpha(200);
 
     }
 
@@ -356,12 +359,12 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                             appPage.setAdapter(new LiveBannerAdapter(getContext(), data, i));
                             appPage.setNumColumns(1);
                             appPage.setOnItemClickListener(listener);
-                            mScrollLayout.addView(appPage);
+                            mSwitchScrollLayout.addView(appPage);
                         }
                         //loading page
-                        pageControl.bindScrollViewGroup(mScrollLayout);
+                        pageControl.bindScrollViewGroup(mSwitchScrollLayout);
                         //loading paging data
-                        dataLoad.bindScrollViewGroup(mScrollLayout);
+                        dataLoad.bindScrollViewGroup(mSwitchScrollLayout);
                     }
                 } else {
 
@@ -411,25 +414,22 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             if ("1".equals(rmsg)) {
                 // do nothing
                 loadMore();
-
-
             }
         }
-
     }
 
     //pading data
     class DataLoading {
         private int count;
 
-        public void bindScrollViewGroup(ScrollLayout scrollViewGroup) {
+        public void bindScrollViewGroup(SwitchScrollLayout scrollViewGroup) {
             this.count = scrollViewGroup.getChildCount();
-            scrollViewGroup.setOnScreenChangeListenerDataLoad(new ScrollLayout.OnScreenChangeListenerDataLoad() {
+            scrollViewGroup.setOnScreenChangeListenerDataLoad(new SwitchScrollLayout.OnScreenChangeListenerDataLoad() {
                 public void onScreenChange(int currentIndex) {
                     generatePageControl(currentIndex);
                 }
             });
-            scrollViewGroup.setOnScreenChangeListener(new ScrollLayout.OnScreenChangeListener() {
+            scrollViewGroup.setOnScreenChangeListener(new SwitchScrollLayout.OnScreenChangeListener() {
                 @Override
                 public void onScreenChange(int currentIndex) {
                     if (viewpageModelList != null) {
@@ -455,6 +455,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
+            showToast("click");
         }
 
     };

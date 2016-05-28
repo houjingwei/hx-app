@@ -7,16 +7,16 @@ import android.widget.LinearLayout;
 /**
  * Created by Stone on 16/5/27.
  */
-public class PageControlView extends LinearLayout {
+public class SwitchPageControlView extends LinearLayout {
     private Context context;
 
     private int count;
 
-    public void bindScrollViewGroup(ScrollLayout scrollViewGroup) {
+    public void bindScrollViewGroup(SwitchScrollLayout scrollViewGroup) {
         this.count=scrollViewGroup.getChildCount();
         generatePageControl(scrollViewGroup.getCurrentScreenIndex());
 
-        scrollViewGroup.setOnScreenChangeListener(new ScrollLayout.OnScreenChangeListener() {
+        scrollViewGroup.setOnScreenChangeListener(new SwitchScrollLayout.OnScreenChangeListener() {
 
             public void onScreenChange(int currentIndex) {
                 generatePageControl(currentIndex);
@@ -24,11 +24,11 @@ public class PageControlView extends LinearLayout {
         });
     }
 
-    public PageControlView(Context context) {
+    public SwitchPageControlView(Context context) {
         super(context);
         this.init(context);
     }
-    public PageControlView(Context context, AttributeSet attrs) {
+    public SwitchPageControlView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.init(context);
     }

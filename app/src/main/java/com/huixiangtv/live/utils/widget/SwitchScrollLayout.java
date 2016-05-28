@@ -13,7 +13,7 @@ import android.widget.Scroller;
 /**
  * Created by Stone on 16/5/27.
  */
-public class ScrollLayout extends ViewGroup {
+public class SwitchScrollLayout extends ViewGroup {
 
     private static final String TAG = "ScrollLayout";
     private Scroller mScroller;
@@ -42,11 +42,11 @@ public class ScrollLayout extends ViewGroup {
         this.currentScreenIndex = currentScreenIndex;
     }
 
-    public ScrollLayout(Context context, AttributeSet attrs) {
+    public SwitchScrollLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ScrollLayout(Context context, AttributeSet attrs, int defStyle) {
+    public SwitchScrollLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mScroller = new Scroller(context);
 
@@ -226,7 +226,7 @@ public class ScrollLayout extends ViewGroup {
         return mTouchState != TOUCH_STATE_REST;
     }
 
-    //分页监听
+    //paging listener
     public interface OnScreenChangeListener {
         void onScreenChange(int currentIndex);
     }
