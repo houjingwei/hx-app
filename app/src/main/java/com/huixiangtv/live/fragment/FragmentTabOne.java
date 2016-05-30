@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,6 +41,7 @@ import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.EnumUpdateTag;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
@@ -108,7 +108,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         listview.setOnItemClickListener(new LinearLayoutForListView.OnItemClickListener() {
             @Override
             public void onItemClicked(View v, Object item, int position) {
-                showToast("gotolive");
+                CommonHelper.showTip(getActivity(),"position"+position);
             }
         });
         listview.setVisibility(View.GONE);
@@ -149,7 +149,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
                     }catch(Exception ex)
                     {
-                        showToast("加载中，请稍后.");
+                        CommonHelper.showTip(getActivity(),"加载中");
                     }
 
                 }
@@ -243,7 +243,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 mRefreshLayout.onRefreshComplete();
-                showToast("当有网络不可用，请检查您的网络设置");
+                CommonHelper.showTip(getActivity(),e.getMessage());
             }
         }, Live.class);
     }
@@ -431,7 +431,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
                     Long totalCount = Long.parseLong(data.size() + "");
                     if (0 == totalCount) {
-                        Toast.makeText(getActivity(), "已经没有更多内容了", Toast.LENGTH_LONG).show();
+                        CommonHelper.showTip(getActivity(),"已经没有更多内容了");
                     } else {
                         if (null != listPager) {
                             //dl_pager.removeAllViews();
@@ -451,7 +451,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 mRefreshLayout.onRefreshComplete();
-                showToast("当有网络不可用，请检查您的网络设置");
+                CommonHelper.showTip(getActivity(),e.getMessage());
             }
         }, Live.class);
 

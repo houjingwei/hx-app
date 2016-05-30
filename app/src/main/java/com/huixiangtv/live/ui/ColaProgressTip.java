@@ -97,7 +97,9 @@ public class ColaProgressTip extends Dialog {
 				try{
 					cp.dismiss();
 				}catch(Exception e){
-
+					if(null!=cp){
+						cp.dismiss();
+					}
 				}
 				super.onPostExecute(result);
 			}

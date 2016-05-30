@@ -67,6 +67,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_toLeftOf="@+id/tvGetCode"
                     android:hint="@string/inpVali"
+                    android:inputType="number"
                     android:layout_toRightOf="@+id/tvCode"/>
 
                 <TextView
@@ -109,6 +110,7 @@
                     style="@style/et_style"
                     android:layout_marginLeft="12dp"
                     android:hint="@string/etPwd"
+                    android:inputType="textPassword"
                     android:layout_toRightOf="@+id/tvPwd"/>
             </RelativeLayout>
             <View

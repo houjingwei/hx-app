@@ -2,7 +2,10 @@ package com.huixiangtv.live.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import com.huixiangtv.live.model.Upfeile;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.SelectPicWayWindow;
 import com.huixiangtv.live.pop.UpdateSexWindow;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -44,6 +48,7 @@ import org.xutils.x;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class UserinfoActivity extends BaseBackActivity implements View.OnClickListener {
 
@@ -241,18 +246,25 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             if (!finished) {
                 return;
             }
-            upFileInfo(picUri);
+            upFileInfo(new ApiCallback<Upfeile>() {
+                @Override
+                public void onSuccess(Upfeile data) {
+                    upFile(data,picUri);
+                }
+            });
         }
     };
 
-    private void upFileInfo(final String picUri) {
+    private void upFileInfo( final ApiCallback<Upfeile> apiCallback) {
         Map<String,String> params = new HashMap<String,String>();
         params.put("type","1");
         RequestUtils.sendPostRequest(Api.UPLOAD_FILE_INFO, params, new ResponseCallBack<Upfeile>() {
             @Override
             public void onSuccess(Upfeile data) {
                 super.onSuccess(data);
-                upFile(data,picUri);
+                if(null!=data){
+                    apiCallback.onSuccess(data);
+                }
             }
 
             @Override
@@ -264,33 +276,46 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     }
 
 
-
+    private Handler mMainHandler = new Handler(Looper.getMainLooper());
     private void upFile(Upfeile data, String picUri) {
-        UploadManager photoUploadMgr = null;
-        photoUploadMgr = new UploadManager(UserinfoActivity.this, data.getAppId(),Const.FileType.Photo,data.getPersistenceId());
+
+        UploadManager photoUploadMgr  = new UploadManager(UserinfoActivity.this, data.getAppId(), Const.FileType.Photo, data.getPersistenceId());
         PhotoUploadTask task = new PhotoUploadTask(picUri, new IUploadTaskListener() {
+
             @Override
-            public void onUploadSucceed(FileInfo fileInfo) {
-                String photo = fileInfo.url;
-                ImageUtils.displayAvator(ivPhoto,photo);
+            public void onUploadSucceed(final FileInfo result) {
+
+                mMainHandler.post(new Runnable()
+                {
+
+                    @Override
+                    public void run()
+                    {
+                        Log.i("xxx", "upload succeed: " + result.url);
+
+                    }
+                });
+
             }
 
             @Override
-            public void onUploadFailed(int i, String s) {
+            public void onUploadStateChange(ITask.TaskState state) {
+
 
             }
 
             @Override
-            public void onUploadProgress(long l, long l1) {
+            public void onUploadProgress(final long totalSize, final long sendSize) {
 
             }
 
             @Override
-            public void onUploadStateChange(ITask.TaskState taskState) {
+            public void onUploadFailed(final int errorCode, final String errorMsg) {
 
             }
         });
-        task.setBucket(data.getBucket());  // 设置Bucket(可选)
+        task.setBucket(data.getBucket());  // 设置Bucket(命名空间)
+        task.setFileId("test_fileId_" + UUID.randomUUID()); // 可以为图片自定义FileID(可选)
         task.setAuth(data.getSig());
         photoUploadMgr.upload(task);
 
