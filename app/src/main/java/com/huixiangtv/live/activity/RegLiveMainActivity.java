@@ -12,13 +12,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.callback.CodeCallBack;
 import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.pay.weichat.WeiChatConstants;
 import com.huixiangtv.live.pay.weichat.WxPayUtils;
 import com.huixiangtv.live.ui.CommonTitle;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -91,6 +94,18 @@ public class RegLiveMainActivity extends BaseBackActivity {
             case R.id.txtHqyzm:
                 if (CommonUtil.isMobileNum(phone.getText().toString()) && isyzm) {
                     isyzm = false;
+                    CommonUtil.getMsgCode(phone.getText().toString(),new CodeCallBack(){
+                                @Override
+                                public void sendSuccess() {
+
+                                }
+                                @Override
+                                public void sendError(String msg) {
+
+                                    Toast.makeText(getBaseContext(), "验证码发送失败，失败原因：" + msg,Toast.LENGTH_LONG).show();
+                                }
+                            }
+                    );
                     hqyzm.setEnabled(false);
                     if (mc == null) {
                         // 第一参数是总的时间，第二个是间隔时间 都是毫秒为单位
@@ -116,20 +131,20 @@ public class RegLiveMainActivity extends BaseBackActivity {
             tags[i] = "标签"+(i+1);
         }
         final LayoutInflater mInflater = LayoutInflater.from(RegLiveMainActivity.this);
-        mFlowLayout.setMaxSelectCount(1);
+        mFlowLayout.setMaxSelectCount(2);
         adapter = new TagAdapter<String>(tags) {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public View getView(FlowLayout parent, int position, String s) {
                 final Button tv = (Button) mInflater.inflate(R.layout.tag_button,mFlowLayout, false);
-                tv.setText(s);
-                tv.setBackground(getResources().getDrawable(R.drawable.tag_bg));
-                tv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                       // etJob.setText(tv.getText());
-                    }
-                });
+                 tv.setText(s);
+                //tv.setBackground(getResources().getDrawable(R.drawable.tag_bg));
+//                tv.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                       // etJob.setText(tv.getText());
+//                    }
+//                });
                 return tv;
             }
         };

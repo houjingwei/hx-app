@@ -10,13 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.huixiangtv.live.App;
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.utils.ForwardUtils;
+import com.huixiangtv.live.utils.image.FastBlur;
 import com.huixiangtv.live.utils.image.ImageGlideUtils;
 
 /**
@@ -56,6 +56,7 @@ public class LiveBannerAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.index_single,
                     parent, false);
             appItem = new AppItem();
+            //appItem.text = (TextView) convertView.findViewById(R.id.text);
             appItem.sigImgs = (ImageView) convertView.findViewById(R.id.ivIcons);
             appItem.sigImg = (ImageView) convertView.findViewById(R.id.ivIcon);
             appItem.iv_goto_live = (ImageView) convertView.findViewById(R.id.iv_goto_live);
@@ -76,15 +77,18 @@ public class LiveBannerAdapter extends BaseAdapter {
         appItem.iv_goto_live.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
             }
         });
 
+//        FastBlur.applyBlur(mContext,appItem.sigImgs,appItem.text);
         return convertView;
     }
 
     private class AppItem {
         ImageView sigImg;
         ImageView sigImgs;
+        TextView text;
         ImageView iv_goto_live;
     }
 }

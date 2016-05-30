@@ -1,10 +1,16 @@
 package com.huixiangtv.live.fragment;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,8 +19,10 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +49,7 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.EnumUpdateTag;
 import com.huixiangtv.live.utils.ForwardUtils;
+import com.huixiangtv.live.utils.image.FastBlur;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.BannerView;
 import com.huixiangtv.live.utils.widget.LinearLayoutForListView;
@@ -55,6 +64,7 @@ import java.util.Map;
 
 public class FragmentTabOne extends RootFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
+    private static boolean isLoad =false;
     private SwitchScrollLayout mSwitchScrollLayout;
     private DataLoading dataLoad;
     public SwitchPicHandler switchPicHandler;
@@ -65,7 +75,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private int currPage = 1;
     private ColaProgress cp = null;
     private BannerView bannerView;
-    private TextView tvInfo, tvLoveCount, tvWeight;
+    private TextView tvInfo, tvLoveCount, tvWeight,text;
     private PullToRefreshScrollView mRefreshLayout;
     private List<BannerModel> guangGao = new ArrayList<BannerModel>();
     private View mRootView;
@@ -79,8 +89,10 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private static List<Live> viewpageModelList = new ArrayList<Live>();
     private LinearLayoutForListView listview;
     private LiveListBroadcast receiver;
+    private FrameLayout flInfo;
     private String ACTION = "com.android.broadcast.RECEIVER_ACTION";
     private LinearLayout llone_viewpager;
+    private ImageView ivFt;
 
     @Override
     protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -112,8 +124,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         listview.setOnItemClickListener(new LinearLayoutForListView.OnItemClickListener() {
             @Override
             public void onItemClicked(View v, Object item, int position) {
-                showToast("gotolive");
-            }
+                ForwardUtils.target(getActivity(), Constant.START_LIVE, null);            }
         });
         listview.setVisibility(View.GONE);
         mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
@@ -122,7 +133,14 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         llone_viewpager.setVisibility(View.GONE);
         mSwitchScrollLayout = (SwitchScrollLayout) view.findViewById(R.id.ScrollLayoutTest);
         llInfo = (LinearLayout) view.findViewById(R.id.llInfo);
-        //llInfo.getBackground().setAlpha(200);
+        flInfo = (FrameLayout) view.findViewById(R.id.flInfo);
+//        llInfo.getBackground().setAlpha(100);
+//        flInfo.getBackground().setAlpha(100);
+//        text = (TextView) view.findViewById(R.id.text);
+//        ivFt = (ImageView) view.findViewById(R.id.ivFt);
+
+
+
 
     }
 
@@ -141,6 +159,8 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         //起一个线程更新数据
         SwitchPicThread switchPicThread = new SwitchPicThread();
         new Thread(switchPicThread).start();
+
+
     }
 
     @Override
@@ -234,7 +254,9 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIcon.getLayoutParams();
             params.height = (int) (App.screenWidth * 0.75);
             ivIcon.setLayoutParams(params);
-            ImageUtils.display(ivIcon, item.getPhoto());
+            //ImageGlideUtils.display(getContext(), item.getPhoto(), ivIcon);
+//            BitmapHelper.getInstance(mContext).display(ivIcon, item.getPhoto(), "", BitmapHelper.DefaultSize.BIG);
+            ImageUtils.display(ivIcon,item.getPhoto());
 
         }
     }
@@ -337,7 +359,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         paramsMap.put("pagesize", PAGE_SIZE + "");
         paramsMap.put("cNo", "");
 
-
         RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<Live>() {
             @Override
             public void onSuccessList(List<Live> data) {
@@ -360,6 +381,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                             appPage.setNumColumns(1);
                             appPage.setOnItemClickListener(listener);
                             mSwitchScrollLayout.addView(appPage);
+                            isLoad = true;
                         }
                         //loading page
                         pageControl.bindScrollViewGroup(mSwitchScrollLayout);
@@ -444,8 +466,11 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
         private void generatePageControl(int currentIndex) {
             if ((count - 3) == currentIndex + 1) {
-                SwitchPicThread m = new SwitchPicThread();
-                new Thread(m).start();
+                if(isLoad) {
+                    isLoad=false;
+                    SwitchPicThread m = new SwitchPicThread();
+                    new Thread(m).start();
+                }
             }
         }
     }
@@ -455,10 +480,11 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            showToast("click");
-        }
+            ForwardUtils.target(getActivity(), Constant.START_LIVE, null);        }
 
     };
+
+
 
 
 }

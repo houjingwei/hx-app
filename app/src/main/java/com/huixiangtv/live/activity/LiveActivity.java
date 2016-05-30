@@ -39,6 +39,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     @ViewInject(R.id.flCover)
     FrameLayout flCover;
 
+
     TextView tvTheme;
     TextView tvStart;
     StartLiveView startLiveView;
@@ -67,9 +68,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         flCover.addView(startLiveView);
         initView();
         KeyBoardUtils.closeKeybord(startLiveView.getEtTitle(),this);
-
-
-
 
     }
 
@@ -163,7 +161,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             @Override
             public void onSuccess(Live data) {
                 super.onSuccess(data);
-                if(null!=cp){
+                if (null != cp) {
                     cp.dismiss();
                 }
                 liveView = new LiveView(LiveActivity.this);
@@ -180,11 +178,11 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
-                if(null!=cp){
+                if (null != cp) {
                     cp.dismiss();
                 }
             }
-        },Live.class);
+        }, Live.class);
     }
 
 

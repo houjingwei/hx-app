@@ -6,7 +6,7 @@ import Decoder.BASE64Decoder;
  * Created by hjw on 16/5/13.
  */
 public class Api {
-//     public static final String BASE_URL = "http://119.29.2.57:9999/api/";
+//     public static final String BASE_URL = "http://192.168.0.168:9999/huixiang-web-api/";
 //    public static final String BASE_URL = "http://119.29.94.122:8888/";
 //    public static final String BASE_URL = "http://119.29.2.57:9999/api/";
 //    public static final String BASE_URL = "http://119.29.2.57:9999/";
@@ -48,4 +48,10 @@ public class Api {
     public static final String MSG_CODE = BASE_URL+"auth/getVerifCode";
     public static final String UPLOAD_FILE_INFO = BASE_URL+"resource/getImageUploadInfo";
     public static String UP_PWD = BASE_URL+"auth/resetPaswd";
+
+    //get user auth status
+    public static String USER_GETAUTHSTATUS = BASE_URL + "user/getAuthStatus";
+
+    //set Artist Card Info
+    public static String SET_ARTIST_CARD_INFO = BASE_URL + "user/setArtistCardInfo";
 }

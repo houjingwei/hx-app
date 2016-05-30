@@ -9,16 +9,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
+import com.huixiangtv.live.callback.CodeCallBack;
 import com.huixiangtv.live.model.User;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.huixiangtv.live.common.CommonUtil.showSignAlert;
 
@@ -45,6 +54,7 @@ public class FragmentTabThree extends RootFragment{
 		activity = (MainActivity)getActivity();
 		activity.hideTitle(true);
 		initView();
+		getUserStatus();
 		return mRootView;
 	}
 
@@ -161,6 +171,53 @@ public class FragmentTabThree extends RootFragment{
 		}, 300);
 	}
 
+
+	/**
+	 * get user status by auth
+	 */
+	public   void getUserStatus() {
+
+		try {
+			String token = App.getPreferencesValue("token");
+			String uid = App.getPreferencesValue("uid");
+
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("uid", uid);
+			params.put("token", token);
+
+			RequestUtils.sendPostRequest(Api.USER_GETAUTHSTATUS, params, new ResponseCallBack<String>() {
+				@Override
+				public void onSuccess(String str) {
+					super.onSuccess(str);
+					switch (str)
+					{
+						case  "0":
+							showToast("未认证");
+							break;
+						case "1":
+							showToast("已认证");
+							break;
+						case "2":
+							showToast("认证中");
+							break;
+						case "-1":
+							showToast("认证不通过");
+							break;
+					}
+
+				}
+
+				@Override
+				public void onFailure(ServiceException e) {
+					super.onFailure(e);
+				}
+			}, String.class);
+
+		}catch (Exception ex)
+		{
+
+		}
+	}
 
 
 }
