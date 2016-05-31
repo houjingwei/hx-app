@@ -42,6 +42,8 @@ public class Api {
     public static final String SAVE_USER = BASE_URL+"user/userInfo/save";
     //标签列表
     public static final String USER_TAG = BASE_URL+"tag/getHotTags";
+    //打标签
+    public static final String ADD_TAG = BASE_URL+"tag/addTag";
 
 
     //获取验证码

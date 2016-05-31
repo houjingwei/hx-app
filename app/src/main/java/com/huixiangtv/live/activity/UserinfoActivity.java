@@ -78,22 +78,31 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         setContentView(R.layout.activity_userinfo);
         x.view().inject(this);
         initView();
+
+        if(null!=App.getLoginUser()){
+            setUserInfo(null);
+        }
     }
 
-    private void setUserInfo() {
+    private void setUserInfo(String tags) {
         User user = App.getLoginUser();
         ImageUtils.displayAvator(ivPhoto,user.getPhoto());
         etNickName.setText(user.getNickName());
         tvSex.setText(user.getSex().equals("1")?"男":"女");
-        String userTags = user.getTags();
-        if(StringUtil.isNotEmpty(userTags)){
-            initTags(userTags.split(","));
-
-            userTag();
+        String userTags = null;
+        if(tags!=null){
+            userTags = tags;
+        }else{
+            userTags  = user.getTags();
         }
 
-
+        if(StringUtil.isNotEmpty(userTags)){
+            initTags(userTags.split(","));
+            adapter.notifyDataChanged();
+            userTag();
+        }
     }
+
 
     private void initView() {
         commonTitle.setActivity(this);
@@ -152,7 +161,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             case R.id.save:
                 saveUserInfo();
                 break;
-            
+
 
         }
     }
@@ -317,18 +326,12 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
 
         if (resultCode == RESULT_OK && requestCode==108) {
             String userTags= arg2.getStringExtra("topic");
-            initTags(userTags.split(","));
-            userTag();
+            setUserInfo(userTags);
         }
 
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(null!=App.getLoginUser()){
-            setUserInfo();
-        }
-    }
+
+
 }

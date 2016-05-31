@@ -242,6 +242,8 @@ public class App extends Application {
     }
 
 
+
+
     public static void saveLoginUser(User user) {
         loginHelper.setValue("uid", user.getUid());
         loginHelper.setValue("token", String.valueOf(user.getToken()));
@@ -256,6 +258,15 @@ public class App extends Application {
         loginHelper.setValue("lives", user.getLives());
         loginHelper.setValue("loves", user.getLoves());
         loginHelper.setValue("tags", user.getTags());
+
+
+
+
+    }
+
+
+    public static void upUserTag(String tags) {
+        loginHelper.setValue("tags", tags);
 
 
 

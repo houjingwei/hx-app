@@ -95,7 +95,7 @@ public class FragmentTabThree extends RootFragment{
 				if(null!=App.getLoginUser()){
 					ForwardUtils.target(getActivity(),Constant.USERINFO,null);
 				}else{
-					ForwardUtils.target(getActivity(), Constant.ACCOUNT,null);
+					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
 				}
 				break;
 			case R.id.llAccount:
@@ -107,8 +107,8 @@ public class FragmentTabThree extends RootFragment{
 			case R.id.tvUserName:
 				if(null!=App.getLoginUser()){
 					ForwardUtils.target(getActivity(),Constant.USERINFO,null);
-				}else {
-					ForwardUtils.target(getActivity(), Constant.ACCOUNT, null);
+				}else{
+					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
 				}
 				break;
 			case R.id.setting:

@@ -46,7 +46,7 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, H5Activity.class);
                 toH5Intent(oriActivity, url, intent);
             }else if (url.startsWith(Constant.ACCOUNT)) {
-                Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
+                Intent intent = new Intent(oriActivity, AccountActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.ACCOUNT)) {
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
