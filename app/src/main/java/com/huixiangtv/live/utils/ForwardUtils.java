@@ -6,15 +6,14 @@ import android.content.Intent;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.AccountActivity;
+import com.huixiangtv.live.activity.FanedMeActivity;
 import com.huixiangtv.live.activity.H5Activity;
 import com.huixiangtv.live.activity.HelpActivity;
 import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.activity.LoginOrRegActivity;
-import com.huixiangtv.live.activity.FanedMeActivity;
 import com.huixiangtv.live.activity.MyFansActivity;
 import com.huixiangtv.live.activity.MylovesActivity;
 import com.huixiangtv.live.activity.PhoneBindActivity;
-import com.huixiangtv.live.activity.RefreshAndLoadmoreActivity;
 import com.huixiangtv.live.activity.RegLiveActivity;
 import com.huixiangtv.live.activity.RegLiveMainActivity;
 import com.huixiangtv.live.activity.RegLiveNextActivity;
@@ -46,36 +45,20 @@ public class ForwardUtils {
             if(url.startsWith("http:")){
                 Intent intent = new Intent(oriActivity, H5Activity.class);
                 toH5Intent(oriActivity, url, intent);
-            }else if (url.startsWith("huixiang://refresh")) {
-                Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                toIntent(oriActivity, params, intent);
-            }else if (url.startsWith("huixiang://login")) {
+            }else if (url.startsWith(Constant.ACCOUNT)) {
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith("huixiang://register")) {
+            }else if (url.startsWith(Constant.ACCOUNT)) {
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith("huixiang://forgot")) {
-                Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                toIntent(oriActivity, params, intent);
-            }else if (url.startsWith("huixiang://live")) {
-                Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                toIntent(oriActivity, params, intent);
-            }else if (url.startsWith("huixiang://push")) {
-                Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                toIntent(oriActivity, params, intent);
-            }else if (url.startsWith("huixiang://ucenter")) {
-                Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                toIntent(oriActivity, params, intent);
-            }else if (url.startsWith("huixiang://charge")) {
-                Intent intent = new Intent(oriActivity, RefreshAndLoadmoreActivity.class);
-                toIntent(oriActivity, params, intent);
-            }else if (url.startsWith("huixiang://userinfo")) {
+            }else if (url.startsWith(Constant.USERINFO)) {
                 Intent intent = new Intent(oriActivity, UserinfoActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith("huixiang://userTag")) {
+            }else if (url.startsWith(Constant.USERTAG)) {
                 Intent intent = new Intent(oriActivity, UserTagActivity.class);
-                toIntent(oriActivity, params, intent);
+                setIntentInfo(intent,params);
+                oriActivity.startActivityForResult(intent, 108);
+                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
             }else if (url.startsWith(Constant.ACCOUNT)){
                 Intent intent = new Intent(oriActivity, AccountActivity.class);
                 toIntent(oriActivity, params, intent);

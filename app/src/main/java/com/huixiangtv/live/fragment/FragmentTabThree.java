@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -94,7 +92,11 @@ public class FragmentTabThree extends RootFragment{
 	protected void onNoDoubleClick(View view) {
 		switch (view.getId()){
 			case R.id.ivPhoto:
-				ForwardUtils.target(getActivity(),"huixiang://userinfo",null);
+				if(null!=App.getLoginUser()){
+					ForwardUtils.target(getActivity(),Constant.USERINFO,null);
+				}else{
+					ForwardUtils.target(getActivity(), Constant.ACCOUNT,null);
+				}
 				break;
 			case R.id.llAccount:
 				ForwardUtils.target(getActivity(), Constant.ACCOUNT,null);
@@ -103,7 +105,11 @@ public class FragmentTabThree extends RootFragment{
 				ForwardUtils.target(getActivity(), Constant.MY_LOVES,null);
 				break;
 			case R.id.tvUserName:
-				ForwardUtils.target(getActivity(), Constant.LOGIN,null);
+				if(null!=App.getLoginUser()){
+					ForwardUtils.target(getActivity(),Constant.USERINFO,null);
+				}else {
+					ForwardUtils.target(getActivity(), Constant.ACCOUNT, null);
+				}
 				break;
 			case R.id.setting:
 				ForwardUtils.target(getActivity(), Constant.SETINT,null);

@@ -119,7 +119,7 @@ public class CommonHelper {
 
     public static void showTip(Context activity, String msg) {
         ColaProgressTip cpTip = ColaProgressTip.show(activity, msg, false, true, null, null);
-        ColaProgressTip.showTip(500l, cpTip);
+        ColaProgressTip.showTip(900l, cpTip);
     }
 
 

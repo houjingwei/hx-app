@@ -61,15 +61,17 @@ public class RequestUtils {
         Log.d(Constant.TAG, "originl params >" + paramsMap);
 
         RequestParams reParams = new RequestParams(url);
+        reParams.setCharset("utf-8");
         if(null!= App.getLoginUser()){
-            reParams.addQueryStringParameter("uid", App.getLoginUser().getUid()+"");
-            reParams.addQueryStringParameter("token",App.getLoginUser().getToken()+"");
+            reParams.addBodyParameter("uid", App.getLoginUser().getUid()+"");
+            reParams.addBodyParameter("token",App.getLoginUser().getToken()+"");
+
         }
 
         //解析封装参数
         if(null!=paramsMap && paramsMap.size()>0) {
             for (String key : paramsMap.keySet()) {
-                reParams.addQueryStringParameter(key, paramsMap.get(key));
+                reParams.addBodyParameter(key, paramsMap.get(key));
             }
         }
         x.http().request(method, reParams, new Callback.CommonCallback<String>() {
@@ -100,7 +102,7 @@ public class RequestUtils {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                callBack.onFailure(new ServiceException("服务器异常，请重试"));
+                callBack.onFailure(new ServiceException("服务器异常，异常提示："+ex.getMessage()));
             }
 
             @Override

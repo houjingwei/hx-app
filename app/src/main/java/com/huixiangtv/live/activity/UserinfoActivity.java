@@ -3,7 +3,6 @@ package com.huixiangtv.live.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Upfeile;
 import com.huixiangtv.live.model.User;
@@ -38,7 +38,7 @@ import com.tencent.upload.UploadManager;
 import com.tencent.upload.task.ITask;
 import com.tencent.upload.task.IUploadTaskListener;
 import com.tencent.upload.task.data.FileInfo;
-import com.tencent.upload.task.impl.PhotoUploadTask;
+import com.tencent.upload.task.impl.FileUploadTask;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -48,7 +48,6 @@ import org.xutils.x;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class UserinfoActivity extends BaseBackActivity implements View.OnClickListener {
 
@@ -79,22 +78,18 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         setContentView(R.layout.activity_userinfo);
         x.view().inject(this);
         initView();
-        if(null!=App.getLoginUser()){
-            setUserInfo();
-        }
     }
 
     private void setUserInfo() {
         User user = App.getLoginUser();
         ImageUtils.displayAvator(ivPhoto,user.getPhoto());
         etNickName.setText(user.getNickName());
-        tvSex.setText(user.getSex());
+        tvSex.setText(user.getSex().equals("1")?"男":"女");
         String userTags = user.getTags();
-        userTags = "小清新,校花,大美女";
         if(StringUtil.isNotEmpty(userTags)){
             initTags(userTags.split(","));
 
-            getTag();
+            userTag();
         }
 
 
@@ -143,7 +138,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             case R.id.rl_tag:
                 Map<String,String> tags = new HashMap<String,String>();
                 tags.put("tags",tagStr);
-                ForwardUtils.target(UserinfoActivity.this,"huixiang://userTag",tags);
+                ForwardUtils.target(UserinfoActivity.this, Constant.USERTAG,tags);
                 break;
             case R.id.back:
                 onBackPressed();
@@ -165,7 +160,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     /**
      * 用户标签字符串
      */
-    private void getTag(){
+    private void userTag(){
         StringBuffer sb = new StringBuffer("");
         int tagCount = mFlowLayout.getAdapter().getCount();
         for (int i=0;i<tagCount;i++){
@@ -185,17 +180,23 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             ShowUtils.showTip(UserinfoActivity.this, "请设置昵称~");
         }
         Map<String,String> params = new HashMap<String,String>();
-        params.put("tags",tagStr);
-        params.put("photo","photo");
+        params.put("photo","");
         params.put("nickName",etNickName.getText().toString());
-        params.put("sex",tvSex.getText().toString());
+        params.put("sex",tvSex.getText().toString().equals("女")?0+"":1+"");
         params.put("signature","");
+        params.put("tags",tagStr);
         RequestUtils.sendPostRequest(Api.SAVE_USER, params, new ResponseCallBack<User>() {
             @Override
             public void onSuccess(User data) {
                 super.onSuccess(data);
                 App.saveLoginUser(data);
                 CommonHelper.showTip(UserinfoActivity.this,"用户信息保存成功");
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        onBackPressed();
+                    }
+                }, 1000);
+
             }
 
             @Override
@@ -276,57 +277,58 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     }
 
 
-    private Handler mMainHandler = new Handler(Looper.getMainLooper());
     private void upFile(Upfeile data, String picUri) {
+        UploadManager fileUploadMgr = new UploadManager(this, data.getAppId(), Const.FileType.File, data.getPersistenceId());
 
-        UploadManager photoUploadMgr  = new UploadManager(UserinfoActivity.this, data.getAppId(), Const.FileType.Photo, data.getPersistenceId());
-        PhotoUploadTask task = new PhotoUploadTask(picUri, new IUploadTaskListener() {
+        FileUploadTask task = new FileUploadTask(data.getBucket(), picUri, data.getFileName(), "image", new IUploadTaskListener() {
+            @Override
+            public void onUploadSucceed(FileInfo fileInfo) {
+                Log.i("successful", "upload succeed: " + fileInfo.url);
+            }
 
             @Override
-            public void onUploadSucceed(final FileInfo result) {
-
-                mMainHandler.post(new Runnable()
-                {
-
-                    @Override
-                    public void run()
-                    {
-                        Log.i("xxx", "upload succeed: " + result.url);
-
-                    }
-                });
+            public void onUploadFailed(int i, String s) {
 
             }
 
             @Override
-            public void onUploadStateChange(ITask.TaskState state) {
-
-
-            }
-
-            @Override
-            public void onUploadProgress(final long totalSize, final long sendSize) {
+            public void onUploadProgress(long l, long l1) {
 
             }
 
             @Override
-            public void onUploadFailed(final int errorCode, final String errorMsg) {
+            public void onUploadStateChange(ITask.TaskState taskState) {
 
             }
         });
-        task.setBucket(data.getBucket());  // 设置Bucket(命名空间)
-        task.setFileId("test_fileId_" + UUID.randomUUID()); // 可以为图片自定义FileID(可选)
         task.setAuth(data.getSig());
-        photoUploadMgr.upload(task);
+
+        fileUploadMgr.upload(task);
 
 
     }
 
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
+        super.onActivityResult(requestCode, resultCode, arg2);
         pictureHelper.onActivityResult(requestCode, resultCode, arg2);
+
+        if (resultCode == RESULT_OK && requestCode==108) {
+            String userTags= arg2.getStringExtra("topic");
+            initTags(userTags.split(","));
+            userTag();
+        }
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(null!=App.getLoginUser()){
+            setUserInfo();
+        }
     }
 }

@@ -5,7 +5,6 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -69,7 +68,7 @@ public class App extends Application {
         x.Ext.setDebug(false); // 是否输出debug日志, 开启debug会影响性能.
         PlatformConfig.setSinaWeibo("1912474872", "5ba10f129f1e5cdf37abd2c41bb7fd06");
         PlatformConfig.setWeixin("wxd42ecbf70403ea6e", "74e3218222aab649f12a0f7511957413");
-        PlatformConfig.setQQZone("1105010761", "QWCN9CxD0blbth4M");
+        PlatformConfig.setQQZone("1105349203", "zMoNzPEO7NBREbdy");
 //      PlatformConfig.setSinaWeibo("3833863944", "dfea615e3114cf87412da53b2d3df173"); //自己的
         loginHelper = new PreferencesHelper(sContext, Constant.LOGIN_INFO);
         mShareAPI = UMShareAPI.get(this);
@@ -220,9 +219,6 @@ public class App extends Application {
 
 
     public static User getLoginUser() {
-        if (null != loginUser) {
-            return loginUser;
-        }
         if (!TextUtils.isEmpty(loginHelper.getValue("uid", "")) && !TextUtils.isEmpty(loginHelper.getValue("token", ""))) {
             loginUser = new User();
             loginUser.setToken(loginHelper.getValue("token", ""));
@@ -237,7 +233,10 @@ public class App extends Application {
             loginUser.setOrders(loginHelper.getValue("orders", ""));
             loginUser.setLives(loginHelper.getValue("lives", ""));
             loginUser.setLoves(loginHelper.getValue("loves", ""));
+            loginUser.setTags(loginHelper.getValue("tags",""));
 
+        }else{
+            loginUser = null;
         }
         return loginUser;
     }
@@ -256,6 +255,9 @@ public class App extends Application {
         loginHelper.setValue("orders", user.getOrders());
         loginHelper.setValue("lives", user.getLives());
         loginHelper.setValue("loves", user.getLoves());
+        loginHelper.setValue("tags", user.getTags());
+
+
 
 
     }

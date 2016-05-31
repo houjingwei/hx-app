@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
@@ -126,12 +125,12 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
 		@Override
 		public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-			Toast.makeText( getActivity(), "Authorize fail", Toast.LENGTH_SHORT).show();
+			CommonHelper.showTip(getActivity(),"授权失败："+t.getMessage());
 		}
 
 		@Override
 		public void onCancel(SHARE_MEDIA platform, int action) {
-			Toast.makeText( getActivity(), "Authorize cancel", Toast.LENGTH_SHORT).show();
+			CommonHelper.showTip(getActivity(),"取消登录");
 		}
 	};
 
@@ -281,6 +280,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 				if (null != cp) {
 					cp.dismiss();
 				}
+				CommonHelper.showTip(getActivity(),e.getMessage());
 			}
 		}, User.class);
 
@@ -314,7 +314,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 							cp.dismiss();
 						}
 						tvGetCode.setEnabled(true);
-						CommonHelper.showTip(getActivity(),"验证码发送失败，失败原因："+msg);
+						CommonHelper.showTip(getActivity(),"验证码发送失败："+msg);
 					}
 				}
 

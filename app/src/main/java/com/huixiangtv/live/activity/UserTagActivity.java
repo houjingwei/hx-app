@@ -1,5 +1,6 @@
 package com.huixiangtv.live.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,10 +8,14 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.model.Tag;
 import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.ColaProgressTip;
 import com.huixiangtv.live.ui.CommonTitle;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ShowUtils;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -45,7 +50,7 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
         x.view().inject(this);
         initView();
         userTags = getIntent().getStringExtra("tags");
-        initData();
+        loadData();
 
 
     }
@@ -61,42 +66,69 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
 
     }
 
-    String[] tags = null;
 
-    private void initData() {
+
+    private void loadData() {
+
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("type","1");
+        RequestUtils.sendPostRequest(Api.USER_TAG, params, new ResponseCallBack<Tag>() {
+            @Override
+            public void onSuccessList(List<Tag> data) {
+                super.onSuccessList(data);
+                initTags(data);
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                CommonHelper.showTip(UserTagActivity.this,e.getMessage());
+            }
+        },Tag.class);
+
+
+    }
+
+
+    String[] tags = null;
+    private void initTags(List<Tag> data) {
         Set<Integer> selectedSet = new HashSet<Integer>();
-        tags = new String[50];
-        for (int i = 0; i < 50; i++) {
-            tags[i] = "标签" + (i + 1);
-            for (String tag:userTags.split(",")){
-                if(tag.equals(tags[i])){
-                   selectedSet.add(i);
+        if(null!=data && data.size()>0){
+            tags = new String[data.size()];
+            for (int i=0;i<data.size();i++){
+                tags[i] = data.get(i).getName();
+                for (String tag:userTags.split(",")){
+                    if(tag.equals(tags[i])){
+                        selectedSet.add(i);
+                    }
                 }
             }
-        }
-        final LayoutInflater mInflater = LayoutInflater.from(UserTagActivity.this);
-        mFlowLayout.setMaxSelectCount(4);
-        adapter = new TagAdapter<String>(tags) {
-            @Override
-            public View getView(FlowLayout parent, int position, String s) {
-                TextView tv = (TextView) mInflater.inflate(R.layout.tag, mFlowLayout, false);
-                tv.setText(s);
-                return tv;
-            }
-        };
-        mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-            @Override
-            public boolean onTagClick(View view, int position, FlowLayout parent) {
-                if (mFlowLayout.getSelectedList().size() == 4) {
-                    ShowUtils.showTip(UserTagActivity.this, "最多选择四个标签~");
+
+            final LayoutInflater mInflater = LayoutInflater.from(UserTagActivity.this);
+            mFlowLayout.setMaxSelectCount(4);
+            adapter = new TagAdapter<String>(tags) {
+                @Override
+                public View getView(FlowLayout parent, int position, String s) {
+                    TextView tv = (TextView) mInflater.inflate(R.layout.tag, mFlowLayout, false);
+                    tv.setText(s);
+                    return tv;
                 }
-                return false;
+            };
+            mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+                @Override
+                public boolean onTagClick(View view, int position, FlowLayout parent) {
+                    if (mFlowLayout.getSelectedList().size() == 4) {
+                        ShowUtils.showTip(UserTagActivity.this, "最多选择四个标签~");
+                    }
+                    return false;
+                }
+            });
+            mFlowLayout.setAdapter(adapter);
+            if(null!=selectedSet && selectedSet.size()>0){
+                adapter.setSelectedList(selectedSet);
             }
-        });
-        mFlowLayout.setAdapter(adapter);
-        if(null!=selectedSet && selectedSet.size()>0){
-            adapter.setSelectedList(selectedSet);
         }
+
     }
 
 
@@ -112,8 +144,10 @@ public class UserTagActivity extends BaseBackActivity implements View.OnClickLis
                 }else{
                     Map<String,String> params = new HashMap<String,String>();
                     String tags = getTag();
-                    ShowUtils.showTip(UserTagActivity.this, "等待提供接口~"+tags);
-                    //RequestUtils.sendPostRequest(Api.SAVE_USER_TAG,params,);
+                    Intent intent=new Intent();
+                    intent.putExtra("topic",tags);
+                    setResult(RESULT_OK, intent);
+                    onBackPressed();
                 }
                 break;
         }
