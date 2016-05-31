@@ -58,4 +58,6 @@ public class Constant {
      */
     public static final String MSG_TYPE_BASE = "base";
 
+    public static final String PIC_LIST = BASE_PRE +"pic_list";
+
 }

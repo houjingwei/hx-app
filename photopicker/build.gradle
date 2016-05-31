@@ -1,0 +1,25 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+    resourcePrefix "__picker_"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+    }
+}
+apply from: '../gradle/gradle-mvn-push.gradle'
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+    compile files('libs/library-2.4.0.jar')
+//    compile 'com.github.bumptech.glide:glide:3.6.1'
+        compile files('libs/glide-3.6.0.jar')
+}

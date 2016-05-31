@@ -19,6 +19,7 @@ import com.huixiangtv.live.activity.RegLiveActivity;
 import com.huixiangtv.live.activity.RegLiveMainActivity;
 import com.huixiangtv.live.activity.RegLiveNextActivity;
 import com.huixiangtv.live.activity.RegLiveSuccessActivity;
+import com.huixiangtv.live.activity.RegPicListActivity;
 import com.huixiangtv.live.activity.SearchActivity;
 import com.huixiangtv.live.activity.SettingActivity;
 import com.huixiangtv.live.activity.TopicActivity;
@@ -128,6 +129,9 @@ public class ForwardUtils {
                 toIntent(oriActivity,params,intent);
             }else if (url.startsWith(Constant.MY_LOVES)){
                 Intent intent = new Intent(oriActivity, MylovesActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.startsWith(Constant.PIC_LIST)){
+                Intent intent = new Intent(oriActivity, RegPicListActivity.class);
                 toIntent(oriActivity,params,intent);
             }
 

@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.huixiangtv.live">
 
+    <permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <!-- 录音 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -37,6 +39,11 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true"
+        />
 
     <application
         android:name=".App"
@@ -170,7 +177,8 @@
         <activity
             android:name=".activity.RegLiveMainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle" />
+            android:theme="@style/backStyle"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"  />
         <activity
             android:name=".activity.RegLiveSuccessActivity"
             android:screenOrientation="portrait"
@@ -206,6 +214,11 @@
         <activity android:name=".activity.MylovesActivity" android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
 
+        <activity android:name=".activity.RegPicListActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:screenOrientation="landscape">
+
+        </activity>
         <!-- 微信支付-->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
@@ -213,6 +226,18 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <!-- 微信支付-->
+
+
+        <activity
+            android:theme="@style/myTheme"
+            android:name="me.iwf.photopicker.PhotoPickerActivity"
+            />
+
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="me.iwf.photopicker.PhotoPagerActivity"
+            />
+
 
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"

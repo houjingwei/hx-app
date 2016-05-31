@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
@@ -141,5 +142,27 @@ public class CommonUtil {
                 codeCallBack.sendError(e.getMessage());
             }
         },String.class);
+    }
+
+
+
+    public static void showRegAlert(final Context context) {
+
+
+            final AlertDialog dlg = new AlertDialog.Builder(context).create();
+            dlg.show();
+            dlg.setCancelable(false);
+            Window window = dlg.getWindow();
+            window.setContentView(R.layout.res_list_inner);
+
+            TextView tvSave = (TextView) window.findViewById(R.id.tvSave);
+            tvSave.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    dlg.dismiss();
+                }
+            });
+
     }
 }

@@ -127,6 +127,8 @@
     <string name="myLoves">我的爱心</string>
 
     <string name="txt_love_info"><Data><![CDATA[<font color="#C1BFC0">送爱心</font>]]></Data></string>
+    <string name="txt_card">身份证</string>
+    <string name="request_auth">申请认证</string>
 
 
 </resources>

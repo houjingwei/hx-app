@@ -1,2 +1,3 @@
-include ':app', ':libraryrefresh'
+include ':app', ':libraryrefresh', ':photopicker'
+':PhotoPicker'
 

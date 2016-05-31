@@ -43,4 +43,11 @@
         <attr name="normal_icon" format="reference" />
         <attr name="selected_icon" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="DropImageView">
+        <attr name="textDraSize" format="dimension" />
+        <attr name="textDraColor" format="color" />
+        <attr name="textDra" format="string" />
+        <attr name="iconDra" format="reference" />
+    </declare-styleable>
 </resources>

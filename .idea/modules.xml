@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/huixiang-android.iml" filepath="$PROJECT_DIR$/huixiang-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraryrefresh/libraryrefresh.iml" filepath="$PROJECT_DIR$/libraryrefresh/libraryrefresh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/photopicker/photopicker.iml" filepath="$PROJECT_DIR$/photopicker/photopicker.iml" />
     </modules>
   </component>
 </project>
