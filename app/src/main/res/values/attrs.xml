@@ -43,4 +43,11 @@
         <attr name="normal_icon" format="reference" />
         <attr name="selected_icon" format="reference" />
     </declare-styleable>
+
+
+    <attr name="entrySummaries" format="reference" />
+
+    <declare-styleable name="IjkListPreference">
+        <attr name="entrySummaries" />
+    </declare-styleable>
 </resources>

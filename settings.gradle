@@ -1,2 +1,5 @@
 include ':app', ':libraryrefresh'
+include ':ijkplayer-java'
+include ':ijkplayer-exo'
+
 

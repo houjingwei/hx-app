@@ -31,6 +31,7 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
+import com.huixiangtv.live.activity.MyActivity;
 import com.huixiangtv.live.adapter.CommonAdapter;
 import com.huixiangtv.live.adapter.ListViewPagerAdapter;
 import com.huixiangtv.live.adapter.LiveBannerAdapter;
@@ -108,7 +109,8 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         listview.setOnItemClickListener(new LinearLayoutForListView.OnItemClickListener() {
             @Override
             public void onItemClicked(View v, Object item, int position) {
-                CommonHelper.showTip(getActivity(),"position"+position);
+               Intent intent = new Intent(getActivity(), MyActivity.class);
+                getActivity().startActivity(intent);
             }
         });
         listview.setVisibility(View.GONE);
