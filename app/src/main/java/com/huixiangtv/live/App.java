@@ -260,6 +260,21 @@ public class App extends Application {
 
     }
 
+
+    /**
+     * setting body information
+     * @param user
+     */
+    public static void saveBodyInfo(User user)
+    {
+        loginHelper.setValue("bust", user.getBust()); //胸围
+        loginHelper.setValue("hip",user.getHip());
+        loginHelper.setValue("waist",user.getWaist()); //腰部
+        loginHelper.setValue("height",user.getHeight());
+        loginHelper.setValue("weight",user.getWeight());
+
+    }
+
     /**
      * 签到时间
      * @param context

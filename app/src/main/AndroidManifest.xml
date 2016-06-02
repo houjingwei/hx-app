@@ -215,7 +215,7 @@
             android:theme="@style/backStyle" />
 
         <activity android:name=".activity.RegPicListActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:configChanges="screenSize|keyboardHidden|orientation"
             android:screenOrientation="landscape">
 
         </activity>
@@ -230,10 +230,14 @@
 
         <activity
             android:theme="@style/myTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:screenOrientation="landscape"
             android:name="me.iwf.photopicker.PhotoPickerActivity"
             />
 
         <activity
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:name="me.iwf.photopicker.PhotoPagerActivity"
             />

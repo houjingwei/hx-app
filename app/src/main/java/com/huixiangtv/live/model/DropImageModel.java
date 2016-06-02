@@ -9,6 +9,16 @@ public class DropImageModel {
     private Drawable iconId;
     private String name;
 
+    public int getIsFinish() {
+        return isFinish;
+    }
+
+    public void setIsFinish(int isFinish) {
+        this.isFinish = isFinish;
+    }
+
+    private  int isFinish;
+
     public DropImageModel() {
 
     }
@@ -47,5 +57,9 @@ public class DropImageModel {
     public void setName(String name) {
         this.name = name;
     }
+
+
+
+
 
 }

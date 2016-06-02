@@ -25,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.huixiangtv.live.R;
 
@@ -50,24 +51,20 @@ public class DropImageView extends ImageView implements OnTouchListener,
 
         @Override
         public void onClick(DropImageView v) {
-            // TODO Auto-generated method stub
         }
 
         @Override
         public boolean onMove(DropImageView v, MotionEvent e1, MotionEvent e2) {
-            // TODO Auto-generated method stub
             return false;
         }
 
         @Override
         public void onLongClick(DropImageView v) {
-            // TODO Auto-generated method stub
 
         }
 
         @Override
         public void onUp(DropImageView v) {
-            // TODO Auto-generated method stub
 
         }
 
@@ -82,6 +79,7 @@ public class DropImageView extends ImageView implements OnTouchListener,
     private MotionEvent event2;
     private int textColor = Color.WHITE;
     private float textSize = 30;
+    private int isFinish = 0;
     private String text = "";
     private Drawable icon;
 
@@ -108,14 +106,21 @@ public class DropImageView extends ImageView implements OnTouchListener,
             text = "";
         }
         icon = typedArray.getDrawable(R.styleable.DropImageView_iconDra);
+
+        isZoom = typedArray.getBoolean(R.styleable.DropImageView_is_zoom,true);
         setOnTouchListener(this);
         setOnClickListener(this);
         setOnLongClickListener(this);
     }
 
     public void setIcon(Drawable icon) {
+        super.setImageDrawable(icon);
         this.icon = icon;
-        invalidate();
+//        invalidate();
+    }
+
+    public void setIsZoom(boolean isZoom){
+        this.isZoom = isZoom;
     }
 
     public void setResource(Drawable drawable)
@@ -124,6 +129,9 @@ public class DropImageView extends ImageView implements OnTouchListener,
 
     }
 
+    public void setIsFinish(int isFinish){
+        this.isFinish = isFinish;
+    }
 
 
     public void setIcon(int icon) {
@@ -133,6 +141,10 @@ public class DropImageView extends ImageView implements OnTouchListener,
 
     public Drawable getIcon() {
         return icon;
+    }
+
+    public int getIsFinish(){
+        return isFinish;
     }
 
     public int getTextColor() {
@@ -167,40 +179,40 @@ public class DropImageView extends ImageView implements OnTouchListener,
     protected void onDraw(Canvas canvas) {
         // TODO Auto-generated method stub
         super.onDraw(canvas);
-        int width = getWidth();
-        int height = getHeight();
-        TextPaint textPaint = new TextPaint();
-        textPaint.setColor(textColor);
-        textPaint.setTextSize(textSize);
-        textPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        textPaint.setAntiAlias(true);
-        StaticLayout layout = null;
-        layout = new StaticLayout(text, textPaint, width ,
-                Alignment.ALIGN_CENTER, 1.0F, 0.0F, true);
-        if (icon != null) {
-            Paint paint = new Paint();
-            float iconWidth = 0;
-            float iconHeight = 0;
-            if (width > height - layout.getHeight()) {
-                iconHeight = height;
-                iconWidth = width;
-            } else {
-                iconWidth = width;
-                iconHeight = height;
-            }
-            float iconX = (width - iconWidth) / 2;
-            float iconY = (height - layout.getHeight() - iconHeight) / 2;
-            Rect iconRect = new Rect((int) iconX, (int) iconY,
-                    (int) (iconX + iconWidth), (int) (iconY + iconHeight));
-            canvas.translate(0, 0);
-            canvas.drawBitmap(((BitmapDrawable) icon).getBitmap(), null,
-                    iconRect, paint);
-            paint.reset();
-        }
-        canvas.translate((width - layout.getWidth()) / 2,
-                height   );
-        layout.draw(canvas);
-        textPaint.reset();
+//        int width = getWidth();
+//        int height = getHeight();
+//        TextPaint textPaint = new TextPaint();
+//        textPaint.setColor(textColor);
+//        textPaint.setTextSize(textSize);
+//        textPaint.setTypeface(Typeface.DEFAULT_BOLD);
+//        textPaint.setAntiAlias(true);
+//        StaticLayout layout = null;
+//        layout = new StaticLayout(text, textPaint, width ,
+//                Alignment.ALIGN_CENTER, 1.0F, 0.0F, true);
+//        if (icon != null) {
+//            Paint paint = new Paint();
+//            float iconWidth = 0;
+//            float iconHeight = 0;
+//            if (width > height - layout.getHeight()) {
+//                iconHeight = height;
+//                iconWidth = width;
+//            } else {
+//                iconWidth = width;
+//                iconHeight = height;
+//            }
+//            float iconX = (width - iconWidth) / 2;
+//            float iconY = (height - layout.getHeight() - iconHeight) / 2;
+//            Rect iconRect = new Rect((int) iconX, (int) iconY,
+//                    (int) (iconX + iconWidth), (int) (iconY + iconHeight));
+//            canvas.translate(0, 0);
+//            canvas.drawBitmap(((BitmapDrawable) icon).getBitmap(), null,
+//                    iconRect, paint);
+//            paint.reset();
+//        }
+//        canvas.translate((width - layout.getWidth()) / 2,
+//                height   );
+//        layout.draw(canvas);
+//        textPaint.reset();
     }
 
     private boolean StringIsEmpty(String string) {
@@ -232,60 +244,161 @@ public class DropImageView extends ImageView implements OnTouchListener,
     private static final int ZOOM = 2; // 放大
     private float startDis = 0;
     private PointF midPoint; // 中心点
+    static boolean isZoom = true;
 
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        // TODO Auto-generated method stub
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                event1 = MotionEvent.obtain(event);
+        if(isZoom) {
+            switch (event.getAction()) {
+
+                case MotionEvent.ACTION_DOWN:
+                    event1 = MotionEvent.obtain(event);
 
 
-                mode = DRAG; // 拖拽
-                currentMaritx.set(getImageMatrix()); // 记录ImageView当前移动位置
-                startPoint.set(event.getX(), event.getY()); // 开始点
+                    mode = DRAG; // 拖拽
+                    currentMaritx.set(getImageMatrix()); // 记录ImageView当前移动位置
+                    startPoint.set(event.getX(), event.getY()); // 开始点
 
 
-                return false;
-            case MotionEvent.ACTION_MOVE:
-                event2 = MotionEvent.obtain(event);
-                Log.i("Log", event1.equals(event2) + "");
-                if (mode == DRAG) { // 图片拖动事件
-                    float dx = event.getX() - startPoint.x; // x轴移动距离
-                    float dy = event.getY() - startPoint.y;
-                    matrix.set(currentMaritx); // 在当前的位置基础上移动
-                    matrix.postTranslate(dx, dy);
-                } else if (mode == ZOOM) { // 图片放大事件
-                    float endDis = distance(event); // 结束距离
-                    if (endDis > 10f) {
-                        float scale = endDis / startDis; // 放大倍数
-                        matrix.set(currentMaritx);
-                        matrix.postScale(scale, scale, midPoint.x, midPoint.y);
+                    return false;
+                case MotionEvent.ACTION_MOVE:
+                    event2 = MotionEvent.obtain(event);
+                    Log.i("Log", event1.equals(event2) + "");
+                    if (mode == DRAG) { // 图片拖动事件
+                        float dx = event.getX() - startPoint.x; // x轴移动距离
+                        float dy = event.getY() - startPoint.y;
+                        matrix.set(currentMaritx); // 在当前的位置基础上移动
+                        matrix.postTranslate(dx, dy);
+                    } else if (mode == ZOOM) { // 图片放大事件
+                        float endDis = distance(event); // 结束距离
+                        if (endDis > 10f) {
+                            float scale = endDis / startDis; // 放大倍数
+                            matrix.set(currentMaritx);
+                            matrix.postScale(scale, scale, midPoint.x, midPoint.y);
+                        }
                     }
-                }
-                return onDropImageViewListener.onMove(this, event1, event2);
-            case MotionEvent.ACTION_UP:
-                mode = 0;
-                onDropImageViewListener.onUp(this);
-                return false;
-            // 有手指离开屏幕，但屏幕还有触点（手指）
-            case MotionEvent.ACTION_POINTER_UP:
-                mode = 0;
-                return false;
-            // 当屏幕上已经有触点（手指），再有一个手指压下屏幕
-            case MotionEvent.ACTION_POINTER_DOWN:
-                mode = ZOOM;
-                startDis = distance(event);
-                if (startDis > 10f) { // 避免手指上有两个
-                    midPoint = mid(event);
-                    currentMaritx.set(getImageMatrix()); // 记录当前的缩放倍数
-                }
-                return false;
-            default:
-                return false;
+                    return onDropImageViewListener.onMove(this, event1, event2);
+                case MotionEvent.ACTION_UP:
+                    mode = 0;
+                    onDropImageViewListener.onUp(this);
+                    return false;
+                // 有手指离开屏幕，但屏幕还有触点（手指）
+                case MotionEvent.ACTION_POINTER_UP:
+                    mode = 0;
+                    return false;
+                // 当屏幕上已经有触点（手指），再有一个手指压下屏幕
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    mode = ZOOM;
+                    startDis = distance(event);
+                    if (startDis > 10f) { // 避免手指上有两个
+                        midPoint = mid(event);
+                        currentMaritx.set(getImageMatrix()); // 记录当前的缩放倍数
+                    }
+                    return false;
+                default:
+                    return false;
+            }
+        }
+        else
+        {
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_DOWN:
+                    mode = DRAG; // 拖拽
+                    currentMaritx.set(getImageMatrix()); // 记录ImageView当前移动位置
+                    startPoint.set(event.getX(), event.getY()); // 开始点
+                    break;
+                case MotionEvent.ACTION_MOVE:// 移动事件
+                    if (mode == DRAG) { // 图片拖动事件
+                        float dx = event.getX() - startPoint.x; // x轴移动距离
+                        float dy = event.getY() - startPoint.y;
+                        matrix.set(currentMaritx); // 在当前的位置基础上移动
+                        matrix.postTranslate(dx, dy);
+                    } else if (mode == ZOOM) { // 图片放大事件
+                        float endDis = distance(event); // 结束距离
+                        if (endDis > 10f) {
+                            float scale = endDis / startDis; // 放大倍数
+                            matrix.set(currentMaritx);
+                            matrix.postScale(scale, scale, midPoint.x, midPoint.y);
+                        }
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    mode = 0;
+                    break;
+                // 有手指离开屏幕，但屏幕还有触点（手指）
+                case MotionEvent.ACTION_POINTER_UP:
+                    mode = 0;
+                    break;
+                // 当屏幕上已经有触点（手指），再有一个手指压下屏幕
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    mode = ZOOM;
+                    startDis = distance(event);
+                    if (startDis > 10f) { // 避免手指上有两个
+                        midPoint = mid(event);
+                        currentMaritx.set(getImageMatrix()); // 记录当前的缩放倍数
+                    }
+                    return false;
+            }
+            // 显示缩放后的图片
+            setImageMatrix(matrix);
+            return true;
         }
 
+
+
+
+
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                event1 = MotionEvent.obtain(event);
+//                Toast.makeText(getContext(),"down",Toast.LENGTH_LONG).show();
+//
+//                mode = DRAG; // 拖拽
+//                currentMaritx.set(getImageMatrix()); // 记录ImageView当前移动位置
+//                startPoint.set(event.getX(), event.getY()); // 开始点
+//
+//
+//                return false;
+//            case MotionEvent.ACTION_MOVE:
+//                event2 = MotionEvent.obtain(event);
+//                Log.i("Log", event1.equals(event2) + "");
+//                if (mode == DRAG) { // 图片拖动事件
+//                    Toast.makeText(getContext(),"drag",Toast.LENGTH_LONG).show();
+//                    float dx = event.getX() - startPoint.x; // x轴移动距离
+//                    float dy = event.getY() - startPoint.y;
+//                    matrix.set(currentMaritx); // 在当前的位置基础上移动
+//                    matrix.postTranslate(dx, dy);
+//                } else if (mode == ZOOM) { // 图片放大事件
+//                    float endDis = distance(event); // 结束距离
+//                    if (endDis > 10f) {
+//                        Toast.makeText(getContext(),"zoom",Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//                return onDropImageViewListener.onMove(this, event1, event2);
+//            case MotionEvent.ACTION_UP:
+//                mode = 0;
+//                Toast.makeText(getContext(),"up",Toast.LENGTH_LONG).show();
+//                onDropImageViewListener.onUp(this);
+//                return false;
+//            // 有手指离开屏幕，但屏幕还有触点（手指）
+//            case MotionEvent.ACTION_POINTER_UP:
+//                mode = 0;
+//                Toast.makeText(getContext(),"pointer_up",Toast.LENGTH_LONG).show();
+//                return false;
+//            // 当屏幕上已经有触点（手指），再有一个手指压下屏幕
+//            case MotionEvent.ACTION_POINTER_DOWN:
+//                mode = ZOOM;
+//                startDis = distance(event);
+//                if (startDis > 10f) { // 避免手指上有两个
+//                    midPoint = mid(event);
+//                    Toast.makeText(getContext(),"pointer_down_zoom",Toast.LENGTH_LONG).show();
+//                    currentMaritx.set(getImageMatrix()); // 记录当前的缩放倍数
+//                }
+//                return false;
+//            default:
+//                return false;
+//        }
     }
 
     /**

@@ -48,6 +48,7 @@
         <attr name="textDraSize" format="dimension" />
         <attr name="textDraColor" format="color" />
         <attr name="textDra" format="string" />
+        <attr name="is_zoom" format="boolean"/>
         <attr name="iconDra" format="reference" />
     </declare-styleable>
 </resources>

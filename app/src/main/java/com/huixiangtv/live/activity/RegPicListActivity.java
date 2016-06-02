@@ -1,6 +1,7 @@
 package com.huixiangtv.live.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,17 +9,24 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,11 +35,14 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.PhotoAdapter;
 import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.DropImageModel;
+import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.widget.DropImageView;
+import com.huixiangtv.live.utils.widget.MySeekBar;
 
 import android.widget.FrameLayout.LayoutParams;
 
+import org.w3c.dom.Text;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -52,6 +63,7 @@ public class RegPicListActivity extends BaseBackActivity {
 
         @IdRes
         final int mViewId;
+
         RequestCode(@IdRes int viewId) {
             mViewId = viewId;
         }
@@ -77,13 +89,26 @@ public class RegPicListActivity extends BaseBackActivity {
     private float startDis = 0;
     private PointF midPoint; // 中心点
 
+    @ViewInject(R.id.tvH_1)
+    TextView tvH_1;
+    @ViewInject(R.id.tvH_2)
+    TextView tvH_2;
+    @ViewInject(R.id.tvH_3)
+    TextView tvH_3;
+    @ViewInject(R.id.tvH_4)
+    TextView tvH_4;
+    @ViewInject(R.id.tvH_5)
+    TextView tvH_5;
 
-    PhotoAdapter photoAdapter;
 
     ArrayList<String> selectedPhotos = new ArrayList<>();
 
-    @ViewInject(R.id.txtUpload)
-    TextView txtUpload;
+    @ViewInject(R.id.txtOpen)
+    TextView txtOpen;
+
+    @ViewInject(R.id.ll_per_info)
+    LinearLayout ll_per_info;
+
 
     @ViewInject(R.id.imageView1)
     ImageView imageView1;
@@ -103,6 +128,16 @@ public class RegPicListActivity extends BaseBackActivity {
     @ViewInject(R.id.merto_content)
     FrameLayout merto_content;
 
+
+    @ViewInject(R.id.txtSave)
+    TextView txtSave;
+
+    @ViewInject(R.id.txtUpload)
+    TextView txtUpload;
+
+    @ViewInject(R.id.txtSF)
+    TextView txtSF;
+
     private ArrayList<DropImageModel> mertoBeans = new ArrayList<DropImageModel>();
     private ArrayList<DropImageModel> startBeans;// 保存itme变换前的内容
     private static ArrayList<DropImageView> mertoItemViews;
@@ -112,6 +147,7 @@ public class RegPicListActivity extends BaseBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_list);
         x.view().inject(this);
+        drop_index = true;
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         imageView1.setTag(0);
         imageView2.setTag(1);
@@ -126,12 +162,12 @@ public class RegPicListActivity extends BaseBackActivity {
         mertoItemViews.add((DropImageView) imageView4);
         mertoItemViews.add((DropImageView) imageView5);
 
-
         ((DropImageView) imageView1).setOnDropImageViewListener(onMertoItemViewListener);
         ((DropImageView) imageView2).setOnDropImageViewListener(onMertoItemViewListener);
         ((DropImageView) imageView3).setOnDropImageViewListener(onMertoItemViewListener);
         ((DropImageView) imageView4).setOnDropImageViewListener(onMertoItemViewListener);
         ((DropImageView) imageView5).setOnDropImageViewListener(onMertoItemViewListener);
+
         /**
          * 缩放
          */
@@ -145,6 +181,7 @@ public class RegPicListActivity extends BaseBackActivity {
         for (int i = 0; i < 5; i++)
             addData();
 
+        selectedPhotos.clear();
 
         txtUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,13 +189,57 @@ public class RegPicListActivity extends BaseBackActivity {
                 checkPermission(RequestCode.Button);
             }
         });
+        showRegAlert(RegPicListActivity.this);
 
 
+        ll_per_info.getBackground().setAlpha(100);
 
-        //photoAdapter = new PhotoAdapter(getBaseContext(), selectedPhotos);
 
-        //recycler_view.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
-        //recycler_view.setAdapter(photoAdapter);
+        txtSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //first validation
+                for (DropImageView dropImageView : mertoItemViews) {
+
+                    if (!isMoveAll()) {
+                        Toast.makeText(getBaseContext(), "设置艺人卡前，请先选择上传5张完整清晰个人照片", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+
+                ll_per_info.setVisibility(View.VISIBLE);
+                txtUpload.setVisibility(View.GONE);
+                txtSF.setVisibility(View.GONE);
+                txtOpen.setVisibility(View.GONE);
+
+                if (v.getTag().toString().equals("1")) {
+                    Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
+                    nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
+                    txtSave.setCompoundDrawables(null, null, nav_up, null);
+                    txtSave.setText("");
+                    txtSave.setTag("0");
+                    resetOnMertoItemViewListener();
+                    txtSave.setBackground(null);
+                } else {
+
+                    showShareAlert(RegPicListActivity.this);
+                }
+            }
+        });
+
+        txtOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRegAlert(RegPicListActivity.this);
+            }
+        });
+
+        txtSF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((DropImageView) imageView2).setIsZoom(false);
+            }
+        });
 
     }
 
@@ -219,10 +300,10 @@ public class RegPicListActivity extends BaseBackActivity {
                         midPoint = mid(event);
                         currentMaritx.set(imageView.getImageMatrix()); // 记录当前的缩放倍数
                     }
-                    break;
+                    return false;
             }
             // 显示缩放后的图片
-            // imageView.setImageMatrix(matrix);
+            imageView.setImageMatrix(matrix);
             return true;
         }
 
@@ -257,19 +338,19 @@ public class RegPicListActivity extends BaseBackActivity {
     private void addData() {
         DropImageModel dropImageModel = new DropImageModel();
         if (mertoBeans.size() == 0) {
-            dropImageModel.setIconId(getDrawable(R.drawable.test1));
+            dropImageModel.setIconId(getDrawable(R.drawable.pic1));
             dropImageModel.setName("test1");
         } else if (mertoBeans.size() == 1) {
-            dropImageModel.setIconId(getDrawable(R.drawable.test1));
+            dropImageModel.setIconId(getDrawable(R.drawable.pic2));
             dropImageModel.setName("test2");
         } else if (mertoBeans.size() == 2) {
-            dropImageModel.setIconId(getDrawable(R.drawable.test1));
+            dropImageModel.setIconId(getDrawable(R.drawable.pic3));
             dropImageModel.setName("test3");
         } else if (mertoBeans.size() == 3) {
-            dropImageModel.setIconId(getDrawable(R.drawable.test1));
+            dropImageModel.setIconId(getDrawable(R.drawable.pic4));
             dropImageModel.setName("test4");
         } else if (mertoBeans.size() == 4) {
-            dropImageModel.setIconId(getDrawable(R.drawable.test1));
+            dropImageModel.setIconId(getDrawable(R.drawable.pic5));
             dropImageModel.setName("test5");
 
         } else {
@@ -287,6 +368,7 @@ public class RegPicListActivity extends BaseBackActivity {
                     mertoItemViews.get(i).setVisibility(View.VISIBLE);
                     mertoItemViews.get(i)
                             .setIcon(mertoBeans.get(i).getIconId());
+                    mertoItemViews.get(i).setIsFinish(mertoBeans.get(i).getIsFinish());
                     mertoItemViews.get(i).setText(mertoBeans.get(i).getName());
                 }
             } else {
@@ -302,19 +384,30 @@ public class RegPicListActivity extends BaseBackActivity {
 
     }
 
+    private boolean isMoveAll()
+    {
+        if(tvH_1.getText().toString().trim() =="" || tvH_2.getText().toString().trim() ==""  ||tvH_3.getText().toString().trim() =="" ||tvH_4.getText().toString().trim() =="" ||tvH_5.getText().toString().trim() =="" ||tvH_1.getText().toString().trim() =="" )
+        {
+            return false;
+        }
+        return true;
+    }
 
     private DropImageView.DropImageViewListener onMertoItemViewListener = new DropImageView.DropImageViewListener() {
 
         @Override
         public void onClick(DropImageView v) {
             try {
-                currentTag = Integer.parseInt(v.getTag().toString());
-                Intent intent = new Intent(RegPicListActivity.this, PhotoPickerActivity.class);
-                PhotoPickerIntent.setPhotoCount(intent, 1);
-                PhotoPickerIntent.setShowCamera(intent, true);
-                startActivityForResult(intent, REQUEST_CODE);
-            }catch (Exception ex)
-            {
+
+                if(drop_index) {
+                    currentTag = Integer.parseInt(v.getTag().toString());
+                    Intent intent = new Intent(RegPicListActivity.this, PhotoPickerActivity.class);
+                    PhotoPickerIntent.setPhotoCount(intent, 1);
+                    PhotoPickerIntent.setShowCamera(intent, true);
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
+
+            } catch (Exception ex) {
 
             }
         }
@@ -324,6 +417,7 @@ public class RegPicListActivity extends BaseBackActivity {
             if (!isMove) {
                 return false;
             }
+
             int[] moveLocation = new int[2];
             v.getLocationOnScreen(moveLocation);
             if (moveView == null) {
@@ -332,6 +426,7 @@ public class RegPicListActivity extends BaseBackActivity {
                 moveView = new DropImageView(RegPicListActivity.this);
                 moveView.setIcon(v.getIcon());
                 moveView.setText(v.getText());
+                moveView.setIsFinish(v.getIsFinish());
                 moveView.setTextColor(v.getTextColor());
                 moveView.setTextSize(v.getTextSize());
                 FrameLayout.LayoutParams moveParams = new FrameLayout.LayoutParams(
@@ -356,7 +451,7 @@ public class RegPicListActivity extends BaseBackActivity {
         @Override
         public void onLongClick(DropImageView v) {
             vibrator.vibrate(100);
-            isMove = true;
+            isMove = isMoveAll();
         }
 
         @Override
@@ -440,7 +535,7 @@ public class RegPicListActivity extends BaseBackActivity {
 
             }
         } else {
-             onClicks(requestCode.mViewId);
+            onClicks(requestCode.mViewId);
         }
     }
 
@@ -459,7 +554,10 @@ public class RegPicListActivity extends BaseBackActivity {
     }
 
 
-    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    static boolean drop_index = false;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
 
@@ -468,34 +566,50 @@ public class RegPicListActivity extends BaseBackActivity {
             if (data != null) {
                 photos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
             }
-            if(photos.size()>0 && photos.size()<2)
-            {
-                File file = new File(photos.get(currentTag));
+//
+//            if (selectedPhotos.size() == 0) {
+//
+//                    Toast.makeText(getBaseContext(), "请选择五张照片", Toast.LENGTH_LONG).show();
+//                    return;
+//
+//            }
 
-                    Bitmap bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(file), App.screenWidth, App.screenHeight);
-                    BitmapDrawable bd= new BitmapDrawable(bm);
-                    mertoItemViews.get(currentTag).setIcon(bd); mertoBeans.get(currentTag).setIconId(bd);
+            if (photos.size() > 0 && photos.size() < 2) {
+                File file = new File(photos.get((0)));
 
 
-            } else
-            if(photos.size()>1)
-            {
-                File file ;
-                for(int size = 0; size< photos.size();size++)
-                {
+                OffDrop(currentTag);
+                Bitmap bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(file), App.screenWidth,App.screenHeight);
+                BitmapDrawable bd = new BitmapDrawable(bm);
+                mertoItemViews.get(currentTag).setIcon(bd);
+                mertoBeans.get(currentTag).setIconId(bd);
+                mertoBeans.get(currentTag).setIsFinish(5);
+                mertoItemViews.get(currentTag).setIsFinish(5);
+
+
+            } else if (photos.size() > 1) {
+                File file;
+                for (int size = 0; size < photos.size(); size++) {
                     file = new File(photos.get(size));
 
-                    Bitmap bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(file), App.screenWidth, App.screenHeight);
-                    BitmapDrawable bd= new BitmapDrawable(bm);
+                    Bitmap bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(file), App.screenWidth,App.screenHeight);
+                    BitmapDrawable bd = new BitmapDrawable(bm);
                     mertoItemViews.get(size).setIcon(bd);
                     mertoBeans.get(size).setIconId(bd);
+                    mertoBeans.get(size).setIsFinish(5);
+                    mertoItemViews.get(size).setIsFinish(5);
+                    drop_index = false;
+
+                    OffDrop(size);
+
                 }
             }
 
             if (photos != null) {
-
                 selectedPhotos.addAll(photos);
             }
+
+
         }
     }
 
@@ -518,10 +632,142 @@ public class RegPicListActivity extends BaseBackActivity {
     }
 
 
-
-
-
     public void previewPhoto(Intent intent) {
         startActivityForResult(intent, REQUEST_CODE);
+    }
+
+
+    public static void showShareAlert(final Context context) {
+
+        final AlertDialog dlg = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT).create();
+        dlg.show();
+        dlg.setCancelable(false);
+        Window window = dlg.getWindow();
+        window.setContentView(R.layout.open_share);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.alpha = 1.9f;
+        window.setAttributes(lp);
+
+        window.findViewById(R.id.rlqq).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Share to qq", Toast.LENGTH_LONG).show();
+                dlg.dismiss();
+            }
+        });
+
+        window.findViewById(R.id.rlzone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Share to zone", Toast.LENGTH_LONG).show();
+                dlg.dismiss();
+            }
+        });
+
+        window.findViewById(R.id.rlwx).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Share to wechat", Toast.LENGTH_LONG).show();
+                dlg.dismiss();
+            }
+        });
+
+
+        window.findViewById(R.id.rlpyq).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Share to pyq", Toast.LENGTH_LONG).show();
+                dlg.dismiss();
+            }
+        });
+
+        window.findViewById(R.id.rlwb).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Share to sina", Toast.LENGTH_LONG).show();
+                dlg.dismiss();
+            }
+        });
+
+        window.findViewById(R.id.rlcopy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Share to copy", Toast.LENGTH_LONG).show();
+                dlg.dismiss();
+            }
+        });
+
+    }
+
+    public static void showRegAlert(final Context context) {
+
+        final AlertDialog dlg = new AlertDialog.Builder(context).create();
+        dlg.show();
+        dlg.setCancelable(false);
+        Window window = dlg.getWindow();
+        window.setContentView(R.layout.res_list_inner);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.alpha = 0.9f;
+        window.setAttributes(lp);
+        TextView tvSave = (TextView) window.findViewById(R.id.tvSave);
+
+        final MySeekBar ms_height = (MySeekBar) window.findViewById(R.id.ms_height);
+        final MySeekBar ms_weight = (MySeekBar) window.findViewById(R.id.ms_weight);
+        final MySeekBar ms_hip = (MySeekBar) window.findViewById(R.id.ms_hip);
+        final MySeekBar ms_waist = (MySeekBar) window.findViewById(R.id.ms_waist);
+        final MySeekBar ms_bust = (MySeekBar) window.findViewById(R.id.ms_bust);
+//
+//        ms_height.getBackground().setAlpha(100);
+//
+//        ms_weight.getBackground().setAlpha(100);
+//
+//        ms_hip.getBackground().setAlpha(100);
+//
+//        ms_waist.getBackground().setAlpha(100);
+//
+//        ms_bust.getBackground().setAlpha(100);
+
+        tvSave.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                User user = new User();
+                user.setHeight(ms_height.getProcess());
+                user.setBust(ms_bust.getProcess());
+                user.setHip(ms_hip.getProcess());
+                user.setWeight(ms_weight.getProcess());
+                user.setWaist(ms_waist.getProcess());
+                App.saveBodyInfo(user);
+                dlg.dismiss();
+            }
+        });
+
+    }
+
+    private void resetOnMertoItemViewListener() {
+
+        drop_index = false;
+
+    }
+
+    private void OffDrop(int size) {
+        if (size == 0 && tvH_1.getText().toString().length()<=0) {
+            tvH_1.setText("1");
+            ((DropImageView) imageView1).setOnDropImageViewListener(onMertoItemViewListener);
+        } else if (size == 1 && tvH_2.getText().toString().length()<=0) {
+            tvH_2.setText("1");
+            ((DropImageView) imageView2).setOnDropImageViewListener(onMertoItemViewListener);
+        } else if (size == 2 && tvH_3.getText().toString().length()<=0) {
+            tvH_3.setText("1");
+            ((DropImageView) imageView3).setOnDropImageViewListener(onMertoItemViewListener);
+        } else if (size == 3 && tvH_4.getText().toString().length()<=0) {
+            tvH_4.setText("1");
+            ((DropImageView) imageView4).setOnDropImageViewListener(onMertoItemViewListener);
+        } else if (size == 4 && tvH_5.getText().toString().length()<=0) {
+            tvH_5.setText("1");
+            ((DropImageView) imageView5).setOnDropImageViewListener(onMertoItemViewListener);
+        }
+
     }
 }

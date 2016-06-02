@@ -227,8 +227,7 @@ public class RegLiveMainActivity extends BaseBackActivity {
                 .setPositiveButton("去设置艺人卡", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //gotoLoginPage
-                       // CommonUtil.showRegAlert(context);
+
                         ForwardUtils.target(activity, Constant.PIC_LIST,null);
 
                     }

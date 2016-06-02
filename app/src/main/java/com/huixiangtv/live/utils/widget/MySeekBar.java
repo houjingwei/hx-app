@@ -19,6 +19,7 @@ public class MySeekBar extends LinearLayout{
     }
 
     SeekBar seekBar;
+    LinearLayout llsk;
     TextView tvHeightVal,tvName;
     private CharSequence textName,txtHeightVal,unit;
     private Integer processVal,changeVal;
@@ -52,6 +53,7 @@ public class MySeekBar extends LinearLayout{
         tvName = (TextView) findViewById(R.id.tvName);
         seekBar.setOnSeekBarChangeListener(seekListener);
         tvName.setText(textName);
+        llsk = (LinearLayout) findViewById(R.id.llsk);
     }
 
 
@@ -80,4 +82,10 @@ public class MySeekBar extends LinearLayout{
 
         }
     };
+
+
+    public String getProcess()
+    {
+        return tvHeightVal.getText().toString();
+    }
 }

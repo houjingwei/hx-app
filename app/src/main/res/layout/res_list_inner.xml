@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/ll_p_inner"
     android:layout_height="match_parent"
-    android:background="#FBEAEA"
+      
     android:orientation="vertical">
 
     <LinearLayout
@@ -23,16 +24,20 @@
                 android:layout_height="wrap_content"
                 app:changeVal="3"
                 app:processVal="57"
+                android:id="@+id/ms_height"
                 app:textHight="170cm"
                 app:textName="@string/txt_hight"
+                 
                 app:unit="cm"></com.huixiangtv.live.utils.widget.MySeekBar>
 
             <com.huixiangtv.live.utils.widget.MySeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:changeVal="3"
+                android:id="@+id/ms_weight"
                 app:processVal="70"
                 app:textHight="50kg"
+                  
                 app:textName="@string/txt_weight"
                 app:unit="kg"></com.huixiangtv.live.utils.widget.MySeekBar>
 
@@ -41,6 +46,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:processVal="70"
+                  
+                android:id="@+id/ms_hip"
                 app:textHight="50cm"
                 app:textName="@string/txt_tunwei"
                 app:unit="cm"></com.huixiangtv.live.utils.widget.MySeekBar>
@@ -49,6 +56,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:processVal="70"
+                android:id="@+id/ms_waist"
+                  
                 app:textHight="50cm"
                 app:textName="@string/txt_yaowei"
                 app:unit="cm"></com.huixiangtv.live.utils.widget.MySeekBar>
@@ -57,6 +66,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:processVal="70"
+                android:id="@+id/ms_bust"
+                  
                 app:textHight="50cm"
                 app:textName="@string/txt_xw"
                 app:unit="cm"
@@ -78,7 +89,7 @@
             android:textColor="@color/white"
             android:background="@drawable/button_radius_bottom"
             android:layout_width="0dp"
-            android:text="保存"
+            android:text="确定"
             android:layout_height="wrap_content" />
 
     </LinearLayout>

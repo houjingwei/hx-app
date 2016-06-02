@@ -20,6 +20,7 @@ public class User implements Serializable {
     private String tags;
     private String phoneNum;
 
+
     public String getBust() {
         return bust;
     }
@@ -100,9 +101,9 @@ public class User implements Serializable {
         this.img5 = img5;
     }
 
-    private String bust;
-    private String waist;
-    private String hip;
+    private String bust;  //胸围
+    private String waist; //腰部
+    private String hip;  //臀部
     private String height;
     private String weight;
     private String img1;
