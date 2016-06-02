@@ -386,7 +386,7 @@ public class RegPicListActivity extends BaseBackActivity {
 
     private boolean isMoveAll()
     {
-        if(tvH_1.getText().toString().trim() =="" || tvH_2.getText().toString().trim() ==""  ||tvH_3.getText().toString().trim() =="" ||tvH_4.getText().toString().trim() =="" ||tvH_5.getText().toString().trim() =="" ||tvH_1.getText().toString().trim() =="" )
+        if(!drop_index || tvH_1.getText().toString().trim() =="" || tvH_2.getText().toString().trim() ==""  ||tvH_3.getText().toString().trim() =="" ||tvH_4.getText().toString().trim() =="" ||tvH_5.getText().toString().trim() =="" ||tvH_1.getText().toString().trim() =="" )
         {
             return false;
         }
