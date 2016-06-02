@@ -28,6 +28,10 @@ public class Api {
 
     //申请个人直播
     public static final String LIVE_SHOW =BASE_URL+ "live/applyLiveshow";
+    //通过ID获取直播详情
+    public static final String LIVEINFO = BASE_URL+ "live/getLiveInfoByLid";
+    //直播拉流地址
+    public static final String PLAY_URL = BASE_URL+ "live/getPlayUrl";;
     //版本升级
     public static final String UPGRADE_LEVEL = BASE_URL + "config/getUpgradeInfo";
 
@@ -49,5 +53,7 @@ public class Api {
     //获取验证码
     public static final String MSG_CODE = BASE_URL+"auth/getVerifCode";
     public static final String UPLOAD_FILE_INFO = BASE_URL+"resource/getImageUploadInfo";
+
+
     public static String UP_PWD = BASE_URL+"auth/resetPaswd";
 }

@@ -102,7 +102,7 @@ public class RequestUtils {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                callBack.onFailure(new ServiceException("服务器异常，异常提示："+ex.getMessage()));
+                callBack.onFailure(new ServiceException("服务器异常："+ex.getMessage()));
             }
 
             @Override

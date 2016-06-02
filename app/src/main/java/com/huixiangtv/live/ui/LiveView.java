@@ -35,7 +35,6 @@ import com.huixiangtv.live.adapter.LiveMsgAdapter;
 import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.LiveMsg;
-import com.huixiangtv.live.model.Star;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.ShareWindow;
@@ -54,8 +53,6 @@ import com.huixiangtv.live.utils.widget.WidgetUtil;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -506,6 +503,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
+                CommonHelper.showTip(activity,e.getMessage());
             }
         },String.class);
     }
@@ -679,11 +677,11 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             // 这时可算出软键盘的高度，即heightDiff减去状态栏的高度
             if (keyboardHeight == 0 && heightDiff > statusBarHeight) {
 
-//                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
-//                    keyboardHeight = heightDiff - statusBarHeight;
-//                }else{
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    keyboardHeight = heightDiff - statusBarHeight;
+                }else{
                     keyboardHeight = heightDiff;
-//                }
+                }
             }
 
             if (isShowKeyboard) {

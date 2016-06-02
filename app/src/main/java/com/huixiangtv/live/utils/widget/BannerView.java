@@ -19,9 +19,7 @@ import android.widget.Toast;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.BannerModel;
-import com.huixiangtv.live.utils.BitmapHelper;
-import com.huixiangtv.live.utils.BitmapHelper.DefaultSize;
-import com.huixiangtv.live.utils.BitmapHelper.ImageSize;
+import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.List;
 import java.util.Timer;
@@ -230,8 +228,7 @@ public class BannerView extends FrameLayout implements Runnable {
             imageView.setLayoutParams(new ViewGroup.LayoutParams(720, 360));
             imageView.setScaleType(ScaleType.FIT_XY);
             final BannerModel ps = listbannerModel.get(position);
-            BitmapHelper.getInstance(mContext).display(imageView, ps.image, ImageSize.BANNER, DefaultSize.BIG);
-
+            ImageUtils.display(imageView,ps.image);
             final int pos = position;
 
             imageView.setOnClickListener(new View.OnClickListener() {

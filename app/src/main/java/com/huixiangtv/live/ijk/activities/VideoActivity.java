@@ -16,12 +16,10 @@
 
 package com.huixiangtv.live.ijk.activities;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -52,8 +50,8 @@ import tv.danmaku.ijk.media.player.misc.ITrackInfo;
 public class VideoActivity extends AppCompatActivity implements TracksFragment.ITrackHolder {
     private static final String TAG = "VideoActivity";
 
-    private String mVideoPath;
-    private Uri    mVideoUri;
+    private String mVideoPath = "123";
+    private Uri    mVideoUri ;
 
     private AndroidMediaController mMediaController;
     private IjkVideoView mVideoView;
@@ -84,36 +82,36 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         mSettings = new Settings(this);
 
         // handle arguments
-        mVideoPath = getIntent().getStringExtra("videoPath");
+//        mVideoPath = getIntent().getStringExtra("videoPath");
 
-        Intent intent = getIntent();
-        String intentAction = intent.getAction();
-        if (!TextUtils.isEmpty(intentAction)) {
-            if (intentAction.equals(Intent.ACTION_VIEW)) {
-                mVideoPath = intent.getDataString();
-            } else if (intentAction.equals(Intent.ACTION_SEND)) {
-                mVideoUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    String scheme = mVideoUri.getScheme();
-                    if (TextUtils.isEmpty(scheme)) {
-                        Log.e(TAG, "Null unknown scheme\n");
-                        finish();
-                        return;
-                    }
-                    if (scheme.equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
-                        mVideoPath = mVideoUri.getPath();
-                    } else if (scheme.equals(ContentResolver.SCHEME_CONTENT)) {
-                        Log.e(TAG, "Can not resolve content below Android-ICS\n");
-                        finish();
-                        return;
-                    } else {
-                        Log.e(TAG, "Unknown scheme " + scheme + "\n");
-                        finish();
-                        return;
-                    }
-                }
-            }
-        }
+//        Intent intent = getIntent();
+//        String intentAction = intent.getAction();
+//        if (!TextUtils.isEmpty(intentAction)) {
+//            if (intentAction.equals(Intent.ACTION_VIEW)) {
+//                mVideoPath = intent.getDataString();
+//            } else if (intentAction.equals(Intent.ACTION_SEND)) {
+//                mVideoUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+//                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                    String scheme = mVideoUri.getScheme();
+//                    if (TextUtils.isEmpty(scheme)) {
+//                        Log.e(TAG, "Null unknown scheme\n");
+//                        finish();
+//                        return;
+//                    }
+//                    if (scheme.equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
+//                        mVideoPath = mVideoUri.getPath();
+//                    } else if (scheme.equals(ContentResolver.SCHEME_CONTENT)) {
+//                        Log.e(TAG, "Can not resolve content below Android-ICS\n");
+//                        finish();
+//                        return;
+//                    } else {
+//                        Log.e(TAG, "Unknown scheme " + scheme + "\n");
+//                        finish();
+//                        return;
+//                    }
+//                }
+//            }
+//        }
 
         if (!TextUtils.isEmpty(mVideoPath)) {
             new RecentMediaStorage(this).saveUrlAsync(mVideoPath);
@@ -153,6 +151,7 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         }
         mVideoView.setVideoURI(Uri.parse("rtmp://live.hkstv.hk.lxdns.com/live/hks"));
         mVideoView.start();
+        mVideoView.toggleAspectRatio();
     }
 
     @Override
