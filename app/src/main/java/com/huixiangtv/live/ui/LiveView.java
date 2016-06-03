@@ -176,7 +176,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 ivLove.getLocationInWindow(locations);
                 int x = locations[0];
                 if(x>0){
-                    new BubbleView(activity,ivLove,flLive,false);
+                    new BubbView(activity,ivLove,flLive,false);
                     ivLove.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
             }
@@ -459,12 +459,12 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     CommonHelper.showLoginPopWindow(activity, R.id.liveMain,new LoginCallBack(){
                         @Override
                         public void loginSuccess() {
-                            new BubbleView(activity,ivLove,flLive,true);
+                            new BubbView(activity,ivLove,flLive,true);
                         }
                     });
                     return;
                 }
-                new BubbleView(activity,ivLove,flLive,true);
+                new BubbView(activity,ivLove,flLive,true);
                 break;
 
 
