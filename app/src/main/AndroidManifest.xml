@@ -224,6 +224,10 @@
             android:name=".activity.MylovesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
+        
+        <activity android:name="com.huixiangtv.live.ijk.activities.VideoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle"/>
 
         <activity android:name=".activity.RegPicListActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"

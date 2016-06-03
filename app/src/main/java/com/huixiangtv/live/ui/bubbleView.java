@@ -181,8 +181,8 @@ public class BubbleView {
 
     private void initAnimator(View view) {
         animator1 = ObjectAnimator.ofFloat(view, "alpha",0.3f);
-        animator2 = ObjectAnimator.ofFloat(view, "scaleX",2f);
-        animator5 = ObjectAnimator.ofFloat(view, "scaleY",2f);
+        animator2 = ObjectAnimator.ofFloat(view, "scaleX",1.5f);
+        animator5 = ObjectAnimator.ofFloat(view, "scaleY",1.5f);
         setAnimator4(view);
         animator3 = ObjectAnimator.ofFloat(view, "translationY", 0f, -600f);
     }

@@ -40,13 +40,13 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
-import com.huixiangtv.live.activity.MyActivity;
 import com.huixiangtv.live.adapter.CommonAdapter;
 import com.huixiangtv.live.adapter.LiveBannerAdapter;
 import com.huixiangtv.live.adapter.CommonAdapter;
 import com.huixiangtv.live.adapter.ViewHolder;
 import com.huixiangtv.live.model.BannerModel;
 import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.model.PlayUrl;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -129,10 +129,8 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         listview.setOnItemClickListener(new LinearLayoutForListView.OnItemClickListener() {
             @Override
             public void onItemClicked(View v, Object item, int position) {
-                ForwardUtils.target(getActivity(), Constant.START_LIVE, null);
-
-                Intent intent = new Intent(getActivity(), MyActivity.class);
-                getActivity().startActivity(intent);
+                Live live = (Live) adapter.getItem(position);
+                loadUrlAndShow(live);
             }
 
         });
@@ -144,30 +142,48 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         mSwitchScrollLayout = (SwitchScrollLayout) view.findViewById(R.id.ScrollLayoutTest);
         llInfo = (LinearLayout) view.findViewById(R.id.llInfo);
         flInfo = (FrameLayout) view.findViewById(R.id.flInfo);
-//        llInfo.getBackground().setAlpha(100);
-//        flInfo.getBackground().setAlpha(100);
-//        text = (TextView) view.findViewById(R.id.text);
-//        ivFt = (ImageView) view.findViewById(R.id.ivFt);
+    }
 
-//                    }catch(Exception ex)
-//                    {
-//                        CommonHelper.showTip(getActivity(),"加载中");
-//                    }
-//
-//                }
-//
-//                @Override
-//                public void onPageScrollStateChanged ( int state){
-//
-//                }
-           // }
+    private void loadUrlAndShow(final Live live) {
+        HashMap<String,String> params = new HashMap<String, String>();
+        params.put("lid",live.getLid());
+        RequestUtils.sendPostRequest(Api.PLAY_URL, params, new ResponseCallBack<PlayUrl>() {
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
 
+            @Override
+            public void onSuccess(PlayUrl data) {
+                super.onSuccess(data);
+                HashMap<String,String> map = new HashMap<String, String>();
+                map.put("isPlay","true");
+                map.put("lid",live.getLid());
+                map.put("playUrl",data.getUrl());
+                ForwardUtils.target(getActivity(),Constant.LIVE,map);
+            }
 
+            @Override
+            public void onSuccessList(List<PlayUrl> datas) {
+                super.onSuccessList(datas);
+                if(null!=datas && datas.size()>0){
+                    PlayUrl data = datas.get(0);
+                    HashMap<String,String> map = new HashMap<String, String>();
+                    map.put("isPlay","true");
+                    map.put("playUrl",data.getUrl());
+                    map.put("lid",live.getLid());
+                    ForwardUtils.target(getActivity(),Constant.LIVE,map);
 
+//                    Intent intent = new Intent(getActivity(), VideoActivity.class);
+//                    getActivity().startActivity(intent);
+//                    getActivity().overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+                }
+            }
+        },PlayUrl.class);
     }
 
     @Override
-    protected void initData() {
+        protected void initData () {
 
 //        dialog =new CustomProgressDialog(getActivity(), "正在加载中",R.anim.loading_frame);
 //        dialog.show();

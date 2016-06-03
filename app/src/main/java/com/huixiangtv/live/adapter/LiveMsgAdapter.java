@@ -2,11 +2,6 @@ package com.huixiangtv.live.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,15 +59,14 @@ public class LiveMsgAdapter extends BaseAdapter {
         View rowView = convertView;
         final LiveMsg message = (LiveMsg) getItem(position);
         if (null == rowView) {
-            Log.i("rinima",position+"******"+message.getContent());
             rowView = LayoutInflater.from(context).inflate(R.layout.live_msg_item, parent, false);
-
         }
         TextView msg = (TextView) rowView.findViewById(R.id.tvMsg);
-
-        SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
-        ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        msg.setText(ss);
+//        Log.i("rinima","<<"+message.getNickName().length()+">>");
+//        SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
+//
+//        ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        msg.setText(message.getContent());
         return rowView;
     }
 
@@ -82,7 +76,6 @@ public class LiveMsgAdapter extends BaseAdapter {
     }
 
     public void addList(List<LiveMsg> ls) {
-        Log.i("rinima",ls.size()+"");
         if (ls != null) {
             voList.addAll(ls);
         }

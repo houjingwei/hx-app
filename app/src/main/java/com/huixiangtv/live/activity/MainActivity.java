@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
@@ -29,9 +28,8 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.ui.UpdateApp;
-import com.huixiangtv.live.ui.VProgressDialog;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
-import com.huixiangtv.live.utils.widget.WidgetUtil;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.xutils.view.annotation.ViewInject;
@@ -198,7 +196,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() - lastTipTimeMills > 1000) {
-            Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            CommonHelper.showTip(this,"再按一次退出程序");
             lastTipTimeMills = System.currentTimeMillis();
         } else {
             finish();
@@ -213,18 +211,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         if(bool){
             llTitle.setVisibility(View.GONE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //window.setStatusBarColor(getResources().getColor(R.color.mainColor));
+                window.setStatusBarColor(getResources().getColor(R.color.mainColor));
             }
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }else{
             llTitle.setVisibility(View.VISIBLE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
             }
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)llTitle.getLayoutParams();
-            params.topMargin = WidgetUtil.dip2px(this,20);
-            llTitle.setLayoutParams(params);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)llTitle.getLayoutParams();
+//            params.topMargin = WidgetUtil.dip2px(this,20);
+//            llTitle.setLayoutParams(params);
+            //window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         }
     }
