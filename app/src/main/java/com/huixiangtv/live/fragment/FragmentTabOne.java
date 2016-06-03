@@ -236,8 +236,9 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                         listview.setVisibility(View.VISIBLE);
                         //loadView.setVisibility(View.GONE);
                     }
+                    commonModelList.clear();
                     if (enumUpdateTag == EnumUpdateTag.UPDATE) {
-                        commonModelList.clear();
+
                         listview.removeAllViews();
                     }
                     for (Live live : data) {

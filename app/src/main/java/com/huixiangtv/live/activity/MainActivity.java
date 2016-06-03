@@ -83,6 +83,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         App.getContext().addActivity(this);
         initView();
         CheckVersion();
+
     }
 
     private void initWindow() {
@@ -331,14 +332,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         paramsMap.put("appVersion","1.0");
 
         RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
-            @Override
-            public void onSuccessList(List<UpgradeLevel> data) {
 
-                if (data != null && data.size() > 0) {
+            public void onSuccess(UpgradeLevel data) {
 
-                    UpgradeLevel upgradeLevel = data.get(0);
+                if (data != null) {
 
-                    UpdateApp updateApp = new UpdateApp(getBaseContext());
+                    UpgradeLevel upgradeLevel = data;
+
+                    UpdateApp updateApp = new UpdateApp(MainActivity.this);
                     if (updateApp
                             .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
                         // Toast.makeText(getApplicationContext(),
@@ -358,4 +359,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }, UpgradeLevel.class);
 
     }
+
+
+
 }

@@ -2,10 +2,12 @@ package com.huixiangtv.live.model;
 
 import android.graphics.drawable.Drawable;
 
+import java.io.Serializable;
+
 /**
  * Created by Stone on 16/5/31.
  */
-public class DropImageModel {
+public class DropImageModel implements Serializable {
     private Drawable iconId;
     private String name;
 

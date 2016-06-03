@@ -1,90 +1,75 @@
 package com.huixiangtv.live.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
+import android.graphics.Bitmap;
+import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
-import com.huixiangtv.live.activity.RegPicListActivity;
-
-import java.io.File;
+import com.huixiangtv.live.R;
 import java.util.ArrayList;
-
-import me.iwf.photopicker.PhotoPagerActivity;
+import java.util.List;
 
 /**
  * Created by Stone on 16/5/31.
  */
-public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
-
-    private ArrayList<String> photoPaths = new ArrayList<String>();
-    private LayoutInflater inflater;
-
+public class PhotoAdapter extends PagerAdapter {
+    private ImageView[] mImageViews;
     private Context mContext;
+    public static final int APP_PAGE_SIZE = 1;
+
+    public PhotoAdapter(Context context, ImageView[] mImageViews) {
+        mContext = context;
+        this.mImageViews =mImageViews;
 
 
-    public PhotoAdapter(Context mContext, ArrayList<String> photoPaths) {
-        this.photoPaths = photoPaths;
-        this.mContext = mContext;
-        inflater = LayoutInflater.from(mContext);
 
-    }
-
-
-    @Override public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = inflater.inflate(me.iwf.photopicker.R.layout.__picker_item_photo, parent, false);
-        return new PhotoViewHolder(itemView);
     }
 
 
     @Override
-    public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
+    public boolean isViewFromObject(View arg0, Object arg1) {
+        return arg0 == arg1;
+    }
 
-        Uri uri = Uri.fromFile(new File(photoPaths.get(position)));
+    @Override
+    public int getCount() {
+        return Integer.MAX_VALUE;
+    }
+    @Override
+    public Object instantiateItem(View container, int position) {
+        ((ViewPager)container).addView(mImageViews[position % mImageViews.length], 0);
+        return mImageViews[position % mImageViews.length];
+    }
 
-        Glide.with(mContext)
-                .load(uri)
-                .centerCrop()
-                .thumbnail(0.1f)
-                .placeholder(me.iwf.photopicker.R.drawable.__picker_ic_photo_black_48dp)
-                .error(me.iwf.photopicker.R.drawable.__picker_ic_broken_image_black_48dp)
-                .into(holder.ivPhoto);
-
-        holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, PhotoPagerActivity.class);
-                intent.putExtra(PhotoPagerActivity.EXTRA_CURRENT_ITEM, position);
-                intent.putExtra(PhotoPagerActivity.EXTRA_PHOTOS, photoPaths);
-                intent.putExtra(PhotoPagerActivity.EXTRA_SHOW_DELETE, true);
-                if (mContext instanceof RegPicListActivity) {
-                    ((RegPicListActivity) mContext).previewPhoto(intent);
-                }
-            }
-        });
+    @Override
+    public void restoreState(Parcelable arg0, ClassLoader arg1) {
 
     }
 
 
-    @Override public int getItemCount() {
-        return photoPaths.size();
+    @Override
+    public void startUpdate(View arg0) {
+    }
+    @Override
+    public void destroyItem(View container, int position, Object object) {
+        ((ViewPager)container).removeView(mImageViews[position % mImageViews.length]);
+
     }
 
-
-    public static class PhotoViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivPhoto;
-        private View vSelected;
-        public PhotoViewHolder(View itemView) {
-            super(itemView);
-            ivPhoto   = (ImageView) itemView.findViewById(me.iwf.photopicker.R.id.iv_photo);
-            vSelected = itemView.findViewById(me.iwf.photopicker.R.id.v_selected);
-            vSelected.setVisibility(View.GONE);
-        }
+    @Override
+    public void finishUpdate(View arg0) {
+        // TODO Auto-generated method stub
     }
+
 
 }

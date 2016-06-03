@@ -43,7 +43,7 @@ public class VProgressDialog extends Dialog {
     private static final int DOWN_OVER = 2;
     private static final String savePath ="/sdcard/huixiangdata/";
     private static final String saveFileName = savePath + "HuiXiang.apk";
-    public VProgressDialog(Context context,String apkUrl,String uplog) {
+    public VProgressDialog(Context context,String apkUrl,String uplog,String status) {
         super(context, R.style.Dialog);
         setContentView(R.layout.process_version_new);
         this.mContext=context;
@@ -61,8 +61,14 @@ public class VProgressDialog extends Dialog {
                 rlLevelInfo.setVisibility(View.VISIBLE);
             }
         });
-//        tv_log=(TextView) findViewById(R.id.tv_log);
-//        tv_log.setText(uplog);
+
+        if(status.equals("1"))
+        {
+            tvLevelEv.setText("升级中");
+            tvLevelEv.setVisibility(View.GONE);
+        }
+        tv_log=(TextView) findViewById(R.id.txtLog);
+        tv_log.setText(uplog);
         pb=(ProgressBar) findViewById(R.id.pb);
         pb.setMax(100);
         downLoadThread = new Thread(mdownApkRunnable);
@@ -73,7 +79,7 @@ public class VProgressDialog extends Dialog {
         @Override
         public void run() {
             try {
-                URL url = new URL(apkUrl);
+                URL url = new URL("http://static.yueapp.net/res/resources/apk/yueapp.apk");
                 HttpURLConnection conn = (HttpURLConnection) url
                         .openConnection();
                 conn.connect();

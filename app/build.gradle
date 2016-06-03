@@ -41,6 +41,9 @@ android {
     }
     dexOptions {
         incremental false
+        incremental false
+        javaMaxHeapSize "4g"
+        preDexLibraries = false
     }
 
     productFlavors {

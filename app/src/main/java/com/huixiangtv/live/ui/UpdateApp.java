@@ -55,7 +55,7 @@ public class UpdateApp {
             showNoticeLayoutDialog();
             return true;
         } else if (tab.equals("1")) {
-            showDownloadDialog();
+            showDownloadDialog("1");
             return true;
         }
         else
@@ -86,15 +86,15 @@ public class UpdateApp {
         tvLevelEv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDownloadDialog();  //开始更新ing
+                showDownloadDialog("2");  //开始更新ing
             }
         });
 
     }
 
 
-    protected void showDownloadDialog() {
-        new VProgressDialog(mContext, apkUrl, uplog).show();
+    protected void showDownloadDialog(String status) {
+        new VProgressDialog(mContext, apkUrl, uplog,status).show();
     }
 
     private Runnable mdownApkRunnable = new Runnable() {

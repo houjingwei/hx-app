@@ -37,6 +37,7 @@ import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.DropImageModel;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.utils.BitmapHelper;
+import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.widget.DropImageView;
 import com.huixiangtv.live.utils.widget.MySeekBar;
 
@@ -47,6 +48,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +71,7 @@ public class RegPicListActivity extends BaseBackActivity {
         }
     }
 
-
+    public static ImageView[] imageViews;
     public final static int REQUEST_CODE = 1;
 
     private Vibrator vibrator;// 长按震动效果
@@ -141,6 +143,7 @@ public class RegPicListActivity extends BaseBackActivity {
     private ArrayList<DropImageModel> mertoBeans = new ArrayList<DropImageModel>();
     private ArrayList<DropImageModel> startBeans;// 保存itme变换前的内容
     private static ArrayList<DropImageView> mertoItemViews;
+    private ArrayList<String> UrlLoc  = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +158,11 @@ public class RegPicListActivity extends BaseBackActivity {
         imageView4.setTag(3);
         imageView5.setTag(4);
 
+        UrlLoc.add("");
+        UrlLoc.add("");
+        UrlLoc.add("");
+        UrlLoc.add("");
+        UrlLoc.add("");
         mertoItemViews = new ArrayList<DropImageView>();
         mertoItemViews.add((DropImageView) imageView1);
         mertoItemViews.add((DropImageView) imageView2);
@@ -195,24 +203,46 @@ public class RegPicListActivity extends BaseBackActivity {
         ll_per_info.getBackground().setAlpha(100);
 
 
+        ll_per_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //reset setting
+
+                ll_per_info.setVisibility(View.GONE);
+                txtUpload.setVisibility(View.VISIBLE);
+//                txtSF.setVisibility(View.VISIBLE);
+                txtSave.setTag("1");
+                txtSave.setPadding(10, 10, 10, 10);
+                txtSave.setText("保存");
+                txtSave.setCompoundDrawables(null, null, null, null);
+                txtSave.setBackground(getResources().getDrawable(R.drawable.reg_pic_bg));
+                txtOpen.setVisibility(View.VISIBLE);
+                startOnMertoItemViewListener();
+//
+                Intent intent = new Intent(RegPicListActivity.this, RegPicActivity.class);
+                intent.putExtra("images", (ArrayList<String>) UrlLoc);
+                intent.putExtra("currentIndex",2);
+                startActivity(intent);
+
+            }
+        });
         txtSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //first validation
-                for (DropImageView dropImageView : mertoItemViews) {
-
-                    if (!isMoveAll()) {
-                        Toast.makeText(getBaseContext(), "设置艺人卡前，请先选择上传5张完整清晰个人照片", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                }
-
-                ll_per_info.setVisibility(View.VISIBLE);
-                txtUpload.setVisibility(View.GONE);
-                txtSF.setVisibility(View.GONE);
-                txtOpen.setVisibility(View.GONE);
-
                 if (v.getTag().toString().equals("1")) {
+                    ll_per_info.setVisibility(View.VISIBLE);
+                    txtUpload.setVisibility(View.GONE);
+                    txtSF.setVisibility(View.GONE);
+                    txtOpen.setVisibility(View.GONE);
+                    for (DropImageView dropImageView : mertoItemViews) {
+
+                        if (!isMoveAll()) {
+                            Toast.makeText(getBaseContext(), "设置艺人卡前，请先选择上传5张完整清晰个人照片", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
+
                     Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
                     nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
                     txtSave.setCompoundDrawables(null, null, nav_up, null);
@@ -226,6 +256,8 @@ public class RegPicListActivity extends BaseBackActivity {
                 }
             }
         });
+
+
 
         txtOpen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -566,18 +598,11 @@ public class RegPicListActivity extends BaseBackActivity {
             if (data != null) {
                 photos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
             }
-//
-//            if (selectedPhotos.size() == 0) {
-//
-//                    Toast.makeText(getBaseContext(), "请选择五张照片", Toast.LENGTH_LONG).show();
-//                    return;
-//
-//            }
 
             if (photos.size() > 0 && photos.size() < 2) {
                 File file = new File(photos.get((0)));
 
-
+                UrlLoc.set(currentTag,photos.get(0));
                 OffDrop(currentTag);
                 Bitmap bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(file), App.screenWidth,App.screenHeight);
                 BitmapDrawable bd = new BitmapDrawable(bm);
@@ -591,14 +616,13 @@ public class RegPicListActivity extends BaseBackActivity {
                 File file;
                 for (int size = 0; size < photos.size(); size++) {
                     file = new File(photos.get(size));
-
+                    UrlLoc.set(size,photos.get(size));
                     Bitmap bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(file), App.screenWidth,App.screenHeight);
                     BitmapDrawable bd = new BitmapDrawable(bm);
                     mertoItemViews.get(size).setIcon(bd);
                     mertoBeans.get(size).setIconId(bd);
                     mertoBeans.get(size).setIsFinish(5);
                     mertoItemViews.get(size).setIsFinish(5);
-                    drop_index = false;
 
                     OffDrop(size);
 
@@ -748,6 +772,13 @@ public class RegPicListActivity extends BaseBackActivity {
     private void resetOnMertoItemViewListener() {
 
         drop_index = false;
+
+    }
+
+
+    private void startOnMertoItemViewListener() {
+
+        drop_index = true;
 
     }
 

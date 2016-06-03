@@ -15,6 +15,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
+
 import com.bumptech.glide.Glide;
 import java.io.IOException;
 import java.util.ArrayList;

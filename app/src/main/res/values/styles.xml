@@ -446,7 +446,7 @@
 
     <style name="myTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="actionBarTheme">@style/myTheme.actionBar</item>
-        <item name="colorPrimary">@color/gray</item>
+        <item name="colorPrimary">@color/mainColor</item>
         <item name="actionBarSize">@dimen/__picker_iwf_actionBarSize</item>
     </style>
 
