@@ -1,0 +1,299 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RegPicListActivity">
+
+
+    <FrameLayout
+        android:id="@+id/merto_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2.3"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8">
+
+                    <com.huixiangtv.live.utils.widget.DropImageView
+                        android:id="@+id/imageView1"
+                        android:minHeight="50dp"
+                        android:minWidth="50dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:background="@color/white"
+                        android:scaleType="fitXY" />
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_per_info"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|left"
+                        android:background="@color/gray"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp">
+
+                            <TextView
+
+                                android:textColor="@color/white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="回响号：HX-17" />
+
+                            <TextView
+                                android:textColor="@color/white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="84-63-89" />
+
+                            <TextView
+                                android:textColor="@color/white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="12566: 分享" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp">
+
+
+                            <TextView
+                                android:textColor="@color/white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="50kg" />
+
+                            <TextView
+                                android:textColor="@color/white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="12566: 身价" />
+
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp">
+
+                            <TextView
+                                android:textColor="@color/white"
+                                android:id="@+id/txtName"
+                                android:textSize="18dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="刘德华" />
+
+
+                            <TextView
+                                android:textColor="@color/white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="175CM" />
+
+                            <TextView
+                                android:textColor="@color/white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="12566: 粉丝" />
+
+
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+
+                </FrameLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/item_layout1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="1dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.huixiangtv.live.utils.widget.DropImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:adjustViewBounds="true"
+                        android:background="@color/white"
+                        android:scaleType="centerCrop" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <com.huixiangtv.live.utils.widget.DropImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:scaleType="centerCrop" />
+
+                        <com.huixiangtv.live.utils.widget.DropImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="1dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:scaleType="centerCrop" />
+
+                        <com.huixiangtv.live.utils.widget.DropImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="1dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:scaleType="centerCrop" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/reg_pic_bg"
+            android:clickable="true"
+            android:drawableLeft="@drawable/card_up"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingRight="30dp"
+            android:text="上传图片"
+            android:textColor="@color/white"
+             />
+
+        <TextView
+            android:id="@+id/txtSF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="130dp"
+            android:background="@drawable/reg_pic_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:paddingRight="30dp"
+            android:text="缩放"
+            android:textColor="@color/white"
+            />
+
+
+        <TextView
+            android:id="@+id/txtOpen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="80dp"
+            android:background="@drawable/reg_pic_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingRight="30dp"
+            android:tag="1"
+            android:text="身价"
+            android:textColor="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/txtSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/reg_pic_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingRight="30dp"
+            android:tag="1"
+            android:text="保存"
+            android:textColor="@color/white"
+            />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/tvH_1"
+        android:visibility="gone"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/tvH_2"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/tvH_3"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/tvH_4"
+        android:visibility="gone"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/tvH_5"
+        android:layout_height="wrap_content" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

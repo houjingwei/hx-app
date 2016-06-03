@@ -35,6 +35,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -273,12 +274,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     /**
+     * 事件处理
+     */
+    public static final int MIN_CLICK_DELAY_TIME = 1000;
+    private long lastClickTime = 0;
+    /**
      * 开启直播
      */
     private void startLive() {
-        ForwardUtils.target(MainActivity.this, Constant.START_LIVE,null);
-    }
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            ForwardUtils.target(MainActivity.this, Constant.START_LIVE,null);
+        }
 
+    }
 
     private void sendToOneFragment(String type)
     {

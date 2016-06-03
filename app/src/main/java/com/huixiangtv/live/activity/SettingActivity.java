@@ -133,7 +133,8 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
         String uid = App.getPreferencesValue("uid");
         cp = ColaProgress.show(SettingActivity.this, "正在加载...", false, true, null);
         Map<String, String> params = new HashMap<String, String>();
-
+        params.put("token",token);
+        params.put("uid",uid);
         RequestUtils.sendPostRequest(Api.AUTH_GETACCOUNT_BINDINFO, params, new ResponseCallBack<AccountBindInfoModel>() {
             @Override
             public void onSuccess(AccountBindInfoModel data) {

@@ -53,6 +53,7 @@ public class LiveActivity extends AppCompatActivity implements View.OnClickListe
     FrameLayout flPlayView;
 
 
+
     TextView tvTheme;
     TextView tvStart;
     StartLiveView startLiveView;
@@ -96,6 +97,7 @@ public class LiveActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initPlayView() {
+
 
 
         final Map<String, String> param = new HashMap<String, String>();

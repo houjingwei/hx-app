@@ -3,6 +3,7 @@ package com.huixiangtv.live.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -194,5 +196,38 @@ public class BitmapHelper {
         public static final String COMMODITY_ICON_210="_210x210";
 
         public static final String FULL = "_800x600";
+    }
+
+
+    public static Bitmap readBitMap(File file) {
+
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+
+        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+
+        opt.inPurgeable = true;
+
+        opt.inInputShareable = true;
+
+
+        return BitmapFactory.decodeFile(file.getAbsolutePath(), opt);
+
+    }
+
+    public static Bitmap zoomImg(Bitmap bm, int newWidth, int newHeight) {
+        // 获得图片的宽高
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        // 计算缩放比例
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // float scaleHeight = (((float)height/newHeight)*height)/newHeight;
+        // 取得想要缩放的matrix参数
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        // 得到新的图片 www.2cto.com
+        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
+                true);
+        return newbm;
     }
 }

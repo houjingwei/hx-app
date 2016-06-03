@@ -5,7 +5,15 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
+import android.view.View;
+import android.widget.Toast;
 
+import com.huixiangtv.live.Api;
+import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.model.WxRequest;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -26,6 +34,68 @@ import java.util.Random;
  */
 public class WxPayUtils {
     private static final String TAG = "WxPayUtils";
+//
+//
+//    public static void requestOrder(WxRequest wxRequest)
+//    {
+//        Map<String, String> paramsMap = new HashMap<String, String>();
+//        paramsMap.put("appid", );
+//        paramsMap.put("mch_id", wxRequest.mch_id + "");
+//        paramsMap.put("device_info", wxRequest.device_info);
+//        paramsMap.put("nonce_str", wxRequest.nonce_str + "");
+//        paramsMap.put("sign", wxRequest.sign + "");
+//        paramsMap.put("body", "");
+//        paramsMap.put("detail", wxRequest.detail + "");
+//        paramsMap.put("attach", wxRequest.attach + "");
+//        paramsMap.put("out_trade_no", wxRequest.out_trade_no);
+//        paramsMap.put("fee_type", wxRequest.fee_type + "");
+//        paramsMap.put("total_fee", wxRequest.total_fee + "");
+//        paramsMap.put("spbill_create_ip", wxRequest.spbill_create_ip);
+//        paramsMap.put("time_start", wxRequest.time_start);
+//        paramsMap.put("time_expire", wxRequest.time_expire);
+//        paramsMap.put("goods_tag", wxRequest.goods_tag);
+//        paramsMap.put("notify_url", wxRequest.notify_url);
+//        paramsMap.put("trade_type", wxRequest.trade_type);
+//        paramsMap.put("limit_pay", wxRequest.limit_pay);
+//
+//
+//
+//        RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<Live>() {
+//            @Override
+//            public void onSuccessList(List<Live> data) {
+//
+//                if (data != null && data.size() > 0) {
+//
+//                    Long totalCount = Long.parseLong(data.size() + "");
+//                    if (0 == totalCount) {
+//                        Toast.makeText(getActivity(), "已经没有更多内容了", Toast.LENGTH_LONG).show();
+//                    } else {
+//                        if (null != listPager) {
+//                            //dl_pager.removeAllViews();
+//                            addViewSelf(data);
+//                            listPager.notifyDataSetChanged();
+//                            tvInfo.setText(listPager.list.get(currentViewPage).getNickName());
+//                            loadSuc = true;
+//                        }
+//                    }
+//                } else {
+//
+//                }
+//                mRefreshLayout.onRefreshComplete();
+//                ll_search.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onFailure(ServiceException e) {
+//                super.onFailure(e);
+//                mRefreshLayout.onRefreshComplete();
+//                showToast("当有网络不可用，请检查您的网络设置");
+//            }
+//        }, Live.class);
+//
+//    }
+
+
 
     public static void pay(final Activity activity, String appId, String prepayId, String nonceStr, String partnerId, String timeStamp, String packageValue, final String paySignature) {
         PayReq payReq = new PayReq();

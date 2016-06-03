@@ -1,24 +1,33 @@
 package com.huixiangtv.live.fragment;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -32,8 +41,8 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.adapter.CommonAdapter;
-import com.huixiangtv.live.adapter.ListViewPagerAdapter;
 import com.huixiangtv.live.adapter.LiveBannerAdapter;
+import com.huixiangtv.live.adapter.CommonAdapter;
 import com.huixiangtv.live.adapter.ViewHolder;
 import com.huixiangtv.live.model.BannerModel;
 import com.huixiangtv.live.model.Live;
@@ -45,11 +54,13 @@ import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.EnumUpdateTag;
 import com.huixiangtv.live.utils.ForwardUtils;
+import com.huixiangtv.live.utils.image.FastBlur;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.BannerView;
 import com.huixiangtv.live.utils.widget.LinearLayoutForListView;
 import com.huixiangtv.live.utils.widget.LoadingView;
-
+import com.huixiangtv.live.utils.widget.SwitchPageControlView;
+import com.huixiangtv.live.utils.widget.SwitchScrollLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,13 +69,18 @@ import java.util.Map;
 
 public class FragmentTabOne extends RootFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
+    private static boolean isLoad =false;
+    private SwitchScrollLayout mSwitchScrollLayout;
+    private DataLoading dataLoad;
+    public SwitchPicHandler switchPicHandler;
+    private static final float APP_PAGE_SIZE = 1.0f;
+    private SwitchPageControlView pageControl;
     private int currentViewPage = 0;
     private final int PAGE_SIZE = 12;
     private int currPage = 1;
-    private int totalPage = 1;
     private ColaProgress cp = null;
     private BannerView bannerView;
-    private TextView tvInfo;
+    private TextView tvInfo, tvLoveCount, tvWeight,text;
     private PullToRefreshScrollView mRefreshLayout;
     private List<BannerModel> guangGao = new ArrayList<BannerModel>();
     private View mRootView;
@@ -72,15 +88,16 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private LinearLayout ll_search;
     private LoadingView loadView;
     private BaseAdapter adapter;
+    private LinearLayout llInfo;
     private ScrollView sv;
     private List<Live> commonModelList = new ArrayList<Live>();
+    private static List<Live> viewpageModelList = new ArrayList<Live>();
     private LinearLayoutForListView listview;
-    private ListViewPagerAdapter listPager;
-    private ViewPager dl_pager;
     private LiveListBroadcast receiver;
+    private FrameLayout flInfo;
     private String ACTION = "com.android.broadcast.RECEIVER_ACTION";
     private LinearLayout llone_viewpager;
-    private ListViewPagerAdapter listViewPagerAdapter;
+    private ImageView ivFt;
 
     @Override
     protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,8 +117,11 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     protected void initLayout(View view) {
         //loadView = (LoadingView) view.findViewById(R.id.loadView);
         //loadView.setVisibility(View.VISIBLE);
+        pageControl = (SwitchPageControlView) view.findViewById(R.id.pageControl);
         ll_search = (LinearLayout) view.findViewById(R.id.ll_search);
         tvInfo = (TextView) view.findViewById(R.id.tvInfo);
+        tvLoveCount = (TextView) view.findViewById(R.id.tvLoveCount);
+        tvWeight = (TextView) view.findViewById(R.id.tvWeight);
         bannerView = (BannerView) view.findViewById(R.id.banner);
         mRefreshLayout = (PullToRefreshScrollView) view.findViewById(R.id.refreshLayout);
         listview = (LinearLayoutForListView) view.findViewById(R.id.listview);
@@ -112,62 +132,17 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                 Live live = (Live) adapter.getItem(position);
                 loadUrlAndShow(live);
             }
+
         });
         listview.setVisibility(View.GONE);
         mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
         sv = (ScrollView) view.findViewById(R.id.sv);
-        dl_pager = (ViewPager) view.findViewById(R.id.dl_pager);
         llone_viewpager = (LinearLayout) view.findViewById(R.id.llone_viewpager);
         llone_viewpager.setVisibility(View.GONE);
-        dl_pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                try {
-//                    if (position <= (listPager.list.size() - 1)){
-//                        Live live = listPager.list.get(position);
-//                        tvInfo.setText(live.getNickName());
-//                        currentViewPage = position;
-//                        if (listPager.list.size() < 20) {
-//                            if (listPager.list.size() - 2 == position) {
-//                                loadMore();
-//                            }
-//                        }
-//                    }
-
-                        Live live = listPager.list.get(position);
-                        tvInfo.setText(live.getNickName());
-                        currentViewPage = position;
-                        if (listPager.list.size() < 10) {
-                            if (listPager.list.size() - 3 == position) {
-                                loadMore();
-                            }
-                        }
-
-                    }catch(Exception ex)
-                    {
-                        CommonHelper.showTip(getActivity(),"加载中");
-                    }
-
-                }
-
-                @Override
-                public void onPageScrollStateChanged ( int state){
-
-                }
-            }
-
-            );
-
-            //待用 莫删除
-            //mRefreshLayout.setOnTouchListener(new TouchListenerImpl());
-
-        }
+        mSwitchScrollLayout = (SwitchScrollLayout) view.findViewById(R.id.ScrollLayoutTest);
+        llInfo = (LinearLayout) view.findViewById(R.id.llInfo);
+        flInfo = (FrameLayout) view.findViewById(R.id.flInfo);
+    }
 
     private void loadUrlAndShow(final Live live) {
         HashMap<String,String> params = new HashMap<String, String>();
@@ -213,27 +188,34 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 //        dialog =new CustomProgressDialog(getActivity(), "正在加载中",R.anim.loading_frame);
 //        dialog.show();
 
-            initAdapter(EnumUpdateTag.UPDATE);
-            setListener();
-            getBanner();
-        }
+        initAdapter(EnumUpdateTag.UPDATE);
+        setListener();
+        getBanner();
+        dataLoad = new DataLoading();
 
-        @Override
-        public void onResume () {
-            super.onResume();
-        }
+        switchPicHandler = new SwitchPicHandler(getContext(), 1);
+        //起一个线程更新数据
+        SwitchPicThread switchPicThread = new SwitchPicThread();
+        new Thread(switchPicThread).start();
 
 
-        @Override
-        public void onDestroy () {
-            super.onDestroy();
-            getActivity().unregisterReceiver(receiver);
-        }
+    }
 
-        /**
-         * loading and init list
-         */
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(receiver);
+    }
+
+    /**
+     * loading and init list
+     */
     private void initAdapter(final EnumUpdateTag enumUpdateTag) {
 
 
@@ -267,13 +249,8 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                     } else {
                         adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
                         listview.setAdapter(adapter);
-                        listViewPagerAdapter = new ListViewPagerAdapter(getActivity(), data, 1);
-                        listPager = listViewPagerAdapter;
-                        dl_pager.setAdapter(listPager);
-                        tvInfo.setText(listPager.list.get(0).getNickName());
                     }
                 } else {
-
                 }
                 mRefreshLayout.onRefreshComplete();
                 ll_search.setVisibility(View.GONE);
@@ -298,11 +275,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         return false;
     }
 
-    public void setMainPadding() {
-
-    }
-
-
     private class TabOneAdapter extends CommonAdapter<Live> {
 
         public TabOneAdapter(Context context, List<Live> listData, int itemLayoutId) {
@@ -317,53 +289,15 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             tvTitle.setText(item.getNickName());
             tvTime.setText(item.getTime());
             ImageView ivIcon = helper.getView(R.id.ivIcon);
-
-
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIcon.getLayoutParams();
             params.height = (int) (App.screenWidth * 0.75);
             ivIcon.setLayoutParams(params);
-
-            ImageUtils.display(ivIcon, item.getPhoto());
+            //ImageGlideUtils.display(getContext(), item.getPhoto(), ivIcon);
+//            BitmapHelper.getInstance(mContext).display(ivIcon, item.getPhoto(), "", BitmapHelper.DefaultSize.BIG);
+            ImageUtils.display(ivIcon,item.getPhoto());
 
         }
     }
-
-
-    private class TouchListenerImpl implements View.OnTouchListener {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    int scrollY = view.getScrollY();
-                    int height = view.getHeight();
-                    int scrollViewMeasuredHeight = mRefreshLayout.getChildAt(0).getMeasuredHeight();
-                    if (scrollY > 2 || scrollY <= 1) {
-
-
-                        if (ll_search.getVisibility() == View.VISIBLE) {
-                            mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
-                        } else {
-                            mRefreshLayout.setMode(PullToRefreshBase.Mode.MANUAL_REFRESH_ONLY);
-                            ll_search.setVisibility(View.VISIBLE);
-                            return true;
-                        }
-                    }
-                    if ((scrollY + height) == scrollViewMeasuredHeight) {
-
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-            return false;
-        }
-
-    }
-
 
     @Override
     protected void onNoDoubleClick(View view) {
@@ -453,14 +387,15 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         }
     }
 
-
+    /**
+     * load  more data
+     */
     private void loadMore() {
         //put params
         Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("page", currPage + "");
+        paramsMap.put("page", currentViewPage + "");
         paramsMap.put("pagesize", PAGE_SIZE + "");
         paramsMap.put("cNo", "");
-
 
         RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<Live>() {
             @Override
@@ -468,23 +403,32 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
                 if (data != null && data.size() > 0) {
 
-
                     Long totalCount = Long.parseLong(data.size() + "");
                     if (0 == totalCount) {
                         CommonHelper.showTip(getActivity(),"已经没有更多内容了");
                     } else {
-                        if (null != listPager) {
-                            //dl_pager.removeAllViews();
-                            addViewSelf(data);
-                            listPager.notifyDataSetChanged();
-                            tvInfo.setText(listPager.list.get(currentViewPage).getNickName());
+                        int pageNo = (int) Math.ceil(data.size() / APP_PAGE_SIZE);
+                        for (int i = 0; i < pageNo; i++) {
+                            GridView appPage = new GridView(getContext());
+                            // get the "i" page data
+                            if(currentViewPage ==1)
+                                viewpageModelList.clear();
+
+                            viewpageModelList.addAll(data);
+                            appPage.setAdapter(new LiveBannerAdapter(getContext(), data, i));
+                            appPage.setNumColumns(1);
+                            appPage.setOnItemClickListener(listener);
+                            mSwitchScrollLayout.addView(appPage);
+                            isLoad = true;
                         }
+                        //loading page
+                        pageControl.bindScrollViewGroup(mSwitchScrollLayout);
+                        //loading paging data
+                        dataLoad.bindScrollViewGroup(mSwitchScrollLayout);
                     }
                 } else {
 
                 }
-                mRefreshLayout.onRefreshComplete();
-                ll_search.setVisibility(View.GONE);
             }
 
             @Override
@@ -498,87 +442,87 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     }
 
 
-    public void addViewSelf(List<Live> kf) {
-
-
-        int pageRows = 1;
-        int count = 0;  //循环次数
-        int pos = 0;        //当前位置
-
-
-        listPager.list.addAll(kf);
-
-        //计算页数
-        int pageNum = (int) Math.ceil(listPager.list.size() / pageRows);
-        int a = listPager.list.size() % pageRows;
-        if (a > 0) {
-            pageNum = pageNum + 1;
-        }
-        Log.d("hx2", String.valueOf(pageNum));
-        if (Math.ceil(kf.size() / pageRows) == 0) {
-            pageNum = 1;
-        }
-
-        for (int i = 0; i < pageNum; i++) {
-            Log.d("hx2", String.valueOf(i));
-            List<Live> item = new ArrayList<Live>();
-            for (int k = pos; k < kf.size(); k++) {
-                count++;
-                pos = k;
-                item.add(kf.get(k));
-                //每个List六条记录，存满N个跳出
-                if (count == pageRows) {
-                    count = 0;
-                    pos = pos + 1;
-                    break;
-                }
+    class SwitchPicThread implements Runnable {
+        public void run() {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            listPager.lcontant.add(item);
-        }
-        for (int j = 0; j < pageNum; j++) {
-            View viewPager = LayoutInflater.from(getContext()).inflate(
-                    R.layout.list, null);
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
-//        params.height = (int) (App.screenHeight);
-//            viewPager.setLayoutParams(params);
-            ListView mList = (ListView) viewPager.findViewById(R.id.view_list);
-            final LiveBannerAdapter myadapter = new LiveBannerAdapter(getContext(), listPager.lcontant.get(j));
-            mList.setAdapter(myadapter);
-
-            mList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String aaa = "";
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    String aaa = "";
-                }
-            });
-
-            mList.setOnScrollListener(new AbsListView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-                    String aaa = "";
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                    String aaa = "";
-                }
-            });
-
-
-//            mList.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-//                @Override
-//                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//                    String sss= "";
-//                }
-//            });
-
-
-            listPager.mListViewPager.add(viewPager);
+            String msglist = "1";
+            Message msg = new Message();
+            Bundle b = new Bundle();
+            b.putString("rmsg", msglist);
+            msg.setData(b);
+            FragmentTabOne.this.switchPicHandler.sendMessage(msg);
         }
     }
+
+
+    class SwitchPicHandler extends Handler {
+        public SwitchPicHandler(Context conn, int a) {
+        }
+        public SwitchPicHandler(Looper L) {
+            super(L);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle b = msg.getData();
+            String rmsg = b.getString("rmsg");
+            if ("1".equals(rmsg)) {
+                // do nothing
+                loadMore();
+            }
+        }
+    }
+
+    //pading data
+    class DataLoading {
+        private int count;
+
+        public void bindScrollViewGroup(SwitchScrollLayout scrollViewGroup) {
+            this.count = scrollViewGroup.getChildCount();
+            scrollViewGroup.setOnScreenChangeListenerDataLoad(new SwitchScrollLayout.OnScreenChangeListenerDataLoad() {
+                public void onScreenChange(int currentIndex) {
+                    generatePageControl(currentIndex);
+                }
+            });
+            scrollViewGroup.setOnScreenChangeListener(new SwitchScrollLayout.OnScreenChangeListener() {
+                @Override
+                public void onScreenChange(int currentIndex) {
+                    if (viewpageModelList != null) {
+                        Live live = viewpageModelList.get(currentIndex);
+                        tvInfo.setText(live.getNickName());
+                        tvLoveCount.setText(live.getLoveCount());
+                        tvWeight.setText(live.getHeight() + "Cm     " + live.getWeight() + "    三围：" + live.getBwh());
+                    }
+                }
+            });
+        }
+
+        private void generatePageControl(int currentIndex) {
+            if ((count - 3) == currentIndex + 1) {
+                if(isLoad) {
+                    isLoad=false;
+                    SwitchPicThread m = new SwitchPicThread();
+                    new Thread(m).start();
+                }
+            }
+        }
+    }
+
+
+    public AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
+
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+            ForwardUtils.target(getActivity(), Constant.START_LIVE, null);        }
+
+    };
+
+
+
+
 }

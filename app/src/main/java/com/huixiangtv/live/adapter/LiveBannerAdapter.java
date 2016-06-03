@@ -1,101 +1,94 @@
 package com.huixiangtv.live.adapter;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.utils.ForwardUtils;
-import com.huixiangtv.live.utils.image.ImageUtils;
-
-import org.w3c.dom.Text;
+import com.huixiangtv.live.utils.image.FastBlur;
+import com.huixiangtv.live.utils.image.ImageGlideUtils;
 
 /**
- * Created by Stone on 16/5/24.
+ * Created by Stone on 16/5/27.
  */
 public class LiveBannerAdapter extends BaseAdapter {
-    private Context con;
-    public List<Live> mType = null;
+    private List<Live> mList;
+    private Context mContext;
+    public static final int APP_PAGE_SIZE = 1;
 
-    public LiveBannerAdapter(Context con, List<Live> mType) {
-        this.con = con;
-        this.mType = mType;
-
-    }
-
-    @Override
-    public int getCount() {
-        // TODO Auto-generated method stub
-        return mType.size();
-    }
-
-    @Override
-    public Object getItem(int pos) {
-        // TODO Auto-generated method stub
-        return pos;
-    }
-
-    @Override
-    public long getItemId(int pos) {
-        // TODO Auto-generated method stub
-        return pos;
-    }
-
-    @Override
-    public View getView(final int pos, View convertView, ViewGroup parent) {
-        final myV holder;
-
-        if (convertView == null) {
-            convertView = LayoutInflater.from(con).inflate(R.layout.index_single,
-                    parent, false);
-            holder = new myV();
-            holder.tvInfo = (TextView) convertView.findViewById(R.id.tvInfo);
-            holder.sigImg = (ImageView) convertView.findViewById(R.id.ivIcon);
-            holder.iv_goto_live = (ImageView) convertView.findViewById(R.id.iv_goto_live);
-            holder.llInfo = (LinearLayout) convertView.findViewById(R.id.llInfo);
-            holder.rlpp = (RelativeLayout) convertView.findViewById(R.id.rlpp);
-            convertView.setTag(holder);
-        } else {
-            holder = (myV) convertView.getTag();
+    public LiveBannerAdapter(Context context, List<Live> list, int page) {
+        mContext = context;
+        mList = new ArrayList<Live>();
+        int i = page * APP_PAGE_SIZE;
+        int iEnd = i + APP_PAGE_SIZE;
+        while ((i < list.size()) && (i < iEnd)) {
+            mList.add(list.get(i));
+            i++;
         }
-        ImageView ivIcon = holder.sigImg;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(App.screenWidth,App.screenHeight);
-        params.height = (int) (App.screenHeight);
-       // holder.rlpp.setLayoutParams(params);
-        LinearLayout llInfo = holder.llInfo;
-        llInfo.setBackgroundResource(R.color.black_01);
-        llInfo.getBackground().mutate().setAlpha(255);
-        holder.tvInfo.setText(mType.get(pos).getNickName());
-        ImageUtils.display(ivIcon, mType.get(pos).getPhoto());
-        holder.iv_goto_live.setOnClickListener(new View.OnClickListener() {
+    }
+
+    public int getCount() {
+        return mList.size();
+    }
+
+    public Object getItem(int position) {
+        return mList.get(position);
+    }
+
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public View getView(int position, View convertView, ViewGroup parent) {
+        AppItem appItem;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.index_single,
+                    parent, false);
+            appItem = new AppItem();
+            //appItem.text = (TextView) convertView.findViewById(R.id.text);
+            appItem.sigImgs = (ImageView) convertView.findViewById(R.id.ivIcons);
+            appItem.sigImg = (ImageView) convertView.findViewById(R.id.ivIcon);
+            appItem.iv_goto_live = (ImageView) convertView.findViewById(R.id.iv_goto_live);
+            convertView.setTag(appItem);
+        } else {
+            appItem = (AppItem) convertView.getTag();
+        }
+
+
+        ImageView ivIcon = appItem.sigImg;
+
+        ImageView ivIcons = appItem.sigImgs;
+
+
+        ImageGlideUtils.display(mContext, mList.get(position).getPhoto(), ivIcon);
+
+        ImageGlideUtils.display(mContext, mList.get(position).getPhoto(), ivIcons);
+        appItem.iv_goto_live.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
             }
         });
 
+//        FastBlur.applyBlur(mContext,appItem.sigImgs,appItem.text);
         return convertView;
     }
 
-    static class myV {
+    private class AppItem {
         ImageView sigImg;
-        LinearLayout llInfo;
-        TextView tvInfo;
+        ImageView sigImgs;
+        TextView text;
         ImageView iv_goto_live;
-        RelativeLayout rlpp;
-
     }
-
 }

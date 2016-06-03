@@ -58,7 +58,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:background="@color/white"
-                    android:editable="false"
                     android:singleLine="true" />
             </LinearLayout>
         </LinearLayout>
@@ -81,7 +80,7 @@
                 <ImageView
                     android:id="@+id/ivPhoto"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="500dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
                     android:visibility="gone" />
