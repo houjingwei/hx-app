@@ -7,7 +7,7 @@ public class Upfeile {
 
     private String bucket;
     private String sig;
-    private String filaName;
+    private String fileName;
     private String appId;
     private String persistenceId;
 
@@ -27,12 +27,12 @@ public class Upfeile {
         this.sig = sig;
     }
 
-    public String getFilaName() {
-        return filaName;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFilaName(String filaName) {
-        this.filaName = filaName;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getAppId() {

@@ -5,11 +5,14 @@ package com.huixiangtv.live;
  */
 public class Constant {
 
-    public static final String TAG = "request >> ";
+    public static final String TAG = "reponseStr";
+    public static final String ERROR_TAG = "requestError";
 
 
     public static final String BASE_PRE = "huixiang://huixiang/";
     public static final String ACCOUNT = BASE_PRE+"account";
+    public static final String USERINFO = BASE_PRE+"userinfo";
+    public static final String USERTAG = BASE_PRE+"tag";
     public static final String LOGIN = BASE_PRE+"login";
     public static final String START_LIVE = BASE_PRE+"push";
     public static final String LIVE_TOPIC = BASE_PRE+"topic";

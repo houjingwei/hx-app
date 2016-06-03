@@ -5,10 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.utils.JsonValidator;
@@ -64,15 +61,17 @@ public class RequestUtils {
         Log.d(Constant.TAG, "originl params >" + paramsMap);
 
         RequestParams reParams = new RequestParams(url);
+        reParams.setCharset("utf-8");
         if(null!= App.getLoginUser()){
-            reParams.addQueryStringParameter("uid", App.getLoginUser().getUid()+"");
-            reParams.addQueryStringParameter("token",App.getLoginUser().getToken()+"");
+            reParams.addBodyParameter("uid", App.getLoginUser().getUid()+"");
+            reParams.addBodyParameter("token",App.getLoginUser().getToken()+"");
+
         }
 
         //解析封装参数
         if(null!=paramsMap && paramsMap.size()>0) {
             for (String key : paramsMap.keySet()) {
-                reParams.addQueryStringParameter(key, paramsMap.get(key));
+                reParams.addBodyParameter(key, paramsMap.get(key));
             }
         }
         x.http().request(method, reParams, new Callback.CommonCallback<String>() {
@@ -103,12 +102,12 @@ public class RequestUtils {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                callBack.onFailure(new ServiceException(ex.getMessage()));
+                callBack.onFailure(new ServiceException("服务器异常，异常提示："+ex.getMessage()));
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
-                callBack.onFailure(new ServiceException(cex.getMessage()));
+                callBack.onFailure(new ServiceException("已取消请求"));
             }
 
             @Override
@@ -166,6 +165,7 @@ public class RequestUtils {
                 } catch (Exception e) {
                     e.printStackTrace();
                     callBack.onFailure(new ServiceException(e.getMessage()));
+                    Log.d(Constant.ERROR_TAG, "originl params >" + e.getMessage());
                 }
 
 
@@ -174,6 +174,7 @@ public class RequestUtils {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 callBack.onFailure(new ServiceException(ex.getMessage()));
+                Log.d(Constant.ERROR_TAG, "originl params >" + ex.getMessage());
             }
 
             @Override

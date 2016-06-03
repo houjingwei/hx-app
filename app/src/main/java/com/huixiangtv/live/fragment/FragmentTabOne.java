@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,8 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
+import com.huixiangtv.live.activity.MyActivity;
+import com.huixiangtv.live.adapter.CommonAdapter;
 import com.huixiangtv.live.adapter.LiveBannerAdapter;
 import com.huixiangtv.live.adapter.CommonAdapter;
 import com.huixiangtv.live.adapter.ViewHolder;
@@ -47,6 +51,7 @@ import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.EnumUpdateTag;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.image.FastBlur;
@@ -124,7 +129,12 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         listview.setOnItemClickListener(new LinearLayoutForListView.OnItemClickListener() {
             @Override
             public void onItemClicked(View v, Object item, int position) {
-                ForwardUtils.target(getActivity(), Constant.START_LIVE, null);            }
+                ForwardUtils.target(getActivity(), Constant.START_LIVE, null);
+
+                Intent intent = new Intent(getActivity(), MyActivity.class);
+                getActivity().startActivity(intent);
+            }
+
         });
         listview.setVisibility(View.GONE);
         mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
@@ -139,6 +149,18 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 //        text = (TextView) view.findViewById(R.id.text);
 //        ivFt = (ImageView) view.findViewById(R.id.ivFt);
 
+//                    }catch(Exception ex)
+//                    {
+//                        CommonHelper.showTip(getActivity(),"加载中");
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onPageScrollStateChanged ( int state){
+//
+//                }
+           // }
 
 
 
@@ -222,7 +244,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 mRefreshLayout.onRefreshComplete();
-                showToast("当有网络不可用，请检查您的网络设置");
+                CommonHelper.showTip(getActivity(),e.getMessage());
             }
         }, Live.class);
     }
@@ -367,7 +389,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
                     Long totalCount = Long.parseLong(data.size() + "");
                     if (0 == totalCount) {
-                        Toast.makeText(getActivity(), "已经没有更多内容了", Toast.LENGTH_LONG).show();
+                        CommonHelper.showTip(getActivity(),"已经没有更多内容了");
                     } else {
                         int pageNo = (int) Math.ceil(data.size() / APP_PAGE_SIZE);
                         for (int i = 0; i < pageNo; i++) {
@@ -397,7 +419,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 mRefreshLayout.onRefreshComplete();
-                showToast("当有网络不可用，请检查您的网络设置");
+                CommonHelper.showTip(getActivity(),e.getMessage());
             }
         }, Live.class);
 

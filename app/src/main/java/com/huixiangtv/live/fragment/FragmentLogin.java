@@ -3,7 +3,6 @@ package com.huixiangtv.live.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.TextViewCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
@@ -127,12 +125,12 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
 		@Override
 		public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-			Toast.makeText( getActivity(), "Authorize fail", Toast.LENGTH_SHORT).show();
+			CommonHelper.showTip(getActivity(),"授权失败："+t.getMessage());
 		}
 
 		@Override
 		public void onCancel(SHARE_MEDIA platform, int action) {
-			Toast.makeText( getActivity(), "Authorize cancel", Toast.LENGTH_SHORT).show();
+			CommonHelper.showTip(getActivity(),"取消登录");
 		}
 	};
 
@@ -177,7 +175,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 		Map<String,String> params = new HashMap<String, String>();
 		String pwd = RSAUtils.rsaPwd(etForgotPwd.getText().toString());
 		params.put("phone",etPhone.getText().toString());
-		params.put("password",pwd);
+		params.put("password",etForgotPwd.getText().toString());
 		params.put("code",etCode.getText().toString());
 
 		RequestUtils.sendPostRequest(Api.UP_PWD, params, new ResponseCallBack<String>() {
@@ -231,7 +229,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 		Map<String,String> params = new HashMap<String, String>();
 		String pwd = RSAUtils.rsaPwd(etPwd.getText().toString());
 		params.put("phone",etAccount.getText().toString());
-		params.put("password",pwd);
+		params.put("password",etPwd.getText().toString());
 
 		RequestUtils.sendPostRequest(Api.LOGIN, params, new ResponseCallBack<User>() {
 			@Override
@@ -260,7 +258,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 	}
 
 	private void AuthThirdlogin(String code,String platform,String openid){
-		cp = ColaProgress.show(getActivity(), "第三方登录中...", false, true, null);
+		cp = ColaProgress.show(getActivity(), "第三方登录中", false, true, null);
 		cp.setCancelable(true);
 		Map<String,String> params = new HashMap<String, String>();
 		params.put("code",code);
@@ -270,7 +268,6 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 			@Override
 			public void onSuccess(User data) {
 				super.onSuccess(data);
-				Toast.makeText(getActivity(),"Successfully",Toast.LENGTH_LONG).show();
 				saveLoginInfo(data);
 				if (null != cp) {
 					cp.dismiss();
@@ -283,6 +280,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 				if (null != cp) {
 					cp.dismiss();
 				}
+				CommonHelper.showTip(getActivity(),e.getMessage());
 			}
 		}, User.class);
 
@@ -290,23 +288,24 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
 
 	public void getCode() {
-		if(TextUtils.isEmpty(etPhone.getText().toString())){
+		if(TextUtils.isEmpty(etCode.getText().toString())){
 			CommonHelper.showTip(getActivity(),"请输入手机号码");
-			etPhone.requestFocus();
+			etCode.requestFocus();
 			return;
 		}
 		KeyBoardUtils.closeKeybord(etPhone,getActivity());
 		tvGetCode.setEnabled(false);
 		cp = ColaProgress.show(getActivity(), "正在获取", false, true, null);
-		CommonUtil.getMsgCode(etAccount.getText().toString(),new CodeCallBack(){
+		CommonUtil.getMsgCode(etCode.getText().toString(),new CodeCallBack(){
 					@Override
 					public void sendSuccess() {
 						if(null!=cp){
 							cp.dismiss();
 						}
+						CommonHelper.showTip(getActivity(),"验证码发送成功");
 						myThread = new MyThread();
 						myThread.run();
-						CommonHelper.showTip(getActivity(),"验证码发送成功");
+
 					}
 
 					@Override
@@ -315,7 +314,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 							cp.dismiss();
 						}
 						tvGetCode.setEnabled(true);
-						CommonHelper.showTip(getActivity(),"验证码发送失败，失败原因："+msg);
+						CommonHelper.showTip(getActivity(),"验证码发送失败："+msg);
 					}
 				}
 

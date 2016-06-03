@@ -1,6 +1,5 @@
 package com.huixiangtv.live.fragment;
 
-import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -91,9 +90,10 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 								if(null!=cp){
 									cp.dismiss();
 								}
+								CommonHelper.showTip(getActivity(),"验证码发送成功");
 								myThread = new MyThread();
 								myThread.run();
-								CommonHelper.showTip(getActivity(),"验证码发送成功");
+
 							}
 
 							@Override
@@ -182,11 +182,11 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 			etCode.requestFocus();
 			return;
 		}
-		cp = ColaProgress.show(getActivity(), "登录中", false, true, null);
+		cp = ColaProgress.show(getActivity(), "注册中", false, true, null);
 		Map<String,String> giftParams = new HashMap<String, String>();
 		giftParams.put("phone",etAccount.getText().toString());
 		String pwd = RSAUtils.rsaPwd(etPwd.getText().toString());
-		giftParams.put("password",pwd);
+		giftParams.put("password",etPwd.getText().toString());
 		giftParams.put("code",etCode.getText().toString());
 		RequestUtils.sendPostRequest(Api.REG, giftParams, new ResponseCallBack<User>() {
 

@@ -2,7 +2,9 @@ package com.huixiangtv.live.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +15,13 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Upfeile;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.SelectPicWayWindow;
 import com.huixiangtv.live.pop.UpdateSexWindow;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -34,7 +38,7 @@ import com.tencent.upload.UploadManager;
 import com.tencent.upload.task.ITask;
 import com.tencent.upload.task.IUploadTaskListener;
 import com.tencent.upload.task.data.FileInfo;
-import com.tencent.upload.task.impl.PhotoUploadTask;
+import com.tencent.upload.task.impl.FileUploadTask;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -74,26 +78,31 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         setContentView(R.layout.activity_userinfo);
         x.view().inject(this);
         initView();
+
         if(null!=App.getLoginUser()){
-            setUserInfo();
+            setUserInfo(null);
         }
     }
 
-    private void setUserInfo() {
+    private void setUserInfo(String tags) {
         User user = App.getLoginUser();
         ImageUtils.displayAvator(ivPhoto,user.getPhoto());
         etNickName.setText(user.getNickName());
-        tvSex.setText(user.getSex());
-        String userTags = user.getTags();
-        userTags = "小清新,校花,大美女";
-        if(StringUtil.isNotEmpty(userTags)){
-            initTags(userTags.split(","));
-
-            getTag();
+        tvSex.setText(user.getSex().equals("1")?"男":"女");
+        String userTags = null;
+        if(tags!=null){
+            userTags = tags;
+        }else{
+            userTags  = user.getTags();
         }
 
-
+        if(StringUtil.isNotEmpty(userTags)){
+            initTags(userTags.split(","));
+            adapter.notifyDataChanged();
+            userTag();
+        }
     }
+
 
     private void initView() {
         commonTitle.setActivity(this);
@@ -138,7 +147,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             case R.id.rl_tag:
                 Map<String,String> tags = new HashMap<String,String>();
                 tags.put("tags",tagStr);
-                ForwardUtils.target(UserinfoActivity.this,"huixiang://userTag",tags);
+                ForwardUtils.target(UserinfoActivity.this, Constant.USERTAG,tags);
                 break;
             case R.id.back:
                 onBackPressed();
@@ -152,7 +161,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             case R.id.save:
                 saveUserInfo();
                 break;
-            
+
 
         }
     }
@@ -160,7 +169,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     /**
      * 用户标签字符串
      */
-    private void getTag(){
+    private void userTag(){
         StringBuffer sb = new StringBuffer("");
         int tagCount = mFlowLayout.getAdapter().getCount();
         for (int i=0;i<tagCount;i++){
@@ -180,17 +189,23 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             ShowUtils.showTip(UserinfoActivity.this, "请设置昵称~");
         }
         Map<String,String> params = new HashMap<String,String>();
-        params.put("tags",tagStr);
-        params.put("photo","photo");
+        params.put("photo","");
         params.put("nickName",etNickName.getText().toString());
-        params.put("sex",tvSex.getText().toString());
+        params.put("sex",tvSex.getText().toString().equals("女")?0+"":1+"");
         params.put("signature","");
+        params.put("tags",tagStr);
         RequestUtils.sendPostRequest(Api.SAVE_USER, params, new ResponseCallBack<User>() {
             @Override
             public void onSuccess(User data) {
                 super.onSuccess(data);
                 App.saveLoginUser(data);
                 CommonHelper.showTip(UserinfoActivity.this,"用户信息保存成功");
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        onBackPressed();
+                    }
+                }, 1000);
+
             }
 
             @Override
@@ -241,18 +256,25 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             if (!finished) {
                 return;
             }
-            upFileInfo(picUri);
+            upFileInfo(new ApiCallback<Upfeile>() {
+                @Override
+                public void onSuccess(Upfeile data) {
+                    upFile(data,picUri);
+                }
+            });
         }
     };
 
-    private void upFileInfo(final String picUri) {
+    private void upFileInfo( final ApiCallback<Upfeile> apiCallback) {
         Map<String,String> params = new HashMap<String,String>();
         params.put("type","1");
         RequestUtils.sendPostRequest(Api.UPLOAD_FILE_INFO, params, new ResponseCallBack<Upfeile>() {
             @Override
             public void onSuccess(Upfeile data) {
                 super.onSuccess(data);
-                upFile(data,picUri);
+                if(null!=data){
+                    apiCallback.onSuccess(data);
+                }
             }
 
             @Override
@@ -264,15 +286,13 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     }
 
 
-
     private void upFile(Upfeile data, String picUri) {
-        UploadManager photoUploadMgr = null;
-        photoUploadMgr = new UploadManager(UserinfoActivity.this, data.getAppId(),Const.FileType.Photo,data.getPersistenceId());
-        PhotoUploadTask task = new PhotoUploadTask(picUri, new IUploadTaskListener() {
+        UploadManager fileUploadMgr = new UploadManager(this, data.getAppId(), Const.FileType.File, data.getPersistenceId());
+
+        FileUploadTask task = new FileUploadTask(data.getBucket(), picUri, data.getFileName(), "image", new IUploadTaskListener() {
             @Override
             public void onUploadSucceed(FileInfo fileInfo) {
-                String photo = fileInfo.url;
-                ImageUtils.displayAvator(ivPhoto,photo);
+                Log.i("successful", "upload succeed: " + fileInfo.url);
             }
 
             @Override
@@ -290,18 +310,28 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
 
             }
         });
-        task.setBucket(data.getBucket());  // 设置Bucket(可选)
         task.setAuth(data.getSig());
-        photoUploadMgr.upload(task);
+
+        fileUploadMgr.upload(task);
 
 
     }
-
 
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
+        super.onActivityResult(requestCode, resultCode, arg2);
         pictureHelper.onActivityResult(requestCode, resultCode, arg2);
+
+        if (resultCode == RESULT_OK && requestCode==108) {
+            String userTags= arg2.getStringExtra("topic");
+            setUserInfo(userTags);
+        }
+
+
     }
+
+
+
 }

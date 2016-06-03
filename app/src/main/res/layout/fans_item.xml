@@ -6,7 +6,7 @@
     <RelativeLayout
         android:id="@+id/rl_buy"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="66dp"
         android:background="@color/white"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/tvRank"
-            style="@style/black_bigger_style"
+            style="@style/black_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -23,8 +23,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ivPhoto"
-            android:layout_width="62dp"
-            android:layout_height="62dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/tvRank"
@@ -34,7 +34,7 @@
 
         <TextView
             android:id="@+id/tvNickName"
-            style="@style/black_bigger_style"
+            style="@style/black_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -45,7 +45,7 @@
 
         <TextView
             android:id="@+id/tvHots"
-            style="@style/black_normal_style"
+            style="@style/black_small_style"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
