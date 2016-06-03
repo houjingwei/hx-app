@@ -8,7 +8,6 @@ import android.view.WindowManager;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.Calendar;
 
@@ -36,9 +35,9 @@ public class BaseBackActivity extends SwipeBackActivity implements View.OnClickL
 //            setTranslucentStatus(true);
 //        }
 
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(color);
+//        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+//        tintManager.setStatusBarTintEnabled(true);
+//        tintManager.setStatusBarTintResource(color);
     }
 
     @TargetApi(19)
