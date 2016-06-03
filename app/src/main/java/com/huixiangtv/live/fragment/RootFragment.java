@@ -2,7 +2,8 @@ package com.huixiangtv.live.fragment;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.Toast;
+
+import com.huixiangtv.live.utils.CommonHelper;
 
 import java.util.Calendar;
 
@@ -33,17 +34,11 @@ public abstract  class RootFragment extends LoadingFragment implements View.OnCl
 
 
     public void showToast(String text) {
-        Activity activity = getActivity();
-        if(activity != null) {
-            Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-        }
+        CommonHelper.showTip(getActivity(),text);
     }
 
     public void showToast(int resId) {
-        Activity activity = getActivity();
-        if(activity != null) {
-            Toast.makeText(activity, resId, Toast.LENGTH_SHORT).show();
-        }
+        showToast(resId+"");
     }
 
     /**

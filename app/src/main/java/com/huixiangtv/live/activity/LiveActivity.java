@@ -7,17 +7,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.huixiangtv.live.Api;
@@ -36,6 +31,7 @@ import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
+import com.huixiangtv.live.utils.StringUtil;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -45,7 +41,7 @@ import java.util.Map;
 
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
-public class LiveActivity extends AppCompatActivity implements View.OnClickListener {
+public class LiveActivity extends BaseBackActivity implements View.OnClickListener {
 
     @ViewInject(R.id.flCover)
     FrameLayout flCover;
@@ -62,16 +58,11 @@ public class LiveActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    private String isPlay = "";
+    private String isPlay = "false";
     private String playUrl = "";
     private String lid = "";
     private IjkVideoView mVideoView;
 
-
-    private TextView mToastTextView;
-    private TableLayout mHudView;
-    private DrawerLayout mDrawerLayout;
-    private ViewGroup mRightDrawer;
 
 
     @Override
@@ -87,7 +78,7 @@ public class LiveActivity extends AppCompatActivity implements View.OnClickListe
             setTranslucentStatus(true);
         }
         isPlay = getIntent().getStringExtra("isPlay");
-        if (isPlay.equals("true")) {
+        if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
             playUrl = getIntent().getStringExtra("playUrl");
             lid = getIntent().getStringExtra("lid");
             initPlayView();
@@ -123,7 +114,7 @@ public class LiveActivity extends AppCompatActivity implements View.OnClickListe
 
         final View playView = LayoutInflater.from(LiveActivity.this).inflate(R.layout.play_view, null, false);
         mVideoView = (IjkVideoView) playView.findViewById(R.id.video_view);
-        mVideoView.setVisibility(View.GONE);
+        mVideoView.setRender(2);
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
         mVideoView.setVideoPath("rtmp://live.hkstv.hk.lxdns.com/live/hks");
@@ -134,16 +125,11 @@ public class LiveActivity extends AppCompatActivity implements View.OnClickListe
         params.height = App.screenHeight;
         params.width = App.screenWidth;
         mVideoView.setLayoutParams(params);
-        mVideoView.toggleAspectRatio();
+
 
 
         flPlayView.addView(playView);
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                mVideoView.setVisibility(View.VISIBLE);
 
-            }
-        }, 5000);
 
 
     }

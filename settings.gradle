@@ -1,5 +1,4 @@
-include ':app', ':libraryrefresh', ':photopicker',':ijkplayer-java',':ijkplayer-exo',
-':PhotoPicker'
+include ':app', ':libraryrefresh', ':photopicker',':ijkplayer-java',':ijkplayer-exo',':PhotoPicker'
 
 
 

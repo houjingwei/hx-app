@@ -16,7 +16,7 @@ import com.huixiangtv.live.utils.widget.WidgetUtil;
 /**
  * Created by hjw on 16/5/20.
  */
-public class BubbleView {
+public class BubbView {
 
     int baseX = 0;
     int baseY = 0;
@@ -42,7 +42,7 @@ public class BubbleView {
      * 传进来上边要冒气泡的view
      * @param baseView
      */
-    public BubbleView(Context context, View baseView, FrameLayout rv,boolean b) {
+    public BubbView(Context context, View baseView, FrameLayout rv,boolean b) {
         this.context = context;
         rootView = rv;
         int[] locations=new int[2];
@@ -57,12 +57,9 @@ public class BubbleView {
             handler.postDelayed(runnable, 500);
         }
 
-
-        Log.i("rilegoule","***********"+baseWidth+"****"+baseHeight);
     }
 
     private void oneBubble() {
-
         View view = createOneBubbleView();
         initOneAnimator(view);
         startAni(view);

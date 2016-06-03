@@ -7,7 +7,6 @@
 
     <FrameLayout
         android:id="@+id/flPlayView"
-        android:background="@color/mainColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

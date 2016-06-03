@@ -60,30 +60,6 @@ public class AnimHelper {
      */
     public void showSendGift(ViewGroup rootContainer, View baseLocationView, View barrageArea, Gift gift){
 
-//        //缩放率
-//        float rate =1.5f;
-//
-//        int[] locations=new int[2];
-//        baseLocationView.getLocationOnScreen(locations);
-//        int x = locations[0];
-//        int y = locations[1];
-//        int width = baseLocationView.getWidth();
-//        int height = baseLocationView.getHeight();
-//
-//        ImageView imageView = new ImageView(context);
-//        rootContainer.addView(imageView);
-//        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width,height);
-//        layoutParams.setMargins(x, y, 0, 0);
-//        imageView.setLayoutParams(layoutParams);
-//        ImageUtils.displayAvator(imageView,gift.getIcon());
-//
-//
-//        int animImageWidth = (int) (width*rate);
-//        int animImageHeight = (int) (height*rate);
-//
-//        float toX = (App.screenWidth - animImageWidth)/2;
-//        float toY = (App.screenHeight - animImageHeight)/2;
-
         //自己送的礼物
         float rate =1.5f;
         int[] locations=new int[2];
@@ -251,7 +227,7 @@ public class AnimHelper {
         rootContainer.addView(remarkView);
         remarkView.setText("+" + marks);
         remarkView.setTextSize(25);
-        remarkView.setTextColor(context.getResources().getColor(R.color.orange));
+        remarkView.setTextColor(context.getResources().getColor(R.color.mainColor));
         FrameLayout.LayoutParams tipsLayout =new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         remarkView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         tipsLayout.setMargins(0, (int) giftDestATop - 100, 0, 0);
@@ -311,7 +287,7 @@ public class AnimHelper {
         final TextView remarkView = new TextView(context);
         remarkView.setText("+" + marks);
         remarkView.setTextSize(25);
-        remarkView.setTextColor(context.getResources().getColor(R.color.orange));
+        remarkView.setTextColor(context.getResources().getColor(R.color.mainColor));
         RelativeLayout.LayoutParams tipsLayout =
                 new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         remarkView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);

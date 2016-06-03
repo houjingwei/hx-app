@@ -1,6 +1,20 @@
 package com.huixiangtv.live.ui;
 
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.huixiangtv.live.R;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,19 +22,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Handler;
-import android.os.Message;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.huixiangtv.live.R;
 
 /**
  * Created by Stone on 16/5/23.
@@ -73,6 +74,7 @@ public class VProgressDialog extends Dialog {
         pb.setMax(100);
         downLoadThread = new Thread(mdownApkRunnable);
         downLoadThread.start();
+
     }
 
     private Runnable mdownApkRunnable = new Runnable() {

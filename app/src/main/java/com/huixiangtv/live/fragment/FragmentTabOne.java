@@ -1,27 +1,18 @@
 package com.huixiangtv.live.fragment;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
@@ -42,7 +33,6 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.adapter.CommonAdapter;
 import com.huixiangtv.live.adapter.LiveBannerAdapter;
-import com.huixiangtv.live.adapter.CommonAdapter;
 import com.huixiangtv.live.adapter.ViewHolder;
 import com.huixiangtv.live.model.BannerModel;
 import com.huixiangtv.live.model.Live;
@@ -54,13 +44,12 @@ import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.EnumUpdateTag;
 import com.huixiangtv.live.utils.ForwardUtils;
-import com.huixiangtv.live.utils.image.FastBlur;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.BannerView;
 import com.huixiangtv.live.utils.widget.LinearLayoutForListView;
-import com.huixiangtv.live.utils.widget.LoadingView;
 import com.huixiangtv.live.utils.widget.SwitchPageControlView;
 import com.huixiangtv.live.utils.widget.SwitchScrollLayout;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,18 +64,17 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     public SwitchPicHandler switchPicHandler;
     private static final float APP_PAGE_SIZE = 1.0f;
     private SwitchPageControlView pageControl;
-    private int currentViewPage = 0;
-    private final int PAGE_SIZE = 12;
+    private int currentViewPage = 1;
+    private final int PAGE_SIZE = 120;
     private int currPage = 1;
     private ColaProgress cp = null;
     private BannerView bannerView;
-    private TextView tvInfo, tvLoveCount, tvWeight,text;
+    private TextView tvInfo, tvLoveCount, tvWeight;
     private PullToRefreshScrollView mRefreshLayout;
     private List<BannerModel> guangGao = new ArrayList<BannerModel>();
     private View mRootView;
     MainActivity activity;
     private LinearLayout ll_search;
-    private LoadingView loadView;
     private BaseAdapter adapter;
     private LinearLayout llInfo;
     private ScrollView sv;
@@ -97,7 +85,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private FrameLayout flInfo;
     private String ACTION = "com.android.broadcast.RECEIVER_ACTION";
     private LinearLayout llone_viewpager;
-    private ImageView ivFt;
+
 
     @Override
     protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -115,8 +103,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
     @Override
     protected void initLayout(View view) {
-        //loadView = (LoadingView) view.findViewById(R.id.loadView);
-        //loadView.setVisibility(View.VISIBLE);
         pageControl = (SwitchPageControlView) view.findViewById(R.id.pageControl);
         ll_search = (LinearLayout) view.findViewById(R.id.ll_search);
         tvInfo = (TextView) view.findViewById(R.id.tvInfo);
@@ -173,10 +159,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                     map.put("playUrl",data.getUrl());
                     map.put("lid",live.getLid());
                     ForwardUtils.target(getActivity(),Constant.LIVE,map);
-
-//                    Intent intent = new Intent(getActivity(), VideoActivity.class);
-//                    getActivity().startActivity(intent);
-//                    getActivity().overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
                 }
             }
         },PlayUrl.class);
@@ -184,10 +166,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
     @Override
         protected void initData () {
-
-//        dialog =new CustomProgressDialog(getActivity(), "正在加载中",R.anim.loading_frame);
-//        dialog.show();
-
         initAdapter(EnumUpdateTag.UPDATE);
         setListener();
         getBanner();
@@ -218,8 +196,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
      */
     private void initAdapter(final EnumUpdateTag enumUpdateTag) {
 
-
-        //put params
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", currPage + "");
         paramsMap.put("pagesize", PAGE_SIZE + "");
@@ -293,8 +269,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIcon.getLayoutParams();
             params.height = (int) (App.screenWidth * 0.75);
             ivIcon.setLayoutParams(params);
-            //ImageGlideUtils.display(getContext(), item.getPhoto(), ivIcon);
-//            BitmapHelper.getInstance(mContext).display(ivIcon, item.getPhoto(), "", BitmapHelper.DefaultSize.BIG);
             ImageUtils.display(ivIcon,item.getPhoto());
 
         }
@@ -307,12 +281,10 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
 
     public void setListener() {
-
         mRefreshLayout.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 listview.setVisibility(View.GONE);
-                //loadView.setVisibility(View.VISIBLE);
                 currPage = 1;
                 initAdapter(EnumUpdateTag.UPDATE);
             }
@@ -340,7 +312,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     }
 
     private void getBanner() {
-
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", currPage + "");
         paramsMap.put("pagesize", PAGE_SIZE + "");
@@ -348,13 +319,10 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         RequestUtils.sendPostRequest(Api.CONTENT_GET_BANNER, paramsMap, new ResponseCallBack<BannerModel>() {
             @Override
             public void onSuccessList(List<BannerModel> data) {
-
                 if (data != null && data.size() > 0) {
-
                     guangGao.clear();
                     guangGao.addAll(data);
                     bannerView.setPositionAdvertBO(guangGao);
-
                 }
 
             }
@@ -421,6 +389,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                             appPage.setOnItemClickListener(listener);
                             mSwitchScrollLayout.addView(appPage);
                             isLoad = true;
+                            currentViewPage++;
                         }
                         //loading page
                         pageControl.bindScrollViewGroup(mSwitchScrollLayout);

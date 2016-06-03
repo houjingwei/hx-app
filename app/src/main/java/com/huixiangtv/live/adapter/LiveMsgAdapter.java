@@ -2,6 +2,7 @@ package com.huixiangtv.live.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,7 @@ public class LiveMsgAdapter extends BaseAdapter {
             rowView = LayoutInflater.from(context).inflate(R.layout.live_msg_item, parent, false);
         }
         TextView msg = (TextView) rowView.findViewById(R.id.tvMsg);
-//        Log.i("rinima","<<"+message.getNickName().length()+">>");
+        Log.i("rinima","<<"+message.getNickName()+">>");
 //        SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
 //
 //        ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

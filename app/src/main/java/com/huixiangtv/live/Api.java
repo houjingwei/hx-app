@@ -54,6 +54,10 @@ public class Api {
     public static final String MSG_CODE = BASE_URL+"auth/getVerifCode";
     public static final String UPLOAD_FILE_INFO = BASE_URL+"resource/getImageUploadInfo";
 
+    //喊话
+    public static final String GIFT_PAYMENT = BASE_URL+"pay/shoutGiftPayment";
+    public static final String SHOUT_GIFT = BASE_URL+"gift/getShoutGiftInfo";
+
 
     public static String UP_PWD = BASE_URL+"auth/resetPaswd";
 

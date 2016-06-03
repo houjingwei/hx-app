@@ -28,7 +28,6 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.ui.UpdateApp;
-import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -37,10 +36,9 @@ import org.xutils.x;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private final String TAG = "MainActivity";
 
@@ -83,7 +81,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         App.getContext().addActivity(this);
         initView();
         CheckVersion();
-
     }
 
     private void initWindow() {
@@ -131,7 +128,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-
     private void setTabSelection(int index) {
         trx = getSupportFragmentManager().beginTransaction();
         hideFragments(trx);
@@ -154,7 +150,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         //防止一个状态丢失崩溃.
         trx.commitAllowingStateLoss();
     }
-
 
 
     private void addSelection(int index) {
@@ -186,18 +181,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-
-    public void setTitleBar(String title){
+    public void setTitleBar(String title) {
         commonTitle.setTitleText(title);
         commonTitle.backShow(View.GONE);
     }
 
 
     private long lastTipTimeMills = 0l;
+
     @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() - lastTipTimeMills > 1000) {
-            CommonHelper.showTip(this,"再按一次退出程序");
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             lastTipTimeMills = System.currentTimeMillis();
         } else {
             finish();
@@ -209,13 +204,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     public void hideTitle(boolean bool) {
         Window window = getWindow();
-        if(bool){
+        if (bool) {
             llTitle.setVisibility(View.GONE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.setStatusBarColor(getResources().getColor(R.color.mainColor));
             }
             //window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }else{
+        } else {
             llTitle.setVisibility(View.VISIBLE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
@@ -251,16 +246,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private static boolean isSwitch = false;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void onDBClick(){
+    private void onDBClick() {
 
-        if(isSwitch)
-        {
+        if (isSwitch) {
             setTabSelection(0);
             sendToOneFragment("1");
             isSwitch = false;
-        }
-        else
-        {
+        } else {
             sendToOneFragment("0");
             iv1.setImageResource(R.mipmap.tab1);
             isSwitch = true;
@@ -279,6 +271,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
      */
     public static final int MIN_CLICK_DELAY_TIME = 1000;
     private long lastClickTime = 0;
+
     /**
      * 开启直播
      */
@@ -286,30 +279,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         long currentTime = Calendar.getInstance().getTimeInMillis();
         if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
             lastClickTime = currentTime;
-            ForwardUtils.target(MainActivity.this, Constant.START_LIVE,null);
+            ForwardUtils.target(MainActivity.this, Constant.START_LIVE, null);
         }
 
     }
 
-    private void sendToOneFragment(String type)
-    {
+    private void sendToOneFragment(String type) {
         Intent intent = new Intent("com.android.broadcast.RECEIVER_ACTION");
-        intent.putExtra("type",type);
+        intent.putExtra("type", type);
         sendBroadcast(intent);
     }
 
     @Override
-    public void onAttachFragment(Fragment fragment)  {
+    public void onAttachFragment(Fragment fragment) {
         // TODO Auto-generated method stub
         super.onAttachFragment(fragment);
 
 
-        Log.d(TAG,"onAttachFragment");
+        Log.d(TAG, "onAttachFragment");
 
         if (fragmentOne == null && fragment instanceof FragmentTabOne) {
-            fragmentOne = (FragmentTabOne)fragment;
-        }else if (fragmentThree == null && fragment instanceof FragmentTabThree) {
-            fragmentThree = (FragmentTabThree)fragment;
+            fragmentOne = (FragmentTabOne) fragment;
+        } else if (fragmentThree == null && fragment instanceof FragmentTabThree) {
+            fragmentThree = (FragmentTabThree) fragment;
         }
     }
 
@@ -320,16 +312,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 //    }
 
 
-
-
     /**
      * 检查新版本
      */
-    private void CheckVersion()
-    {
-        Map<String,String> paramsMap = new HashMap<String,String>();
-        paramsMap.put("osType","1");
-        paramsMap.put("appVersion","1.0");
+    private void CheckVersion() {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("osType", "1");
+        paramsMap.put("appVersion", "1.0");
 
         RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
 
@@ -342,12 +331,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     UpdateApp updateApp = new UpdateApp(MainActivity.this);
                     if (updateApp
                             .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
-                        // Toast.makeText(getApplicationContext(),
-                        // "当前为最新版本", Toast.LENGTH_SHORT).show();
-                        // toIntent();
+
                     }
-                } else {
-                    Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -359,7 +344,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }, UpgradeLevel.class);
 
     }
-
 
 
 }

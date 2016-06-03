@@ -68,6 +68,7 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
         getHolder().addCallback(mSurfaceCallback);
         //noinspection deprecation
         getHolder().setType(SurfaceHolder.SURFACE_TYPE_NORMAL);
+
     }
 
     @Override
@@ -102,7 +103,7 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
 
     @Override
     public void setVideoRotation(int degree) {
-        Log.e("", "SurfaceView doesn't support rotation (" + degree + ")!\n");
+        Log.e("surfaceView", "SurfaceView doesn't support rotation (" + degree + ")!\n");
     }
 
     @Override

@@ -216,7 +216,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                 break;
             }
             default:
-                Log.e(TAG, String.format(Locale.getDefault(), "invalid render %d\n", render));
+                Log.e("ijkplayer_render", String.format(Locale.getDefault(), "invalid render %d\n", render));
                 break;
         }
     }
@@ -863,7 +863,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             IRenderView.AR_16_9_FIT_PARENT,
             IRenderView.AR_4_3_FIT_PARENT};
     private int mCurrentAspectRatioIndex = 0;
-    private int mCurrentAspectRatio = s_allAspectRatio[0];
+    private int mCurrentAspectRatio = s_allAspectRatio[1];
 
     public int toggleAspectRatio() {
         mCurrentAspectRatioIndex++;
@@ -899,7 +899,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         if (mAllRenders.isEmpty())
             mAllRenders.add(RENDER_SURFACE_VIEW);
         mCurrentRender = mAllRenders.get(mCurrentRenderIndex);
-        setRender(mCurrentRender);
+//        setRender(mCurrentRender);
     }
 
     public int toggleRender() {
