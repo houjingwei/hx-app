@@ -28,7 +28,6 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.ui.UpdateApp;
-import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -37,7 +36,6 @@ import org.xutils.x;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
@@ -82,7 +80,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         initWindow();
         App.getContext().addActivity(this);
         initView();
-        CheckVersion();
+        //CheckVersion();
     }
 
     private void initWindow() {
@@ -196,7 +194,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() - lastTipTimeMills > 1000) {
-            CommonHelper.showTip(this,"再按一次退出程序");
+            Toast.makeText(this,"再按一次退出程序", Toast.LENGTH_SHORT).show();
             lastTipTimeMills = System.currentTimeMillis();
         } else {
             finish();
@@ -332,22 +330,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
         RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
             @Override
-            public void onSuccessList(List<UpgradeLevel> data) {
+            public void onSuccess(UpgradeLevel data) {
 
-                if (data != null && data.size() > 0) {
-
-                    UpgradeLevel upgradeLevel = data.get(0);
-
+                    UpgradeLevel upgradeLevel = data;
                     UpdateApp updateApp = new UpdateApp(getBaseContext());
-                    if (updateApp
-                            .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
+                    if (updateApp.judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
                         // Toast.makeText(getApplicationContext(),
                         // "当前为最新版本", Toast.LENGTH_SHORT).show();
                         // toIntent();
                     }
-                } else {
-                    Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
-                }
+
             }
 
             @Override

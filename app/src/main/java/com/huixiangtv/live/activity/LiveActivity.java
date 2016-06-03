@@ -31,6 +31,7 @@ import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
+import com.huixiangtv.live.utils.StringUtil;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -57,7 +58,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
 
 
-    private String isPlay = "";
+    private String isPlay = "false";
     private String playUrl = "";
     private String lid = "";
     private IjkVideoView mVideoView;
@@ -77,7 +78,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             setTranslucentStatus(true);
         }
         isPlay = getIntent().getStringExtra("isPlay");
-        if (isPlay.equals("true")) {
+        if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
             playUrl = getIntent().getStringExtra("playUrl");
             lid = getIntent().getStringExtra("lid");
             initPlayView();

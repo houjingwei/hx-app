@@ -29,6 +29,7 @@ import com.huixiangtv.live.adapter.GiftAdapter;
 import com.huixiangtv.live.message.GiftMessage;
 import com.huixiangtv.live.message.MessageBase;
 import com.huixiangtv.live.model.Gift;
+import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.Post;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.ApiCallback;
@@ -67,6 +68,7 @@ public class GiftView extends RelativeLayout {
     private ArrayAdapter<View> adapter;
 
     private List<Gift> giftList = new ArrayList<Gift>();
+    private Live liveInfo;
 
 
     public GiftView(Context context) {
@@ -176,6 +178,11 @@ public class GiftView extends RelativeLayout {
             Toast.makeText(activity, "礼物不存在!", Toast.LENGTH_SHORT).show();
             return;
         }
+        if(needClientAnim){
+            //启动客户端礼物特效动画
+            AnimHelper animHelper = new AnimHelper(activity, videoHandler);
+            animHelper.showSendGift(rootView, baseLocationView, barrageArea, gift);
+        }
         giftType=null==giftType?"1":giftType;
         User loginUser = App.getLoginUser();
         Map<String,String> params= new HashMap<String,String>();
@@ -184,8 +191,8 @@ public class GiftView extends RelativeLayout {
         params.put("gift",giftType);//礼物类型：1：普通礼物 2：喊话 3: 守护礼物
         params.put("amount",gift.getPrice()+"");//总金币
         params.put("buid",loginUser.getUid());//购买人
-        params.put("chatroom","728005");//聊天室编号
-        params.put("cuid","728005");//使用人
+        params.put("chatroom",liveInfo.getChatroom());//聊天室编号
+        params.put("cuid",liveInfo.getUid());//使用人
         params.put("nickName",loginUser.getNickName());//用户名
         params.put("photo",loginUser.getPhoto());//用户头像
 
@@ -194,11 +201,6 @@ public class GiftView extends RelativeLayout {
             @Override
             public void onSuccess(Post data) {
                 super.onSuccess(data);
-                if(needClientAnim){
-                    //启动客户端礼物特效动画
-                    AnimHelper animHelper = new AnimHelper(activity, videoHandler);
-                    animHelper.showSendGift(rootView, baseLocationView, barrageArea, gift);
-                }
 
                 //更新金币数量
                 App.userCoin = Integer.parseInt(App.userCoin)-Integer.parseInt(gift.getPrice())+"";
@@ -260,6 +262,10 @@ public class GiftView extends RelativeLayout {
      */
     public void setRootView(FrameLayout rootView) {
         this.rootView = rootView;
+    }
+
+    public void setLiveInfo(Live liveInfo) {
+        this.liveInfo = liveInfo;
     }
 
 

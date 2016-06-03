@@ -33,11 +33,15 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.LiveMsgAdapter;
 import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
+import com.huixiangtv.live.adapter.RecyclerviewListener;
+import com.huixiangtv.live.model.BasePayent;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.LiveMsg;
+import com.huixiangtv.live.model.ShoutGift;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.ShareWindow;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.ChatTokenCallBack;
 import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.service.RequestUtils;
@@ -110,6 +114,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     TextView tvOnline;
 
     private Live live;
+
+    private ShoutGift shoutGift;
 
 
 
@@ -217,14 +223,38 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         //初始化礼物面板
         initGift();
 
+        //初始化喊话礼物
+        initShoutGift(new ApiCallback<ShoutGift>(){
+            @Override
+            public void onSuccess(ShoutGift data) {
+                shoutGift = data;
+            }
+        });
 
 
 
 
 
+    }
 
+    private void initShoutGift(final ApiCallback call) {
 
-//        new Thread(new MyThread()).start();
+        //发送喊话消息
+        RequestUtils.sendPostRequest(Api.SHOUT_GIFT, null, new ResponseCallBack<ShoutGift>() {
+            @Override
+            public void onSuccess(ShoutGift data) {
+                super.onSuccess(data);
+                if(null!=data){
+                    call.onSuccess(data);
+                }
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                CommonHelper.showTip(activity,e.getMessage());
+            }
+        },ShoutGift.class);
     }
 
 
@@ -235,6 +265,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         giftView = new GiftView(activity);
         giftView.setActivity(activity);
         giftView.initView();
+        giftView.setLiveInfo(live);
         giftView.setRootView(flLive);
         rlGift.addView(giftView);
     }
@@ -306,6 +337,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     msgListView.setSelection(msgAdapter.getCount()-1);
                 }
             }
+
+            //动态添加在线用户
+            User user = new User();
+            user.setNickName("nickName");
+            user.setPhoto(getRandomPhoto());
+            mAdapter.addData(user);
+
         }
     };
 
@@ -352,14 +390,17 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
     public void initLoadOnlineUsers() {
+        mAdapter = new LiveOnlineUsersAdapter(null);
+        mAdapter.setOnItemClickListener(new RecyclerviewListener() {
+            @Override
+            public void onItemClick(View view, Object data) {
+                CommonHelper.showTip(activity,((User)data).getNickName());
+            }
+        });
         mRecyclerView = (RecyclerView) findViewById(R.id.mRecylerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
         loadOnlineUser();
-
-
-
-
     }
 
     private void loadOnlineUser() {
@@ -369,8 +410,20 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void onSuccessList(List<User> data) {
                 super.onSuccessList(data);
-                mAdapter = new LiveOnlineUsersAdapter(data);
 
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onSuccess(User data) {
+                super.onSuccess(data);
+                List<User> datas = new ArrayList<User>();
+                for (int i=0 ;i<10;i++){
+                    User user = new User();
+                    user.setNickName("nickName"+i);
+                    user.setPhoto(getRandomPhoto());
+                    datas.add(user);
+                }
                 mRecyclerView.setAdapter(mAdapter);
             }
 
@@ -379,6 +432,16 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 super.onFailure(e);
             }
         }, User.class);
+    }
+
+    String photo[] = new String[]{"http://img1.imgtn.bdimg.com/it/u=3683190374,2674665831&fm=21&gp=0.jpg","http://img2.imgtn.bdimg.com/it/u=2938155073,830968813&fm=21&gp=0.jpg",
+    "http://img4.imgtn.bdimg.com/it/u=2097191768,2801398668&fm=21&gp=0.jpg","http://img2.imgtn.bdimg.com/it/u=572635409,4220751937&fm=21&gp=0.jpg","http://img3.imgtn.bdimg.com/it/u=287944935,39403956&fm=21&gp=0.jpg",
+    "http://img4.imgtn.bdimg.com/it/u=4249388871,1013052467&fm=21&gp=0.jpg","http://img1.touxiang.cn/uploads/20131018/18-024102_352.jpg",
+    "http://img1.touxiang.cn/uploads/20130506/06-053336_329.jpg","http://diy.qqjay.com/u2/2012/0708/bab8f2e433b67858b348cda1f61f377c.jpg",
+    "http://img1.touxiang.cn/uploads/20130506/06-053350_389.jpg","http://img2.imgtn.bdimg.com/it/u=3299579904,3388645812&fm=21&gp=0.jpg"};
+    private String getRandomPhoto() {
+        int index=(int)(Math.random()*10);
+        return photo[index];
     }
 
     @Override
@@ -476,28 +539,82 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
      * 发送消息
      */
     private void sendMessage() {
+
+
         if(TextUtils.isEmpty(etChatMsg.getText().toString())){
             CommonHelper.showTip(activity, "不可以发送空消息哦~");
             etChatMsg.requestFocus();
             return;
         }
+        if ("shouting_yes".equals(switchTrigger.getTag().toString())) {
+
+            if(null==shoutGift){
+                initShoutGift(new ApiCallback<ShoutGift>(){
+
+                    @Override
+                    public void onSuccess(ShoutGift data) {
+                        sendShoutGift(data);
+                    }
+
+                    @Override
+                    public void onFailure(ServiceException e) {
+                        super.onFailure(e);
+                    }
+                });
+            }else{
+                sendShoutGift(shoutGift);
+            }
+
+
+
+        }else{
+            //发送普通消息
+            Map<String,String> params = new HashMap<String,String>();
+            params.put("chatroom",live.getChatroom());
+            params.put("content",etChatMsg.getText().toString());
+            params.put("nickName",live.getNickName());
+            params.put("photo",live.getPhoto());
+            RequestUtils.sendPostRequest(Api.SEND_MSG, params, new ResponseCallBack<String>() {
+                @Override
+                public void onSuccess(String str) {
+                    super.onSuccess(str);
+                    hideKeyBoard();
+                    LiveMsg msg = new LiveMsg();
+                    msg.setContent(etChatMsg.getText().toString());
+                    msg.setPhoto(live.getPhoto());
+                    msg.setNickName(live.getNickName());
+                    msgAdapter.add(msg);
+                    msgListView.setSelection(msgAdapter.getCount()-1);
+                    etChatMsg.setText("");
+                }
+
+                @Override
+                public void onFailure(ServiceException e) {
+                    super.onFailure(e);
+                    CommonHelper.showTip(activity,e.getMessage());
+                }
+            },String.class);
+        }
+    }
+
+    private void sendShoutGift(ShoutGift gift) {
+        //发送喊话消息
         Map<String,String> params = new HashMap<String,String>();
         params.put("chatroom",live.getChatroom());
+        params.put("amount",gift.getCoin());
         params.put("content",etChatMsg.getText().toString());
-        params.put("nickName",live.getNickName());
-        params.put("photo",live.getPhoto());
-        RequestUtils.sendPostRequest(Api.SEND_MSG, params, new ResponseCallBack<String>() {
+        params.put("buid", App.getLoginUser().getUid());
+        params.put("nickName",App.getLoginUser().getNickName());
+        params.put("photo",App.getLoginUser().getPhoto());
+        params.put("cuid",live.getUid());
+        RequestUtils.sendPostRequest(Api.GIFT_PAYMENT, params, new ResponseCallBack<BasePayent>() {
             @Override
-            public void onSuccessString(String str) {
-                super.onSuccessString(str);
-                hideKeyBoard();
-                LiveMsg msg = new LiveMsg();
-                msg.setContent(etChatMsg.getText().toString());
-                msg.setPhoto(live.getPhoto());
-                msg.setNickName(live.getNickName());
-                msgAdapter.add(msg);
-                msgListView.setSelection(msgAdapter.getCount()-1);
-                etChatMsg.setText("");
+            public void onSuccess(BasePayent data) {
+                super.onSuccess(data);
+                if(null!=data){
+                    etChatMsg.setText("");
+                    CommonHelper.showTip(activity,"喊话消息发送成功");
+                }
             }
 
             @Override
@@ -505,7 +622,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 super.onFailure(e);
                 CommonHelper.showTip(activity,e.getMessage());
             }
-        },String.class);
+        },BasePayent.class);
     }
 
     /**
@@ -587,7 +704,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     }
 
     /**
-     * 汉化切换
+     * 喊话切换
      */
     private void changeHanhua() {
         GradientDrawable gd = (GradientDrawable) switchWrapper.getBackground();
@@ -611,7 +728,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             switchTrans.setDuration(400);
             switchTrans.setFillAfter(true);
             switchTrigger.startAnimation(switchTrans);
-            etChatMsg.setHint("和大家一起聊~");
+            etChatMsg.setHint("和大家聊聊吧~");
 
         } else {
             //非喊话状态
@@ -627,7 +744,16 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             switchTrans.setDuration(400);
             switchTrans.setFillAfter(true);
             switchTrigger.startAnimation(switchTrans);
-            etChatMsg.setHint("喊话需20个金币/次");
+            if(null!=shoutGift){
+                etChatMsg.setHint(shoutGift.getTips());
+            }else{
+                initShoutGift(new ApiCallback<ShoutGift>() {
+                    @Override
+                    public void onSuccess(ShoutGift data) {
+                        etChatMsg.setHint(shoutGift.getTips());
+                    }
+                });
+            }
         }
     }
 

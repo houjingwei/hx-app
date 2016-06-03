@@ -1,13 +1,6 @@
 package com.huixiangtv.live.ui;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -21,6 +14,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.huixiangtv.live.R;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -94,7 +95,7 @@ public class UpdateApp {
 
 
     protected void showDownloadDialog() {
-        new VProgressDialog(mContext, apkUrl, uplog).show();
+        new VProgressDialog(mContext, "http://static.yueapp.net/res/resources/apk/yueapp.apk", uplog).show();
     }
 
     private Runnable mdownApkRunnable = new Runnable() {

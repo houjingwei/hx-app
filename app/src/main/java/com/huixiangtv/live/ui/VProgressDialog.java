@@ -1,6 +1,20 @@
 package com.huixiangtv.live.ui;
 
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.huixiangtv.live.R;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,19 +22,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Handler;
-import android.os.Message;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.huixiangtv.live.R;
 
 /**
  * Created by Stone on 16/5/23.
@@ -45,28 +46,32 @@ public class VProgressDialog extends Dialog {
     private static final String saveFileName = savePath + "HuiXiang.apk";
     public VProgressDialog(Context context,String apkUrl,String uplog) {
         super(context, R.style.Dialog);
-        setContentView(R.layout.process_version_new);
-        this.mContext=context;
-        this.apkUrl=apkUrl;
-        this.uplog=uplog;
-        this.setCanceledOnTouchOutside(false);
-        tv_progress=(TextView) findViewById(R.id.tv_progress);
-        tv_durrent=(TextView) findViewById(R.id.tv_durrent);
-        tvLevelEv = (TextView) findViewById(R.id.tvLevelEv);
-        rlLevelInfo = (RelativeLayout) findViewById(R.id.rlLevelInfo);
-        tvLevelEv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvLevelEv.setVisibility(View.GONE);
-                rlLevelInfo.setVisibility(View.VISIBLE);
-            }
-        });
+        try{
+            setContentView(R.layout.process_version_new);
+            this.mContext=context;
+            this.apkUrl=apkUrl;
+            this.uplog=uplog;
+            this.setCanceledOnTouchOutside(false);
+            tv_progress=(TextView) findViewById(R.id.tv_progress);
+            tv_durrent=(TextView) findViewById(R.id.tv_durrent);
+            tvLevelEv = (TextView) findViewById(R.id.tvLevelEv);
+            rlLevelInfo = (RelativeLayout) findViewById(R.id.rlLevelInfo);
+            tvLevelEv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tvLevelEv.setVisibility(View.GONE);
+                    rlLevelInfo.setVisibility(View.VISIBLE);
+                }
+            });
 //        tv_log=(TextView) findViewById(R.id.tv_log);
 //        tv_log.setText(uplog);
-        pb=(ProgressBar) findViewById(R.id.pb);
-        pb.setMax(100);
-        downLoadThread = new Thread(mdownApkRunnable);
-        downLoadThread.start();
+            pb=(ProgressBar) findViewById(R.id.pb);
+            pb.setMax(100);
+            downLoadThread = new Thread(mdownApkRunnable);
+            downLoadThread.start();
+        }catch (Exception e){
+            Log.e("showUpinfo",e.toString());
+        }
     }
 
     private Runnable mdownApkRunnable = new Runnable() {
