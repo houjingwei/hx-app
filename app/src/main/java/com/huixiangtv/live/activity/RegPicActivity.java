@@ -54,13 +54,13 @@ public class RegPicActivity extends BaseBackActivity {
             int currentIndex = getIntent().getIntExtra("currentIndex",0);
             File file;
             mImageViews = new ImageView[5];
+            Bitmap bm;
+            ImageView imageView;
             for (int i = 0; i < mDatas.size(); i++) {
-                file = new File(mDatas.get(i));
-                Bitmap bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(file), App.screenWidth, App.screenHeight);
-                ImageView imageView = new ImageView(this);
+                bm = BitmapHelper.copressImage(mDatas.get(i));
+                imageView = new ImageView(this);
                 mImageViews[i] = imageView;
                 imageView.setImageBitmap(bm);
-
             }
 
             photoAdapter = new PhotoAdapter(this, mImageViews);

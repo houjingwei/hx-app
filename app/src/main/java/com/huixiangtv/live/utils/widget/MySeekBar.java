@@ -83,6 +83,10 @@ public class MySeekBar extends LinearLayout{
         }
     };
 
+    public void SetProcess(int processVal)
+    {
+        seekBar.setProgress(processVal);
+    }
 
     public String getProcess()
     {

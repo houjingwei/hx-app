@@ -125,7 +125,7 @@ public class FragmentTabThree extends RootFragment{
 				ForwardUtils.target(getActivity(), Constant.SETINT,null);
 				break;
 			case R.id.llTitle:
-				ForwardUtils.target(getActivity(), Constant.REG_LIVE_MAIN,null);
+				ForwardUtils.target(getActivity(), Constant.PIC_LIST,null);
 				break;
 			case R.id.llMyfans:
 				ForwardUtils.target(getActivity(), Constant.MY_FANS,null);

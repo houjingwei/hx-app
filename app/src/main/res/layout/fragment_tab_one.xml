@@ -74,13 +74,13 @@
                         android:background="#d2d8ef"
                         android:paddingBottom="10dp" />
 
-                    <com.huixiangtv.live.utils.widget.LoadingView
-                        android:id="@+id/loadView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:visibility="gone"
-                        app:loadingText="加载中..." />
+                    <!--<com.huixiangtv.live.utils.widget.LoadingView-->
+                        <!--android:id="@+id/loadView"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:visibility="gone"-->
+                        <!--app:loadingText="加载中..." />-->
 
                     <com.huixiangtv.live.utils.widget.LinearLayoutForListView
                         android:id="@+id/listview"
@@ -148,9 +148,9 @@
                         android:layout_height="wrap_content">
 
                         <LinearLayout
+                            android:layout_marginTop="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:orientation="horizontal">
 
                             <TextView

@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initWindow();
         App.getContext().addActivity(this);
         initView();
-        CheckVersion();
+        //CheckVersion();
     }
 
     private void initWindow() {
@@ -231,12 +231,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.tab2:
                 startLive();
+                isSwitch = true;
                 break;
             case R.id.iv2:
                 startLive();
+                isSwitch = true;
                 break;
             case R.id.tab3:
                 setTabSelection(1);
+                isSwitch = true;
                 break;
             default:
                 break;
