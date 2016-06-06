@@ -1,5 +1,7 @@
 package com.huixiangtv.live;
 
+import java.util.UUID;
+
 /**
  * Created by hjw on 16/5/5.
  */
@@ -33,6 +35,7 @@ public class Constant {
     public static final String FANED_ME = BASE_PRE+"faned_me";
 
 
+
     public static String MY_LOVES = BASE_PRE+"my_loves";
 
 
@@ -64,4 +67,12 @@ public class Constant {
 
     public static final String PIC_LIST = BASE_PRE +"pic_list";
 
+
+
+    public static String appKey="2088b26127ebe67";
+    public static String appSecret="b898e3010acf4299a7a5d3ec6e99bb2c";
+    public static String spaceName="huixiangtv";
+    public static String accessToken="";
+    public static final String SPACE = "";
+    public static final String LIVE_URL = UUID.randomUUID().toString().replace("-","");
 }

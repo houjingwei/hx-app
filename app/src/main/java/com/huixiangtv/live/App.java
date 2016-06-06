@@ -110,6 +110,11 @@ public class App extends Application {
             }
         });
 
+
+        for (String str : new String[]{"gnustl_shared", "qupai-media-thirdparty", "qupai-media-jni"}) {
+            System.loadLibrary(str);
+        }
+
     }
 
 

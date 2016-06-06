@@ -204,4 +204,22 @@
     <string name="VideoView_player_IjkExoMediaPlayer">Player: IjkExoMediaPlayer</string>
 
 
+
+    <string name="output_video_size">输出视频大小</string>
+    <string name="frame_rate">帧率:</string>
+    <string name="defalut_frame_rate">默认帧率:</string>
+    <string name="tv_rate">码率:</string>
+    <string name="defalut_rate">默认码率为2兆,码率越小质量越差，合成更快</string>
+    <string name="app_camera">切换摄像头</string>
+    <string name="live_auth">鉴权</string>
+    <string name="live_create">创建直播并且开始推流</string>
+    <string name="live_stop">结束推流</string>
+    <string name="live_play">得到播放URL</string>
+    <string name="toggle_switch_beauty_on">美颜开启</string>
+    <string name="toggle_switch_beauty_off">美颜关闭</string>
+    <string name="input_live_url">输入直播观看地址</string>
+    <string name="play_live">观看直播</string>
+    <string name="stop_live">停止观看</string>
+    <string name="goto_watch_live">测试观看直播</string>
+
 </resources>

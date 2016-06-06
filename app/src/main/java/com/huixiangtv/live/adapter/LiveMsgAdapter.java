@@ -63,9 +63,8 @@ public class LiveMsgAdapter extends BaseAdapter {
             rowView = LayoutInflater.from(context).inflate(R.layout.live_msg_item, parent, false);
         }
         TextView msg = (TextView) rowView.findViewById(R.id.tvMsg);
-        Log.i("rinima","<<"+message.getNickName()+">>");
+        Log.i("msgInfo","<<"+message.getNickName()+": "+message.getContent()+">>");
 //        SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
-//
 //        ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         msg.setText(message.getContent());
         return rowView;
