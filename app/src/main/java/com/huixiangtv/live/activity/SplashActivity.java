@@ -19,6 +19,7 @@ public class SplashActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+
         rlSplash = (ImageView) findViewById(R.id.rlSplash);
 
         OneApmAgent.init(this.getApplicationContext()).setToken("B3747B7350941C879DB5765C388AA59D73").start();
@@ -32,7 +33,6 @@ public class SplashActivity extends Activity{
             }
         }, 2000);
     }
-
 
 
 }

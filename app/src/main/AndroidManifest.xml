@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.huixiangtv.live">
 
-    <permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 录音 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -51,8 +52,7 @@
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true"
-        />
+        android:required="true" />
 
     <application
         android:name=".App"
@@ -187,7 +187,7 @@
             android:name=".activity.RegLiveMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"  />
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".activity.RegLiveSuccessActivity"
             android:screenOrientation="portrait"
@@ -224,16 +224,22 @@
             android:name=".activity.MylovesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-        
-        <activity android:name="com.huixiangtv.live.ijk.activities.VideoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/backStyle"/>
 
-        <activity android:name=".activity.RegPicListActivity"
+        <activity
+            android:name="com.huixiangtv.live.ijk.activities.VideoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle" />
+
+        <activity
+            android:name=".activity.RegPicListActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
             android:screenOrientation="landscape">
 
         </activity>
+        <activity
+            android:name=".activity.RegPicActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:screenOrientation="landscape"></activity>
         <!-- 微信支付-->
         <!-- 微信支付 -->
         <activity
@@ -245,18 +251,16 @@
 
 
         <activity
-            android:theme="@style/myTheme"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:screenOrientation="landscape"
             android:name="me.iwf.photopicker.PhotoPickerActivity"
-            />
+            android:screenOrientation="landscape"
+            android:theme="@style/myTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
-            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:name="me.iwf.photopicker.PhotoPagerActivity"
-            />
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
 
         <meta-data

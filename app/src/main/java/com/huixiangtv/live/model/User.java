@@ -1,6 +1,8 @@
 package com.huixiangtv.live.model;
 
 
+import android.graphics.drawable.Drawable;
+
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -111,6 +113,53 @@ public class User implements Serializable {
     private String img3;
     private String img4;
     private String img5;
+
+    private Drawable drawableImg1;
+    private Drawable drawableImg2;
+
+    public Drawable getDrawableImg3() {
+        return drawableImg3;
+    }
+
+    public void setDrawableImg3(Drawable drawableImg3) {
+        this.drawableImg3 = drawableImg3;
+    }
+
+    public Drawable getDrawableImg1() {
+        return drawableImg1;
+    }
+
+    public void setDrawableImg1(Drawable drawableImg1) {
+        this.drawableImg1 = drawableImg1;
+    }
+
+    public Drawable getDrawableImg2() {
+        return drawableImg2;
+    }
+
+    public void setDrawableImg2(Drawable drawableImg2) {
+        this.drawableImg2 = drawableImg2;
+    }
+
+    public Drawable getDrawableImg4() {
+        return drawableImg4;
+    }
+
+    public void setDrawableImg4(Drawable drawableImg4) {
+        this.drawableImg4 = drawableImg4;
+    }
+
+    public Drawable getDrawableImg5() {
+        return drawableImg5;
+    }
+
+    public void setDrawableImg5(Drawable drawableImg5) {
+        this.drawableImg5 = drawableImg5;
+    }
+
+    private Drawable drawableImg3;
+    private Drawable drawableImg4;
+    private Drawable drawableImg5;
 
 
 

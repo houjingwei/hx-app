@@ -86,7 +86,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
 
     private void setUserInfo(String tags) {
         User user = App.getLoginUser();
-        ImageUtils.displayAvator(ivPhoto,user.getPhoto());
+        ImageUtils.displayAvator(ivPhoto, user.getPhoto());
         etNickName.setText(user.getNickName());
         tvSex.setText(user.getSex().equals("1")?"男":"女");
         String userTags = null;
@@ -192,15 +192,15 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         params.put("photo","");
         params.put("nickName",etNickName.getText().toString());
         params.put("sex",tvSex.getText().toString().equals("女")?0+"":1+"");
-        params.put("signature","");
-        params.put("tags",tagStr);
+        params.put("signature", "");
+        params.put("tags", tagStr);
         RequestUtils.sendPostRequest(Api.SAVE_USER, params, new ResponseCallBack<User>() {
             @Override
             public void onSuccess(User data) {
                 super.onSuccess(data);
                 App.saveLoginUser(data);
-                CommonHelper.showTip(UserinfoActivity.this,"用户信息保存成功");
-                new Handler().postDelayed(new Runnable(){
+                CommonHelper.showTip(UserinfoActivity.this, "用户信息保存成功");
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
                         onBackPressed();
                     }
@@ -211,9 +211,9 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
-                CommonHelper.showTip(UserinfoActivity.this,e.getMessage());
+                CommonHelper.showTip(UserinfoActivity.this, e.getMessage());
             }
-        },User.class);
+        }, User.class);
 
 
     }
@@ -256,66 +256,26 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             if (!finished) {
                 return;
             }
-            upFileInfo(new ApiCallback<Upfeile>() {
+            Map<String,String> params = new HashMap<String,String>();
+            params.put("type","1");
+            ImageUtils.upFileInfo(params,new ApiCallback<Upfeile>() {
                 @Override
                 public void onSuccess(Upfeile data) {
-                    upFile(data,picUri);
+                    ImageUtils.upFile(UserinfoActivity.this,data, picUri, new ApiCallback<Upfeile>() {
+                        @Override
+                        public void onSuccess(Upfeile data) {
+
+                        }
+                    });
                 }
             });
         }
     };
 
-    private void upFileInfo( final ApiCallback<Upfeile> apiCallback) {
-        Map<String,String> params = new HashMap<String,String>();
-        params.put("type","1");
-        RequestUtils.sendPostRequest(Api.UPLOAD_FILE_INFO, params, new ResponseCallBack<Upfeile>() {
-            @Override
-            public void onSuccess(Upfeile data) {
-                super.onSuccess(data);
-                if(null!=data){
-                    apiCallback.onSuccess(data);
-                }
-            }
-
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-            }
-        },Upfeile.class);
-//        ImageUtils.display(ivPhoto,picUri);
-    }
 
 
-    private void upFile(Upfeile data, String picUri) {
-        UploadManager fileUploadMgr = new UploadManager(this, data.getAppId(), Const.FileType.File, data.getPersistenceId());
-
-        FileUploadTask task = new FileUploadTask(data.getBucket(), picUri, data.getFileName(), "image", new IUploadTaskListener() {
-            @Override
-            public void onUploadSucceed(FileInfo fileInfo) {
-                Log.i("successful", "upload succeed: " + fileInfo.url);
-            }
-
-            @Override
-            public void onUploadFailed(int i, String s) {
-
-            }
-
-            @Override
-            public void onUploadProgress(long l, long l1) {
-
-            }
-
-            @Override
-            public void onUploadStateChange(ITask.TaskState taskState) {
-
-            }
-        });
-        task.setAuth(data.getSig());
-
-        fileUploadMgr.upload(task);
 
 
-    }
 
 
 

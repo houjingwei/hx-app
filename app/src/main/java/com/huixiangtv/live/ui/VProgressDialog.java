@@ -44,41 +44,44 @@ public class VProgressDialog extends Dialog {
     private static final int DOWN_OVER = 2;
     private static final String savePath ="/sdcard/huixiangdata/";
     private static final String saveFileName = savePath + "HuiXiang.apk";
-    public VProgressDialog(Context context,String apkUrl,String uplog) {
+    public VProgressDialog(Context context,String apkUrl,String uplog,String status) {
         super(context, R.style.Dialog);
-        try{
-            setContentView(R.layout.process_version_new);
-            this.mContext=context;
-            this.apkUrl=apkUrl;
-            this.uplog=uplog;
-            this.setCanceledOnTouchOutside(false);
-            tv_progress=(TextView) findViewById(R.id.tv_progress);
-            tv_durrent=(TextView) findViewById(R.id.tv_durrent);
-            tvLevelEv = (TextView) findViewById(R.id.tvLevelEv);
-            rlLevelInfo = (RelativeLayout) findViewById(R.id.rlLevelInfo);
-            tvLevelEv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    tvLevelEv.setVisibility(View.GONE);
-                    rlLevelInfo.setVisibility(View.VISIBLE);
-                }
-            });
-//        tv_log=(TextView) findViewById(R.id.tv_log);
-//        tv_log.setText(uplog);
-            pb=(ProgressBar) findViewById(R.id.pb);
-            pb.setMax(100);
-            downLoadThread = new Thread(mdownApkRunnable);
-            downLoadThread.start();
-        }catch (Exception e){
-            Log.e("showUpinfo",e.toString());
+        setContentView(R.layout.process_version_new);
+        this.mContext=context;
+        this.apkUrl=apkUrl;
+        this.uplog=uplog;
+        this.setCanceledOnTouchOutside(false);
+        tv_progress=(TextView) findViewById(R.id.tv_progress);
+        tv_durrent=(TextView) findViewById(R.id.tv_durrent);
+        tvLevelEv = (TextView) findViewById(R.id.tvLevelEv);
+        rlLevelInfo = (RelativeLayout) findViewById(R.id.rlLevelInfo);
+        tvLevelEv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvLevelEv.setVisibility(View.GONE);
+                rlLevelInfo.setVisibility(View.VISIBLE);
+            }
+        });
+
+        if(status.equals("1"))
+        {
+            tvLevelEv.setText("升级中");
+            tvLevelEv.setVisibility(View.GONE);
         }
+        tv_log=(TextView) findViewById(R.id.txtLog);
+        tv_log.setText(uplog);
+        pb=(ProgressBar) findViewById(R.id.pb);
+        pb.setMax(100);
+        downLoadThread = new Thread(mdownApkRunnable);
+        downLoadThread.start();
+
     }
 
     private Runnable mdownApkRunnable = new Runnable() {
         @Override
         public void run() {
             try {
-                URL url = new URL(apkUrl);
+                URL url = new URL("http://static.yueapp.net/res/resources/apk/yueapp.apk");
                 HttpURLConnection conn = (HttpURLConnection) url
                         .openConnection();
                 conn.connect();

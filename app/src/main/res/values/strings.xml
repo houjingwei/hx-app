@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">huixiang</string>
+    <string name="app_name">回响直播</string>
     <string name="tabone_title">首页</string>
     <string name="tabthree_title">我的</string>
     <string name="tabtwo_title">直播</string>
@@ -130,7 +130,7 @@
     <string name="txt_card">身份证</string>
     <string name="request_auth">申请认证</string>
     <string name="share_title">分享给小伙伴</string>
-
+    <string name="my_pic">浏览</string>
 
 
 

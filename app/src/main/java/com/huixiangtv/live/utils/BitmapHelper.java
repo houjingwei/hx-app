@@ -17,6 +17,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by apple on 16/5/13.
@@ -92,67 +95,6 @@ public class BitmapHelper {
             }
         }
     }
-
-    public static Bitmap getBitmapFormRes(Context context, int resId){
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-
-        opt.inPreferredConfig = Bitmap.Config.RGB_565;
-        opt.inPurgeable = true;
-        opt.inSampleSize = 1;
-        opt.inInputShareable = true;
-
-        InputStream is = context.getResources().openRawResource(resId);
-        return BitmapFactory.decodeStream(is, null, opt);
-    }
-
-    public static Bitmap getThumbnail(Context context, Uri uri, int size) {
-        try {
-            InputStream input = context.getContentResolver().openInputStream(uri);
-
-            BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
-
-            onlyBoundsOptions.inJustDecodeBounds = true;
-            onlyBoundsOptions.inDither = true;
-            onlyBoundsOptions.inPreferredConfig = Bitmap.Config.RGB_565;
-            BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
-            try {
-                input.close();
-                if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1)) {
-                    return null;
-                }
-
-                int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
-                double ratio = (originalSize > size) ? (originalSize / size) : 1.0;
-                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-
-                bitmapOptions.inSampleSize = getPowerOfTwoForSampleRatio(ratio);
-                bitmapOptions.inDither = true;
-                bitmapOptions.inPreferredConfig = Bitmap.Config.RGB_565;
-
-                input = context.getContentResolver().openInputStream(uri);
-                Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
-                input.close();
-
-                return bitmap;
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    private static int getPowerOfTwoForSampleRatio(double ratio){
-        int k = Integer.highestOneBit((int)Math.floor(ratio));
-        if(k==0) return 1;
-        else return k;
-    }
-
     public static enum DefaultSize{
         BIG,SMALL
     }
@@ -165,69 +107,98 @@ public class BitmapHelper {
      */
     public static class ImageSize{
 
-        /**
-         * 广告位
-         */
-        public static final String BANNER="_720x360";
-
-        /**
-         * 用户头像
-         */
-        public static final String USER_HEAD="_86x86";
-
-        /**
-         * 图标（小）
-         */
-        public static final String COMMODITY_ICON_SMALL="_90x90";
-
-        /**
-         * 图标（中）
-         */
-        public static final String COMMODITY_ICON_MIDDLE="_154x156";
-
-        /**
-         * 图标（大）
-         */
-        public static final String COMMODITY_ICON_BIG="_359x210s";
-
-        /**
-         * 图标
-         */
-        public static final String COMMODITY_ICON_210="_210x210";
-
-        public static final String FULL = "_800x600";
-    }
-
-
-    public static Bitmap readBitMap(File file) {
-
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-
-        opt.inPreferredConfig = Bitmap.Config.RGB_565;
-
-        opt.inPurgeable = true;
-
-        opt.inInputShareable = true;
-
-
-        return BitmapFactory.decodeFile(file.getAbsolutePath(), opt);
 
     }
 
-    public static Bitmap zoomImg(Bitmap bm, int newWidth, int newHeight) {
-        // 获得图片的宽高
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        // 计算缩放比例
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // float scaleHeight = (((float)height/newHeight)*height)/newHeight;
-        // 取得想要缩放的matrix参数
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        // 得到新的图片 www.2cto.com
-        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
-                true);
-        return newbm;
+    static Bitmap bmap;
+    public static Bitmap copressImage(String imgPath){
+        File picture = new File(imgPath);
+        BitmapFactory.Options bitmapFactoryOptions = new BitmapFactory.Options();
+        //下面这个设置是将图片边界不可调节变为可调节
+        bitmapFactoryOptions.inJustDecodeBounds = true;
+        bitmapFactoryOptions.inSampleSize = 2;
+        int outWidth  = bitmapFactoryOptions.outWidth;
+        int outHeight = bitmapFactoryOptions.outHeight;
+        bmap = BitmapFactory.decodeFile(picture.getAbsolutePath(),
+                bitmapFactoryOptions);
+        float imagew = 150;
+        float imageh = 150;
+        int yRatio = (int) Math.ceil(bitmapFactoryOptions.outHeight
+                / imageh);
+        int xRatio = (int) Math
+                .ceil(bitmapFactoryOptions.outWidth / imagew);
+        if (yRatio > 1 || xRatio > 1) {
+            if (yRatio > xRatio) {
+                bitmapFactoryOptions.inSampleSize = yRatio;
+            } else {
+                bitmapFactoryOptions.inSampleSize = xRatio;
+            }
+
+        }
+        bitmapFactoryOptions.inJustDecodeBounds = false;
+        bmap = BitmapFactory.decodeFile(picture.getAbsolutePath(),
+                bitmapFactoryOptions);
+        if(bmap != null){
+            //ivwCouponImage.setImageBitmap(bmap);
+            return bmap;
+        }
+        return null;
     }
+
+//
+//    public static Bitmap readBitMap(File file) {
+//
+//        BitmapFactory.Options opt = new BitmapFactory.Options();
+//
+//        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+//
+//        opt.inPurgeable = true;
+//
+//        opt.inInputShareable = true;
+//
+//
+//        return BitmapFactory.decodeFile(file.getAbsolutePath(), opt);
+//
+//    }
+//
+//    public static Bitmap zoomImg(Bitmap bm, int newWidth, int newHeight) {
+//        // 获得图片的宽高
+//        int width = bm.getWidth();
+//        int height = bm.getHeight();
+//        // 计算缩放比例
+//        float scaleWidth = ((float) newWidth) / width;
+//        float scaleHeight = ((float) newHeight) / height;
+//        // float scaleHeight = (((float)height/newHeight)*height)/newHeight;
+//        // 取得想要缩放的matrix参数
+//        Matrix matrix = new Matrix();
+//        matrix.postScale(scaleWidth, scaleHeight);
+//        // 得到新的图片 www.2cto.com
+//        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
+//                true);
+//        return newbm;
+//    }
+
+    public final static Bitmap returnBitMap(String url) {
+        URL myFileUrl = null;
+        Bitmap bitmap = null;
+
+        try {
+            myFileUrl = new URL(url);
+            HttpURLConnection conn;
+
+            conn = (HttpURLConnection) myFileUrl.openConnection();
+
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }  catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
 }

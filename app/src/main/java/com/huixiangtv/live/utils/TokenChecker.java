@@ -1,9 +1,13 @@
 package com.huixiangtv.live.utils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
+
+import com.huixiangtv.live.App;
+import com.huixiangtv.live.Constant;
 
 /**
  * Created by Stone on 16/5/19.
@@ -16,22 +20,22 @@ public class TokenChecker {
      * @param context
      * @return
      */
-    public static boolean checkToken(Context context) {
-//        String token ="";
-//        if(TextUtils.isEmpty(token)) {
-//            popupLoginNotice(context);
-//            return false;
-//        }
+    public static boolean checkToken(Activity context) {
+        String token = App.getPreferencesValue("token");
+        if(TextUtils.isEmpty(token)) {
+            popupLoginNotice(context);
+            return false;
+        }
         return true;
     }
 
 
-    public static void popupLoginNotice(final Context context) {
+    public static void popupLoginNotice(final Activity context) {
         AlertDialog alertDialog = new AlertDialog.Builder(context).setTitle("").setMessage("该功能需要登陆后使用，是否马上登录")
                 .setPositiveButton("现在登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //gotoLoginPage
+                        ForwardUtils.target(context, Constant.LOGIN,null);
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override

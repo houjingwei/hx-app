@@ -1,17 +1,26 @@
 package com.huixiangtv.live.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler.Callback;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -19,6 +28,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,25 +40,43 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.PhotoAdapter;
 import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.DropImageModel;
+import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.model.Upfeile;
 import com.huixiangtv.live.model.User;
+import com.huixiangtv.live.service.ApiCallback;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.BitmapHelper;
+import com.huixiangtv.live.utils.TokenChecker;
+import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.DropImageView;
 import com.huixiangtv.live.utils.widget.MySeekBar;
 
 import android.widget.FrameLayout.LayoutParams;
 
-import org.w3c.dom.Text;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.iwf.photopicker.PhotoPickerActivity;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
@@ -56,7 +84,7 @@ import me.iwf.photopicker.utils.PhotoPickerIntent;
 /**
  * Created by Stone on 16/5/30.
  */
-public class RegPicListActivity extends BaseBackActivity {
+public class RegPicListActivity extends Activity {
 
     enum RequestCode {
         Button(R.id.txtUpload);
@@ -69,9 +97,11 @@ public class RegPicListActivity extends BaseBackActivity {
         }
     }
 
-
+    public static ImageView[] imageViews;
     public final static int REQUEST_CODE = 1;
-
+    public final static int REQUEST_CODE_ALL = 11;
+    public final static int REQUEST_CODE_CAT = 12;
+    private static User user;
     private Vibrator vibrator;// 长按震动效果
     private boolean isMove = false;// 是否移动
     private int tag = -1;// 要变换图标
@@ -82,12 +112,18 @@ public class RegPicListActivity extends BaseBackActivity {
     private Matrix matrix = new Matrix();
     private Matrix currentMaritx = new Matrix();
     private static int currentTag = 0;
-
+    private Bitmap bm;
+    private File path;
+    static boolean drop_index = false;
+    static String current_corp_img = "";
+    private FileOutputStream fos = null;
+    private File outputImage = null;
     private int mode = 0; // 用于标记模式
     private static final int DRAG = 1; // 拖动
     private static final int ZOOM = 2; // 放大
     private float startDis = 0;
     private PointF midPoint; // 中心点
+    private long lastClickTime;
 
     @ViewInject(R.id.tvH_1)
     TextView tvH_1;
@@ -99,9 +135,6 @@ public class RegPicListActivity extends BaseBackActivity {
     TextView tvH_4;
     @ViewInject(R.id.tvH_5)
     TextView tvH_5;
-
-
-    ArrayList<String> selectedPhotos = new ArrayList<>();
 
     @ViewInject(R.id.txtOpen)
     TextView txtOpen;
@@ -141,13 +174,15 @@ public class RegPicListActivity extends BaseBackActivity {
     private ArrayList<DropImageModel> mertoBeans = new ArrayList<DropImageModel>();
     private ArrayList<DropImageModel> startBeans;// 保存itme变换前的内容
     private static ArrayList<DropImageView> mertoItemViews;
+    private ArrayList<String> UrlLoc = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_list);
         x.view().inject(this);
-        drop_index = true;
+        ArtistCardInfoStatus();
+        startOnMertoItemViewListener();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         imageView1.setTag(0);
         imageView2.setTag(1);
@@ -155,6 +190,11 @@ public class RegPicListActivity extends BaseBackActivity {
         imageView4.setTag(3);
         imageView5.setTag(4);
 
+        UrlLoc.add("");
+        UrlLoc.add("");
+        UrlLoc.add("");
+        UrlLoc.add("");
+        UrlLoc.add("");
         mertoItemViews = new ArrayList<DropImageView>();
         mertoItemViews.add((DropImageView) imageView1);
         mertoItemViews.add((DropImageView) imageView2);
@@ -168,20 +208,9 @@ public class RegPicListActivity extends BaseBackActivity {
         ((DropImageView) imageView4).setOnDropImageViewListener(onMertoItemViewListener);
         ((DropImageView) imageView5).setOnDropImageViewListener(onMertoItemViewListener);
 
-        /**
-         * 缩放
-         */
-//        imageView1.setOnTouchListener(new TouchListener(imageView1));
-//        imageView2.setOnTouchListener(new TouchListener(imageView2));
-//        imageView3.setOnTouchListener(new TouchListener(imageView3));
-//        imageView4.setOnTouchListener(new TouchListener(imageView4));
-//        imageView5.setOnTouchListener(new TouchListener(imageView5));
-
-
         for (int i = 0; i < 5; i++)
             addData();
 
-        selectedPhotos.clear();
 
         txtUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,37 +224,44 @@ public class RegPicListActivity extends BaseBackActivity {
         ll_per_info.getBackground().setAlpha(100);
 
 
+        ll_per_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //reset setting
+
+                ll_per_info.setVisibility(View.GONE);
+                txtUpload.setVisibility(View.VISIBLE);
+                txtSave.setTag("1");
+                txtSave.setPadding(20, 20, 20, 20);
+                txtSave.setText("保存");
+                txtSave.setCompoundDrawables(null, null, null, null);
+                txtSave.setBackground(getResources().getDrawable(R.drawable.reg_pic_bg));
+                txtOpen.setVisibility(View.VISIBLE);
+                startOnMertoItemViewListener();
+
+            }
+        });
         txtSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //first validation
-                for (DropImageView dropImageView : mertoItemViews) {
-
-                    if (!isMoveAll()) {
-                        Toast.makeText(getBaseContext(), "设置艺人卡前，请先选择上传5张完整清晰个人照片", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                }
-
-                ll_per_info.setVisibility(View.VISIBLE);
-                txtUpload.setVisibility(View.GONE);
-                txtSF.setVisibility(View.GONE);
-                txtOpen.setVisibility(View.GONE);
-
                 if (v.getTag().toString().equals("1")) {
-                    Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
-                    nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
-                    txtSave.setCompoundDrawables(null, null, nav_up, null);
-                    txtSave.setText("");
-                    txtSave.setTag("0");
-                    resetOnMertoItemViewListener();
-                    txtSave.setBackground(null);
+                    for (DropImageView dropImageView : mertoItemViews) {
+
+                        if (!isMoveAll()) {
+                            Toast.makeText(getBaseContext(), "您需要选择上传“＋＋”张完整清晰个人照片", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
+                    ArtistCardInfoSave();
+
                 } else {
 
                     showShareAlert(RegPicListActivity.this);
                 }
             }
         });
+
 
         txtOpen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,6 +276,7 @@ public class RegPicListActivity extends BaseBackActivity {
                 ((DropImageView) imageView2).setIsZoom(false);
             }
         });
+        lastClickTime = 0;
 
     }
 
@@ -339,19 +376,24 @@ public class RegPicListActivity extends BaseBackActivity {
         DropImageModel dropImageModel = new DropImageModel();
         if (mertoBeans.size() == 0) {
             dropImageModel.setIconId(getDrawable(R.drawable.pic1));
-            dropImageModel.setName("test1");
+            //dropImageModel.setName("test1");
+            dropImageModel.setIsFinish(0);
         } else if (mertoBeans.size() == 1) {
             dropImageModel.setIconId(getDrawable(R.drawable.pic2));
-            dropImageModel.setName("test2");
+            //dropImageModel.setName("test2");
+            dropImageModel.setIsFinish(0);
         } else if (mertoBeans.size() == 2) {
             dropImageModel.setIconId(getDrawable(R.drawable.pic3));
-            dropImageModel.setName("test3");
+            //dropImageModel.setName("test3");
+            dropImageModel.setIsFinish(0);
         } else if (mertoBeans.size() == 3) {
             dropImageModel.setIconId(getDrawable(R.drawable.pic4));
-            dropImageModel.setName("test4");
+            //dropImageModel.setName("test4");
+            dropImageModel.setIsFinish(0);
         } else if (mertoBeans.size() == 4) {
             dropImageModel.setIconId(getDrawable(R.drawable.pic5));
-            dropImageModel.setName("test5");
+            //dropImageModel.setName("test5");
+            dropImageModel.setIsFinish(0);
 
         } else {
             return;
@@ -384,27 +426,43 @@ public class RegPicListActivity extends BaseBackActivity {
 
     }
 
-    private boolean isMoveAll()
-    {
-        if(!drop_index || tvH_1.getText().toString().trim() =="" || tvH_2.getText().toString().trim() ==""  ||tvH_3.getText().toString().trim() =="" ||tvH_4.getText().toString().trim() =="" ||tvH_5.getText().toString().trim() =="" ||tvH_1.getText().toString().trim() =="" )
-        {
+    private boolean isMoveAll() {
+        if (!drop_index || tvH_1.getText().toString().trim() == "" || tvH_2.getText().toString().trim() == "" || tvH_3.getText().toString().trim() == "" || tvH_4.getText().toString().trim() == "" || tvH_5.getText().toString().trim() == "" || tvH_1.getText().toString().trim() == "") {
             return false;
         }
         return true;
     }
 
+    boolean isdbClick = false;
     private DropImageView.DropImageViewListener onMertoItemViewListener = new DropImageView.DropImageViewListener() {
 
         @Override
         public void onClick(DropImageView v) {
             try {
+                currentTag = Integer.parseInt(v.getTag().toString());
+                if (drop_index) {
+                    long currentTime = System.currentTimeMillis();
+                    if (currentTime - lastClickTime < 500) {
+                        isdbClick = false;
+                        currentTag = Integer.parseInt(v.getTag().toString());
+                        Intent intent = new Intent(RegPicListActivity.this, PhotoPickerActivity.class);
+                        PhotoPickerIntent.setPhotoCount(intent, 1);
+                        PhotoPickerIntent.setShowCamera(intent, true);
+                        startActivityForResult(intent, REQUEST_CODE_ALL);
+                    } else {
+                        isdbClick = true;
+                        Message message = new Message();
+                        message.what = 1;
+                        message.arg1 = 10;
+                        handler.sendMessageDelayed(message, 500);
+                    }
+                    lastClickTime = System.currentTimeMillis();
 
-                if(drop_index) {
-                    currentTag = Integer.parseInt(v.getTag().toString());
-                    Intent intent = new Intent(RegPicListActivity.this, PhotoPickerActivity.class);
-                    PhotoPickerIntent.setPhotoCount(intent, 1);
-                    PhotoPickerIntent.setShowCamera(intent, true);
-                    startActivityForResult(intent, REQUEST_CODE);
+                } else {
+                    Intent intent = new Intent(RegPicListActivity.this, RegPicActivity.class);
+                    intent.putExtra("images", (ArrayList<String>) UrlLoc);
+                    intent.putExtra("currentIndex", currentTag);
+                    startActivity(intent);
                 }
 
             } catch (Exception ex) {
@@ -450,8 +508,9 @@ public class RegPicListActivity extends BaseBackActivity {
 
         @Override
         public void onLongClick(DropImageView v) {
-            vibrator.vibrate(100);
             isMove = isMoveAll();
+            if (isMove)
+                vibrator.vibrate(100);
         }
 
         @Override
@@ -523,7 +582,7 @@ public class RegPicListActivity extends BaseBackActivity {
 
         if (permissionState != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
+            // Should we show an explanation
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
@@ -554,64 +613,116 @@ public class RegPicListActivity extends BaseBackActivity {
     }
 
 
-    static boolean drop_index = false;
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        List<String> photos = null;
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+        try {
+
+            List<String> photos = null;
+            BitmapDrawable bd;
             if (data != null) {
                 photos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
             }
-//
-//            if (selectedPhotos.size() == 0) {
-//
-//                    Toast.makeText(getBaseContext(), "请选择五张照片", Toast.LENGTH_LONG).show();
-//                    return;
-//
-//            }
-
-            if (photos.size() > 0 && photos.size() < 2) {
+            if (requestCode == REQUEST_CODE_ALL) {
                 File file = new File(photos.get((0)));
+                current_corp_img = file.getAbsolutePath();
+                Uri uri = Uri.fromFile(file);
+                startPhotoZoom(uri);
+
+            }
+
+            if (requestCode == REQUEST_CODE_CAT) {
+                if (data != null && data.getExtras() != null) {
+                    Bundle extras = data.getExtras();
+                    bm = extras.getParcelable("data");
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    //图片名称 时间命名
+                    SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+                    Date date = new Date(System.currentTimeMillis());
+                    String filename = format.format(date);
+                    //创建File对象用于存储拍照的图片 SD卡根目录
+                    //File outputImage = new File(Environment.getExternalStorageDirectory(),test.jpg);
+                    path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+                    outputImage = new File(path, "szj_" + filename + ".jpg");
+
+                    try {
+                        if (outputImage.exists()) {
+                            outputImage.delete();
+                        }
+                        outputImage.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    String local = outputImage.getAbsolutePath();
+                    fos = new FileOutputStream(outputImage);
+                    bm.compress(Bitmap.CompressFormat.JPEG, 75, fos);// (0 -// 100)压缩文件
+                    fos.flush();
+                    fos.close();
+                    UrlLoc.set(currentTag, local);
+                    OffDrop(currentTag);
+                    bd = new BitmapDrawable(bm);
+                    mertoItemViews.get(currentTag).setIcon(bd);
+                    mertoBeans.get(currentTag).setIconId(bd);
+                    mertoBeans.get(currentTag).setIsFinish(5);
+                    mertoItemViews.get(currentTag).setIsFinish(5);
+
+                } else {
+                    //record first
+                    if (current_corp_img.length() != 0) {
 
 
-                OffDrop(currentTag);
-                Bitmap bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(file), App.screenWidth,App.screenHeight);
-                BitmapDrawable bd = new BitmapDrawable(bm);
-                mertoItemViews.get(currentTag).setIcon(bd);
-                mertoBeans.get(currentTag).setIconId(bd);
-                mertoBeans.get(currentTag).setIsFinish(5);
-                mertoItemViews.get(currentTag).setIsFinish(5);
+                        UrlLoc.set(currentTag, current_corp_img);
+                        OffDrop(currentTag);
+                        bm = BitmapHelper.copressImage(current_corp_img);
+                        bd = new BitmapDrawable(bm);
+                        mertoItemViews.get(currentTag).setIcon(bd);
+                        mertoBeans.get(currentTag).setIconId(bd);
+                        mertoBeans.get(currentTag).setIsFinish(5);
+                        mertoItemViews.get(currentTag).setIsFinish(5);
+                        current_corp_img = "";
+                    }
+                }
 
 
-            } else if (photos.size() > 1) {
-                File file;
-                for (int size = 0; size < photos.size(); size++) {
-                    file = new File(photos.get(size));
+            } else {
 
-                    Bitmap bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(file), App.screenWidth,App.screenHeight);
-                    BitmapDrawable bd = new BitmapDrawable(bm);
-                    mertoItemViews.get(size).setIcon(bd);
-                    mertoBeans.get(size).setIconId(bd);
-                    mertoBeans.get(size).setIsFinish(5);
-                    mertoItemViews.get(size).setIsFinish(5);
-                    drop_index = false;
+                if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
 
-                    OffDrop(size);
 
+                    if (photos.size() > 0 && photos.size() < 2) {
+
+                        UrlLoc.set(currentTag, photos.get(0));
+                        OffDrop(currentTag);
+                        bm = BitmapHelper.copressImage(photos.get(0));
+                        bd = new BitmapDrawable(bm);
+                        mertoItemViews.get(currentTag).setIcon(bd);
+                        mertoBeans.get(currentTag).setIconId(bd);
+                        mertoBeans.get(currentTag).setIsFinish(5);
+                        mertoItemViews.get(currentTag).setIsFinish(5);
+
+
+                    } else if (photos.size() > 1) {
+                        for (int size = 0; size < photos.size(); size++) {
+                            UrlLoc.set(size, photos.get(size));
+                            bm = BitmapHelper.copressImage(photos.get(size));
+                            bd = new BitmapDrawable(bm);
+                            mertoItemViews.get(size).setIcon(bd);
+                            mertoBeans.get(size).setIconId(bd);
+                            mertoBeans.get(size).setIsFinish(5);
+                            mertoItemViews.get(size).setIsFinish(5);
+                            OffDrop(size);
+                        }
+                    }
                 }
             }
-
-            if (photos != null) {
-                selectedPhotos.addAll(photos);
-            }
-
+        } catch (Exception ex) {
+            Toast.makeText(RegPicListActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
 
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -631,6 +742,19 @@ public class RegPicListActivity extends BaseBackActivity {
         }
     }
 
+    public void startPhotoZoom(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 100);
+        intent.putExtra("aspectY", 100);
+        intent.putExtra("outputX", 128);
+        intent.putExtra("outputY", 128);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        intent.putExtra("return-data", true);
+
+        startActivityForResult(intent, REQUEST_CODE_CAT);
+    }
 
     public void previewPhoto(Intent intent) {
         startActivityForResult(intent, REQUEST_CODE);
@@ -701,47 +825,63 @@ public class RegPicListActivity extends BaseBackActivity {
 
     public static void showRegAlert(final Context context) {
 
-        final AlertDialog dlg = new AlertDialog.Builder(context).create();
-        dlg.show();
-        dlg.setCancelable(false);
-        Window window = dlg.getWindow();
-        window.setContentView(R.layout.res_list_inner);
-        WindowManager.LayoutParams lp = window.getAttributes();
-        lp.alpha = 0.9f;
-        window.setAttributes(lp);
-        TextView tvSave = (TextView) window.findViewById(R.id.tvSave);
+        try {
 
-        final MySeekBar ms_height = (MySeekBar) window.findViewById(R.id.ms_height);
-        final MySeekBar ms_weight = (MySeekBar) window.findViewById(R.id.ms_weight);
-        final MySeekBar ms_hip = (MySeekBar) window.findViewById(R.id.ms_hip);
-        final MySeekBar ms_waist = (MySeekBar) window.findViewById(R.id.ms_waist);
-        final MySeekBar ms_bust = (MySeekBar) window.findViewById(R.id.ms_bust);
-//
-//        ms_height.getBackground().setAlpha(100);
-//
-//        ms_weight.getBackground().setAlpha(100);
-//
-//        ms_hip.getBackground().setAlpha(100);
-//
-//        ms_waist.getBackground().setAlpha(100);
-//
-//        ms_bust.getBackground().setAlpha(100);
+            final AlertDialog dlg = new AlertDialog.Builder(context).create();
+            dlg.show();
+            dlg.setCancelable(false);
+            Window window = dlg.getWindow();
+            window.setContentView(R.layout.res_list_inner);
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.alpha = 0.9f;
+            window.setAttributes(lp);
+            TextView tvSave = (TextView) window.findViewById(R.id.tvSave);
 
-        tvSave.setOnClickListener(new View.OnClickListener() {
+            final MySeekBar ms_height = (MySeekBar) window.findViewById(R.id.ms_height);
+            final MySeekBar ms_weight = (MySeekBar) window.findViewById(R.id.ms_weight);
+            final MySeekBar ms_hip = (MySeekBar) window.findViewById(R.id.ms_hip);
+            final MySeekBar ms_waist = (MySeekBar) window.findViewById(R.id.ms_waist);
+            final MySeekBar ms_bust = (MySeekBar) window.findViewById(R.id.ms_bust);
+//
+            if (user != null) {
+                if (!TextUtils.isEmpty(user.getHeight()))
+                    ms_height.SetProcess(Integer.parseInt(user.getHeight()));
 
-            @Override
-            public void onClick(View view) {
+                if (!TextUtils.isEmpty(user.getWeight()))
+                    ms_weight.SetProcess(Integer.parseInt(user.getWeight()));
 
-                User user = new User();
-                user.setHeight(ms_height.getProcess());
-                user.setBust(ms_bust.getProcess());
-                user.setHip(ms_hip.getProcess());
-                user.setWeight(ms_weight.getProcess());
-                user.setWaist(ms_waist.getProcess());
-                App.saveBodyInfo(user);
-                dlg.dismiss();
+                if (!TextUtils.isEmpty(user.getHip()))
+                    ms_hip.SetProcess(Integer.parseInt(user.getHip()));
+
+                if (!TextUtils.isEmpty(user.getWaist()))
+                    ms_waist.SetProcess(Integer.parseInt(user.getWaist()));
+
+                if (!TextUtils.isEmpty(user.getBust()))
+                    ms_bust.SetProcess(Integer.parseInt(user.getBust()));
+
+
             }
-        });
+
+            tvSave.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+
+                    User user = new User();
+                    user.setHeight(ms_height.getProcess());
+                    user.setBust(ms_bust.getProcess());
+                    user.setHip(ms_hip.getProcess());
+                    user.setWeight(ms_weight.getProcess());
+                    user.setWaist(ms_waist.getProcess());
+                    App.saveBodyInfo(user);
+                    dlg.dismiss();
+                }
+            });
+        } catch (Exception e) {
+
+            // Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+
+        }
 
     }
 
@@ -751,23 +891,168 @@ public class RegPicListActivity extends BaseBackActivity {
 
     }
 
+
+    private void startOnMertoItemViewListener() {
+
+        drop_index = true;
+
+    }
+
     private void OffDrop(int size) {
-        if (size == 0 && tvH_1.getText().toString().length()<=0) {
+        if (size == 0 && tvH_1.getText().toString().length() <= 0) {
             tvH_1.setText("1");
             ((DropImageView) imageView1).setOnDropImageViewListener(onMertoItemViewListener);
-        } else if (size == 1 && tvH_2.getText().toString().length()<=0) {
+        } else if (size == 1 && tvH_2.getText().toString().length() <= 0) {
             tvH_2.setText("1");
             ((DropImageView) imageView2).setOnDropImageViewListener(onMertoItemViewListener);
-        } else if (size == 2 && tvH_3.getText().toString().length()<=0) {
+        } else if (size == 2 && tvH_3.getText().toString().length() <= 0) {
             tvH_3.setText("1");
             ((DropImageView) imageView3).setOnDropImageViewListener(onMertoItemViewListener);
-        } else if (size == 3 && tvH_4.getText().toString().length()<=0) {
+        } else if (size == 3 && tvH_4.getText().toString().length() <= 0) {
             tvH_4.setText("1");
             ((DropImageView) imageView4).setOnDropImageViewListener(onMertoItemViewListener);
-        } else if (size == 4 && tvH_5.getText().toString().length()<=0) {
+        } else if (size == 4 && tvH_5.getText().toString().length() <= 0) {
             tvH_5.setText("1");
             ((DropImageView) imageView5).setOnDropImageViewListener(onMertoItemViewListener);
         }
 
     }
+
+    private void ArtistCardInfoSave()
+    {
+//        Map<String,String> params = new HashMap<String,String>();
+//        params.put("type","1");
+//        ImageUtils.upFileInfo(params, new ApiCallback<Upfeile>() {
+//            @Override
+//            public void onSuccess(Upfeile data) {
+//                ImageUtils.upFile(RegPicListActivity.this, data, picUri, new ApiCallback<Upfeile>() {
+//                    @Override
+//                    public void onSuccess(Upfeile data) {
+//
+//                    }
+//                });
+//            }
+//        });
+
+        Map<String, String> paramsMap = new HashMap<>();
+
+        String token = App.getPreferencesValue("token");
+        String uid = App.getPreferencesValue("uid");
+        paramsMap.put("token", token);
+        paramsMap.put("uid", uid);
+        paramsMap.put("bust",user.getBust());
+        paramsMap.put("waist",user.getWaist());
+        paramsMap.put("hip",user.getHip());
+        paramsMap.put("height",user.getHeight());
+        paramsMap.put("weight",user.getWeight());
+        paramsMap.put("Img1",user.getImg1());
+        paramsMap.put("Img1",user.getImg2());
+        paramsMap.put("Img1",user.getImg3());
+        paramsMap.put("Img1",user.getImg4());
+        paramsMap.put("Img1",user.getImg5());
+
+        RequestUtils.sendPostRequest(Api.SET_ARTIST_CARD_INFO, paramsMap, new ResponseCallBack<User>() {
+            @Override
+            public void onSuccessList(List<User> data) {
+
+
+                if (data != null && data.size() > 0) {
+                    user = data.get(0);
+
+
+                    ll_per_info.setVisibility(View.VISIBLE);
+                    txtUpload.setVisibility(View.GONE);
+                    txtSF.setVisibility(View.GONE);
+                    txtOpen.setVisibility(View.GONE);
+
+                    Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
+                    nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
+                    txtSave.setCompoundDrawables(null, null, nav_up, null);
+                    txtSave.setText("");
+                    txtSave.setTag("0");
+                    resetOnMertoItemViewListener();
+                    txtSave.setBackground(null);
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+
+            }
+        }, User.class);
+
+    }
+
+    //get artist card info status
+    private void ArtistCardInfoStatus() {
+
+        Map<String, String> paramsMap = new HashMap<>();
+
+        String token = App.getPreferencesValue("token");
+        String uid = App.getPreferencesValue("uid");
+        paramsMap.put("token", token);
+        paramsMap.put("uid", uid);
+        RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD, paramsMap, new ResponseCallBack<User>() {
+            @Override
+            public void onSuccessList(List<User> data) {
+
+
+                if (data != null && data.size() > 0) {
+                    user = data.get(0);
+
+                    try {
+                        if(!TextUtils.isEmpty(user.getImg1()))
+                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg1())));
+
+                        if(!TextUtils.isEmpty(user.getImg2()))
+                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg2())));
+
+                        if(!TextUtils.isEmpty(user.getImg3()))
+                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg3())));
+
+                        if(!TextUtils.isEmpty(user.getImg4()))
+                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg4())));
+
+                        if(!TextUtils.isEmpty(user.getImg5()))
+                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg5())));
+
+                    } catch (Exception ex) {
+
+                    }
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+
+            }
+        }, User.class);
+
+    }
+
+
+    private Handler handler = new Handler(new Callback() {
+        @Override
+        public boolean handleMessage(Message arg0) {
+            // TODO Auto-generated method stub
+            if (arg0.what == 1 && isdbClick) {
+                Intent intent = new Intent(RegPicListActivity.this, PhotoPickerActivity.class);
+                PhotoPickerIntent.setPhotoCount(intent, 1);
+                PhotoPickerIntent.setShowCamera(intent, true);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+            return false;
+        }
+    });
+
 }

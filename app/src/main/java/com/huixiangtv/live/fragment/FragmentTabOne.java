@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -210,10 +211,10 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
                     if (currPage == 1) {
                         listview.setVisibility(View.VISIBLE);
-                        //loadView.setVisibility(View.GONE);
                     }
+                    commonModelList.clear();
                     if (enumUpdateTag == EnumUpdateTag.UPDATE) {
-                        commonModelList.clear();
+
                         listview.removeAllViews();
                     }
                     for (Live live : data) {
@@ -377,19 +378,23 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                     } else {
                         int pageNo = (int) Math.ceil(data.size() / APP_PAGE_SIZE);
                         for (int i = 0; i < pageNo; i++) {
-                            GridView appPage = new GridView(getContext());
+                            ListView appPage = new ListView(getContext());
                             // get the "i" page data
                             if(currentViewPage ==1)
                                 viewpageModelList.clear();
 
                             viewpageModelList.addAll(data);
                             appPage.setAdapter(new LiveBannerAdapter(getContext(), data, i));
-                            appPage.setNumColumns(1);
+//                            appPage.setNumColumns(1);
                             appPage.setOnItemClickListener(listener);
                             mSwitchScrollLayout.addView(appPage);
                             isLoad = true;
                             currentViewPage++;
+
                         }
+                        Live live = viewpageModelList.get(0);
+                        initViewInfo(live);
+
                         //loading page
                         pageControl.bindScrollViewGroup(mSwitchScrollLayout);
                         //loading paging data
@@ -462,17 +467,17 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                 @Override
                 public void onScreenChange(int currentIndex) {
                     if (viewpageModelList != null) {
+                        generatePageControl(currentIndex);
                         Live live = viewpageModelList.get(currentIndex);
-                        tvInfo.setText(live.getNickName());
-                        tvLoveCount.setText(live.getLoveCount());
-                        tvWeight.setText(live.getHeight() + "Cm     " + live.getWeight() + "    三围：" + live.getBwh());
+                        initViewInfo(live);
                     }
                 }
             });
         }
 
+
         private void generatePageControl(int currentIndex) {
-            if ((count - 3) == currentIndex + 1) {
+            if ((count - 1) == currentIndex) {
                 if(isLoad) {
                     isLoad=false;
                     SwitchPicThread m = new SwitchPicThread();
@@ -482,6 +487,13 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         }
     }
 
+    private void initViewInfo(Live live)
+    {
+        CommonHelper.viewSetBackageImag(live.getPhoto(),llInfo);
+        tvInfo.setText(live.getNickName());
+        tvLoveCount.setText(live.getLoveCount());
+        tvWeight.setText(live.getHeight() + "Cm     " + live.getWeight() + "    三围：" + live.getBwh());
+    }
 
     public AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
 
