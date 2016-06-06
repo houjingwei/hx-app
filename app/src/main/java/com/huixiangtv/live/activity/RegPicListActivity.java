@@ -920,6 +920,7 @@ public class RegPicListActivity extends Activity {
 
     private void ArtistCardInfoSave()
     {
+//
 //        Map<String,String> params = new HashMap<String,String>();
 //        params.put("type","1");
 //        ImageUtils.upFileInfo(params, new ApiCallback<Upfeile>() {
