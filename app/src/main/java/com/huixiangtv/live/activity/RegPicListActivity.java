@@ -49,12 +49,15 @@ import com.huixiangtv.live.adapter.PhotoAdapter;
 import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.DropImageModel;
 import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.model.Upfeile;
 import com.huixiangtv.live.model.User;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.TokenChecker;
+import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.DropImageView;
 import com.huixiangtv.live.utils.widget.MySeekBar;
 
@@ -179,7 +182,7 @@ public class RegPicListActivity extends Activity {
         setContentView(R.layout.activity_pic_list);
         x.view().inject(this);
         ArtistCardInfoStatus();
-        drop_index = true;
+        startOnMertoItemViewListener();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         imageView1.setTag(0);
         imageView2.setTag(1);
@@ -229,7 +232,7 @@ public class RegPicListActivity extends Activity {
                 ll_per_info.setVisibility(View.GONE);
                 txtUpload.setVisibility(View.VISIBLE);
                 txtSave.setTag("1");
-                txtSave.setPadding(10, 10, 10, 10);
+                txtSave.setPadding(20, 20, 20, 20);
                 txtSave.setText("保存");
                 txtSave.setCompoundDrawables(null, null, null, null);
                 txtSave.setBackground(getResources().getDrawable(R.drawable.reg_pic_bg));
@@ -250,18 +253,8 @@ public class RegPicListActivity extends Activity {
                             return;
                         }
                     }
-                    ll_per_info.setVisibility(View.VISIBLE);
-                    txtUpload.setVisibility(View.GONE);
-                    txtSF.setVisibility(View.GONE);
-                    txtOpen.setVisibility(View.GONE);
+                    ArtistCardInfoSave();
 
-                    Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
-                    nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
-                    txtSave.setCompoundDrawables(null, null, nav_up, null);
-                    txtSave.setText("");
-                    txtSave.setTag("0");
-                    resetOnMertoItemViewListener();
-                    txtSave.setBackground(null);
                 } else {
 
                     showShareAlert(RegPicListActivity.this);
@@ -383,23 +376,23 @@ public class RegPicListActivity extends Activity {
         DropImageModel dropImageModel = new DropImageModel();
         if (mertoBeans.size() == 0) {
             dropImageModel.setIconId(getDrawable(R.drawable.pic1));
-            dropImageModel.setName("test1");
+            //dropImageModel.setName("test1");
             dropImageModel.setIsFinish(0);
         } else if (mertoBeans.size() == 1) {
             dropImageModel.setIconId(getDrawable(R.drawable.pic2));
-            dropImageModel.setName("test2");
+            //dropImageModel.setName("test2");
             dropImageModel.setIsFinish(0);
         } else if (mertoBeans.size() == 2) {
             dropImageModel.setIconId(getDrawable(R.drawable.pic3));
-            dropImageModel.setName("test3");
+            //dropImageModel.setName("test3");
             dropImageModel.setIsFinish(0);
         } else if (mertoBeans.size() == 3) {
             dropImageModel.setIconId(getDrawable(R.drawable.pic4));
-            dropImageModel.setName("test4");
+            //dropImageModel.setName("test4");
             dropImageModel.setIsFinish(0);
         } else if (mertoBeans.size() == 4) {
             dropImageModel.setIconId(getDrawable(R.drawable.pic5));
-            dropImageModel.setName("test5");
+            //dropImageModel.setName("test5");
             dropImageModel.setIsFinish(0);
 
         } else {
@@ -458,9 +451,9 @@ public class RegPicListActivity extends Activity {
                         startActivityForResult(intent, REQUEST_CODE_ALL);
                     } else {
                         isdbClick = true;
-                        Message message=new Message();
-                        message.what=1;
-                        message.arg1=10;
+                        Message message = new Message();
+                        message.what = 1;
+                        message.arg1 = 10;
                         handler.sendMessageDelayed(message, 500);
                     }
                     lastClickTime = System.currentTimeMillis();
@@ -833,6 +826,7 @@ public class RegPicListActivity extends Activity {
     public static void showRegAlert(final Context context) {
 
         try {
+
             final AlertDialog dlg = new AlertDialog.Builder(context).create();
             dlg.show();
             dlg.setCancelable(false);
@@ -864,6 +858,8 @@ public class RegPicListActivity extends Activity {
 
                 if (!TextUtils.isEmpty(user.getBust()))
                     ms_bust.SetProcess(Integer.parseInt(user.getBust()));
+
+
             }
 
             tvSave.setOnClickListener(new View.OnClickListener() {
@@ -922,25 +918,113 @@ public class RegPicListActivity extends Activity {
 
     }
 
+    private void ArtistCardInfoSave()
+    {
+//        Map<String,String> params = new HashMap<String,String>();
+//        params.put("type","1");
+//        ImageUtils.upFileInfo(params, new ApiCallback<Upfeile>() {
+//            @Override
+//            public void onSuccess(Upfeile data) {
+//                ImageUtils.upFile(RegPicListActivity.this, data, picUri, new ApiCallback<Upfeile>() {
+//                    @Override
+//                    public void onSuccess(Upfeile data) {
+//
+//                    }
+//                });
+//            }
+//        });
 
+        Map<String, String> paramsMap = new HashMap<>();
+
+        String token = App.getPreferencesValue("token");
+        String uid = App.getPreferencesValue("uid");
+        paramsMap.put("token", token);
+        paramsMap.put("uid", uid);
+        paramsMap.put("bust",user.getBust());
+        paramsMap.put("waist",user.getWaist());
+        paramsMap.put("hip",user.getHip());
+        paramsMap.put("height",user.getHeight());
+        paramsMap.put("weight",user.getWeight());
+        paramsMap.put("Img1",user.getImg1());
+        paramsMap.put("Img1",user.getImg2());
+        paramsMap.put("Img1",user.getImg3());
+        paramsMap.put("Img1",user.getImg4());
+        paramsMap.put("Img1",user.getImg5());
+
+        RequestUtils.sendPostRequest(Api.SET_ARTIST_CARD_INFO, paramsMap, new ResponseCallBack<User>() {
+            @Override
+            public void onSuccessList(List<User> data) {
+
+
+                if (data != null && data.size() > 0) {
+                    user = data.get(0);
+
+
+                    ll_per_info.setVisibility(View.VISIBLE);
+                    txtUpload.setVisibility(View.GONE);
+                    txtSF.setVisibility(View.GONE);
+                    txtOpen.setVisibility(View.GONE);
+
+                    Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
+                    nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
+                    txtSave.setCompoundDrawables(null, null, nav_up, null);
+                    txtSave.setText("");
+                    txtSave.setTag("0");
+                    resetOnMertoItemViewListener();
+                    txtSave.setBackground(null);
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+
+            }
+        }, User.class);
+
+    }
+
+    //get artist card info status
     private void ArtistCardInfoStatus() {
 
         Map<String, String> paramsMap = new HashMap<>();
 
         String token = App.getPreferencesValue("token");
         String uid = App.getPreferencesValue("uid");
-        TokenChecker.checkToken(RegPicListActivity.this);
         paramsMap.put("token", token);
         paramsMap.put("uid", uid);
-        RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<User>() {
+        RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD, paramsMap, new ResponseCallBack<User>() {
             @Override
             public void onSuccessList(List<User> data) {
 
 
                 if (data != null && data.size() > 0) {
-
-
                     user = data.get(0);
+
+                    try {
+                        if(!TextUtils.isEmpty(user.getImg1()))
+                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg1())));
+
+                        if(!TextUtils.isEmpty(user.getImg2()))
+                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg2())));
+
+                        if(!TextUtils.isEmpty(user.getImg3()))
+                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg3())));
+
+                        if(!TextUtils.isEmpty(user.getImg4()))
+                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg4())));
+
+                        if(!TextUtils.isEmpty(user.getImg5()))
+                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg5())));
+
+                    } catch (Exception ex) {
+
+                    }
+
 
                 }
 

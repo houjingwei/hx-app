@@ -17,6 +17,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by apple on 16/5/13.
@@ -174,4 +177,28 @@ public class BitmapHelper {
 //                true);
 //        return newbm;
 //    }
+
+    public final static Bitmap returnBitMap(String url) {
+        URL myFileUrl = null;
+        Bitmap bitmap = null;
+
+        try {
+            myFileUrl = new URL(url);
+            HttpURLConnection conn;
+
+            conn = (HttpURLConnection) myFileUrl.openConnection();
+
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }  catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
 }

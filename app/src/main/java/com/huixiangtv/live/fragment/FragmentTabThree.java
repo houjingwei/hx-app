@@ -22,6 +22,7 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.StringUtil;
+import com.huixiangtv.live.utils.TokenChecker;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.HashMap;
@@ -125,7 +126,8 @@ public class FragmentTabThree extends RootFragment{
 				ForwardUtils.target(getActivity(), Constant.SETINT,null);
 				break;
 			case R.id.llTitle:
-				ForwardUtils.target(getActivity(), Constant.PIC_LIST,null);
+				if(TokenChecker.checkToken(getActivity()))
+				   ForwardUtils.target(getActivity(), Constant.PIC_LIST,null);
 				break;
 			case R.id.llMyfans:
 				ForwardUtils.target(getActivity(), Constant.MY_FANS,null);

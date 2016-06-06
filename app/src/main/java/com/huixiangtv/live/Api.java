@@ -69,7 +69,7 @@ public class Api {
 
 
     //set User info status by Artistcard
-    public static String SET_USER_ARTISTCARD = BASE_URL+"user/getArtistCardStatus";
+    public static String GET_USER_ARTISTCARD_STATUS = BASE_URL+"user/getArtistCardStatus";
 
 
     //get User Info status by Artistcard

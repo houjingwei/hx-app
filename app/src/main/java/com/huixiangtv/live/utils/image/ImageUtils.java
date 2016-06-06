@@ -1,13 +1,21 @@
 package com.huixiangtv.live.utils.image;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.model.Upfeile;
+import com.huixiangtv.live.service.ApiCallback;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -23,8 +31,16 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.tencent.upload.Const;
+import com.tencent.upload.UploadManager;
+import com.tencent.upload.task.ITask;
+import com.tencent.upload.task.IUploadTaskListener;
+import com.tencent.upload.task.data.FileInfo;
+import com.tencent.upload.task.impl.FileUploadTask;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 使用UniversalImageLoader加载大量高清图片.带有缓存.可以快速重复显示图片.
@@ -139,5 +155,58 @@ public final class ImageUtils {
         public void onProgressUpdate(String imageUri, View view, int current, int total) {
 
         }
+    }
+
+
+
+    public static void upFileInfo(Map<String,String> params ,final ApiCallback<Upfeile> apiCallback) {
+
+        RequestUtils.sendPostRequest(Api.UPLOAD_FILE_INFO, params, new ResponseCallBack<Upfeile>() {
+            @Override
+            public void onSuccess(Upfeile data) {
+                super.onSuccess(data);
+                if (null != data) {
+                    apiCallback.onSuccess(data);
+                }
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, Upfeile.class);
+//        ImageUtils.display(ivPhoto,picUri);
+    }
+
+
+    public static void upFile(Activity activity,Upfeile data, String picUri,final ApiCallback callBack) {
+        UploadManager fileUploadMgr = new UploadManager(activity, data.getAppId(), Const.FileType.File, data.getPersistenceId());
+
+        FileUploadTask task = new FileUploadTask(data.getBucket(), picUri, data.getFileName(), "image", new IUploadTaskListener() {
+            @Override
+            public void onUploadSucceed(FileInfo fileInfo) {
+                Log.i("successful", "upload succeed: " + fileInfo.url);
+                callBack.onSuccess(fileInfo);
+            }
+
+            @Override
+            public void onUploadFailed(int i, String s) {
+                callBack.onFailure(new ServiceException(s));
+            }
+
+            @Override
+            public void onUploadProgress(long l, long l1) {
+
+            }
+
+            @Override
+            public void onUploadStateChange(ITask.TaskState taskState) {
+
+            }
+        });
+        task.setAuth(data.getSig());
+
+        fileUploadMgr.upload(task);
+
     }
 }
