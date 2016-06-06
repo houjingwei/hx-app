@@ -116,7 +116,33 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             lid = getIntent().getStringExtra("lid");
             initPlayView();
         } else {
+            addRecordView();
             initStartView();
+            startPush();
+        }
+    }
+
+    private void startPush() {
+        if (null != Constant.accessToken){
+            try {
+                //Constant.accessToken = responseMessage;
+                LiveService.getInstance().createLive(Constant.accessToken, Constant.SPACE, Constant.LIVE_URL);
+                LiveService.getInstance().setCreateLiveListener(new CreateLiveListener() {
+                    @Override
+                    public void onCreateLiveError(int errorCode, String message) {
+                        Log.e("live", "errorCode:" + errorCode + "message" + message);
+                    }
+
+                    @Override
+                    public void onCreateLiveSuccess(String pushUrl, String playUrl) {
+//                        Log.e("liveUrl", "pushUrl:" + live.getPushUrl() + "playUrl" + playUrl);
+                        startRecorder(pushUrl, playUrl);
+                    }
+                });
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                Log.e(TAG, ex.getMessage().toString());
+            }
         }
     }
 
@@ -216,54 +242,13 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 toLive();
                 break;
             case R.id.btn_live_create:
-                createLive(new ApiCallback<String>(){
 
-                    @Override
-                    public void onSuccess(String data) {
-                        Log.e(TAG, "onAuthComplte  message" + data);
-                        try{
-                            //Constant.accessToken = responseMessage;
-                            LiveService.getInstance().createLive(data, UUID.randomUUID().toString().replace("-",""),"http://huixiangtv.s.qupai.me");
-                            LiveService.getInstance().setCreateLiveListener(new CreateLiveListener() {
-                                @Override
-                                public void onCreateLiveError(int errorCode, String message) {
-                                    Log.e("live", "errorCode:" + errorCode + "message" + message);
-                                }
 
-                                @Override
-                                public void onCreateLiveSuccess(String pushUrl, String playUrl) {
-                                    Log.e("liveUrl", "pushUrl:" + live.getPushUrl() + "playUrl" + playUrl);
-                                    startRecorder(live.getPushUrl(),playUrl);
-                                }
-                            });
-                        }catch(Exception ex){
-                            ex.printStackTrace();
-                            Log.e(TAG, ex.getMessage().toString());
-                        }
-                    }
-                });
                 break;
         }
     }
 
-    private void createLive(final ApiCallback apiCallback) {
-        AuthService service = AuthService.getInstance();
-        service.setQupaiAuthListener(new QupaiAuthListener() {
-            @Override
-            public void onAuthError(int errorCode, String message) {
-                Log.e(TAG, "ErrorCode" + errorCode + "message" + message);
-            }
 
-            @Override
-            public void onAuthComplte(int responseCode, String responseMessage) {
-                apiCallback.onSuccess(responseMessage);
-            }
-        });
-        service.startAuth(LiveActivity.this, "2088b26127ebe67", "b898e3010acf4299a7a5d3ec6e99bb2c", "huixiangtv");
-
-
-
-    }
 
     private void startRecorder(String pushUrl,String playUrl) {
         if (mLiveRecorder != null) {
@@ -279,7 +264,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         edit_playUrl.setText(playUrl);
         initLiveRecord();
         //ip_address这里修改为可以直接ip推流.就近原则。建议使用httpDNS得到最优ip.直接推流.不用即直接传null
-        mLiveRecorder.start(this,pushUrl);
+        mLiveRecorder.start(this,null);
         mIsRecording = true;
     }
 
@@ -368,7 +353,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                     cp.dismiss();
                 }
                 live =data;
-                addRecordView();
                 //living(data);
                 ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);
                 animIn.setDuration(500);
@@ -421,7 +405,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     private BeautyRender beautyRender;
     private void addRecordView() {
         recordView = LayoutInflater.from(LiveActivity.this).inflate(R.layout.record_view, null, false);
-        layout_preferences = (LinearLayout) findViewById(R.id.layout_preferences);
+        layout_preferences = (LinearLayout) recordView.findViewById(R.id.layout_preferences);
 
         _CameraSurface = (SurfaceView) recordView.findViewById(R.id.camera_surface);
         _CameraSurface.getHolder().addCallback(_CameraSurfaceCallback);
@@ -480,6 +464,8 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 _SurfaceControl.setVisible(true);
             }
         }
+
+
     }
 
 

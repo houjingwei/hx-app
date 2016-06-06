@@ -5,12 +5,16 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.duanqu.qupai.auth.AuthService;
+import com.duanqu.qupai.auth.QupaiAuthListener;
 import com.huixiangtv.live.model.Gift;
 import com.huixiangtv.live.model.User;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.ChatTokenCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
@@ -36,6 +40,7 @@ import io.rong.imlib.RongIMClient;
  * Created by hjw on 16/5/4.
  */
 public class App extends Application {
+    private static final String TAG = "App";
     private static App sContext;
     public static UMShareAPI mShareAPI ;
 
@@ -115,8 +120,30 @@ public class App extends Application {
             System.loadLibrary(str);
         }
 
+        qupaiAuth();
+
     }
 
+    public static void qupaiAuth() {
+
+        AuthService service = AuthService.getInstance();
+        service.setQupaiAuthListener(new QupaiAuthListener() {
+            @Override
+            public void onAuthError(int errorCode, String message) {
+                Log.e(TAG, "ErrorCode" + errorCode + "message" + message);
+            }
+
+            @Override
+            public void onAuthComplte(int responseCode, String responseMessage) {
+                Constant.accessToken = responseMessage;
+            }
+        });
+        service.startAuth(getContext(),Constant.APP_KEY, Constant.APP_SECRET,Constant.SPACE);
+
+
+
+
+    }
 
 
     public static String getCurProcessName(Context context) {
