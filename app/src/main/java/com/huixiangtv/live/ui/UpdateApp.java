@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -53,7 +55,8 @@ public class UpdateApp {
         apkUrl = url;
         this.uplog = uplog;
         if (tab.equals("-1")) {// -1.选择更新;1,强制更新
-            showNoticeLayoutDialog();
+            showDownloadDialog("-1");
+           // showNoticeLayoutDialog();
             return true;
         } else if (tab.equals("1")) {
             showDownloadDialog("1");
@@ -74,20 +77,12 @@ public class UpdateApp {
         dlg.setCancelable(false);
         Window window = dlg.getWindow();
         window.setContentView(R.layout.process_version_new);
-        ImageView btnClosed = (ImageView) window.findViewById(R.id.btnClosed);
-        btnClosed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dlg.dismiss();
-            }
-        });
-
-
-        TextView tvLevelEv = (TextView) window.findViewById(R.id.tvLevelEv);
+        final TextView tvLevelEv = (TextView) window.findViewById(R.id.tvLevelEv);
         tvLevelEv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDownloadDialog("2");  //开始更新ing
+                tvLevelEv.setText("正在升级");
+                //showDownloadDialog("2");  //开始更新ing
             }
         });
 
@@ -171,4 +166,6 @@ public class UpdateApp {
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(i);
     }
+
+    
 }

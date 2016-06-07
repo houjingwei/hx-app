@@ -79,7 +79,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private BaseAdapter adapter;
     private LinearLayout llInfo;
     private ScrollView sv;
-    private List<Live> commonModelList = new ArrayList<Live>();
     private static List<Live> viewpageModelList = new ArrayList<Live>();
     private LinearLayoutForListView listview;
     private LiveListBroadcast receiver;
@@ -212,19 +211,16 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                     if (currPage == 1) {
                         listview.setVisibility(View.VISIBLE);
                     }
-                    commonModelList.clear();
                     if (enumUpdateTag == EnumUpdateTag.UPDATE) {
 
                         listview.removeAllViews();
                     }
-                    for (Live live : data) {
-                        commonModelList.add(live);
-                    }
+
                     Long totalCount = Long.parseLong(data.size() + "");
                     if (0 == totalCount) {
                         Toast.makeText(getActivity(), "已经没有更多内容了", Toast.LENGTH_LONG).show();
                     } else {
-                        adapter = new TabOneAdapter(getContext(), commonModelList, R.layout.index_list_pic);
+                        adapter = new TabOneAdapter(getContext(), data, R.layout.index_list_pic);
                         listview.setAdapter(adapter);
                     }
                 } else {

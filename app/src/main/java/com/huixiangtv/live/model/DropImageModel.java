@@ -28,6 +28,7 @@ public class DropImageModel implements Serializable {
     public DropImageModel(DropImageModel bean) {
         this.iconId = bean.getIconId();
         this.name = bean.getName();
+        this.isFinish = bean.getIsFinish();
     }
 
     /**

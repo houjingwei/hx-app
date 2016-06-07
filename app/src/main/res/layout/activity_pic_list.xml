@@ -269,31 +269,6 @@
             />
     </FrameLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:id="@+id/tvH_1"
-        android:visibility="gone"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:visibility="gone"
-        android:id="@+id/tvH_2"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:visibility="gone"
-        android:id="@+id/tvH_3"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:id="@+id/tvH_4"
-        android:visibility="gone"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:visibility="gone"
-        android:id="@+id/tvH_5"
-        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

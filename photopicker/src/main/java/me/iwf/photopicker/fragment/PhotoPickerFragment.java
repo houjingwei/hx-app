@@ -1,13 +1,20 @@
 package me.iwf.photopicker.fragment;
 
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +25,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+
 import me.iwf.photopicker.PhotoPickerActivity;
 import me.iwf.photopicker.R;
 import me.iwf.photopicker.adapter.PhotoGridAdapter;
@@ -82,14 +94,15 @@ public class PhotoPickerFragment extends Fragment {
     boolean showGif = getArguments().getBoolean(EXTRA_GIF);
     mediaStoreArgs.putBoolean(EXTRA_SHOW_GIF, showGif);
     MediaStoreHelper.getPhotoDirs(getActivity(), mediaStoreArgs,
-        new MediaStoreHelper.PhotosResultCallback() {
-          @Override public void onResultCallback(List<PhotoDirectory> dirs) {
-            directories.clear();
-            directories.addAll(dirs);
-            photoGridAdapter.notifyDataSetChanged();
-            listAdapter.notifyDataSetChanged();
-          }
-        });
+            new MediaStoreHelper.PhotosResultCallback() {
+              @Override
+              public void onResultCallback(List<PhotoDirectory> dirs) {
+                directories.clear();
+                directories.addAll(dirs);
+                photoGridAdapter.notifyDataSetChanged();
+                listAdapter.notifyDataSetChanged();
+              }
+            });
 
     captureManager = new ImageCaptureManager(getActivity());
 
@@ -136,7 +149,8 @@ public class PhotoPickerFragment extends Fragment {
     });
 
     photoGridAdapter.setOnPhotoClickListener(new OnPhotoClickListener() {
-      @Override public void onClick(View v, int position, boolean showCamera) {
+      @Override
+      public void onClick(View v, int position, boolean showCamera) {
         final int index = showCamera ? position - 1 : position;
 
         List<String> photos = photoGridAdapter.getCurrentPhotoPaths();
@@ -144,23 +158,47 @@ public class PhotoPickerFragment extends Fragment {
         int[] screenLocation = new int[2];
         v.getLocationOnScreen(screenLocation);
         ImagePagerFragment imagePagerFragment =
-            ImagePagerFragment.newInstance(photos, index, screenLocation, v.getWidth(),
-                v.getHeight());
+                ImagePagerFragment.newInstance(photos, index, screenLocation, v.getWidth(),
+                        v.getHeight());
 
         ((PhotoPickerActivity) getActivity()).addImagePagerFragment(imagePagerFragment);
       }
     });
 
     photoGridAdapter.setOnCameraClickListener(new OnClickListener() {
-      @Override public void onClick(View view) {
-        try {
-          Intent intent = captureManager.dispatchTakePictureIntent();
-          startActivityForResult(intent, ImageCaptureManager.REQUEST_TAKE_PHOTO);
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+      @Override
+      public void onClick(View view) {
+//        try {
+//          Intent intent = captureManager.dispatchTakePictureIntent();
+//          startActivityForResult(intent, ImageCaptureManager.REQUEST_TAKE_PHOTO);
+//        } catch (IOException e) {
+//          e.printStackTrace();
+//        }
+//
+//        // 调用系统相机
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        //intent.addCategory(Intent.CATEGORY_DEFAULT);
+//        // 取当前时间为照片名
+//        String mPictureFile = DateFormat.format("yyyyMMdd_hhmmss",
+//                Calendar.getInstance(Locale.CHINA))
+//                + ".jpg";
+//        String filePath = getPhotoPath() + mPictureFile;
+//        // 通过文件创建一个uri中
+//        Uri imageUri = Uri.fromFile(new File(filePath));
+//        // 保存uri对应的照片于指定路径
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//        startActivityForResult(intent, Activity.DEFAULT_KEYS_DIALER);
+
+        final Intent takePictureImIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        ContentValues values = new ContentValues();
+        Uri mPhotoUri = getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        takePictureImIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mPhotoUri);
+        startActivityForResult(takePictureImIntent,1);
+
       }
     });
+
+
 
     btSwitchDirectory.setOnClickListener(new OnClickListener() {
       @Override public void onClick(View v) {
@@ -246,5 +284,14 @@ public class PhotoPickerFragment extends Fragment {
     directories.clear();
     directories = null;
 
+  }
+
+  /**
+   * 获得照片路径
+   *
+   * @return
+   */
+  private String getPhotoPath() {
+    return Environment.getExternalStorageDirectory() + "/DCIM/";
   }
 }

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.WindowManager;
@@ -235,6 +237,7 @@ public class App extends Application {
             loginUser.setLoves(loginHelper.getValue("loves", ""));
             loginUser.setTags(loginHelper.getValue("tags",""));
 
+
         }else{
             loginUser = null;
         }
@@ -304,7 +307,7 @@ public class App extends Application {
      */
     public static Date getDailyCheckInDate(String key)
     {
-        long time = loginHelper.getLongValue(key,-1);
+        long time = loginHelper.getLongValue(key, -1);
         if(time != -1) {
             Date date = new Date(time);
             return date;
@@ -324,5 +327,17 @@ public class App extends Application {
         loginHelper.setValue("uid","");
         App.loginUser = null;
 
+    }
+
+    /*
+	 * 获取当前程序的版本号
+	 */
+    public static int getVersionCode(Context context) throws Exception {
+        // 获取packagemanager的实例
+        PackageManager packageManager = context.getPackageManager();
+        // getPackageName()是你当前类的包名，0代表是获取版本信息
+        PackageInfo packInfo = packageManager.getPackageInfo(
+                context.getPackageName(), 0);
+        return packInfo.versionCode;
     }
 }

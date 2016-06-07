@@ -13,19 +13,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-
-    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:scrollbars="none">
-        <com.huixiangtv.live.utils.widget.pullView.PullableListView
-            android:id="@+id/data"
-            style="@style/MatchMatch"
-            android:background="@drawable/listview"
-            android:dividerHeight="0.3dp"
-            android:divider="@color/split_color"
-            android:scrollbars="none"/>
-    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+
+        <!--<com.huixiangtv.live.utils.widget.pullView.NoneBarListView-->
+            <!--android:id="@+id/data"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:divider="@color/self_line"-->
+            <!--android:dividerHeight="0.5dp"-->
+            <!--android:focusable="false"-->
+            <!--android:focusableInTouchMode="false"-->
+            <!--android:listSelector="@null" />-->
+
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
 </LinearLayout>

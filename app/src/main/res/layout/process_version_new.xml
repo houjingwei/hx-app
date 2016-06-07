@@ -1,102 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <ImageView
-        android:id="@+id/ivTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/n_v_top" />
+    android:background="@color/white"
+    android:gravity="center">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivTitle"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/txtLog"
-            android:layout_width="wrap_content"
+
+        <ImageView
+            android:id="@+id/ivTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1、超女竞技吸粉，更多玩法互动。" />
+            android:background="@drawable/n_v_top" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_below="@id/ivTitle"
+            android:layout_marginBottom="10dp"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvLevelEv"
-                android:layout_width="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="5dp"
-                android:layout_margin="10dp"
-                android:paddingBottom="5dp"
-                android:src="@drawable/button_radius_uplpad"
-                android:layout_height="wrap_content"
-                android:text="@string/uploadLevel" />
-
-
-
-            <RelativeLayout
-                android:id="@+id/rlLevelInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ProgressBar
-                    android:id="@+id/pb"
-                    android:paddingTop="80dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:minHeight="5dp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:progressDrawable="@drawable/bg_bar"/>
-                <TextView
-                    android:id="@+id/tv_progress"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10%"
-                    android:textColor="@color/black"
-                    android:layout_below="@id/pb"
-                    android:layout_alignLeft="@id/pb"
-                    android:textSize="15sp"/>
-                <TextView
-                    android:id="@+id/tv_durrent"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10/100"
-                    android:textColor="@color/black"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/pb"
-                    android:layout_marginRight="10dp"
-                    android:textSize="15sp"/>
-            </RelativeLayout>
-
-            <TextView
+                android:id="@+id/txtLog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/upload_msg_buttom" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="1、超女竞技吸粉，更多玩法互动。" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvLevelEv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/button_radius_uplpad"
+                    android:clickable="true"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/uploadLevel" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/upload_msg_buttom" />
+            </LinearLayout>
+
         </LinearLayout>
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       >
-
-        <ImageView
+        <ProgressBar
+            android:id="@+id/pb"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/n_v_bottom" />
-
-
+            android:layout_marginTop="10dp"
+            android:drawable="@color/white"
+            android:indeterminate="false"
+            android:minHeight="5dp"
+            android:progressDrawable="@drawable/bg_bar" />
     </LinearLayout>
+    <ImageView
+        android:id="@+id/ivClose"
+        android:layout_width="@dimen/baseTitleHeight"
+        android:layout_height="@dimen/baseTitleHeight"
+        android:padding="15dp"
+        android:src="@mipmap/icon_close"
+        android:layout_alignParentRight="true"
+        />
+</RelativeLayout>
 
-</LinearLayout>
+    <!--<RelativeLayout--><!--android:layout_alignParentBottom="true"--><!--android:id="@+id/rlLevelInfo"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content">--><!-- --><!--</RelativeLayout>-->
