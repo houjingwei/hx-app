@@ -1,9 +1,11 @@
 package com.huixiangtv.live.adapter;
 
-import android.support.v7.widget.RecyclerView;
+import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,101 +14,76 @@ import com.huixiangtv.live.activity.Fans;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hjw on 16/5/13.
  */
-public class MyFansAdapter extends RecyclerView.Adapter<MyFansAdapter.FansViewHolder> implements View.OnClickListener{
+public class MyFansAdapter extends BaseAdapter {
 
 
+    Activity activity;
+    Context context;
+    List<Fans> voList = new ArrayList<Fans>();
 
 
+    private Map<Integer, View> viewMap = new HashMap<Integer, View>();
 
-    private RecyclerviewListener listener;
-
-    private List<Fans> datas = new ArrayList<Fans>();
+    public MyFansAdapter(Activity activity) {
+        this.activity = activity;
+        this.context = activity;
+    }
 
     public MyFansAdapter() {
-
     }
 
 
     @Override
-    public FansViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fans_item, viewGroup, false);
-        FansViewHolder vh = new FansViewHolder(view);
-        view.setOnClickListener(this);
-        return vh;
+    public int getCount() {
+        return voList.size();
     }
 
     @Override
-    public void onBindViewHolder(FansViewHolder holder, int position) {
-        Fans fans = datas.get(position);
-        holder.tvRank.setText(position+1+"");
-        holder.tvHots.setText(fans.getHots());
-        holder.tvNickName.setText(fans.getNickName());
-        ImageUtils.displayAvator(holder.ivPhoto,fans.getPhoto());
+    public Object getItem(int position) {
+        return voList.get(position);
     }
 
     @Override
-    public int getItemCount() {
-        return datas.size();
+    public long getItemId(int position) {
+        return position;
     }
 
 
-    public void addData(List<Fans> fans) {
-        if(null!=datas && datas.size()>0){
-            datas.addAll(datas.size()-1,fans);
-        }else{
-            datas.addAll(0,fans);
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View rowView = convertView;
+        if (null == rowView) {
+            final Fans fans = (Fans) getItem(position);
+            rowView = LayoutInflater.from(context).inflate(R.layout.fans_item, parent, false);
+            TextView tvRank = (TextView) rowView.findViewById(R.id.tvRank);
+            TextView tvNickName = (TextView) rowView.findViewById(R.id.tvNickName);
+            TextView tvHots = (TextView) rowView.findViewById(R.id.tvHots);
+            ImageView ivPhoto = (ImageView) rowView.findViewById(R.id.ivPhoto);
+            tvRank.setText(position+1+"");
+            tvHots.setText(fans.getHots());
+            tvNickName.setText(fans.getNickName());
+            ImageUtils.displayAvator(ivPhoto,fans.getPhoto());
+
         }
-        notifyDataSetChanged();
-    }
-
-    public void removeData(int position) {
-        datas.remove(position);
-        notifyDataSetChanged();
+        return rowView;
     }
 
     public void clear() {
-        datas.clear();
+        voList.clear();
         notifyDataSetChanged();
     }
 
-    public int getDataSize() {
-        return datas.size();
-    }
-
-
-    public void setOnItemClickListener(RecyclerviewListener listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (listener != null) {
-            //注意这里使用getTag方法获取数据
-            listener.onItemClick(view,view.getTag());
+    public void addList(List<Fans> ls) {
+        if (ls != null) {
+            voList.addAll(ls);
         }
-    }
-
-
-
-
-    public class FansViewHolder extends RecyclerView.ViewHolder{
-
-        public ImageView ivPhoto;
-        public TextView tvRank ;
-        public TextView tvNickName ;
-        public TextView tvHots ;
-
-        public FansViewHolder(View itemView) {
-            super(itemView);
-            tvRank = (TextView) itemView.findViewById(R.id.tvRank);
-            tvNickName = (TextView) itemView.findViewById(R.id.tvNickName);
-            tvHots = (TextView) itemView.findViewById(R.id.tvHots);
-            ivPhoto = (ImageView) itemView.findViewById(R.id.ivPhoto);
-        }
+        notifyDataSetChanged();
     }
 }

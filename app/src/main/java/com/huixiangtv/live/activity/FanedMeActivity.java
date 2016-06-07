@@ -61,6 +61,7 @@ public class FanedMeActivity extends BaseBackActivity {
         mPullToRefreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
         adapter = new MyFansAdapter(this);
         mDataLv.setAdapter(adapter);
+
         mPullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
@@ -80,8 +81,9 @@ public class FanedMeActivity extends BaseBackActivity {
 
     private void loadData() {
         fansList = getData();
-        adapter.addList(fansList);
+
         mPullToRefreshScrollView.onRefreshComplete();
+        adapter.addList(fansList);
     }
 
     public List<Fans> getData() {
