@@ -20,6 +20,7 @@ import com.huixiangtv.live.pop.LoginWindow;
 import com.huixiangtv.live.pop.ShareWindow;
 import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.ui.ColaProgressTip;
+import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 /**
@@ -176,4 +177,24 @@ public class CommonHelper {
     }
 
 
+
+
+    public static void share(final Activity activity, String title, String content, SHARE_MEDIA platForm, String url,String tarUrl) {
+        ShareSdk.startShare(activity, title, content, platForm, url, tarUrl,new UMShareListener() {
+            @Override
+            public void onResult(SHARE_MEDIA platform) {
+                showTip(activity,"分享成功");
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, Throwable t) {
+                showTip(activity,"分享失败啦");
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform) {
+                showTip(activity,"分享取消了");
+            }
+        });
+    }
 }
