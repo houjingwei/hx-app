@@ -13,12 +13,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-
-    <com.sch.rfview.AnimRFRecyclerView
-        android:id="@+id/recyclerView"
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/liveClose"
-        android:padding="2dp"/>
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <!--<com.huixiangtv.live.utils.widget.pullView.NoneBarListView-->
+            <!--android:id="@+id/data"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:divider="@color/self_line"-->
+            <!--android:dividerHeight="0.5dp"-->
+            <!--android:focusable="false"-->
+            <!--android:focusableInTouchMode="false"-->
+            <!--android:listSelector="@null" />-->
+
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
 </LinearLayout>

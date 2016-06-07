@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initWindow();
         App.getContext().addActivity(this);
         initView();
-        //CheckVersion();
+        CheckVersion();
     }
 
     private void initWindow() {
@@ -319,32 +319,38 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 检查新版本
      */
     private void CheckVersion() {
-        Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("osType", "1");
-        paramsMap.put("appVersion", "1.0");
+        try {
+            int version = App.getVersionCode(MainActivity.this);
+            Toast.makeText(MainActivity.this,"当前版本信息："+version,Toast.LENGTH_LONG).show();
+            Map<String, String> paramsMap = new HashMap<String, String>();
+            paramsMap.put("osType", "1");
+            paramsMap.put("appVersion", version + "");
 
-        RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
+            RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
 
-            public void onSuccess(UpgradeLevel data) {
+                public void onSuccess(UpgradeLevel data) {
 
-                if (data != null) {
+                    if (data != null) {
 
-                    UpgradeLevel upgradeLevel = data;
+                        UpgradeLevel upgradeLevel = data;
 
-                    UpdateApp updateApp = new UpdateApp(MainActivity.this);
-                    if (updateApp
-                            .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
+                        UpdateApp updateApp = new UpdateApp(MainActivity.this);
+                        if (updateApp
+                                .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
 
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-                Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
-            }
-        }, UpgradeLevel.class);
+                @Override
+                public void onFailure(ServiceException e) {
+                    super.onFailure(e);
+                    Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
+                }
+            }, UpgradeLevel.class);
+        } catch (Exception ex) {
+            Toast.makeText(MainActivity.this,"更新异常",Toast.LENGTH_LONG).show();
+        }
 
     }
 

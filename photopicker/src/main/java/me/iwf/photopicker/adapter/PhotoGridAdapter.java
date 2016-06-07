@@ -115,9 +115,20 @@ public class PhotoGridAdapter extends SelectableAdapter<PhotoGridAdapter.PhotoVi
 
       holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View view) {
-          if (onPhotoClickListener != null) {
-            int pos = holder.getAdapterPosition();
-            onPhotoClickListener.onClick(view, pos, showCamera());
+//          if (onPhotoClickListener != null) {
+//            int pos = holder.getAdapterPosition();
+//            onPhotoClickListener.onClick(view, pos, showCamera());
+//          }
+          int pos = holder.getAdapterPosition();
+          boolean isEnable = true;
+
+          if (onItemCheckListener != null) {
+            isEnable = onItemCheckListener.OnItemCheck(pos, photo, isChecked,
+                    getSelectedPhotos().size());
+          }
+          if (isEnable) {
+            toggleSelection(photo);
+            notifyItemChanged(pos);
           }
         }
       });

@@ -33,7 +33,7 @@ public class TweenAnimLoadingLayout extends LoadingLayout {
     // 默认图片
     @Override
     protected int getDefaultDrawableResId() {
-        return R.drawable.f29_1;
+        return R.drawable.f2;
     }
 
     @Override

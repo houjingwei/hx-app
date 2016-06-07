@@ -8,10 +8,13 @@ import android.widget.ScrollView;
 
 import com.alibaba.fastjson.JSON;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.MyFansAdapter;
 import com.huixiangtv.live.ui.CommonTitle;
+import com.huixiangtv.live.utils.EnumUpdateTag;
+import com.huixiangtv.live.utils.widget.pullView.PullToRefreshLayout;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -20,7 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
-public class FanedMeActivity extends BaseBackActivity {
+public class FanedMeActivity extends BaseBackActivity   {
 
 
 
@@ -35,7 +38,7 @@ public class FanedMeActivity extends BaseBackActivity {
 
 
 
-    private PullToRefreshScrollView mPullToRefreshScrollView;
+    private PullToRefreshListView mPullToRefreshScrollView;
     private ListView mDataLv;
 
     MyFansAdapter adapter;
@@ -54,36 +57,40 @@ public class FanedMeActivity extends BaseBackActivity {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.myconcern));
 
-        mPullToRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.refreshLayout);
+        mPullToRefreshScrollView = (PullToRefreshListView) findViewById(R.id.refreshLayout);
+        mPullToRefreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
         mDataLv = (ListView) findViewById(R.id.data);
         View view = LayoutInflater.from(FanedMeActivity.this).inflate(R.layout.search_view, null, false);
         mDataLv.addHeaderView(view);
-        mPullToRefreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
         adapter = new MyFansAdapter(this);
-        mDataLv.setAdapter(adapter);
+        //refreshLayout.
+        mPullToRefreshScrollView.setAdapter(adapter);
 
-        mPullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
+
+        loadData();
+
+
+        mPullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 page = 1;
                 loadData();
             }
 
             @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                page++;
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                page ++;
                 loadData();
             }
         });
 
-        loadData();
     }
 
     private void loadData() {
         fansList = getData();
-
-        mPullToRefreshScrollView.onRefreshComplete();
         adapter.addList(fansList);
+        //mPullToRefreshScrollView.setc(FanedMeActivity.this);
+        mPullToRefreshScrollView.onRefreshComplete();
     }
 
     public List<Fans> getData() {
@@ -104,5 +111,4 @@ public class FanedMeActivity extends BaseBackActivity {
         }
         return ls;
     }
-
 }

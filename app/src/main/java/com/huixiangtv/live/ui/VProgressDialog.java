@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class VProgressDialog extends Dialog {
     private boolean interceptFlag = false;
     private int progress;
     private TextView tv_progress,tv_durrent,tv_log,tvLevelEv;
+    private ImageView ivClose;
     private RelativeLayout rlLevelInfo;
     /* 进度条与通知ui刷新的handler和msg常量 */
     private static final int DOWN_UPDATE = 1;
@@ -51,30 +53,53 @@ public class VProgressDialog extends Dialog {
         this.apkUrl=apkUrl;
         this.uplog=uplog;
         this.setCanceledOnTouchOutside(false);
-        tv_progress=(TextView) findViewById(R.id.tv_progress);
-        tv_durrent=(TextView) findViewById(R.id.tv_durrent);
         tvLevelEv = (TextView) findViewById(R.id.tvLevelEv);
-        rlLevelInfo = (RelativeLayout) findViewById(R.id.rlLevelInfo);
+//        rlLevelInfo = (RelativeLayout) findViewById(R.id.rlLevelInfo);
         tvLevelEv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvLevelEv.setVisibility(View.GONE);
-                rlLevelInfo.setVisibility(View.VISIBLE);
+                tvLevelEv.setClickable(false);
+                ivClose.setVisibility(View.GONE);
+                tvLevelEv.setText("正在升级");
+                downLoadThread = new Thread(mdownApkRunnable);
+                downLoadThread.start();
             }
         });
 
-        if(status.equals("1"))
-        {
-            tvLevelEv.setText("升级中");
-            tvLevelEv.setVisibility(View.GONE);
-        }
+
+        ivClose = (ImageView) findViewById(R.id.ivClose);
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dimiss1();
+            }
+        });
+
         tv_log=(TextView) findViewById(R.id.txtLog);
+        String logSp[];
+        if(uplog.length()>0)
+        {
+            logSp =  uplog.split("\\|");
+            uplog="";
+            for(String str :logSp)
+            {
+                uplog += str+"\n";
+            }
+
+        }
+
         tv_log.setText(uplog);
+
         pb=(ProgressBar) findViewById(R.id.pb);
         pb.setMax(100);
-        downLoadThread = new Thread(mdownApkRunnable);
-        downLoadThread.start();
-
+        if(status.equals("1"))
+        {
+            tvLevelEv.setClickable(false);
+            ivClose.setVisibility(View.GONE);
+            tvLevelEv.setText("正在升级");
+            downLoadThread = new Thread(mdownApkRunnable);
+            downLoadThread.start();
+        }
     }
 
     private Runnable mdownApkRunnable = new Runnable() {
@@ -126,8 +151,6 @@ public class VProgressDialog extends Dialog {
             switch (msg.what) {
                 case DOWN_UPDATE:
                     pb.setProgress(progress);
-                    tv_progress.setText(progress+"%");
-                    tv_durrent.setText(progress+"/100");
                     break;
                 case DOWN_OVER:
                     dimiss1();

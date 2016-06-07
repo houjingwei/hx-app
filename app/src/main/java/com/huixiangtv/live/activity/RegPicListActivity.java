@@ -125,17 +125,6 @@ public class RegPicListActivity extends Activity {
     private PointF midPoint; // 中心点
     private long lastClickTime;
 
-    @ViewInject(R.id.tvH_1)
-    TextView tvH_1;
-    @ViewInject(R.id.tvH_2)
-    TextView tvH_2;
-    @ViewInject(R.id.tvH_3)
-    TextView tvH_3;
-    @ViewInject(R.id.tvH_4)
-    TextView tvH_4;
-    @ViewInject(R.id.tvH_5)
-    TextView tvH_5;
-
     @ViewInject(R.id.txtOpen)
     TextView txtOpen;
 
@@ -181,7 +170,7 @@ public class RegPicListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_list);
         x.view().inject(this);
-        ArtistCardInfoStatus();
+        ArtistCardInfo();
         startOnMertoItemViewListener();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         imageView1.setTag(0);
@@ -248,12 +237,24 @@ public class RegPicListActivity extends Activity {
                 if (v.getTag().toString().equals("1")) {
                     for (DropImageView dropImageView : mertoItemViews) {
 
-                        if (!isMoveAll()) {
-                            Toast.makeText(getBaseContext(), "您需要选择上传“＋＋”张完整清晰个人照片", Toast.LENGTH_LONG).show();
+                        if (dropImageView.getIsFinish()!=5) {
+                            Toast.makeText(getBaseContext(), "请选择上传图片到第"+(Integer.parseInt(dropImageView.getTag().toString())+1)+"张卡片", Toast.LENGTH_LONG).show();
                             return;
                         }
                     }
-                    ArtistCardInfoSave();
+                    //ArtistCardInfoSave();
+                    ll_per_info.setVisibility(View.VISIBLE);
+                    txtUpload.setVisibility(View.GONE);
+                    txtSF.setVisibility(View.GONE);
+                    txtOpen.setVisibility(View.GONE);
+
+                    Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
+                    nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
+                    txtSave.setCompoundDrawables(null, null, nav_up, null);
+                    txtSave.setText("");
+                    txtSave.setTag("0");
+                    resetOnMertoItemViewListener();
+                    txtSave.setBackground(null);
 
                 } else {
 
@@ -280,6 +281,20 @@ public class RegPicListActivity extends Activity {
 
     }
 
+    private boolean isMoveAll(){
+
+        if(!drop_index)
+        {
+            return false;
+        }
+        for (DropImageView dropImageView : mertoItemViews) {
+
+            if (dropImageView.getIsFinish()!=5) {
+               return false;
+            }
+        }
+        return true;
+    }
 
     private class TouchListener implements View.OnTouchListener {
 
@@ -423,15 +438,8 @@ public class RegPicListActivity extends Activity {
                 }
             }
         }
-
     }
 
-    private boolean isMoveAll() {
-        if (!drop_index || tvH_1.getText().toString().trim() == "" || tvH_2.getText().toString().trim() == "" || tvH_3.getText().toString().trim() == "" || tvH_4.getText().toString().trim() == "" || tvH_5.getText().toString().trim() == "" || tvH_1.getText().toString().trim() == "") {
-            return false;
-        }
-        return true;
-    }
 
     boolean isdbClick = false;
     private DropImageView.DropImageViewListener onMertoItemViewListener = new DropImageView.DropImageViewListener() {
@@ -899,27 +907,66 @@ public class RegPicListActivity extends Activity {
     }
 
     private void OffDrop(int size) {
-        if (size == 0 && tvH_1.getText().toString().length() <= 0) {
-            tvH_1.setText("1");
+        if (size == 0) {
             ((DropImageView) imageView1).setOnDropImageViewListener(onMertoItemViewListener);
-        } else if (size == 1 && tvH_2.getText().toString().length() <= 0) {
-            tvH_2.setText("1");
+        } else if (size == 1) {
             ((DropImageView) imageView2).setOnDropImageViewListener(onMertoItemViewListener);
-        } else if (size == 2 && tvH_3.getText().toString().length() <= 0) {
-            tvH_3.setText("1");
+        } else if (size == 2) {
             ((DropImageView) imageView3).setOnDropImageViewListener(onMertoItemViewListener);
-        } else if (size == 3 && tvH_4.getText().toString().length() <= 0) {
-            tvH_4.setText("1");
+        } else if (size == 3) {
             ((DropImageView) imageView4).setOnDropImageViewListener(onMertoItemViewListener);
-        } else if (size == 4 && tvH_5.getText().toString().length() <= 0) {
-            tvH_5.setText("1");
+        } else if (size == 4) {
             ((DropImageView) imageView5).setOnDropImageViewListener(onMertoItemViewListener);
         }
 
     }
 
+    private void ArtistCardInfoStatus()
+    {
+
+        RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD_STATUS, null, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccess(String data) {
+
+
+                if (data!=null) {
+
+                    if(data.equals("1")) //status
+                    {
+
+                        ll_per_info.setVisibility(View.VISIBLE);
+                        txtUpload.setVisibility(View.GONE);
+                        txtSF.setVisibility(View.GONE);
+                        txtOpen.setVisibility(View.GONE);
+
+                        Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
+                        nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
+                        txtSave.setCompoundDrawables(null, null, nav_up, null);
+                        txtSave.setText("");
+                        txtSave.setTag("0");
+                        resetOnMertoItemViewListener();
+
+                    }
+                    else {
+
+                    }
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+
+            }
+        }, String.class);
+    }
+
     private void ArtistCardInfoSave()
     {
+//
 //        Map<String,String> params = new HashMap<String,String>();
 //        params.put("type","1");
 //        ImageUtils.upFileInfo(params, new ApiCallback<Upfeile>() {
@@ -988,8 +1035,8 @@ public class RegPicListActivity extends Activity {
 
     }
 
-    //get artist card info status
-    private void ArtistCardInfoStatus() {
+    //get artist card info
+    private void ArtistCardInfo() {
 
         Map<String, String> paramsMap = new HashMap<>();
 
