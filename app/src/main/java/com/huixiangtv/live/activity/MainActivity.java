@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -26,7 +25,6 @@ import com.huixiangtv.live.model.UpgradeLevel;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
-import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.ui.UpdateApp;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -67,10 +65,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     FragmentTransaction trx = null;
 
-    LinearLayout llTitle;
-
-    @ViewInject(R.id.myTitle)
-    CommonTitle commonTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +103,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 初始化组件
      */
     private void initView() {
-        llTitle = (LinearLayout) findViewById(R.id.llTitle);
+
         tab1.setOnClickListener(this);
         tab2.setOnClickListener(this);
         tab3.setOnClickListener(this);
@@ -181,10 +175,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-    public void setTitleBar(String title) {
-        commonTitle.setTitleText(title);
-        commonTitle.backShow(View.GONE);
-    }
 
 
     private long lastTipTimeMills = 0l;
@@ -204,21 +194,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public void hideTitle(boolean bool) {
         Window window = getWindow();
-        if (bool) {
-            llTitle.setVisibility(View.GONE);
+        if(bool){
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.setStatusBarColor(getResources().getColor(R.color.mainColor));
             }
-            //window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        } else {
-            llTitle.setVisibility(View.VISIBLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }else{
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
             }
-//            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)llTitle.getLayoutParams();
-//            params.topMargin = WidgetUtil.dip2px(this,20);
-//            llTitle.setLayoutParams(params);
-            //window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         }
     }

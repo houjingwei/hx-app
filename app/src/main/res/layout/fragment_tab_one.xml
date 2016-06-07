@@ -3,12 +3,45 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/sysBg"
+        android:layout_height="wrap_content">
 
+        <LinearLayout
+
+            android:id="@+id/llTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:id="@+id/rotRl"
+                android:layout_height="@dimen/baseTitleHeight"
+                android:background="@color/colorPrimary">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    style="@style/white_bigger_style"
+                    android:text="今日推荐"/>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
     <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+        android:layout_marginTop="50dp"
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+
         android:scrollbars="none">
 
         <ScrollView
@@ -71,7 +104,7 @@
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:background="#d2d8ef"
+                        android:background="@color/sysBg"
                         android:paddingBottom="10dp" />
 
                     <!--<com.huixiangtv.live.utils.widget.LoadingView-->
@@ -100,6 +133,7 @@
         android:id="@+id/llone_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
         android:orientation="vertical">
 
         <FrameLayout

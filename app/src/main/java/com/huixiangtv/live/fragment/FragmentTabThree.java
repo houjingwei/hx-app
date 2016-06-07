@@ -7,14 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
-import com.huixiangtv.live.callback.CodeCallBack;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
@@ -27,8 +25,6 @@ import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.huixiangtv.live.common.CommonUtil.showSignAlert;
 
 
 public class FragmentTabThree extends RootFragment{
@@ -78,6 +74,7 @@ public class FragmentTabThree extends RootFragment{
 		mRootView.findViewById(R.id.llTitle).setOnClickListener(this);
 		mRootView.findViewById(R.id.llMyfans).setOnClickListener(this);
 		mRootView.findViewById(R.id.llfaned).setOnClickListener(this);
+		mRootView.findViewById(R.id.llsj).setOnClickListener(this);
 
 
 		ivPhoto = (ImageView) mRootView.findViewById(R.id.ivPhoto);
@@ -89,13 +86,7 @@ public class FragmentTabThree extends RootFragment{
 		tvLoves = (TextView) mRootView.findViewById(R.id.tvLoves);
 		llUserTop = (RelativeLayout) mRootView.findViewById(R.id.llUserTop);
 
-		rlSign = (RelativeLayout) mRootView.findViewById(R.id.rlSign);
-		rlSign.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showSignAlert(getActivity());
-			}
-		});
+
 
 	}
 
@@ -133,6 +124,9 @@ public class FragmentTabThree extends RootFragment{
 				ForwardUtils.target(getActivity(), Constant.MY_FANS,null);
 				break;
 			case R.id.llfaned:
+				ForwardUtils.target(getActivity(), Constant.FANED_ME,null);
+				break;
+			case R.id.llsj:
 				ForwardUtils.target(getActivity(), Constant.FANED_ME,null);
 				break;
 

@@ -19,19 +19,13 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.duanqu.qupai.android.camera.CameraClient;
 import com.duanqu.qupai.android.camera.CameraSurfaceController;
 import com.duanqu.qupai.android.camera.SessionRequest;
-import com.duanqu.qupai.auth.AuthService;
-import com.duanqu.qupai.auth.QupaiAuthListener;
 import com.duanqu.qupai.live.CreateLiveListener;
 import com.duanqu.qupai.live.LiveAudioStream;
 import com.duanqu.qupai.live.LiveRecorderManager;
@@ -46,7 +40,6 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.ijk.widget.media.IjkVideoView;
 import com.huixiangtv.live.model.Live;
-import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -58,13 +51,13 @@ import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
 import com.huixiangtv.live.utils.StringUtil;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
@@ -98,6 +91,8 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
     private Live live;
 
+    private int sharePlat = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,14 +113,13 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         } else {
             addRecordView();
             initStartView();
-            startPush();
+
         }
     }
 
     private void startPush() {
         if (null != Constant.accessToken){
             try {
-                //Constant.accessToken = responseMessage;
                 LiveService.getInstance().createLive(Constant.accessToken, Constant.SPACE, Constant.LIVE_URL);
                 LiveService.getInstance().setCreateLiveListener(new CreateLiveListener() {
                     @Override
@@ -135,8 +129,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
                     @Override
                     public void onCreateLiveSuccess(String pushUrl, String playUrl) {
-//                        Log.e("liveUrl", "pushUrl:" + live.getPushUrl() + "playUrl" + playUrl);
-                        startRecorder(pushUrl, playUrl);
+                        startRecorder(live.getPushUrl(), playUrl);
                     }
                 });
             } catch (Exception ex) {
@@ -241,10 +234,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 //请求开始直播
                 toLive();
                 break;
-            case R.id.btn_live_create:
 
-
-                break;
         }
     }
 
@@ -255,43 +245,32 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             return;
         }
 
-        Log.i(TAG, "Start live stream startRecord!");
-        layout_preferences.setVisibility(View.GONE);
-        btn_stop_live.setVisibility(View.VISIBLE);
-        btn_live_create.setVisibility(View.GONE);
-        edit_playUrl.setVisibility(View.VISIBLE);
-        _RemoteURL.setText(pushUrl);
-        edit_playUrl.setText(playUrl);
+        Log.i(TAG, "************** Start live stream startRecord! ************** ");
         initLiveRecord();
         //ip_address这里修改为可以直接ip推流.就近原则。建议使用httpDNS得到最优ip.直接推流.不用即直接传null
         mLiveRecorder.start(this,null);
         mIsRecording = true;
+        Log.i(TAG, "************** Starting live stream! **************");
     }
 
     private void initLiveRecord() {
         mLiveRecorder = new LiveRecorderManager();
-        mLiveRecorder.init(_RemoteURL.getText().toString(), "flv");//flv为推流文件格式，目前仅支持flv
+        mLiveRecorder.init(live.getPushUrl(), "flv");//flv为推流文件格式，目前仅支持flv
         mLiveRecorder.setNetworkThreshHold(90);//设置网络最大buffer阈值.可不设，默认为90
-
         mVideoStream = mLiveRecorder.addVideoStream();
         mVideoStream.init(384, 640, 600000, 20, 3);//参数分别为：宽、高、码率、帧数、帧数间隔；宽384为推荐设置，可解决部分手机不支持16倍数的问题
         mVideoStream.setInput(_Client);
         mVideoStream.setMirrored(_Client.isFrontCamera());
-
         mVideoStream.setBitRateRange(600000,1000000);//设置最小码率和最大码率，可根据网络状况自动调节码率.会自动调节码率
-
         mAudioStream = mLiveRecorder.addAudioStream();
         mAudioStream.init(44100, 32000);//音频采样率、码率
-
         mLiveRecorder.setOnStatusCallback(this);
-        btn_switch_beauty.setChecked(true);
     }
 
     /**
      * 请求开始直播
      */
     private ColaProgress cp = null;
-
     private void toLive() {
         final Map<String, String> params = new HashMap<String, String>();
         if (TextUtils.isEmpty(startLiveView.getEtTitle().getText().toString())) {
@@ -311,20 +290,17 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         ObjectAnimator anim = ObjectAnimator.ofFloat(startLiveView, "alpha", 0f);
         anim.setDuration(1000);
         anim.addListener(new Animator.AnimatorListener() {
-
             @Override
             public void onAnimationStart(Animator animator) {
 
             }
-
             @Override
             public void onAnimationEnd(Animator animator) {
+                sharePlat = startLiveView.platform;
                 if (null != startLiveView) {
                     flCover.removeView(startLiveView);
                 }
                 showLive(params);
-
-
             }
 
             @Override
@@ -353,7 +329,8 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                     cp.dismiss();
                 }
                 live =data;
-                //living(data);
+                startPush();
+                living(data);
                 ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);
                 animIn.setDuration(500);
                 animIn.start();
@@ -375,24 +352,8 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
 
     private SurfaceView _CameraSurface;
-    private EditText _RemoteURL;
-
     private CameraClient _Client;
-
     private CameraSurfaceController _SurfaceControl;
-
-    private LinearLayout layout_preferences;
-    private EditText frame_rate;
-    private EditText edit_rate;
-    private ToggleButton toggle_camera;
-    private ToggleButton btn_switch_beauty;
-
-    private Button btn_live_auth;
-    private Button btn_live_create;
-    private Button btn_stop_live;
-    private Button btn_live_play;
-    private Button goto_watch_play;
-    private EditText edit_playUrl;
 
     private LiveRecorderManager mLiveRecorder;
     private LiveVideoStream mVideoStream;
@@ -405,7 +366,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     private BeautyRender beautyRender;
     private void addRecordView() {
         recordView = LayoutInflater.from(LiveActivity.this).inflate(R.layout.record_view, null, false);
-        layout_preferences = (LinearLayout) recordView.findViewById(R.id.layout_preferences);
 
         _CameraSurface = (SurfaceView) recordView.findViewById(R.id.camera_surface);
         _CameraSurface.getHolder().addCallback(_CameraSurfaceCallback);
@@ -415,36 +375,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         mDetector = new GestureDetector(_CameraSurface.getContext(), mGestureDetector);
         //缩放
         mScaleDetector = new ScaleGestureDetector(_CameraSurface.getContext(), mScaleGestureListener);
-
-        frame_rate = (EditText) recordView.findViewById(R.id.frame_rate);
-        frame_rate.setText("30");
-
-        edit_rate = (EditText) recordView.findViewById(R.id.edit_rate);
-        edit_rate.setText("600000");
-
-        toggle_camera = (ToggleButton) recordView.findViewById(R.id.toggle_camera);
-        toggle_camera.setOnCheckedChangeListener(_CameraOnCheckedChange);
-
-        btn_switch_beauty = (ToggleButton) recordView.findViewById(R.id.btn_switch_beauty);
-        btn_switch_beauty.setOnCheckedChangeListener(_SwitchBeautyOnCheckedChange);
-
-        btn_live_auth = (Button) recordView.findViewById(R.id.btn_live_auth);
-        btn_live_create = (Button) recordView.findViewById(R.id.btn_live_create);
-        btn_stop_live = (Button) recordView.findViewById(R.id.btn_stop_live);
-        btn_live_play = (Button) recordView.findViewById(R.id.btn_live_play);
-        goto_watch_play = (Button) recordView.findViewById(R.id.goto_watch_play);
-
-        edit_playUrl = (EditText) recordView.findViewById(R.id.edit_playUrl);
-        _RemoteURL = (EditText) recordView.findViewById(R.id.publish_url);
-
-        btn_stop_live.setVisibility(View.GONE);
-        edit_playUrl.setVisibility(View.GONE);
-
-        btn_live_auth.setOnClickListener(this);
-        btn_live_create.setOnClickListener(this);
-        btn_live_play.setOnClickListener(this);
-        btn_stop_live.setOnClickListener(this);
-        goto_watch_play.setOnClickListener(this);
 
         _Client = new CameraClient();
         _Client.setCallback(mCameraClientCallback);//设置摄像头开启的回调
@@ -649,14 +579,9 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     }
     private void stopRecorder() {
         if (mIsRecording) {
-
             Log.i(TAG, "Stop live stream stopRecord!");
             mLiveRecorder.stop();
             mIsRecording = false;
-            layout_preferences.setVisibility(View.VISIBLE);
-            btn_stop_live.setVisibility(View.GONE);
-            btn_live_create.setVisibility(View.VISIBLE);
-            edit_playUrl.setVisibility(View.GONE);
         }
     }
     private final SurfaceHolder.Callback _CameraSurfaceCallback = new SurfaceHolder.Callback() {
@@ -664,7 +589,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         public void surfaceCreated(SurfaceHolder holder) {
 
             holder.setKeepScreenOn(true);
-
             _SurfaceControl = _Client.addSurface(holder);
             _SurfaceControl.setVisible(true);
             _SurfaceControl.setDisplayMethod(CameraSurfaceController.FullScreen | CameraSurfaceController.ScaleEnabled);
@@ -679,6 +603,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         public void surfaceDestroyed(SurfaceHolder holder) {
             _Client.removeSurface(holder);
             _SurfaceControl = null;
+            _Client = null;
         }
     };
 
@@ -686,9 +611,23 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         liveView = new LiveView(LiveActivity.this);
         liveView.setActivity(LiveActivity.this);
         liveView.setInfo(data);
-
         flCover.addView(liveView);
         liveView.loadLive(null);
+
+        if(sharePlat==1){
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+        }else if(sharePlat==2){
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QQ,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+        }else if(sharePlat==3){
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QZONE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+        }else if(sharePlat==4){
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+        }else if(sharePlat==5){
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN_CIRCLE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+        }else if(sharePlat==6){
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SINA,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+        }
+
     }
 
 
@@ -737,6 +676,15 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if(null!=recordView){
+            //停止推流
+
+            stopRecorder();
+            _Client.stopPreview();
+            _Client.onDestroy();
+
+        }
+
         flPlayView.removeAllViews();
         if (null != mVideoView) {
             if (!mVideoView.isBackgroundPlayEnabled()) {
@@ -747,6 +695,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             }
 
         }
+
     }
 
     @Override
@@ -760,6 +709,10 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 mVideoView.enterBackground();
             }
         }
+
+        //停止推流
+        stopRecorder();
+
 
     }
 

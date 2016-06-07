@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.huixiangtv.live.Api;
@@ -51,10 +50,8 @@ import com.huixiangtv.live.utils.AnimHelper;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.RongyunUtils;
-import com.huixiangtv.live.utils.ShareSdk;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
-import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.ArrayList;
@@ -660,28 +657,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     }
 
 
-    private UMShareListener umShareListener = new UMShareListener() {
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-            if(platform.name().equals("WEIXIN_FAVORITE")){
-                Toast.makeText(activity, platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(activity, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(activity,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(activity,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
-        }
-
-    };
 
     /**
      * 分享面板
@@ -691,8 +666,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void select(SHARE_MEDIA platForm) {
                 super.select(platForm);
-                ShareSdk.startShare(activity, "title", "content", platForm, "http://www.umeng.com/images/pic/social/integrated_3.png", umShareListener);
-                //CommonHelper.showTip(activity,"share to " + platForm);
+                CommonHelper.share(activity, live.getNickName()+live.getTitle(), live.getTopic()+"正在回响直播，赶紧来捧场吧", platForm, live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
             }
 
             @Override

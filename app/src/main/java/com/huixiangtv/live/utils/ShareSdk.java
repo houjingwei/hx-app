@@ -22,20 +22,18 @@ public class ShareSdk {
      * 分享通用
      * @param title
      * @param content,
-     * @param url
      * @param imgUrl
      */
-    public static void startShare(Activity activity, String title, String content, SHARE_MEDIA targetPlatform, String imgUrl,UMShareListener umShareListener) {
+    public static void startShare(Activity activity, String title, String content, SHARE_MEDIA targetPlatform, String imgUrl,String tarUrl,UMShareListener umShareListener) {
         if (TokenChecker.checkToken(activity)) {
 
 
             UMImage image = new UMImage(activity, imgUrl);
             new ShareAction(activity).setPlatform(targetPlatform).setCallback(umShareListener)
                     .withMedia(image)
-                            //.withMedia(new UMEmoji(ShareActivity.this,"http://img.newyx.net/news_img/201306/20/1371714170_1812223777.gif"))
+                    .withTargetUrl(tarUrl)
                     .withText(content)
-                            .withTitle(title)
-                            //.withTargetUrl(url)
+                    .withTitle(title)
                     .share();
 
         }
