@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -91,7 +90,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_tab_one, container, false);
         activity = (MainActivity) getActivity();
-        activity.setTitleBar(getString(R.string.today_rm));
+
         activity.hideTitle(false);
         receiver = new LiveListBroadcast();
         IntentFilter filter = new IntentFilter();

@@ -6,7 +6,6 @@
 
     <RelativeLayout
         android:id="@+id/llUserTop"
-        android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:background="@color/mainColor"
         android:layout_height="wrap_content">
@@ -14,6 +13,7 @@
 
 
         <LinearLayout
+            android:paddingTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -71,13 +71,20 @@
 
             </LinearLayout>
 
-
+            <View
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_gravity="center"
+                android:background="@color/white_01" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -89,7 +96,7 @@
                     <LinearLayout
                         android:id="@+id/llMyfans"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:clickable="true"
                         android:gravity="center"
@@ -97,7 +104,7 @@
 
                         <TextView
                             android:id="@+id/tvFans"
-                            style="@style/white_bigest_style"
+                            style="@style/white_bigger_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -110,27 +117,27 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="5dp"
+
                             android:text="粉丝" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="0.1dp"
-                        android:layout_height="40dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:background="@color/white_01" />
 
                     <LinearLayout
                         android:id="@+id/llfaned"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/haveFans"
-                            style="@style/white_bigest_style"
+                            style="@style/white_bigger_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1232" />
@@ -139,26 +146,26 @@
                             style="@style/white_small_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+
                             android:text="@string/haveFans" />
                     </LinearLayout>
                     <View
                         android:layout_width="0.1dp"
-                        android:layout_height="40dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:background="@color/white_01" />
 
                     <LinearLayout
                         android:id="@+id/llsj"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tvMySj"
-                            style="@style/white_bigest_style"
+                            style="@style/white_bigger_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1232" />
@@ -167,7 +174,7 @@
                             style="@style/white_small_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+
                             android:text="@string/labenSj" />
                     </LinearLayout>
                 </LinearLayout>
@@ -188,7 +195,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="55dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -216,7 +223,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
-                        style="@style/black_bigger_style"
+                        style="@style/black_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -261,7 +268,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
-                        style="@style/black_bigger_style"
+                        style="@style/black_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -313,7 +320,7 @@
 
             <TextView
                 android:id="@+id/settxt"
-                style="@style/black_bigger_style"
+                style="@style/black_normal_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -349,7 +356,7 @@
 
             <TextView
                 android:id="@+id/responsetxt"
-                style="@style/black_bigger_style"
+                style="@style/black_normal_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
