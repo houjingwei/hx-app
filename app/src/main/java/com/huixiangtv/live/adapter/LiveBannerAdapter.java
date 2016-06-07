@@ -11,13 +11,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Live;
-import com.huixiangtv.live.utils.CommonHelper;
-import com.huixiangtv.live.utils.ForwardUtils;
-import com.huixiangtv.live.utils.image.FastBlur;
 import com.huixiangtv.live.utils.image.ImageGlideUtils;
 
 /**

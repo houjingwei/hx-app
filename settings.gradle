@@ -1,4 +1,4 @@
-include ':app', ':libraryrefresh', ':photopicker', ':ijkplayer-java', ':ijkplayer-exo', ':PhotoPicker', ':AnimRefreshRecyclerView', ':QupaiLiveSDK-release1.0.1'
+include ':app', ':libraryrefresh', ':photopicker', ':ijkplayer-java', ':ijkplayer-exo', ':PhotoPicker', ':QupaiLiveSDK-release1.0.1'
 
 
 
