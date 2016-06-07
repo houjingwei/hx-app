@@ -4,23 +4,49 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import com.duanqu.qupai.android.camera.CameraClient;
+import com.duanqu.qupai.android.camera.CameraSurfaceController;
+import com.duanqu.qupai.android.camera.SessionRequest;
+import com.duanqu.qupai.auth.AuthService;
+import com.duanqu.qupai.auth.QupaiAuthListener;
+import com.duanqu.qupai.live.CreateLiveListener;
+import com.duanqu.qupai.live.LiveAudioStream;
+import com.duanqu.qupai.live.LiveRecorderManager;
+import com.duanqu.qupai.live.LiveService;
+import com.duanqu.qupai.live.LiveStreamStatus;
+import com.duanqu.qupai.live.LiveVideoStream;
+import com.duanqu.qupai.utils.MathUtil;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
+import com.huixiangtv.live.Beauty.BeautyRender;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.ijk.widget.media.IjkVideoView;
 import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -38,11 +64,14 @@ import org.xutils.x;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
+import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
-public class LiveActivity extends BaseBackActivity implements View.OnClickListener {
+public class LiveActivity extends BaseBackActivity implements View.OnClickListener ,LiveRecorderManager.OnStatusCallback{
 
+    private static final String TAG = "LiveActivity";
     @ViewInject(R.id.flCover)
     FrameLayout flCover;
     @ViewInject(R.id.flPlayView)
@@ -62,8 +91,12 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     private String playUrl = "";
     private String lid = "";
     private IjkVideoView mVideoView;
+    private ColaProgress  copro = null;
+
+    private View recordView;
 
 
+    private Live live;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +116,33 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             lid = getIntent().getStringExtra("lid");
             initPlayView();
         } else {
+            addRecordView();
             initStartView();
+            startPush();
+        }
+    }
+
+    private void startPush() {
+        if (null != Constant.accessToken){
+            try {
+                //Constant.accessToken = responseMessage;
+                LiveService.getInstance().createLive(Constant.accessToken, Constant.SPACE, Constant.LIVE_URL);
+                LiveService.getInstance().setCreateLiveListener(new CreateLiveListener() {
+                    @Override
+                    public void onCreateLiveError(int errorCode, String message) {
+                        Log.e("live", "errorCode:" + errorCode + "message" + message);
+                    }
+
+                    @Override
+                    public void onCreateLiveSuccess(String pushUrl, String playUrl) {
+//                        Log.e("liveUrl", "pushUrl:" + live.getPushUrl() + "playUrl" + playUrl);
+                        startRecorder(pushUrl, playUrl);
+                    }
+                });
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                Log.e(TAG, ex.getMessage().toString());
+            }
         }
     }
 
@@ -118,7 +177,28 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
         mVideoView.setVideoPath("rtmp://live.hkstv.hk.lxdns.com/live/hks");
-        mVideoView.setVideoURI(Uri.parse("rtmp://live.hkstv.hk.lxdns.com/live/hks"));
+        mVideoView.setVideoURI(Uri.parse(playUrl));
+        mVideoView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(IMediaPlayer mp) {
+                copro = ColaProgress.show(LiveActivity.this, "连线中", false, true, null);
+            }
+        });
+        mVideoView.setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(IMediaPlayer mp) {
+                CommonHelper.showTip(LiveActivity.this,"播放完成");
+            }
+        });
+        mVideoView.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(IMediaPlayer mp, int what, int extra) {
+                if(null!=copro){
+                    copro.dismiss();
+                }
+                return false;
+            }
+        });
 
         mVideoView.start();
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mVideoView.getLayoutParams();
@@ -128,7 +208,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
 
 
-        flPlayView.addView(playView);
+        flPlayView.addView(playView);   
 
 
 
@@ -161,7 +241,50 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 //请求开始直播
                 toLive();
                 break;
+            case R.id.btn_live_create:
+
+
+                break;
         }
+    }
+
+
+
+    private void startRecorder(String pushUrl,String playUrl) {
+        if (mLiveRecorder != null) {
+            return;
+        }
+
+        Log.i(TAG, "Start live stream startRecord!");
+        layout_preferences.setVisibility(View.GONE);
+        btn_stop_live.setVisibility(View.VISIBLE);
+        btn_live_create.setVisibility(View.GONE);
+        edit_playUrl.setVisibility(View.VISIBLE);
+        _RemoteURL.setText(pushUrl);
+        edit_playUrl.setText(playUrl);
+        initLiveRecord();
+        //ip_address这里修改为可以直接ip推流.就近原则。建议使用httpDNS得到最优ip.直接推流.不用即直接传null
+        mLiveRecorder.start(this,null);
+        mIsRecording = true;
+    }
+
+    private void initLiveRecord() {
+        mLiveRecorder = new LiveRecorderManager();
+        mLiveRecorder.init(_RemoteURL.getText().toString(), "flv");//flv为推流文件格式，目前仅支持flv
+        mLiveRecorder.setNetworkThreshHold(90);//设置网络最大buffer阈值.可不设，默认为90
+
+        mVideoStream = mLiveRecorder.addVideoStream();
+        mVideoStream.init(384, 640, 600000, 20, 3);//参数分别为：宽、高、码率、帧数、帧数间隔；宽384为推荐设置，可解决部分手机不支持16倍数的问题
+        mVideoStream.setInput(_Client);
+        mVideoStream.setMirrored(_Client.isFrontCamera());
+
+        mVideoStream.setBitRateRange(600000,1000000);//设置最小码率和最大码率，可根据网络状况自动调节码率.会自动调节码率
+
+        mAudioStream = mLiveRecorder.addAudioStream();
+        mAudioStream.init(44100, 32000);//音频采样率、码率
+
+        mLiveRecorder.setOnStatusCallback(this);
+        btn_switch_beauty.setChecked(true);
     }
 
     /**
@@ -229,7 +352,8 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 if (null != cp) {
                     cp.dismiss();
                 }
-                living(data);
+                live =data;
+                //living(data);
                 ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);
                 animIn.setDuration(500);
                 animIn.start();
@@ -244,6 +368,319 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             }
         }, Live.class);
     }
+
+
+
+
+
+
+    private SurfaceView _CameraSurface;
+    private EditText _RemoteURL;
+
+    private CameraClient _Client;
+
+    private CameraSurfaceController _SurfaceControl;
+
+    private LinearLayout layout_preferences;
+    private EditText frame_rate;
+    private EditText edit_rate;
+    private ToggleButton toggle_camera;
+    private ToggleButton btn_switch_beauty;
+
+    private Button btn_live_auth;
+    private Button btn_live_create;
+    private Button btn_stop_live;
+    private Button btn_live_play;
+    private Button goto_watch_play;
+    private EditText edit_playUrl;
+
+    private LiveRecorderManager mLiveRecorder;
+    private LiveVideoStream mVideoStream;
+    private LiveAudioStream mAudioStream;
+
+    private boolean mIsRecording = false;
+
+    private final float mMaxZoomLevel = 3;
+
+    private BeautyRender beautyRender;
+    private void addRecordView() {
+        recordView = LayoutInflater.from(LiveActivity.this).inflate(R.layout.record_view, null, false);
+        layout_preferences = (LinearLayout) recordView.findViewById(R.id.layout_preferences);
+
+        _CameraSurface = (SurfaceView) recordView.findViewById(R.id.camera_surface);
+        _CameraSurface.getHolder().addCallback(_CameraSurfaceCallback);
+        _CameraSurface.setOnTouchListener(mOnTouchListener);
+
+        //对焦
+        mDetector = new GestureDetector(_CameraSurface.getContext(), mGestureDetector);
+        //缩放
+        mScaleDetector = new ScaleGestureDetector(_CameraSurface.getContext(), mScaleGestureListener);
+
+        frame_rate = (EditText) recordView.findViewById(R.id.frame_rate);
+        frame_rate.setText("30");
+
+        edit_rate = (EditText) recordView.findViewById(R.id.edit_rate);
+        edit_rate.setText("600000");
+
+        toggle_camera = (ToggleButton) recordView.findViewById(R.id.toggle_camera);
+        toggle_camera.setOnCheckedChangeListener(_CameraOnCheckedChange);
+
+        btn_switch_beauty = (ToggleButton) recordView.findViewById(R.id.btn_switch_beauty);
+        btn_switch_beauty.setOnCheckedChangeListener(_SwitchBeautyOnCheckedChange);
+
+        btn_live_auth = (Button) recordView.findViewById(R.id.btn_live_auth);
+        btn_live_create = (Button) recordView.findViewById(R.id.btn_live_create);
+        btn_stop_live = (Button) recordView.findViewById(R.id.btn_stop_live);
+        btn_live_play = (Button) recordView.findViewById(R.id.btn_live_play);
+        goto_watch_play = (Button) recordView.findViewById(R.id.goto_watch_play);
+
+        edit_playUrl = (EditText) recordView.findViewById(R.id.edit_playUrl);
+        _RemoteURL = (EditText) recordView.findViewById(R.id.publish_url);
+
+        btn_stop_live.setVisibility(View.GONE);
+        edit_playUrl.setVisibility(View.GONE);
+
+        btn_live_auth.setOnClickListener(this);
+        btn_live_create.setOnClickListener(this);
+        btn_live_play.setOnClickListener(this);
+        btn_stop_live.setOnClickListener(this);
+        goto_watch_play.setOnClickListener(this);
+
+        _Client = new CameraClient();
+        _Client.setCallback(mCameraClientCallback);//设置摄像头开启的回调
+        _Client.setCameraFacing(Camera.CameraInfo.CAMERA_FACING_FRONT);//设置摄像头为前置摄像头
+        _Client.setContentSize(384, 640);//设置摄像头分辨率，这里建议与VideoStream设置同样尺寸，否则会产生黑边。VideoStream设置参考【视频流设置】
+
+        //初始化美颜
+        beautyRender = BeautyRender.getInstance();
+        beautyRender.initRenderer(getAssets(),_Client);
+        beautyRender.switchBeauty(true);
+
+        flPlayView.addView(recordView);
+        if(null!=recordView){
+            //开始预览
+            _Client.startPreview();
+            if (_SurfaceControl != null) {
+                _SurfaceControl.setVisible(true);
+            }
+        }
+
+
+    }
+
+
+    private ScaleGestureDetector.OnScaleGestureListener mScaleGestureListener = new ScaleGestureDetector.OnScaleGestureListener() {
+        @Override
+        public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
+
+            float zoom = _Client.zoomRatio * scaleGestureDetector.getScaleFactor();
+            _Client.setZoom(MathUtil.clamp(zoom, 1, mMaxZoomLevel), null);
+
+            return true;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+
+        }
+    };
+
+    private GestureDetector mDetector;
+    private ScaleGestureDetector mScaleDetector;
+    private GestureDetector.OnGestureListener mGestureDetector = new GestureDetector.OnGestureListener() {
+        @Override
+        public boolean onDown(MotionEvent motionEvent) {
+            return false;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent motionEvent) {
+            float x = motionEvent.getX() / _SurfaceControl.getWidth();
+            float y = motionEvent.getY() / _SurfaceControl.getHeight();
+
+            if (!_Client.autoFocus(x, y, _SurfaceControl)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+            return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+            return false;
+        }
+    };
+
+
+    private View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            mDetector.onTouchEvent(motionEvent);
+            mScaleDetector.onTouchEvent(motionEvent);
+            return true;
+        }
+    };
+    private final CompoundButton.OnCheckedChangeListener _SwitchBeautyOnCheckedChange =
+            new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    beautyRender.switchBeauty(isChecked);
+                }
+            };
+
+    private final CompoundButton.OnCheckedChangeListener _CameraOnCheckedChange =
+            new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (_Client != null && _Client.hasSession()) {
+                        if (mIsRecording) {
+                            mVideoStream.stopMediaCodec();
+                        }
+                        _Client.nextCamera();
+                        if (mIsRecording) {
+                            mVideoStream.setMirrored(_Client.isFrontCamera());
+                            mVideoStream.startMediaCodec();
+                        }
+                    }
+                }
+            };
+
+    private CameraClient.Callback mCameraClientCallback = new CameraClient.Callback() {
+        @Override
+        public void onDeviceAttach(CameraClient client) {
+            //摄像头开启成功
+            SessionRequest request = client.getSessionRequest();
+            request.mExposureCompensation = client.getCharacteristics().getMaxExposureCompensation() / 3;
+            request.previewFrameRate = 20;
+        }
+
+        @Override
+        public void onSessionAttach(CameraClient client) {
+            //成功开启预览
+            _Client.autoFocus(0.5f, 0.5f, _SurfaceControl);
+        }
+
+        @Override
+        public void onCaptureUpdate(CameraClient client) {
+            //暂时用不到
+        }
+
+        @Override
+        public void onSessionDetach(CameraClient client) {
+            //关闭预览成功
+        }
+
+        @Override
+        public void onDeviceDetach(CameraClient client) {
+            //关闭摄像头成功
+        }
+    };
+
+
+    @Override
+    public void onNetworkStatusChange(int status) {
+        switch (status) {
+            case LiveStreamStatus.CONNECTION_START:
+                Log.i(TAG, "Start live stream connection!");
+                break;
+            case LiveStreamStatus.CONNECTION_ESTABLISHED:
+                Log.i(TAG, "Live stream connection is established!");
+                break;
+            case LiveStreamStatus.CONNECTION_CLOSED:
+                Log.i(TAG, "Live stream connection is closed!");
+                mLiveRecorder.release();
+                mLiveRecorder = null;
+                break;
+            case LiveStreamStatus.CONNECTION_ERROR_IO:
+            case LiveStreamStatus.CONNECTION_ERROR_MEM:
+            case LiveStreamStatus.CONNECTION_ERROR_TIMEOUT:
+            case LiveStreamStatus.CONNECTION_ERROR_BROKENPIPE:
+            case LiveStreamStatus.CONNECTION_ERROR_INVALIDARGUMENT:
+            case LiveStreamStatus.CONNECTION_ERROR_NETWORKUNREACHABLE:
+                Log.i(TAG, "Live stream connection error-->" + status);
+                if (mIsRecording) {
+                    mLiveRecorder.reconnect(null);
+                } else {
+                    mLiveRecorder.release();
+                    mLiveRecorder = null;
+                }
+                break;
+            case LiveStreamStatus.CONNECTION_ERROR_AUTH:
+                Log.i(TAG, "Live stream connection auth failure!");
+                if (mIsRecording) {
+                    stopRecorder();
+                }
+                mLiveRecorder.release();
+                mLiveRecorder = null;
+
+                /* You can fetch another auth and start new live recorder here */
+                break;
+            default:
+                Log.i(TAG, "Live stream connection unexpected error-->" + status);
+                if (mIsRecording) {
+                    mLiveRecorder.reconnect(null);
+                } else {
+                    stopRecorder();
+                    mLiveRecorder.release();
+                    mLiveRecorder = null;
+                }
+                break;
+        }
+    }
+    private void stopRecorder() {
+        if (mIsRecording) {
+
+            Log.i(TAG, "Stop live stream stopRecord!");
+            mLiveRecorder.stop();
+            mIsRecording = false;
+            layout_preferences.setVisibility(View.VISIBLE);
+            btn_stop_live.setVisibility(View.GONE);
+            btn_live_create.setVisibility(View.VISIBLE);
+            edit_playUrl.setVisibility(View.GONE);
+        }
+    }
+    private final SurfaceHolder.Callback _CameraSurfaceCallback = new SurfaceHolder.Callback() {
+        @Override
+        public void surfaceCreated(SurfaceHolder holder) {
+
+            holder.setKeepScreenOn(true);
+
+            _SurfaceControl = _Client.addSurface(holder);
+            _SurfaceControl.setVisible(true);
+            _SurfaceControl.setDisplayMethod(CameraSurfaceController.FullScreen | CameraSurfaceController.ScaleEnabled);
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            _SurfaceControl.setResolution(width, height);
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder holder) {
+            _Client.removeSurface(holder);
+            _SurfaceControl = null;
+        }
+    };
 
     private void living(Live data) {
         liveView = new LiveView(LiveActivity.this);
@@ -332,5 +769,10 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         if (null != mVideoView) {
             mVideoView.start();
         }
+
+
+
     }
+
+
 }

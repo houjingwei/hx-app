@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:orientation="vertical">
+
+    <SurfaceView
+        android:id="@+id/camera_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_preferences"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/publish_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="rtmp://host:port" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/frame_rate"/>
+
+                <EditText
+                    android:id="@+id/frame_rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/defalut_frame_rate"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tv_rate" />
+
+                <EditText
+                    android:id="@+id/edit_rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/defalut_rate"
+                    android:numeric="integer" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/edit_playUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_live_auth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/live_auth" />
+
+        <Button
+            android:id="@+id/btn_live_create"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/live_create" />
+
+        <Button
+            android:id="@+id/btn_stop_live"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/live_stop" />
+
+        <Button
+            android:id="@+id/btn_live_play"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/live_play" />
+
+        <Button
+            android:id="@+id/goto_watch_play"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/goto_watch_live"/>
+
+        <ToggleButton
+            android:id="@+id/toggle_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textOff="@string/app_camera"
+            android:textOn="@string/app_camera" />
+
+        <ToggleButton
+            android:id="@+id/btn_switch_beauty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textOff="@string/toggle_switch_beauty_on"
+            android:textOn="@string/toggle_switch_beauty_off" />
+    </LinearLayout>
+
+</FrameLayout>

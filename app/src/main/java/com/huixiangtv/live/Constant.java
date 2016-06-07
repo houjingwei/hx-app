@@ -1,5 +1,7 @@
 package com.huixiangtv.live;
 
+import java.util.UUID;
+
 /**
  * Created by hjw on 16/5/5.
  */
@@ -33,6 +35,7 @@ public class Constant {
     public static final String FANED_ME = BASE_PRE+"faned_me";
 
 
+
     public static String MY_LOVES = BASE_PRE+"my_loves";
 
 
@@ -64,4 +67,10 @@ public class Constant {
 
     public static final String PIC_LIST = BASE_PRE +"pic_list";
 
+
+    public static final String APP_KEY = "2088b26127ebe67";
+    public static final String APP_SECRET = "b898e3010acf4299a7a5d3ec6e99bb2c";
+    public static String accessToken;//accessToken 通过调用授权接口得到
+    public static final String LIVE_URL="http://huixiangtv.s.qupai.me";
+    public static final String SPACE = UUID.randomUUID().toString().replace("-",""); //存储目录 建议使用uid cid之类的信息
 }
