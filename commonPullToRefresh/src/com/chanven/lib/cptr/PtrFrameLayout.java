@@ -1044,7 +1044,7 @@ public class PtrFrameLayout extends ViewGroup {
     private boolean isAutoLoadMore = true;
     private boolean isLoadMoreEnable = false;
     private boolean hasInitLoadMoreView = false;
-    private ILoadViewMoreFactory loadViewFactory = new DefaultLoadMoreFooter();
+    private ILoadViewMoreFactory loadViewFactory = new CustomFooter();
     private ListViewHandler listViewHandler = new ListViewHandler();
     private RecyclerViewHandler recyclerViewHandler = new RecyclerViewHandler();
     private GridViewHandler gridViewHandler = new GridViewHandler();

@@ -1,12 +1,14 @@
 package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
@@ -28,6 +30,7 @@ import org.xutils.x;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.concurrent.RunnableFuture;
 
 public class FanedMeActivity extends BaseBackActivity   {
 
@@ -38,17 +41,12 @@ public class FanedMeActivity extends BaseBackActivity   {
     CommonTitle commonTitle;
 
     PtrClassicFrameLayout ptrClassicFrameLayout;
-    RecyclerView mRecyclerView;
+    ListView mListView;
 
     List<Fans> fansList ;
 
     int page = 1;
 
-
-
-
-    private PullToRefreshListView mPullToRefreshScrollView;
-    private ListView mDataLv;
 
     MyFansAdapter adapter;
 
@@ -66,38 +64,48 @@ public class FanedMeActivity extends BaseBackActivity   {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.myconcern));
 
-        ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_recycler_view_frame);
-
-        mRecyclerView = (RecyclerView) this.findViewById(R.id.test_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        mRecyclerView.setHasFixedSize(true);
         adapter = new MyFansAdapter(this);
-        mRecyclerView.setAdapter(adapter);
-        ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                page=1;
-                loadData(true);
-                //ptrClassicFrameLayout.setLoadMoreEnable(true);
-            }
-        });
-        ptrClassicFrameLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void loadMore() {
-                page++;
-                loadData(false);
-            }
-        });
-
-
+        ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
+        mListView = (ListView) this.findViewById(R.id.test_list_view);
+        mListView.setAdapter(adapter);
         ptrClassicFrameLayout.postDelayed(new Runnable() {
 
             @Override
             public void run() {
                 ptrClassicFrameLayout.autoRefresh(true);
             }
-        }, 150);
+        }, 10);
+        ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page=1;
+                        loadData(true);
+                        ptrClassicFrameLayout.loadMoreComplete(true);
+                        page++;
+                    }
+                }, 1500);
+
+            }
+        });
+
+        ptrClassicFrameLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+
+            @Override
+            public void loadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page++;
+                        loadData(false);
+                    }
+                }, 1500);
+
+
+            }
+
+        });
 
 
 
@@ -109,7 +117,7 @@ public class FanedMeActivity extends BaseBackActivity   {
         adapter.addList(fansList);
         if(bool) {
             ptrClassicFrameLayout.refreshComplete();
-            //ptrClassicFrameLayout.setLoadMoreEnable(true);
+            ptrClassicFrameLayout.setLoadMoreEnable(true);
         }else{
             ptrClassicFrameLayout.loadMoreComplete(true);
         }
@@ -118,6 +126,7 @@ public class FanedMeActivity extends BaseBackActivity   {
     }
 
     public List<Fans> getData() {
+
         List<Fans> ls = null;
         try {
             InputStreamReader inputStreamReader = new InputStreamReader(getAssets().open("myFans.json"), "UTF-8");
