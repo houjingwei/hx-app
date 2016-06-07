@@ -13,6 +13,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
@@ -339,8 +340,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                 if (intent.getStringExtra("type").toString().equals("0")) {
                     mRefreshLayout.setVisibility(View.GONE);
                     llone_viewpager.setVisibility(View.VISIBLE);
-
-                    activity.hideTitle(true);
+                    activity.hideTitle(false);
                 } else if (intent.getStringExtra("type").toString().equals("1")) {
                     llone_viewpager.setVisibility(View.GONE);
                     mRefreshLayout.setVisibility(View.VISIBLE);

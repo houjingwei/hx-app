@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\build\\intermediates\\res\\merged\\release\\layout\\cube_ptr_classic_default_header.xml",
+        "source": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\layout\\cube_ptr_classic_default_header.xml"
+    },
+    {
+        "merged": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\build\\intermediates\\res\\merged\\release\\layout\\custom_header.xml",
+        "source": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\layout\\custom_header.xml"
+    },
+    {
+        "merged": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\build\\intermediates\\res\\merged\\release\\layout\\loadmore_default_footer.xml",
+        "source": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\layout\\loadmore_default_footer.xml"
+    },
+    {
+        "merged": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\build\\intermediates\\res\\merged\\release\\layout\\custom_footer.xml",
+        "source": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\layout\\custom_footer.xml"
+    }
+]

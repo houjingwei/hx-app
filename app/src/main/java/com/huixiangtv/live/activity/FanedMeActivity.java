@@ -1,12 +1,18 @@
 package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.alibaba.fastjson.JSON;
+import com.chanven.lib.cptr.PtrClassicFrameLayout;
+import com.chanven.lib.cptr.PtrDefaultHandler;
+import com.chanven.lib.cptr.PtrFrameLayout;
+import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
@@ -30,6 +36,9 @@ public class FanedMeActivity extends BaseBackActivity   {
 
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
+
+    PtrClassicFrameLayout ptrClassicFrameLayout;
+    RecyclerView mRecyclerView;
 
     List<Fans> fansList ;
 
@@ -57,40 +66,55 @@ public class FanedMeActivity extends BaseBackActivity   {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.myconcern));
 
-        mPullToRefreshScrollView = (PullToRefreshListView) findViewById(R.id.refreshLayout);
-        mPullToRefreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
-        mDataLv = (ListView) findViewById(R.id.data);
-        View view = LayoutInflater.from(FanedMeActivity.this).inflate(R.layout.search_view, null, false);
-        mDataLv.addHeaderView(view);
+        ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_recycler_view_frame);
+
+        mRecyclerView = (RecyclerView) this.findViewById(R.id.test_recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        mRecyclerView.setHasFixedSize(true);
         adapter = new MyFansAdapter(this);
-        //refreshLayout.
-        mPullToRefreshScrollView.setAdapter(adapter);
-
-
-        loadData();
-
-
-        mPullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+        mRecyclerView.setAdapter(adapter);
+        ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                page = 1;
-                loadData();
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                page=1;
+                loadData(true);
+                //ptrClassicFrameLayout.setLoadMoreEnable(true);
             }
-
+        });
+        ptrClassicFrameLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                page ++;
-                loadData();
+            public void loadMore() {
+                page++;
+                loadData(false);
             }
         });
 
+
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                ptrClassicFrameLayout.autoRefresh(true);
+            }
+        }, 150);
+
+
+
+
     }
 
-    private void loadData() {
+    private void loadData(boolean bool) {
         fansList = getData();
         adapter.addList(fansList);
-        //mPullToRefreshScrollView.setc(FanedMeActivity.this);
-        mPullToRefreshScrollView.onRefreshComplete();
+        if(bool) {
+            ptrClassicFrameLayout.refreshComplete();
+            //ptrClassicFrameLayout.setLoadMoreEnable(true);
+        }else{
+            ptrClassicFrameLayout.loadMoreComplete(true);
+        }
+
+
     }
 
     public List<Fans> getData() {
