@@ -114,6 +114,9 @@ public class FanedMeActivity extends BaseBackActivity   {
 
     private void loadData(boolean bool) {
         fansList = getData();
+        if(page==1){
+            adapter.clear();
+        }
         adapter.addList(fansList);
         if(bool) {
             ptrClassicFrameLayout.refreshComplete();
