@@ -33,3 +33,11 @@
 -keepattributes Exceptions, Signature, InnerClasses
 -keepattributes SourceFile, LineNumberTable
 #APM集成混淆 END
+
+
+-keepattributes Signature,InnerClasses,EnclosingMethod
+-dontwarn com.duanqu.qupai.media.**
+-dontwarn com.google.auto.common.**
+-dontwarn com.google.auto.factory.processor.**
+
+-dontwarn com.google.common.cache.** -dontwarn com.google.common.primitives.** -dontwarn com.duanqu.qupai.orch.android.** -dontwarn com.duanqu.qupai.utils.** -dontwarn com.google.common.** -keep class com.duanqu.** -keepclassmembers class com.duanqu.** { *; }

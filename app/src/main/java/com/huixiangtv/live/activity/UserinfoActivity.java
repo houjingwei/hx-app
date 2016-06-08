@@ -1,10 +1,13 @@
 package com.huixiangtv.live.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,7 @@ import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
@@ -33,12 +37,7 @@ import com.huixiangtv.live.utils.ShowUtils;
 import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.image.PictureHelper;
-import com.tencent.upload.Const;
-import com.tencent.upload.UploadManager;
-import com.tencent.upload.task.ITask;
-import com.tencent.upload.task.IUploadTaskListener;
 import com.tencent.upload.task.data.FileInfo;
-import com.tencent.upload.task.impl.FileUploadTask;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -71,6 +70,9 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     PictureHelper pictureHelper;
 
     String tagStr = "";
+    String photo = null;
+
+    ColaProgress cp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,8 +190,9 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         if(TextUtils.isEmpty(etNickName.getText().toString())){
             ShowUtils.showTip(UserinfoActivity.this, "请设置昵称~");
         }
+        cp = ColaProgress.show(UserinfoActivity.this, "正在保存", false, true, null);
         Map<String,String> params = new HashMap<String,String>();
-        params.put("photo","");
+        params.put("photo",photo);
         params.put("nickName",etNickName.getText().toString());
         params.put("sex",tvSex.getText().toString().equals("女")?0+"":1+"");
         params.put("signature", "");
@@ -198,6 +201,9 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             @Override
             public void onSuccess(User data) {
                 super.onSuccess(data);
+                if(null!=cp){
+                    cp.dismiss();
+                }
                 App.saveLoginUser(data);
                 CommonHelper.showTip(UserinfoActivity.this, "用户信息保存成功");
                 new Handler().postDelayed(new Runnable() {
@@ -212,6 +218,9 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 CommonHelper.showTip(UserinfoActivity.this, e.getMessage());
+                if(null!=cp){
+                    cp.dismiss();
+                }
             }
         }, User.class);
 
@@ -229,9 +238,27 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
                     pictureHelper.selectFrom(PictureHelper.FROM_FILE);
                 } else {
                     pictureHelper.selectFrom(PictureHelper.FROM_CAMERA);
+
+                    if ((ContextCompat.checkSelfPermission(UserinfoActivity.this, "android.permission.CAMERA"))!= PackageManager.PERMISSION_GRANTED ){
+                        ActivityCompat.requestPermissions(UserinfoActivity.this,new String[]{"android.permission.CAMERA"},5);
+                    }else{
+                        pictureHelper.selectFrom(PictureHelper.FROM_CAMERA);
+                    }
+
+
                 }
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 5:
+                pictureHelper.selectFrom(PictureHelper.FROM_CAMERA);
+                break;
+
+        }
     }
 
     //选择性别。
@@ -256,15 +283,21 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             if (!finished) {
                 return;
             }
+            ImageUtils.display(ivPhoto,picUri);
+            cp = ColaProgress.show(UserinfoActivity.this, "头像上传中", false, true, null);
             Map<String,String> params = new HashMap<String,String>();
             params.put("type","1");
             ImageUtils.upFileInfo(params,new ApiCallback<Upfeile>() {
                 @Override
                 public void onSuccess(Upfeile data) {
-                    ImageUtils.upFile(UserinfoActivity.this,data, picUri, new ApiCallback<Upfeile>() {
+                    ImageUtils.upFile(UserinfoActivity.this,data, picUri, new ApiCallback<FileInfo>() {
                         @Override
-                        public void onSuccess(Upfeile data) {
-
+                        public void onSuccess(FileInfo file) {
+                            photo = file.url;
+                            if(null!=cp){
+                                cp.dismiss();
+                            }
+                            CommonHelper.showTip(UserinfoActivity.this,"头像上传成功");
                         }
                     });
                 }

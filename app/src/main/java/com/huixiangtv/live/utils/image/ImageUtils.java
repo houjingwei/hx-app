@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
-
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Upfeile;
 import com.huixiangtv.live.service.ApiCallback;
@@ -39,7 +38,6 @@ import com.tencent.upload.task.data.FileInfo;
 import com.tencent.upload.task.impl.FileUploadTask;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

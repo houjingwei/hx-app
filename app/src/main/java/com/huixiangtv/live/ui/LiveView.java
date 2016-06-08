@@ -666,7 +666,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void select(SHARE_MEDIA platForm) {
                 super.select(platForm);
-                CommonHelper.share(activity, live.getNickName()+live.getTitle(), live.getTopic()+"正在回响直播，赶紧来捧场吧", platForm, live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+                CommonHelper.share(activity, live.getNickName()+live.getTitle(), live.getTopic()+"正在回响直播，赶紧来捧场吧", platForm, live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(), null);
             }
 
             @Override

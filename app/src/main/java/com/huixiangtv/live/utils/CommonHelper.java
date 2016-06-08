@@ -18,6 +18,7 @@ import android.widget.PopupWindow;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.LoginWindow;
 import com.huixiangtv.live.pop.ShareWindow;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.ui.ColaProgressTip;
 import com.umeng.socialize.UMShareListener;
@@ -179,11 +180,14 @@ public class CommonHelper {
 
 
 
-    public static void share(final Activity activity, String title, String content, SHARE_MEDIA platForm, String url,String tarUrl) {
+    public static void share(final Activity activity, String title, String content, SHARE_MEDIA platForm, String url, String tarUrl, final ApiCallback back) {
         ShareSdk.startShare(activity, title, content, platForm, url, tarUrl,new UMShareListener() {
             @Override
             public void onResult(SHARE_MEDIA platform) {
                 showTip(activity,"分享成功");
+                if(null!=back){
+                    back.onSuccess("ok");
+                }
             }
 
             @Override
