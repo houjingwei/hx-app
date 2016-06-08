@@ -6,38 +6,31 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
-
-import com.alibaba.fastjson.JSON;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.MyFansAdapter;
-import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.EnumUpdateTag;
-import com.huixiangtv.live.utils.widget.pullView.PullToRefreshLayout;
-
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FanedMeActivity extends BaseBackActivity {
+/**
+ * Created by Stone on 16/6/8.
+ */
+public class PopularityActivity extends BaseBackActivity {
 
 
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
-
-    List<Fans> fansList;
 
     int page = 1;
 
@@ -64,7 +57,7 @@ public class FanedMeActivity extends BaseBackActivity {
         mPullToRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.refreshLayout);
         mPullToRefreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
         mDataLv = (ListView) findViewById(R.id.data);
-        View view = LayoutInflater.from(FanedMeActivity.this).inflate(R.layout.search_view, null, false);
+        View view = LayoutInflater.from(PopularityActivity.this).inflate(R.layout.search_view, null, false);
         //mDataLv.addHeaderView(view);
         adapter = new MyFansAdapter(this);
         mDataLv.setAdapter(adapter);
@@ -87,30 +80,6 @@ public class FanedMeActivity extends BaseBackActivity {
         loadFanedMe(EnumUpdateTag.UPDATE);
     }
 
-    private void loadData() {
-        fansList = getData();
-        adapter.addList(fansList);
-    }
-
-    public List<Fans> getData() {
-        List<Fans> ls = null;
-        try {
-            InputStreamReader inputStreamReader = new InputStreamReader(getAssets().open("myFans.json"), "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-            bufferedReader.close();
-            inputStreamReader.close();
-            ls = JSON.parseArray(stringBuilder.toString(), Fans.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ls;
-    }
-
 
     private void loadFanedMe(final EnumUpdateTag enumUpdateTag){
 
@@ -119,7 +88,7 @@ public class FanedMeActivity extends BaseBackActivity {
         paramsMap.put("pageSize", "120");
 
 
-        RequestUtils.sendPostRequest(Api.GETCOLLECTARTIST, paramsMap, new ResponseCallBack<Fans>() {
+        RequestUtils.sendPostRequest(Api.GETPOPULARITYRANK, paramsMap, new ResponseCallBack<Fans>() {
             @Override
             public void onSuccessList(List<Fans> data) {
 
@@ -130,7 +99,7 @@ public class FanedMeActivity extends BaseBackActivity {
                     }
                     Long totalCount = Long.parseLong(data.size() + "");
                     if (0 == totalCount) {
-                        Toast.makeText(FanedMeActivity.this, "已经没有更多内容了", Toast.LENGTH_LONG).show();
+                        Toast.makeText(PopularityActivity.this, "已经没有更多内容了", Toast.LENGTH_LONG).show();
                     } else {
                         adapter = new MyFansAdapter();
                         mDataLv.setAdapter(adapter);
@@ -144,7 +113,7 @@ public class FanedMeActivity extends BaseBackActivity {
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 mPullToRefreshScrollView.onRefreshComplete();
-                CommonHelper.showTip(FanedMeActivity.this, e.getMessage());
+                CommonHelper.showTip(PopularityActivity.this, e.getMessage());
             }
         }, Fans.class);
     }

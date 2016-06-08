@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -501,4 +502,23 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
 
 
+    public class ProgressThreadPicAsyncTask extends AsyncTask<Integer, Integer, String> {
+
+
+        @Override
+        protected String doInBackground(Integer... params) {
+             return "";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+
+    }
 }

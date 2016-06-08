@@ -1,5 +1,7 @@
 package com.huixiangtv.live.activity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -264,14 +266,18 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
     }
 
 
-    private void setTVBg(View view, String tag, RelativeLayout rootView) {
+    private void setTVBg(TextView view, String tag, RelativeLayout rootView) {
         if (tag == "1") {
             rootView.setClickable(false);
             view.setClickable(false);
-            view.setBackgroundResource(R.drawable.set_bind);
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_bind));
+            view.setTextAppearance(SettingActivity.this,R.style.white_normal_style);
         } else {
-            view.setBackgroundResource(R.drawable.set_qqbind);
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_qqbind));
+            view.setTextAppearance(SettingActivity.this,R.style.black_normal_style);
+
         }
+        view.setText(R.string.bind);
     }
 
 

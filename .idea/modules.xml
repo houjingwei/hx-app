@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-<<<<<<< HEAD
-=======
-      <module fileurl="file://$PROJECT_DIR$/AnimRefreshRecyclerView/AnimRefreshRecyclerView.iml" filepath="$PROJECT_DIR$/AnimRefreshRecyclerView/AnimRefreshRecyclerView.iml" />
->>>>>>> ce0b7147dfc52a8f1d3578aa187e336bfa4fac3f
       <module fileurl="file://$PROJECT_DIR$/QupaiLiveSDK-release1.0.1/QupaiLiveSDK-release1.0.1.iml" filepath="$PROJECT_DIR$/QupaiLiveSDK-release1.0.1/QupaiLiveSDK-release1.0.1.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/huixiang-android.iml" filepath="$PROJECT_DIR$/huixiang-android.iml" />

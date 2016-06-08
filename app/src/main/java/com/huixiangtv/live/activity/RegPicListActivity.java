@@ -12,6 +12,7 @@ import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -68,8 +69,10 @@ import org.xutils.x;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -237,24 +240,13 @@ public class RegPicListActivity extends Activity {
                 if (v.getTag().toString().equals("1")) {
                     for (DropImageView dropImageView : mertoItemViews) {
 
-                        if (dropImageView.getIsFinish()!=5) {
-                            Toast.makeText(getBaseContext(), "请选择上传图片到第"+(Integer.parseInt(dropImageView.getTag().toString())+1)+"张卡片", Toast.LENGTH_LONG).show();
+                        if (dropImageView.getIsFinish() != 5) {
+                            Toast.makeText(getBaseContext(), "请选择上传图片到第" + (Integer.parseInt(dropImageView.getTag().toString()) + 1) + "张卡片", Toast.LENGTH_LONG).show();
                             return;
                         }
                     }
-                    //ArtistCardInfoSave();
-                    ll_per_info.setVisibility(View.VISIBLE);
-                    txtUpload.setVisibility(View.GONE);
-                    txtSF.setVisibility(View.GONE);
-                    txtOpen.setVisibility(View.GONE);
+                    ArtistCardInfoSave();
 
-                    Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
-                    nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
-                    txtSave.setCompoundDrawables(null, null, nav_up, null);
-                    txtSave.setText("");
-                    txtSave.setTag("0");
-                    resetOnMertoItemViewListener();
-                    txtSave.setBackground(null);
 
                 } else {
 
@@ -281,16 +273,15 @@ public class RegPicListActivity extends Activity {
 
     }
 
-    private boolean isMoveAll(){
+    private boolean isMoveAll() {
 
-        if(!drop_index)
-        {
+        if (!drop_index) {
             return false;
         }
         for (DropImageView dropImageView : mertoItemViews) {
 
-            if (dropImageView.getIsFinish()!=5) {
-               return false;
+            if (dropImageView.getIsFinish() != 5) {
+                return false;
             }
         }
         return true;
@@ -732,6 +723,31 @@ public class RegPicListActivity extends Activity {
     }
 
 
+    private String WriteFileImgLoc(Bitmap bm, int i) throws IOException {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date date = new Date(System.currentTimeMillis());
+        String filename = format.format(date) + "" + i;
+        //创建File对象用于存储拍照的图片 SD卡根目录
+        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);//""+Environment.getExternalStorageDirectory()
+        File outputImage = new File(path, "cj" + filename + ".jpg");
+        fos = new FileOutputStream(outputImage);
+        try {
+            if (outputImage.exists()) {
+                outputImage.delete();
+            }
+            outputImage.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String local = outputImage.getAbsolutePath();
+        fos = new FileOutputStream(outputImage);
+        bm.compress(Bitmap.CompressFormat.JPEG, 75, fos);// (0 -// 100)压缩文件
+        fos.flush();
+        fos.close();
+        return local;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
@@ -921,17 +937,16 @@ public class RegPicListActivity extends Activity {
 
     }
 
-    private void ArtistCardInfoStatus()
-    {
+    private void ArtistCardInfoStatus() {
 
         RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD_STATUS, null, new ResponseCallBack<String>() {
             @Override
             public void onSuccess(String data) {
 
 
-                if (data!=null) {
+                if (data != null) {
 
-                    if(data.equals("1")) //status
+                    if (data.equals("1")) //status
                     {
 
                         ll_per_info.setVisibility(View.VISIBLE);
@@ -946,8 +961,7 @@ public class RegPicListActivity extends Activity {
                         txtSave.setTag("0");
                         resetOnMertoItemViewListener();
 
-                    }
-                    else {
+                    } else {
 
                     }
 
@@ -964,74 +978,85 @@ public class RegPicListActivity extends Activity {
         }, String.class);
     }
 
-    private void ArtistCardInfoSave()
-    {
-//
-//        Map<String,String> params = new HashMap<String,String>();
-//        params.put("type","1");
-//        ImageUtils.upFileInfo(params, new ApiCallback<Upfeile>() {
-//            @Override
-//            public void onSuccess(Upfeile data) {
-//                ImageUtils.upFile(RegPicListActivity.this, data, picUri, new ApiCallback<Upfeile>() {
-//                    @Override
-//                    public void onSuccess(Upfeile data) {
-//
-//                    }
-//                });
-//            }
-//        });
+    private void ArtistCardInfoSave() {
 
-        Map<String, String> paramsMap = new HashMap<>();
+        ArrayList<String> imgurl = new ArrayList<String>();
+        try {
 
-        String token = App.getPreferencesValue("token");
-        String uid = App.getPreferencesValue("uid");
-        paramsMap.put("token", token);
-        paramsMap.put("uid", uid);
-        paramsMap.put("bust",user.getBust());
-        paramsMap.put("waist",user.getWaist());
-        paramsMap.put("hip",user.getHip());
-        paramsMap.put("height",user.getHeight());
-        paramsMap.put("weight",user.getWeight());
-        paramsMap.put("Img1",user.getImg1());
-        paramsMap.put("Img1",user.getImg2());
-        paramsMap.put("Img1",user.getImg3());
-        paramsMap.put("Img1",user.getImg4());
-        paramsMap.put("Img1",user.getImg5());
+            for (ImageView iv : mertoItemViews) {
+                imgurl.add(WriteFileImgLoc(bm, Integer.parseInt(iv.getTag().toString())));
+            }
+        } catch (Exception ex) {
 
-        RequestUtils.sendPostRequest(Api.SET_ARTIST_CARD_INFO, paramsMap, new ResponseCallBack<User>() {
-            @Override
-            public void onSuccessList(List<User> data) {
+        }
 
 
-                if (data != null && data.size() > 0) {
-                    user = data.get(0);
-
-
-                    ll_per_info.setVisibility(View.VISIBLE);
-                    txtUpload.setVisibility(View.GONE);
-                    txtSF.setVisibility(View.GONE);
-                    txtOpen.setVisibility(View.GONE);
-
-                    Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
-                    nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
-                    txtSave.setCompoundDrawables(null, null, nav_up, null);
-                    txtSave.setText("");
-                    txtSave.setTag("0");
-                    resetOnMertoItemViewListener();
-                    txtSave.setBackground(null);
-
-
+        for (final String picUri : imgurl) {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("type", "1");
+            ImageUtils.upFileInfo(params, new ApiCallback<Upfeile>() {
+                @Override
+                public void onSuccess(Upfeile data) {
+                    ImageUtils.upFile(RegPicListActivity.this, data, picUri, new ApiCallback<Upfeile>() {
+                        @Override
+                        public void onSuccess(Upfeile data) {
+                                String imgurl = data.getFileName();
+                        }
+                    });
                 }
-
-
-            }
-
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-
-            }
-        }, User.class);
+            });
+        }
+//        Map<String, String> paramsMap = new HashMap<>();
+//
+//        String token = App.getPreferencesValue("token");
+//        String uid = App.getPreferencesValue("uid");
+//        paramsMap.put("token", token);
+//        paramsMap.put("uid", uid);
+//        paramsMap.put("bust",user.getBust());
+//        paramsMap.put("waist",user.getWaist());
+//        paramsMap.put("hip",user.getHip());
+//        paramsMap.put("height",user.getHeight());
+//        paramsMap.put("weight",user.getWeight());
+//        paramsMap.put("Img1",user.getImg1());
+//        paramsMap.put("Img1",user.getImg2());
+//        paramsMap.put("Img1",user.getImg3());
+//        paramsMap.put("Img1",user.getImg4());
+//        paramsMap.put("Img1",user.getImg5());
+//
+//        RequestUtils.sendPostRequest(Api.SET_ARTIST_CARD_INFO, paramsMap, new ResponseCallBack<User>() {
+//            @Override
+//            public void onSuccessList(List<User> data) {
+//
+//
+//                if (data != null && data.size() > 0) {
+//                    user = data.get(0);
+//
+//
+//                    ll_per_info.setVisibility(View.VISIBLE);
+//                    txtUpload.setVisibility(View.GONE);
+//                    txtSF.setVisibility(View.GONE);
+//                    txtOpen.setVisibility(View.GONE);
+//
+//                    Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
+//                    nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
+//                    txtSave.setCompoundDrawables(null, null, nav_up, null);
+//                    txtSave.setText("");
+//                    txtSave.setTag("0");
+//                    resetOnMertoItemViewListener();
+//                    txtSave.setBackground(null);
+//
+//
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(ServiceException e) {
+//                super.onFailure(e);
+//
+//            }
+//        }, User.class);
 
     }
 
@@ -1053,20 +1078,20 @@ public class RegPicListActivity extends Activity {
                     user = data.get(0);
 
                     try {
-                        if(!TextUtils.isEmpty(user.getImg1()))
-                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg1())));
+                        if (!TextUtils.isEmpty(user.getImg1()))
+                            user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg1())));
 
-                        if(!TextUtils.isEmpty(user.getImg2()))
-                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg2())));
+                        if (!TextUtils.isEmpty(user.getImg2()))
+                            user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg2())));
 
-                        if(!TextUtils.isEmpty(user.getImg3()))
-                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg3())));
+                        if (!TextUtils.isEmpty(user.getImg3()))
+                            user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg3())));
 
-                        if(!TextUtils.isEmpty(user.getImg4()))
-                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg4())));
+                        if (!TextUtils.isEmpty(user.getImg4()))
+                            user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg4())));
 
-                        if(!TextUtils.isEmpty(user.getImg5()))
-                        user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg5())));
+                        if (!TextUtils.isEmpty(user.getImg5()))
+                            user.setDrawableImg1(new BitmapDrawable(BitmapHelper.returnBitMap(user.getImg5())));
 
                     } catch (Exception ex) {
 

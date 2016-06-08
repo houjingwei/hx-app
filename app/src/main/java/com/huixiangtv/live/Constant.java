@@ -28,13 +28,14 @@ public class Constant {
     public static final String HELP = BASE_PRE +"help";
     public static final String FANS = BASE_PRE+"fans";
 
+
     public static final String PHONE_BIND = BASE_PRE+"phone_bind";
 
 
     public static final String MY_FANS = BASE_PRE+"my_fans";
     public static final String FANED_ME = BASE_PRE+"faned_me";
 
-
+    public static final String POPULARITY = BASE_PRE+"popularity";
 
     public static String MY_LOVES = BASE_PRE+"my_loves";
 

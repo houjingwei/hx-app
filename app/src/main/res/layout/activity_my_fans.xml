@@ -189,16 +189,15 @@
                 <View style="@style/split_line" />
 
             </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_below="@+id/llTop"
+            <com.huixiangtv.live.utils.widget.pullView.NoneBarListView
                 android:id="@+id/listview"
-                style="@style/MatchMatch"
-                android:background="@drawable/listview"
-                android:dividerHeight="0.3dp"
-                android:divider="@color/split_color"
-                android:scrollbars="none"/>
-
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/self_line"
+                android:dividerHeight="0.5dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:listSelector="@null" />
 
 
         </RelativeLayout>

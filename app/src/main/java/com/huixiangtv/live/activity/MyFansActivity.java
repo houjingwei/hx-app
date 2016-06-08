@@ -5,14 +5,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.adapter.MyFansAdapter;
+import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
+import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.EnumUpdateTag;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
 import org.xutils.view.annotation.ViewInject;
@@ -20,7 +30,9 @@ import org.xutils.x;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyFansActivity extends BaseBackActivity {
 
@@ -30,12 +42,11 @@ public class MyFansActivity extends BaseBackActivity {
     PullToRefreshScrollView mRefreshLayout;
 
 
-    LinearLayout listView;
+    ListView listView;
     int page = 1;
 
     List<Fans> fansList ;
-
-    //MyFansAdapter adapter;
+    MyFansAdapter adapter;
 
 
     ImageView ivPhoto1;
@@ -62,7 +73,8 @@ public class MyFansActivity extends BaseBackActivity {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.myfans));
         mRefreshLayout = (PullToRefreshScrollView) findViewById(R.id.refreshLayout);
-        listView = (LinearLayout) findViewById(R.id.listview);
+        mRefreshLayout.setMode(PullToRefreshBase.Mode.BOTH);
+        listView = (ListView) findViewById(R.id.listview);
 
         ivPhoto1 = (ImageView) findViewById(R.id.ivPhoto1);
         ivPhoto2 = (ImageView) findViewById(R.id.ivPhoto2);
@@ -80,18 +92,17 @@ public class MyFansActivity extends BaseBackActivity {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 page = 1;
-                totalNum = 0;
-                loadData();
+                loadFanedMe(EnumUpdateTag.UPDATE);
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 page++;
-                loadData();
+                loadFanedMe(EnumUpdateTag.MORE);
             }
         });
 
-        loadData();
+        loadFanedMe(EnumUpdateTag.UPDATE);
 
     }
 
@@ -113,14 +124,8 @@ public class MyFansActivity extends BaseBackActivity {
 //            }
 //        },Fans.class);
 
-        fansList = getData();
-        if(page==1){
-            setTop3AndFanslist();
-        }
-        mRefreshLayout.onRefreshComplete();
-        addData(fansList);
-        //adapter.addList(fansList);
 
+        loadFanedMe(EnumUpdateTag.UPDATE);
     }
 
     private void setTop3AndFanslist() {
@@ -189,5 +194,51 @@ public class MyFansActivity extends BaseBackActivity {
             e.printStackTrace();
         }
         return ls;
+    }
+
+
+    private void loadFanedMe(final EnumUpdateTag enumUpdateTag){
+
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("page", page + "");
+        paramsMap.put("pageSize", "120");
+
+
+        RequestUtils.sendPostRequest(Api.GETOWNFANS, paramsMap, new ResponseCallBack<Fans>() {
+            @Override
+            public void onSuccessList(List<Fans> data) {
+
+                if (data != null && data.size() > 0) {
+
+                    fansList = data;
+                    if(page ==1 )
+                    {
+                       // setTop3AndFanslist();
+
+                    }
+
+                    if (enumUpdateTag == EnumUpdateTag.UPDATE) {
+
+                        listView.removeAllViews();
+                    }
+                    Long totalCount = Long.parseLong(data.size() + "");
+                    if (0 == totalCount) {
+                        Toast.makeText(MyFansActivity.this, "已经没有更多内容了", Toast.LENGTH_LONG).show();
+                    } else {
+                        adapter = new MyFansAdapter();
+                        listView.setAdapter(adapter);
+                    }
+                } else {
+                }
+                mRefreshLayout.onRefreshComplete();
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                mRefreshLayout.onRefreshComplete();
+                CommonHelper.showTip(MyFansActivity.this, e.getMessage());
+            }
+        }, Fans.class);
     }
 }

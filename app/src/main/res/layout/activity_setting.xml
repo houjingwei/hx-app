@@ -131,12 +131,12 @@
 
         <TextView
             android:id="@+id/weixinbind"
-            style="@style/white_normal_style"
+            style="@style/black_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/set_bind"
+            android:background="@drawable/set_qqbind"
             android:clickable="true"
             android:text="@string/bind" />
     </RelativeLayout>

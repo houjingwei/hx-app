@@ -13,6 +13,15 @@ public class Fans {
     private String rank;
     private String dateTime;
     private String isfans;
+    private String devoteValue;
+
+    public String getDevoteValue() {
+        return devoteValue;
+    }
+
+    public void setDevoteValue(String devoteValue) {
+        this.devoteValue = devoteValue;
+    }
 
     public String getUid() {
         return uid;
