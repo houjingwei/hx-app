@@ -68,7 +68,7 @@ public class GiftAdapter extends BaseAdapter {
 
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)giftRoot.getLayoutParams();
             params.width = App.screenWidth/4;
-            params.height = App.screenWidth/4;
+            params.height = (int) (App.screenWidth/3.2);
             giftRoot.setLayoutParams(params);
 
             tvTitle.setText(gift.getName());
@@ -78,8 +78,8 @@ public class GiftAdapter extends BaseAdapter {
 
 
             RelativeLayout.LayoutParams iconParams =  (RelativeLayout.LayoutParams)icon.getLayoutParams();
-            iconParams.width = (int) (App.screenWidth/5/1.5);
-            iconParams.height = (int) (App.screenWidth/5/1.5);
+            iconParams.width = (int) (App.screenWidth/5/1.2);
+            iconParams.height = (int) (App.screenWidth/5/1.2);
             icon.setLayoutParams(iconParams);
 
 

@@ -88,11 +88,18 @@ public class RequestUtils {
                         String jsonStr = String.valueOf(response.getData());
                         boolean isJson =  new JsonValidator().validate(jsonStr);
                         if(isJson){
-                            if(jsonStr.contains("[")){
+                            try{
+                                JSON.parseArray(jsonStr,clazz);
                                 callBack.onSuccessList(JSON.parseArray(jsonStr,clazz));
-                            }else if(!jsonStr.contains("[")){
-                                callBack.onSuccess(JSON.parseObject(jsonStr,clazz));
+                            }catch(Exception e){
+
+                                try{
+                                    callBack.onSuccess(JSON.parseObject(jsonStr,clazz));
+                                }catch(Exception ex){
+                                    callBack.onSuccessString((String) response.getData());
+                                }
                             }
+
                         }else{
                             callBack.onSuccessString((String) response.getData());
                         }

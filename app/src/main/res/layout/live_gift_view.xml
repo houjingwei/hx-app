@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/rlGiftList"
         android:layout_width="match_parent"
-        android:layout_height="110dp">
+        android:layout_height="130dp">
         <android.support.v4.view.ViewPager
             android:id="@+id/guidePages"
             android:paddingBottom="20dp"

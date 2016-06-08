@@ -2,6 +2,9 @@ package com.huixiangtv.live.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,9 +67,9 @@ public class LiveMsgAdapter extends BaseAdapter {
         }
         TextView msg = (TextView) rowView.findViewById(R.id.tvMsg);
         Log.i("msgInfo","<<"+message.getNickName()+": "+message.getContent()+">>");
-//        SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
-//        ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        msg.setText(message.getContent());
+        SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
+        ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        msg.setText(ss);
         return rowView;
     }
 

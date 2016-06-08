@@ -57,6 +57,8 @@ public class Api {
     //喊话
     public static final String GIFT_PAYMENT = BASE_URL+"pay/shoutGiftPayment";
     public static final String SHOUT_GIFT = BASE_URL+"gift/getShoutGiftInfo";
+    //进场消息
+    public static final String INTO_ROOM = BASE_URL+"chat/sendEnterMsg";
 
 
     public static String UP_PWD = BASE_URL+"auth/resetPaswd";

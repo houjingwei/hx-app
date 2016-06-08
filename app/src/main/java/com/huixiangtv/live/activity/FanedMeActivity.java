@@ -73,7 +73,7 @@ public class FanedMeActivity extends BaseBackActivity   {
                     public void run() {
                         page = 1;
                         loadFanedMe(true);
-                        ptrClassicFrameLayout.loadMoreComplete(true);
+
                         page++;
                     }
                 }, 1500);
@@ -123,21 +123,32 @@ public class FanedMeActivity extends BaseBackActivity   {
                     } else {
                         fansList = data;
                         adapter.addList(fansList);
-                        if(bool) {
-                            ptrClassicFrameLayout.refreshComplete();
-                            ptrClassicFrameLayout.setLoadMoreEnable(true);
-                        }else{
-                            ptrClassicFrameLayout.loadMoreComplete(true);
-                        }
                     }
-                } else {
+                    if(bool) {
+                        ptrClassicFrameLayout.refreshComplete();
+                        ptrClassicFrameLayout.setLoadMoreEnable(true);
+                    }else{
+                        ptrClassicFrameLayout.loadMoreComplete(true);
+                    }
+                }else{
+                    if(bool) {
+                        ptrClassicFrameLayout.refreshComplete();
+                        ptrClassicFrameLayout.setLoadMoreEnable(false);
+                    }
                 }
+
             }
 
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 CommonHelper.showTip(FanedMeActivity.this, e.getMessage());
+                if(bool) {
+                    ptrClassicFrameLayout.refreshComplete();
+                    ptrClassicFrameLayout.setLoadMoreEnable(false);
+                }else{
+                    ptrClassicFrameLayout.loadMoreComplete(true);
+                }
             }
         }, Fans.class);
     }

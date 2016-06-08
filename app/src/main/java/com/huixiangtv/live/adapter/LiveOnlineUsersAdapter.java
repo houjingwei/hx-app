@@ -56,6 +56,12 @@ public class LiveOnlineUsersAdapter extends RecyclerView.Adapter<LiveOnlineUsers
         notifyDataSetChanged();
     }
 
+
+    public void addData(List<User> data) {
+        datas.addAll(0,data);
+        notifyDataSetChanged();
+    }
+
     public void removeData(int position) {
         datas.remove(position);
         notifyDataSetChanged();

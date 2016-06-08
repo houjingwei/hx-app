@@ -615,7 +615,10 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         liveView.setActivity(LiveActivity.this);
         liveView.setInfo(data);
         flCover.addView(liveView);
-        liveView.loadLive(null);
+        liveView.loadLive();
+        if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
+            liveView.sendIntoRoomMsg();
+        }
 
         if(sharePlat==1){
             CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
@@ -682,6 +685,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             liveView.removeMsgListener();
         }
 
+
     }
 
     @Override
@@ -692,6 +696,9 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             stopRecorder();
             _Client.stopPreview();
             _Client.onDestroy();
+
+            //停止直播
+            stopLive();
 
         }
 
@@ -705,6 +712,10 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             }
 
         }
+
+    }
+
+    private void stopLive() {
 
     }
 
@@ -734,6 +745,8 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         }
 
     }
+
+
 
 
 }
