@@ -40,6 +40,7 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.ijk.widget.media.IjkVideoView;
 import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -92,6 +93,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     private Live live;
 
     private int sharePlat = 0;
+    private String pushUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +131,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
                     @Override
                     public void onCreateLiveSuccess(String pushUrl, String playUrl) {
+                        pushUrl = pushUrl;
                         startRecorder(live.getPushUrl(), playUrl);
                     }
                 });
@@ -201,7 +204,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
 
 
-        flPlayView.addView(playView);   
+        flPlayView.addView(playView);
 
 
 
@@ -329,7 +332,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                     cp.dismiss();
                 }
                 live =data;
-                startPush();
+
                 living(data);
                 ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);
                 animIn.setDuration(500);
@@ -615,20 +618,28 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         liveView.loadLive(null);
 
         if(sharePlat==1){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
         }else if(sharePlat==2){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QQ,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QQ,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
         }else if(sharePlat==3){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QZONE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QZONE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
         }else if(sharePlat==4){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
         }else if(sharePlat==5){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN_CIRCLE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN_CIRCLE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
         }else if(sharePlat==6){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SINA,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid());
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SINA,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
         }
 
     }
+
+    ApiCallback back = new ApiCallback<String>(){
+
+        @Override
+        public void onSuccess(String data) {
+            startPush();
+        }
+    };
 
 
     @Override
@@ -678,7 +689,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         super.onBackPressed();
         if(null!=recordView){
             //停止推流
-
             stopRecorder();
             _Client.stopPreview();
             _Client.onDestroy();
@@ -722,8 +732,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         if (null != mVideoView) {
             mVideoView.start();
         }
-
-
 
     }
 

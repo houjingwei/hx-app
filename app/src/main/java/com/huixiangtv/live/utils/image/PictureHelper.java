@@ -2,10 +2,14 @@ package com.huixiangtv.live.utils.image;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+
+import com.huixiangtv.live.Manifest;
 
 import java.io.File;
 
@@ -33,6 +37,8 @@ public class PictureHelper {
     public void selectFrom(int from) {
         switch (from) {
             case FROM_CAMERA: {
+
+
                 cameraTargetFile = createImageFile();
                 //跳转到拍照界面.
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
