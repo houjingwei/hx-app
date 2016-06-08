@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initWindow();
         App.getContext().addActivity(this);
         initView();
-        CheckVersion();
+        //CheckVersion();
     }
 
     private void initWindow() {

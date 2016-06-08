@@ -75,5 +75,14 @@ public class Api {
     //get User Info status by Artistcard
     public  static  String GET_USER_ARTISTCARD =BASE_URL+"user/getArtistCardInfo";
 
+    //my fans
+    public  static String GETOWNFANS = BASE_URL+"fans/getOwnFans";
+
+    //my attention
+    public static String GETCOLLECTARTIST = BASE_URL+"fans/getCollectArtist";
+
+
+    public  static String GETPOPULARITYRANK = BASE_URL +"/fans/getPopularityRank";
+
 
 }

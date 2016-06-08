@@ -2,35 +2,25 @@ package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.Toast;
-
-import com.alibaba.fastjson.JSON;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.MyFansAdapter;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
-import com.huixiangtv.live.utils.EnumUpdateTag;
-import com.huixiangtv.live.utils.widget.pullView.PullToRefreshLayout;
-
+import com.huixiangtv.live.utils.CommonHelper;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.RunnableFuture;
+import java.util.Map;
 
 public class FanedMeActivity extends BaseBackActivity   {
 
@@ -81,8 +71,8 @@ public class FanedMeActivity extends BaseBackActivity   {
             public void onRefreshBegin(PtrFrameLayout frame) {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-                        page=1;
-                        loadData(true);
+                        page = 1;
+                        loadFanedMe(true);
                         ptrClassicFrameLayout.loadMoreComplete(true);
                         page++;
                     }
@@ -98,7 +88,7 @@ public class FanedMeActivity extends BaseBackActivity   {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         page++;
-                        loadData(false);
+                        loadFanedMe(false);
                     }
                 }, 1500);
 
@@ -112,39 +102,44 @@ public class FanedMeActivity extends BaseBackActivity   {
 
     }
 
-    private void loadData(boolean bool) {
-        fansList = getData();
-        if(page==1){
-            adapter.clear();
-        }
-        adapter.addList(fansList);
-        if(bool) {
-            ptrClassicFrameLayout.refreshComplete();
-            ptrClassicFrameLayout.setLoadMoreEnable(true);
-        }else{
-            ptrClassicFrameLayout.loadMoreComplete(true);
-        }
+    private void loadFanedMe(final boolean bool){
+
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("page", page + "");
+        paramsMap.put("pageSize", "120");
 
 
-    }
+        RequestUtils.sendPostRequest(Api.GETCOLLECTARTIST, paramsMap, new ResponseCallBack<Fans>() {
+            @Override
+            public void onSuccessList(List<Fans> data) {
 
-    public List<Fans> getData() {
-
-        List<Fans> ls = null;
-        try {
-            InputStreamReader inputStreamReader = new InputStreamReader(getAssets().open("myFans.json"), "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-            StringBuilder stringBuilder = new StringBuilder();
-            while((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
+                if (data != null && data.size() > 0) {
+                    if(page==1){
+                        adapter.clear();
+                    }
+                    Long totalCount = Long.parseLong(data.size() + "");
+                    if (0 == totalCount) {
+                        Toast.makeText(FanedMeActivity.this, "已经没有更多内容了", Toast.LENGTH_LONG).show();
+                    } else {
+                        fansList = data;
+                        adapter.addList(fansList);
+                        if(bool) {
+                            ptrClassicFrameLayout.refreshComplete();
+                            ptrClassicFrameLayout.setLoadMoreEnable(true);
+                        }else{
+                            ptrClassicFrameLayout.loadMoreComplete(true);
+                        }
+                    }
+                } else {
+                }
             }
-            bufferedReader.close();
-            inputStreamReader.close();
-            ls = JSON.parseArray(stringBuilder.toString(),Fans.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ls;
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                CommonHelper.showTip(FanedMeActivity.this, e.getMessage());
+            }
+        }, Fans.class);
     }
+
 }

@@ -12,7 +12,7 @@ public class AccountBindInfoModel  extends ImageModel  {
     public String qq;
     public String wx;
     public String wb;
-
+    public AccountBindInfoModel(){}
     protected AccountBindInfoModel(Parcel in) {
         super(in);
         phone = in.readString();

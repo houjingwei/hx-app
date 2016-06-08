@@ -168,12 +168,12 @@ public class PhotoPickerFragment extends Fragment {
     photoGridAdapter.setOnCameraClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-//        try {
-//          Intent intent = captureManager.dispatchTakePictureIntent();
-//          startActivityForResult(intent, ImageCaptureManager.REQUEST_TAKE_PHOTO);
-//        } catch (IOException e) {
-//          e.printStackTrace();
-//        }
+        try {
+          Intent intent = captureManager.dispatchTakePictureIntent();
+          startActivityForResult(intent, ImageCaptureManager.REQUEST_TAKE_PHOTO);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
 //
 //        // 调用系统相机
 //        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -189,11 +189,11 @@ public class PhotoPickerFragment extends Fragment {
 //        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 //        startActivityForResult(intent, Activity.DEFAULT_KEYS_DIALER);
 
-        final Intent takePictureImIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        ContentValues values = new ContentValues();
-        Uri mPhotoUri = getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-        takePictureImIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mPhotoUri);
-        startActivityForResult(takePictureImIntent,1);
+//        final Intent takePictureImIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        ContentValues values = new ContentValues();
+//        Uri mPhotoUri = getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+//        takePictureImIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mPhotoUri);
+//        startActivityForResult(takePictureImIntent,1);
 
       }
     });

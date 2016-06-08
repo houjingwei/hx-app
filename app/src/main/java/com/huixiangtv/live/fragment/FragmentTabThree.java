@@ -127,7 +127,7 @@ public class FragmentTabThree extends RootFragment{
 				ForwardUtils.target(getActivity(), Constant.FANED_ME,null);
 				break;
 			case R.id.llsj:
-				ForwardUtils.target(getActivity(), Constant.FANED_ME,null);
+				//ForwardUtils.target(getActivity(), Constant.POPULARITY,null);
 				break;
 
 		}
@@ -143,7 +143,7 @@ public class FragmentTabThree extends RootFragment{
 				CommonHelper.viewSetBackageImag(user.getPhoto(),llUserTop);
 			}
 
-			tvMySj.setText(user.getCoins());
+			tvMySj.setText(user.getHots());
 			tvFans.setText(StringUtil.isNotEmpty(user.getFans())?user.getFans():"100");
 			haveFans.setText(StringUtil.isNotEmpty(user.getFans())?user.getFans():"3298");
 			tvAccount.setText(user.getCoins());
