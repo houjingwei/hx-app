@@ -1,27 +1,24 @@
 package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.os.Handler;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.chanven.lib.cptr.PtrClassicFrameLayout;
+import com.chanven.lib.cptr.PtrDefaultHandler;
+import com.chanven.lib.cptr.PtrFrameLayout;
+import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.MyFansAdapter;
-import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.EnumUpdateTag;
-import com.huixiangtv.live.utils.widget.pullView.PullToRefreshLayout;
-
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -31,19 +28,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FanedMeActivity extends BaseBackActivity {
+public class FanedMeActivity extends BaseBackActivity   {
+
+
 
 
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 
-    List<Fans> fansList;
+    PtrClassicFrameLayout ptrClassicFrameLayout;
+    ListView mListView;
+
+    List<Fans> fansList ;
 
     int page = 1;
 
-
-    private PullToRefreshScrollView mPullToRefreshScrollView;
-    private ListView mDataLv;
 
     MyFansAdapter adapter;
 
@@ -61,50 +60,84 @@ public class FanedMeActivity extends BaseBackActivity {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.myconcern));
 
-        mPullToRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.refreshLayout);
-        mPullToRefreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
-        mDataLv = (ListView) findViewById(R.id.data);
-        View view = LayoutInflater.from(FanedMeActivity.this).inflate(R.layout.search_view, null, false);
-        //mDataLv.addHeaderView(view);
         adapter = new MyFansAdapter(this);
-        mDataLv.setAdapter(adapter);
+        ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
+        mListView = (ListView) this.findViewById(R.id.test_list_view);
+        mListView.setAdapter(adapter);
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
 
-        mPullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
             @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                page = 1;
-                loadFanedMe(EnumUpdateTag.UPDATE);
-                mPullToRefreshScrollView.onRefreshComplete();
+            public void run() {
+                ptrClassicFrameLayout.autoRefresh(true);
             }
+        }, 10);
+        ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
 
             @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                page++;
-                loadFanedMe(EnumUpdateTag.MORE);
-                mPullToRefreshScrollView.onRefreshComplete();
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page = 1;
+                        loadData(true);
+                        ptrClassicFrameLayout.loadMoreComplete(true);
+                        page++;
+                    }
+                }, 1500);
+
             }
         });
-        loadFanedMe(EnumUpdateTag.UPDATE);
+
+        ptrClassicFrameLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+
+            @Override
+            public void loadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page++;
+                        loadData(false);
+                    }
+                }, 1500);
+
+
+            }
+
+        });
+
+
+
+
     }
 
-    private void loadData() {
+    private void loadData(boolean bool) {
         fansList = getData();
+        if(page==1){
+            adapter.clear();
+        }
         adapter.addList(fansList);
+        if(bool) {
+            ptrClassicFrameLayout.refreshComplete();
+            ptrClassicFrameLayout.setLoadMoreEnable(true);
+        }else{
+            ptrClassicFrameLayout.loadMoreComplete(true);
+        }
+
+
     }
 
     public List<Fans> getData() {
+
         List<Fans> ls = null;
         try {
             InputStreamReader inputStreamReader = new InputStreamReader(getAssets().open("myFans.json"), "UTF-8");
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line;
             StringBuilder stringBuilder = new StringBuilder();
-            while ((line = bufferedReader.readLine()) != null) {
+            while((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }
             bufferedReader.close();
             inputStreamReader.close();
-            ls = JSON.parseArray(stringBuilder.toString(), Fans.class);
+            ls = JSON.parseArray(stringBuilder.toString(),Fans.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,28 +159,25 @@ public class FanedMeActivity extends BaseBackActivity {
                 if (data != null && data.size() > 0) {
                     if (enumUpdateTag == EnumUpdateTag.UPDATE) {
 
-                        mDataLv.removeAllViews();
+                        mListView.removeAllViews();
                     }
                     Long totalCount = Long.parseLong(data.size() + "");
                     if (0 == totalCount) {
                         Toast.makeText(FanedMeActivity.this, "已经没有更多内容了", Toast.LENGTH_LONG).show();
                     } else {
                         adapter = new MyFansAdapter();
-                        mDataLv.setAdapter(adapter);
+                        mListView.setAdapter(adapter);
                     }
                 } else {
                 }
-                mPullToRefreshScrollView.onRefreshComplete();
             }
 
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
-                mPullToRefreshScrollView.onRefreshComplete();
                 CommonHelper.showTip(FanedMeActivity.this, e.getMessage());
             }
         }, Fans.class);
     }
-
 
 }

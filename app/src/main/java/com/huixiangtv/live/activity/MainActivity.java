@@ -202,10 +202,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }else{
 
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
             }
-
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         }
