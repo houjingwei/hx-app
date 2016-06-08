@@ -125,6 +125,8 @@ public class App extends Application {
 
     }
 
+
+
     public static void qupaiAuth() {
 
         AuthService service = AuthService.getInstance();
@@ -166,7 +168,7 @@ public class App extends Application {
      * 加载我的金币
      */
     private void loadMyCoin() {
-        userCoin = getLoginUser().getCoins();
+        userCoin = !getLoginUser().getCoins().equals("null")?getLoginUser().getCoins():"0";
     }
 
 

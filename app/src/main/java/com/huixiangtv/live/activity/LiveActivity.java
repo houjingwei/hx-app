@@ -332,7 +332,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                     cp.dismiss();
                 }
                 live =data;
-
+                startPush();
                 living(data);
                 ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);
                 animIn.setDuration(500);

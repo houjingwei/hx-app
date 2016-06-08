@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.Fans;
+import com.huixiangtv.live.model.LiveMsg;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.ArrayList;
@@ -58,21 +59,29 @@ public class MyFansAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = convertView;
-        if (null == rowView) {
-            final Fans fans = (Fans) getItem(position);
-            rowView = LayoutInflater.from(context).inflate(R.layout.fans_item, parent, false);
-            TextView tvRank = (TextView) rowView.findViewById(R.id.tvRank);
-            TextView tvNickName = (TextView) rowView.findViewById(R.id.tvNickName);
-            TextView tvHots = (TextView) rowView.findViewById(R.id.tvHots);
-            ImageView ivPhoto = (ImageView) rowView.findViewById(R.id.ivPhoto);
-            tvRank.setText(position+1+"");
-            tvHots.setText(fans.getHots());
-            tvNickName.setText(fans.getNickName());
-            ImageUtils.displayAvator(ivPhoto,fans.getPhoto());
 
+        ViewHolder holder;
+        Fans fans = (Fans) getItem(position);
+        if(convertView == null)
+        {
+            holder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.fans_item, parent, false);
+            holder.tvRank = (TextView) convertView.findViewById(R.id.tvRank);
+            holder.tvNickName = (TextView) convertView.findViewById(R.id.tvNickName);
+            holder.tvHots = (TextView) convertView.findViewById(R.id.tvHots);
+            holder.ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
+            convertView.setTag(holder);
+        }else
+        {
+            holder = (ViewHolder)convertView.getTag();
         }
-        return rowView;
+
+        holder.tvRank.setText(position+1+"");
+        holder.tvHots.setText(fans.getHots());
+        holder.tvNickName.setText(fans.getNickName());
+        ImageUtils.displayAvator(holder.ivPhoto,fans.getPhoto());
+
+        return convertView;
     }
 
     public void clear() {
@@ -85,5 +94,16 @@ public class MyFansAdapter extends BaseAdapter {
             voList.addAll(ls);
         }
         notifyDataSetChanged();
+    }
+
+
+
+    static class ViewHolder
+    {
+        public TextView msg;
+        public TextView tvRank;
+        public TextView tvNickName;
+        public TextView tvHots;
+        public ImageView ivPhoto;
     }
 }

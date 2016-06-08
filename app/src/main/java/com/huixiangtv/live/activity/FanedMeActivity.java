@@ -69,14 +69,10 @@ public class FanedMeActivity extends BaseBackActivity   {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        page = 1;
+
+                                page = 1;
                         loadFanedMe(true);
 
-                        page++;
-                    }
-                }, 1500);
 
             }
         });
@@ -85,12 +81,10 @@ public class FanedMeActivity extends BaseBackActivity   {
 
             @Override
             public void loadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
+
                         page++;
                         loadFanedMe(false);
-                    }
-                }, 1500);
+
 
 
             }
@@ -106,7 +100,7 @@ public class FanedMeActivity extends BaseBackActivity   {
 
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", page + "");
-        paramsMap.put("pageSize", "120");
+        paramsMap.put("pageSize", "10");
 
 
         RequestUtils.sendPostRequest(Api.GETCOLLECTARTIST, paramsMap, new ResponseCallBack<Fans>() {
@@ -117,16 +111,13 @@ public class FanedMeActivity extends BaseBackActivity   {
                     if(page==1){
                         adapter.clear();
                     }
-                    Long totalCount = Long.parseLong(data.size() + "");
-                    if (0 == totalCount) {
-                        Toast.makeText(FanedMeActivity.this, "已经没有更多内容了", Toast.LENGTH_LONG).show();
-                    } else {
-                        fansList = data;
-                        adapter.addList(fansList);
-                    }
+                    adapter.addList(data);
                     if(bool) {
+                        if(data.size()>9){
+                            ptrClassicFrameLayout.setLoadMoreEnable(true);
+                        }
                         ptrClassicFrameLayout.refreshComplete();
-                        ptrClassicFrameLayout.setLoadMoreEnable(true);
+
                     }else{
                         ptrClassicFrameLayout.loadMoreComplete(true);
                     }

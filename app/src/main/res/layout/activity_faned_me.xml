@@ -30,12 +30,8 @@
             android:id="@+id/test_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:dividerHeight="0.1dp"
-            android:background="@android:color/white"
-            android:divider="#b0b0b0"
-            android:choiceMode="singleChoice"
-            android:fadingEdge="none"
-            android:scrollbarStyle="outsideOverlay" />
+            android:dividerHeight="0dp"
+            android:background="@android:color/white" />
     </com.chanven.lib.cptr.PtrClassicFrameLayout>
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -297,7 +298,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     }
 
     private void joinRoom() {
-        App.imClient.joinChatRoom("123456", -1, new RongIMClient.OperationCallback() {
+        App.imClient.joinChatRoom(live.getChatroom(), -1, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
                 CommonHelper.showTip(activity, "进入聊天室成功");
@@ -851,10 +852,20 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         public boolean onReceived(io.rong.imlib.model.Message message, int i) {
             if (message.getContent() instanceof TextMessage) {
                 TextMessage tm = (TextMessage) message.getContent();
-                LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
+                final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
                 msg.setContent(tm.getContent().toString());
                 if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
-                    msgAdapter.add(msg);
+
+                    msgListView.post(new Runnable() {
+
+                        public void run() {
+                            msgAdapter.add(msg);
+                            msgListView.setSelection(msgAdapter.getCount()-1);
+
+                        }
+
+                    });
+
                 }
                 Log.i("msgmsg", msg.toString());
             }

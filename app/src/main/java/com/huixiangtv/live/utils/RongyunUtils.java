@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
+import com.huixiangtv.live.model.Rongyun;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.ChatTokenCallBack;
 import com.huixiangtv.live.service.RequestUtils;
@@ -42,19 +43,19 @@ public class RongyunUtils {
             params.put("photo","");
         }
 
-        RequestUtils.getIOToken(Api.CHAT_TOKEN, params, new ResponseCallBack<String>() {
+        RequestUtils.sendGetRequest(Api.CHAT_TOKEN, params, new ResponseCallBack<Rongyun>() {
             @Override
-            public void onSuccessString(String str) {
-                super.onSuccessString(str);
+            public void onSuccess(Rongyun data) {
+                super.onSuccess(data);
                 if(null!=tokenCallBack){
-                    tokenCallBack.getTokenSuccess(str);
+                    tokenCallBack.getTokenSuccess(data.getToken());
                 }
             }
-            @Override
+
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
             }
-        });
+        }, Rongyun.class);
 
     }
 

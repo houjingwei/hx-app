@@ -38,9 +38,6 @@ public class LiveMsgAdapter extends BaseAdapter {
         this.context = activity;
     }
 
-    public LiveMsgAdapter() {
-    }
-
 
     @Override
     public int getCount() {
@@ -60,18 +57,28 @@ public class LiveMsgAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = convertView;
-        final LiveMsg message = (LiveMsg) getItem(position);
-        if (null == rowView) {
-            rowView = LayoutInflater.from(context).inflate(R.layout.live_msg_item, parent, false);
+        ViewHolder holder;
+        LiveMsg message = getItem(position);
+        if(convertView == null)
+        {
+            holder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.live_msg_item, parent, false);
+            holder.msg = (TextView) convertView .findViewById(R.id.tvMsg);
+            convertView.setTag(holder);
+        }else
+        {
+            holder = (ViewHolder)convertView.getTag();
         }
-        TextView msg = (TextView) rowView.findViewById(R.id.tvMsg);
-        Log.i("msgInfo","<<"+message.getNickName()+": "+message.getContent()+">>");
+
         SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
         ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        msg.setText(ss);
-        return rowView;
+        holder.msg.setText(ss);
+        return convertView;
+
     }
+
+
+
 
     public void clear() {
         voList.clear();
@@ -89,5 +96,11 @@ public class LiveMsgAdapter extends BaseAdapter {
         voList.add(msg);
         notifyDataSetChanged();
 
+    }
+
+
+    static class ViewHolder
+    {
+        public TextView msg;
     }
 }
