@@ -65,6 +65,9 @@ public class Constant {
      * 消息类型
      */
     public static final String MSG_TYPE_BASE = "base";
+    public static final String MSG_TYPE_ENTER = "enter";
+    public static final String MSG_TYPE_BARRAGE = "barrage";
+    public static final String MSG_TYPE_GIFT = "gift";
 
     public static final String PIC_LIST = BASE_PRE +"pic_list";
 

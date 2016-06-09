@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.LiveMsg;
+import com.huixiangtv.live.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,10 +71,15 @@ public class LiveMsgAdapter extends BaseAdapter {
         {
             holder = (ViewHolder)convertView.getTag();
         }
+        if(StringUtil.isNotEmpty(message.getMsgType()) && message.getMsgType().equals(Constant.MSG_TYPE_ENTER)){
+            holder.msg.setTextColor(context.getResources().getColor(R.color.orange));
+            holder.msg.setText(message.getContent());
+        }else{
+            SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
+            ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.msg.setText(ss);
+        }
 
-        SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
-        ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        holder.msg.setText(ss);
         return convertView;
 
     }
@@ -95,7 +102,6 @@ public class LiveMsgAdapter extends BaseAdapter {
     public void add(LiveMsg msg) {
         voList.add(msg);
         notifyDataSetChanged();
-
     }
 
 

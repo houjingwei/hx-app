@@ -143,9 +143,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     }
 
     private void initPlayView() {
-
-
-
         final Map<String, String> param = new HashMap<String, String>();
         param.put("lid", lid);
         RequestUtils.sendPostRequest(Api.LIVEINFO, param, new ResponseCallBack<Live>() {
@@ -156,6 +153,8 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                     cp.dismiss();
                 }
                 living(data);
+
+
             }
 
             @Override
@@ -614,11 +613,11 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         liveView = new LiveView(LiveActivity.this);
         liveView.setActivity(LiveActivity.this);
         liveView.setInfo(data);
+        if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
+            liveView.isSendIntoRoomMsg(true);
+        }
         flCover.addView(liveView);
         liveView.loadLive();
-        if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
-            liveView.sendIntoRoomMsg();
-        }
 
         if(sharePlat==1){
             CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);

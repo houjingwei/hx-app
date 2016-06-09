@@ -69,6 +69,7 @@ public class GiftView extends RelativeLayout {
 
     private List<Gift> giftList = new ArrayList<Gift>();
     private Live liveInfo;
+    private TextView tvHot;
 
 
     public GiftView(Context context) {
@@ -203,7 +204,12 @@ public class GiftView extends RelativeLayout {
                 super.onSuccess(data);
 
                 //更新金币数量
-                App.userCoin = Integer.parseInt(App.userCoin)-Integer.parseInt(gift.getPrice())+"";
+                App.userCoin = data.getAmount()+"";
+
+                int old = Integer.parseInt(tvHot.getText().toString());
+                int addhot = Integer.parseInt(data.getHots());
+                String loves = old+addhot+"";
+                tvHot.setText(loves);
 
 
             }
@@ -266,6 +272,10 @@ public class GiftView extends RelativeLayout {
 
     public void setLiveInfo(Live liveInfo) {
         this.liveInfo = liveInfo;
+    }
+
+    public void setHotsView(TextView hotsView) {
+        this.tvHot = hotsView;
     }
 
 
@@ -368,10 +378,6 @@ public class GiftView extends RelativeLayout {
                     case ANIM_SEND_GIFT:
                         GiftMessage giftMsg = (GiftMessage) messageBase;
                         animHelper.showGiftRightTips(rootView, giftMsg);
-                        //添加人气
-                        if (null != giftMsg.getProduct()) {
-                            //addHotValue(giftMsg.getProduct());
-                        }
                         break;
                     case ANIM_SHOW_MARKS:
                         View barrageArea = (View) data.get("barrageArea");

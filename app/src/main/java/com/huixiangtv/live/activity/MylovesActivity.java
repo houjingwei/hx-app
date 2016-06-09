@@ -11,14 +11,23 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.chanven.lib.cptr.PtrClassicFrameLayout;
+import com.chanven.lib.cptr.PtrDefaultHandler;
+import com.chanven.lib.cptr.PtrFrameLayout;
+import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.MyFansAdapter;
 import com.huixiangtv.live.adapter.MyLovesAdapter;
 import com.huixiangtv.live.model.Love;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.StringUtil;
 
 import org.xutils.view.annotation.ViewInject;
@@ -26,14 +35,19 @@ import org.xutils.x;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MylovesActivity extends BaseBackActivity {
 
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
-    private PullToRefreshScrollView mPullToRefreshScrollView;
-    private ListView listView;
+    PtrClassicFrameLayout ptrClassicFrameLayout;
+    ListView mListView;
+
+
+
     int page = 1;
     MyLovesAdapter adapter;
 
@@ -50,59 +64,92 @@ public class MylovesActivity extends BaseBackActivity {
     private void initview() {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.myLoves));
-        mPullToRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.refreshLayout);
-        listView = (ListView) findViewById(R.id.data);
-        View view = LayoutInflater.from(MylovesActivity.this).inflate(R.layout.activity_myloves_head, null, false);
-        TextView tvMyLoves = (TextView) view.findViewById(R.id.tvMyLoves);
-        if(null!=App.getLoginUser()) {
-            tvMyLoves.setText(StringUtil.isNotEmpty(App.getLoginUser().getLoves())?App.getLoginUser().getLoves():0+"个");
-        }else{
-            tvMyLoves.setText("0个");
-        }
-        listView.addHeaderView(view);
-        mPullToRefreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
+
         adapter = new MyLovesAdapter(this);
-        listView.setAdapter(adapter);
-        mPullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
-            @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                page = 1;
-                loadData();
-            }
+        ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
+        mListView = (ListView) this.findViewById(R.id.test_list_view);
+        mListView.setAdapter(adapter);
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
 
             @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                page++;
-                loadData();
+            public void run() {
+                ptrClassicFrameLayout.autoRefresh(true);
+            }
+        }, 10);
+        ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+
+                page = 1;
+                loadData(true);
+
+
             }
         });
 
-        loadData();
+        ptrClassicFrameLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
 
-    }
+            @Override
+            public void loadMore() {
 
-    private void loadData() {
-        lovesList = getData();
-        adapter.addList(lovesList);
-        mPullToRefreshScrollView.onRefreshComplete();
-    }
+                page++;
+                loadData(false);
 
-    public List<Love> getData() {
-        List<Love> ls = null;
-        try {
-            InputStreamReader inputStreamReader = new InputStreamReader(getAssets().open("loves.json"), "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-            StringBuilder stringBuilder = new StringBuilder();
-            while((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
+
+
             }
-            bufferedReader.close();
-            inputStreamReader.close();
-            ls = JSON.parseArray(stringBuilder.toString(),Love.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ls;
+
+        });
+
     }
+
+    private void loadData(final boolean bool) {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("page", page + "");
+        paramsMap.put("pageSize", "10");
+
+
+        RequestUtils.sendPostRequest(Api.LOVE_DETAIL, paramsMap, new ResponseCallBack<Love>() {
+            @Override
+            public void onSuccessList(List<Love> data) {
+
+                if (data != null && data.size() > 0) {
+                    if(page==1){
+                        adapter.clear();
+                    }
+                    adapter.addList(data);
+                    if(bool) {
+                        if(data.size()>9){
+                            ptrClassicFrameLayout.setLoadMoreEnable(true);
+                        }
+                        ptrClassicFrameLayout.refreshComplete();
+
+                    }else{
+                        ptrClassicFrameLayout.loadMoreComplete(true);
+                    }
+                }else{
+                    if(bool) {
+                        ptrClassicFrameLayout.refreshComplete();
+                        ptrClassicFrameLayout.setLoadMoreEnable(false);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                CommonHelper.showTip(MylovesActivity.this, e.getMessage());
+                if(bool) {
+                    ptrClassicFrameLayout.refreshComplete();
+                    ptrClassicFrameLayout.setLoadMoreEnable(false);
+                }else{
+                    ptrClassicFrameLayout.loadMoreComplete(true);
+                }
+            }
+        }, Love.class);
+    }
+
+
 }

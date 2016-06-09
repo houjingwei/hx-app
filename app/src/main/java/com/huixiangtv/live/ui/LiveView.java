@@ -1,68 +1,70 @@
 package com.huixiangtv.live.ui;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Rect;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
-import android.os.Handler;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+        import android.app.Activity;
+        import android.content.Context;
+        import android.graphics.Rect;
+        import android.graphics.drawable.GradientDrawable;
+        import android.os.Build;
+        import android.os.Handler;
+        import android.support.v7.widget.LinearLayoutManager;
+        import android.support.v7.widget.RecyclerView;
+        import android.text.TextUtils;
+        import android.util.AttributeSet;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.view.ViewTreeObserver;
+        import android.view.animation.Animation;
+        import android.view.animation.TranslateAnimation;
+        import android.widget.EditText;
+        import android.widget.FrameLayout;
+        import android.widget.ImageView;
+        import android.widget.ListView;
+        import android.widget.RelativeLayout;
+        import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.huixiangtv.live.Api;
-import com.huixiangtv.live.App;
-import com.huixiangtv.live.Constant;
-import com.huixiangtv.live.R;
-import com.huixiangtv.live.adapter.LiveMsgAdapter;
-import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
-import com.huixiangtv.live.adapter.RecyclerviewListener;
-import com.huixiangtv.live.model.BasePayent;
-import com.huixiangtv.live.model.ChatMessage;
-import com.huixiangtv.live.model.HistoryMsg;
-import com.huixiangtv.live.model.Live;
-import com.huixiangtv.live.model.LiveMsg;
-import com.huixiangtv.live.model.MsgExt;
-import com.huixiangtv.live.model.ShoutGift;
-import com.huixiangtv.live.model.User;
-import com.huixiangtv.live.pop.CameraWindow;
-import com.huixiangtv.live.pop.ShareWindow;
-import com.huixiangtv.live.service.ApiCallback;
-import com.huixiangtv.live.service.ChatTokenCallBack;
-import com.huixiangtv.live.service.LoginCallBack;
-import com.huixiangtv.live.service.RequestUtils;
-import com.huixiangtv.live.service.ResponseCallBack;
-import com.huixiangtv.live.service.ServiceException;
-import com.huixiangtv.live.utils.AnimHelper;
-import com.huixiangtv.live.utils.CommonHelper;
-import com.huixiangtv.live.utils.KeyBoardUtils;
-import com.huixiangtv.live.utils.RongyunUtils;
-import com.huixiangtv.live.utils.image.ImageUtils;
-import com.huixiangtv.live.utils.widget.WidgetUtil;
-import com.umeng.socialize.bean.SHARE_MEDIA;
+        import com.alibaba.fastjson.JSON;
+        import com.huixiangtv.live.Api;
+        import com.huixiangtv.live.App;
+        import com.huixiangtv.live.Constant;
+        import com.huixiangtv.live.R;
+        import com.huixiangtv.live.adapter.LiveMsgAdapter;
+        import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
+        import com.huixiangtv.live.adapter.RecyclerviewListener;
+        import com.huixiangtv.live.model.BasePayent;
+        import com.huixiangtv.live.model.ChatMessage;
+        import com.huixiangtv.live.model.HistoryMsg;
+        import com.huixiangtv.live.model.Live;
+        import com.huixiangtv.live.model.LiveMsg;
+        import com.huixiangtv.live.model.LoveGift;
+        import com.huixiangtv.live.model.MsgExt;
+        import com.huixiangtv.live.model.ShoutGift;
+        import com.huixiangtv.live.model.User;
+        import com.huixiangtv.live.pop.CameraWindow;
+        import com.huixiangtv.live.pop.ShareWindow;
+        import com.huixiangtv.live.service.ApiCallback;
+        import com.huixiangtv.live.service.ChatTokenCallBack;
+        import com.huixiangtv.live.service.LoginCallBack;
+        import com.huixiangtv.live.service.RequestUtils;
+        import com.huixiangtv.live.service.ResponseCallBack;
+        import com.huixiangtv.live.service.ServiceException;
+        import com.huixiangtv.live.utils.AnimHelper;
+        import com.huixiangtv.live.utils.CommonHelper;
+        import com.huixiangtv.live.utils.KeyBoardUtils;
+        import com.huixiangtv.live.utils.RongyunUtils;
+        import com.huixiangtv.live.utils.StringUtil;
+        import com.huixiangtv.live.utils.image.ImageUtils;
+        import com.huixiangtv.live.utils.widget.WidgetUtil;
+        import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+        import java.util.ArrayList;
+        import java.util.HashMap;
+        import java.util.List;
+        import java.util.Map;
 
-import io.rong.imlib.RongIMClient;
-import io.rong.message.TextMessage;
+        import io.rong.imlib.RongIMClient;
+        import io.rong.message.TextMessage;
 
 /**
  * Created by hjw on 16/5/17.
@@ -115,6 +117,9 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     private Live live;
 
     private ShoutGift shoutGift;
+    private boolean isSendIntoRoomMsg = false;
+
+    BubbView bubbview = null;
 
 
     public LiveView(Context context) {
@@ -182,7 +187,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 ivLove.getLocationInWindow(locations);
                 int x = locations[0];
                 if (x > 0) {
-                    new BubbView(activity, ivLove, flLive, false);
+                    if(bubbview==null){
+                        bubbview = new BubbView(activity, ivLove, flLive, false);
+                    }
+                    bubbview.bubble();
                     ivLove.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
             }
@@ -211,6 +219,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     }
 
     public void loadLive() {
+
+        App.imClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
 
         //加载在线用户
         initLoadOnlineUsers();
@@ -256,6 +266,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
      */
     private void initGift() {
         giftView = new GiftView(activity);
+        giftView.setHotsView(tvHot);
         giftView.setActivity(activity);
         giftView.initView();
         giftView.setLiveInfo(live);
@@ -273,9 +284,11 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         msgList = new ArrayList<LiveMsg>();
         msgListView.setAdapter(msgAdapter);
         loadMsg();
+        checkRongyunConnectionAndJoinRoom();
 
+    }
 
-        App.imClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
+    private void checkRongyunConnectionAndJoinRoom() {
         int flag = App.imClient.getCurrentConnectionStatus().getValue();
         if (flag == 0 || flag == 1) {
             joinRoom();
@@ -294,7 +307,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 }
             });
         }
-
     }
 
     private void joinRoom() {
@@ -302,6 +314,9 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void onSuccess() {
                 CommonHelper.showTip(activity, "进入聊天室成功");
+                if(isSendIntoRoomMsg){
+                    sendIntoRoomMsg();
+                }
             }
 
             @Override
@@ -311,17 +326,27 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         });
     }
 
+    /**
+     * 发送入场消息
+     */
+    private void sendIntoRoomMsg() {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("chatroom", live.getChatroom());
+        params.put("nickName", null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
+        params.put("photo", null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
+        RequestUtils.sendPostRequest(Api.INTO_ROOM, params, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccess(String str) {
+                super.onSuccess(str);
+            }
 
 
-    public LiveMsg getOneMsg() {
-        if (null != msgList && msgList.size() > 0) {
-            int index = (int) (Math.random() * msgList.size());
-            return msgList.get(index);
-        }
-
-        return null;
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, String.class);
     }
-
 
 
     private void loadMsg() {
@@ -408,29 +433,12 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
     /**
-     * 发送进场消息
+     * 是否发送进场消息
+     * @param bool
      */
-    public void sendIntoRoomMsg() {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("chatroom", live.getChatroom());
-        params.put("nickName", null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
-        params.put("photo", null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
-        RequestUtils.sendPostRequest(Api.INTO_ROOM, params, new ResponseCallBack<String>() {
-            @Override
-            public void onSuccessString(String str) {
-                super.onSuccessString(str);
-            }
+    public void isSendIntoRoomMsg(boolean bool) {
+        this.isSendIntoRoomMsg = bool;
 
-            @Override
-            public void onSuccessList(List<String> data) {
-                super.onSuccessList(data);
-            }
-
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-            }
-        }, String.class);
     }
 
 
@@ -508,16 +516,20 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 hideKeyBoard();
                 break;
             case R.id.ivLove:
+                if(bubbview==null){
+                    bubbview = new BubbView(activity, ivLove, flLive, true);
+                }
                 if (null == App.getLoginUser()) {
                     CommonHelper.showLoginPopWindow(activity, R.id.liveMain, new LoginCallBack() {
                         @Override
                         public void loginSuccess() {
-                            new BubbView(activity, ivLove, flLive, true);
+                            bubbview.oneBubble();
                         }
                     });
                     return;
                 }
-                new BubbView(activity, ivLove, flLive, true);
+                bubbview.oneBubble();
+                sendLove();
                 break;
             case R.id.liveClose:
                 activity.onBackPressed();
@@ -525,6 +537,39 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
         }
+    }
+
+
+    /**
+     * 送爱心
+     */
+    private void sendLove() {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("chatroom", live.getChatroom());
+        params.put("nickName", null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
+        params.put("photo", null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
+        params.put("buid", null!=App.getLoginUser()?App.getLoginUser().getUid():"");
+        params.put("cuid", live.getUid());
+        params.put("nickName", null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
+        params.put("photo", null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
+        RequestUtils.sendPostRequest(Api.LOVEPAYMENT, params, new ResponseCallBack<LoveGift>() {
+            @Override
+            public void onSuccess(LoveGift gift) {
+                super.onSuccess(gift);
+                if(StringUtil.isNotEmpty(gift.getLoves())){
+                    int old = Integer.parseInt(tvLove.getText().toString());
+                    int addhot = Integer.parseInt(gift.getLoves());
+                    String loves = old+addhot+"";
+                    tvLove.setText(loves);
+                }
+            }
+
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, LoveGift.class);
     }
 
     /**
@@ -604,7 +649,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 super.onSuccess(data);
                 if (null != data) {
                     etChatMsg.setText("");
-                    CommonHelper.showTip(activity, "喊话消息发送成功");
+                    //更新金币数量
+                    App.userCoin = data.getAmount()+"";
+
+                    int old = Integer.parseInt(tvHot.getText().toString());
+                    int addhot = Integer.parseInt(data.getHots());
+                    String loves = old+addhot+"";
+                    tvHot.setText(loves);
                 }
             }
 
@@ -861,6 +912,47 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                         public void run() {
                             msgAdapter.add(msg);
                             msgListView.setSelection(msgAdapter.getCount()-1);
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_ENTER)){
+                    msgListView.post(new Runnable() {
+
+                        public void run() {
+                            msgAdapter.add(msg);
+                            msgListView.setSelection(msgAdapter.getCount()-1);
+
+
+                                User user = new User();
+                                user.setPhoto(msg.getPhoto());
+                                user.setNickName(msg.getNickName());
+                                mAdapter.addData(user);
+                                mRecyclerView.setAdapter(mAdapter);
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_BARRAGE)){
+                    msgListView.post(new Runnable() {
+
+                        public void run() {
+                            CommonHelper.showTip(activity,"收到弹幕消息");
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_GIFT)){
+                    msgListView.post(new Runnable() {
+                        public void run() {
+                            if(StringUtil.isNotEmpty(msg.getAddhot())){
+                                int old = Integer.parseInt(tvHot.getText().toString());
+                                int addhot = Integer.parseInt(msg.getAddhot());
+                                String loves = old+addhot+"";
+                                tvHot.setText(loves);
+                            }
 
                         }
 

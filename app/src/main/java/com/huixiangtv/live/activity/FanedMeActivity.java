@@ -33,7 +33,7 @@ public class FanedMeActivity extends BaseBackActivity   {
     PtrClassicFrameLayout ptrClassicFrameLayout;
     ListView mListView;
 
-    List<Fans> fansList ;
+
 
     int page = 1;
 
@@ -70,8 +70,8 @@ public class FanedMeActivity extends BaseBackActivity   {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
 
-                                page = 1;
-                        loadFanedMe(true);
+                page = 1;
+                loadFanedMe(true);
 
 
             }
@@ -82,8 +82,8 @@ public class FanedMeActivity extends BaseBackActivity   {
             @Override
             public void loadMore() {
 
-                        page++;
-                        loadFanedMe(false);
+                page++;
+                loadFanedMe(false);
 
 
 

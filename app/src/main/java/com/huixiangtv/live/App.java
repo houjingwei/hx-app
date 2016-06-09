@@ -303,10 +303,10 @@ public class App extends Application {
 
     public static void upUserTag(String tags) {
         loginHelper.setValue("tags", tags);
+    }
 
-
-
-
+    public static void upUserLove(String loves) {
+        loginHelper.setValue("loves", loves);
     }
 
 
@@ -373,4 +373,6 @@ public class App extends Application {
                 context.getPackageName(), 0);
         return packInfo.versionCode;
     }
+
+
 }

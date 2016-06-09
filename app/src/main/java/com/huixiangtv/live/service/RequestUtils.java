@@ -91,14 +91,8 @@ public class RequestUtils {
                         if(firstChar.equals("[")){
                             callBack.onSuccessList(JSON.parseArray(jsonStr,clazz));
                         }else{
-                            if(jsonStr.equals("null")){
-                                callBack.onSuccess(JSON.parseObject(jsonStr,clazz));
-                            }else{
-                                callBack.onSuccess(JSON.parseObject(jsonStr,clazz));
-                            }
-
+                            callBack.onSuccess(JSON.parseObject(jsonStr,clazz));
                         }
-
                     }
                 }
             }
