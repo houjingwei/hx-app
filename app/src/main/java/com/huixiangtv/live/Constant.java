@@ -68,6 +68,9 @@ public class Constant {
     public static final String MSG_TYPE_ENTER = "enter";
     public static final String MSG_TYPE_BARRAGE = "barrage";
     public static final String MSG_TYPE_GIFT = "gift";
+    public static final String MSG_TYPE_LOVE = "love";
+    public static final String LIVING_CLOSE = "liveStop";
+
 
     public static final String PIC_LIST = BASE_PRE +"pic_list";
 

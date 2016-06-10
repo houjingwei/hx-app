@@ -1,9 +1,8 @@
 package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.ListView;
-import android.widget.Toast;
+
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
@@ -16,8 +15,10 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.CommonHelper;
+
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,8 +125,10 @@ public class FanedMeActivity extends BaseBackActivity   {
                 }else{
                     if(bool) {
                         ptrClassicFrameLayout.refreshComplete();
-                        ptrClassicFrameLayout.setLoadMoreEnable(false);
+                    }else{
+                        ptrClassicFrameLayout.loadMoreComplete(true);
                     }
+                    ptrClassicFrameLayout.setLoadMoreEnable(false);
                 }
 
             }

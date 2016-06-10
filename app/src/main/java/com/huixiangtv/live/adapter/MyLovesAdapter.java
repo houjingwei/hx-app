@@ -64,10 +64,10 @@ public class MyLovesAdapter extends BaseAdapter {
             TextView tvTime = (TextView) rowView.findViewById(R.id.tvTime);
             TextView tvContent = (TextView) rowView.findViewById(R.id.tvContent);
             TextView tvLoveCount = (TextView) rowView.findViewById(R.id.tvLoveCount);
-            tvTime.setText(love.getTime());
-            tvTitle.setText(love.getTitle());
-            tvLoveCount.setText("+"+love.getLoveCount());
-            tvContent.setText(love.getContent());
+            tvTime.setText(love.getDateTime());
+            tvTitle.setText(love.getSource());
+            tvLoveCount.setText("+"+love.getCount());
+            tvContent.setText(love.getDesc());
         }
         return rowView;
     }

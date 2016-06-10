@@ -1,70 +1,71 @@
 package com.huixiangtv.live.ui;
 
-        import android.app.Activity;
-        import android.content.Context;
-        import android.graphics.Rect;
-        import android.graphics.drawable.GradientDrawable;
-        import android.os.Build;
-        import android.os.Handler;
-        import android.support.v7.widget.LinearLayoutManager;
-        import android.support.v7.widget.RecyclerView;
-        import android.text.TextUtils;
-        import android.util.AttributeSet;
-        import android.util.Log;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.view.ViewTreeObserver;
-        import android.view.animation.Animation;
-        import android.view.animation.TranslateAnimation;
-        import android.widget.EditText;
-        import android.widget.FrameLayout;
-        import android.widget.ImageView;
-        import android.widget.ListView;
-        import android.widget.RelativeLayout;
-        import android.widget.TextView;
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-        import com.alibaba.fastjson.JSON;
-        import com.huixiangtv.live.Api;
-        import com.huixiangtv.live.App;
-        import com.huixiangtv.live.Constant;
-        import com.huixiangtv.live.R;
-        import com.huixiangtv.live.adapter.LiveMsgAdapter;
-        import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
-        import com.huixiangtv.live.adapter.RecyclerviewListener;
-        import com.huixiangtv.live.model.BasePayent;
-        import com.huixiangtv.live.model.ChatMessage;
-        import com.huixiangtv.live.model.HistoryMsg;
-        import com.huixiangtv.live.model.Live;
-        import com.huixiangtv.live.model.LiveMsg;
-        import com.huixiangtv.live.model.LoveGift;
-        import com.huixiangtv.live.model.MsgExt;
-        import com.huixiangtv.live.model.ShoutGift;
-        import com.huixiangtv.live.model.User;
-        import com.huixiangtv.live.pop.CameraWindow;
-        import com.huixiangtv.live.pop.ShareWindow;
-        import com.huixiangtv.live.service.ApiCallback;
-        import com.huixiangtv.live.service.ChatTokenCallBack;
-        import com.huixiangtv.live.service.LoginCallBack;
-        import com.huixiangtv.live.service.RequestUtils;
-        import com.huixiangtv.live.service.ResponseCallBack;
-        import com.huixiangtv.live.service.ServiceException;
-        import com.huixiangtv.live.utils.AnimHelper;
-        import com.huixiangtv.live.utils.CommonHelper;
-        import com.huixiangtv.live.utils.KeyBoardUtils;
-        import com.huixiangtv.live.utils.RongyunUtils;
-        import com.huixiangtv.live.utils.StringUtil;
-        import com.huixiangtv.live.utils.image.ImageUtils;
-        import com.huixiangtv.live.utils.widget.WidgetUtil;
-        import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.alibaba.fastjson.JSON;
+import com.huixiangtv.live.Api;
+import com.huixiangtv.live.App;
+import com.huixiangtv.live.Constant;
+import com.huixiangtv.live.R;
+import com.huixiangtv.live.adapter.LiveMsgAdapter;
+import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
+import com.huixiangtv.live.adapter.RecyclerviewListener;
+import com.huixiangtv.live.model.BasePayent;
+import com.huixiangtv.live.model.ChatMessage;
+import com.huixiangtv.live.model.HistoryMsg;
+import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.model.LiveMsg;
+import com.huixiangtv.live.model.LoveGift;
+import com.huixiangtv.live.model.MsgExt;
+import com.huixiangtv.live.model.ShoutGift;
+import com.huixiangtv.live.model.User;
+import com.huixiangtv.live.pop.CameraWindow;
+import com.huixiangtv.live.pop.LivingFinishWindow;
+import com.huixiangtv.live.pop.ShareWindow;
+import com.huixiangtv.live.service.ApiCallback;
+import com.huixiangtv.live.service.ChatTokenCallBack;
+import com.huixiangtv.live.service.LoginCallBack;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.utils.AnimHelper;
+import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.KeyBoardUtils;
+import com.huixiangtv.live.utils.RongyunUtils;
+import com.huixiangtv.live.utils.StringUtil;
+import com.huixiangtv.live.utils.image.ImageUtils;
+import com.huixiangtv.live.utils.widget.WidgetUtil;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
-        import java.util.ArrayList;
-        import java.util.HashMap;
-        import java.util.List;
-        import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-        import io.rong.imlib.RongIMClient;
-        import io.rong.message.TextMessage;
+import io.rong.imlib.RongIMClient;
+import io.rong.message.TextMessage;
 
 /**
  * Created by hjw on 16/5/17.
@@ -120,6 +121,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     private boolean isSendIntoRoomMsg = false;
 
     BubbView bubbview = null;
+
+
+
+    private int startHot = 0;
+    private int startLove = 0;
+    private long startTime;
+    private int onLineNum = 0;
 
 
     public LiveView(Context context) {
@@ -220,7 +228,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     public void loadLive() {
 
-        App.imClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
+
+
+        //开始时间
+        startTime = System.currentTimeMillis();
 
         //加载在线用户
         initLoadOnlineUsers();
@@ -284,6 +295,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         msgList = new ArrayList<LiveMsg>();
         msgListView.setAdapter(msgAdapter);
         loadMsg();
+        RongIMClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
         checkRongyunConnectionAndJoinRoom();
 
     }
@@ -414,8 +426,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void onSuccessList(List<User> data) {
                 super.onSuccessList(data);
-                mAdapter.addData(data);
-                mRecyclerView.setAdapter(mAdapter);
+                if(null!=data){
+                    mAdapter.addData(data);
+                    mRecyclerView.setAdapter(mAdapter);
+
+                    onLineNum = data.size();
+                }
+
             }
 
             @Override
@@ -534,8 +551,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             case R.id.liveClose:
                 activity.onBackPressed();
                 break;
-
-
         }
     }
 
@@ -558,8 +573,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 super.onSuccess(gift);
                 if(StringUtil.isNotEmpty(gift.getLoves())){
                     int old = Integer.parseInt(tvLove.getText().toString());
-                    int addhot = Integer.parseInt(gift.getLoves());
-                    String loves = old+addhot+"";
+                    int count = Integer.parseInt(gift.getLoves());
+                    String loves = old+count+"";
                     tvLove.setText(loves);
                 }
             }
@@ -608,8 +623,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             Map<String, String> params = new HashMap<String, String>();
             params.put("chatroom", live.getChatroom());
             params.put("content", etChatMsg.getText().toString());
-            params.put("nickName", live.getNickName());
-            params.put("photo", live.getPhoto());
+            params.put("nickName", App.getLoginUser().getNickName());
+            params.put("photo", App.getLoginUser().getPhoto());
             RequestUtils.sendPostRequest(Api.SEND_MSG, params, new ResponseCallBack<String>() {
                 @Override
                 public void onSuccess(String str) {
@@ -891,8 +906,34 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         });
     }
 
+    public String[] getCloseInfo() {
+        String[] array = new String[4];
+        array[0] = startHot+"";
+        array[1] = startLove+"";
+        array[2] = onLineNum+"";
+        array[3] = getPlayTime();
+        return array;
+    }
 
+    /**
+     * 获取直播市场
+     * @return
+     */
+    public String getPlayTime() {
+        long nowDate = System.currentTimeMillis();
+        long diff = nowDate -startTime;
+        long day = diff / (24 * 60 * 60 * 1000);
+        long hour = (diff / (60 * 60 * 1000) - day * 24);
+        long min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
+        long sec = (diff/1000-day*24*60*60-hour*60*60-min*60);
 
+        if(day>1){
+            return day+"天"+hour+"小时"+min+"分"+sec+"秒";
+        }else{
+            return hour+"小时"+min+"分"+sec+"秒";
+        }
+
+    }
 
 
     /**
@@ -904,6 +945,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             if (message.getContent() instanceof TextMessage) {
                 TextMessage tm = (TextMessage) message.getContent();
                 final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
+                Log.i("msgType","----------"+msg.getMsgType()+"----------");
                 msg.setContent(tm.getContent().toString());
                 if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
 
@@ -930,6 +972,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                                 user.setNickName(msg.getNickName());
                                 mAdapter.addData(user);
                                 mRecyclerView.setAdapter(mAdapter);
+
+                                onLineNum++;
                         }
 
                     });
@@ -952,7 +996,33 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                                 int addhot = Integer.parseInt(msg.getAddhot());
                                 String loves = old+addhot+"";
                                 tvHot.setText(loves);
+                                startHot = startHot + addhot;
                             }
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_LOVE)){
+                    msgListView.post(new Runnable() {
+                        public void run() {
+                            if(StringUtil.isNotEmpty(msg.getAddhot())){
+                                int old = Integer.parseInt(tvHot.getText().toString());
+                                int addhot = Integer.parseInt(msg.getCount());
+                                String loves = old+addhot+"";
+                                tvLove.setText(loves);
+
+                                startLove = startLove + addhot;
+                            }
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
+                    msgListView.post(new Runnable() {
+                        public void run() {
+                         showCloseInfo(msg);
 
                         }
 
@@ -965,6 +1035,26 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
             return false;
         }
+    }
+
+    private void showCloseInfo(LiveMsg msg) {
+
+        LivingFinishWindow selectPicWayWindow = new LivingFinishWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,msg,live);
+        selectPicWayWindow.showAtLocation(activity.findViewById(R.id.liveMain), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        selectPicWayWindow.update();
+        selectPicWayWindow.setListener(new LivingFinishWindow.CloseListener() {
+            @Override
+            public void select() {
+                activity.onBackPressed();
+            }
+        });
+
+
+
+
+
+
+
     }
 
 

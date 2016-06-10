@@ -5,40 +5,40 @@ package com.huixiangtv.live.model;
  */
 public class Love {
 
-    private String title;
-    private String content;
-    private String loveCount;
-    private String time;
+    private String source;
+    private String desc;
+    private String count;
+    private String dateTime;
 
-    public String getTitle() {
-        return title;
+    public String getSource() {
+        return source;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSource(String source) {
+        this.source = source;
     }
 
-    public String getContent() {
-        return content;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
-    public String getLoveCount() {
-        return loveCount;
+    public String getCount() {
+        return count;
     }
 
-    public void setLoveCount(String loveCount) {
-        this.loveCount = loveCount;
+    public void setCount(String count) {
+        this.count = count;
     }
 
-    public String getTime() {
-        return time;
+    public String getDateTime() {
+        return dateTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 }

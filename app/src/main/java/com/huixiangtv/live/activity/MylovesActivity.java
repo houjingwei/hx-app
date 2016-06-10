@@ -1,26 +1,18 @@
 package com.huixiangtv.live.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.adapter.MyFansAdapter;
 import com.huixiangtv.live.adapter.MyLovesAdapter;
 import com.huixiangtv.live.model.Love;
 import com.huixiangtv.live.service.RequestUtils;
@@ -33,8 +25,6 @@ import com.huixiangtv.live.utils.StringUtil;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +59,15 @@ public class MylovesActivity extends BaseBackActivity {
         ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
         mListView = (ListView) this.findViewById(R.id.test_list_view);
         mListView.setAdapter(adapter);
+        View view = LayoutInflater.from(MylovesActivity.this).inflate(R.layout.activity_myloves_head, null, false);
+        TextView tvMyLoves = (TextView) view.findViewById(R.id.tvMyLoves);
+        if(null!=App.getLoginUser()) {
+            tvMyLoves.setText(StringUtil.isNotEmpty(App.getLoginUser().getLoves())?App.getLoginUser().getLoves():0+"个");
+        }else{
+            tvMyLoves.setText("0个");
+        }
+        mListView.addHeaderView(view);
+
         ptrClassicFrameLayout.postDelayed(new Runnable() {
 
             @Override
@@ -131,8 +130,10 @@ public class MylovesActivity extends BaseBackActivity {
                 }else{
                     if(bool) {
                         ptrClassicFrameLayout.refreshComplete();
-                        ptrClassicFrameLayout.setLoadMoreEnable(false);
+                    }else{
+                        ptrClassicFrameLayout.loadMoreComplete(true);
                     }
+                    ptrClassicFrameLayout.setLoadMoreEnable(false);
                 }
 
             }

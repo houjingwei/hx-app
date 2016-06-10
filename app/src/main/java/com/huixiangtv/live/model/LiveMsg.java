@@ -17,6 +17,8 @@ public class LiveMsg {
     private String pname;
     private String url;
     private String content;
+    private String liveTime;
+    private String love;
 
 
     public String getMsgType() {
@@ -121,5 +123,21 @@ public class LiveMsg {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getLiveTime() {
+        return liveTime;
+    }
+
+    public void setLiveTime(String liveTime) {
+        this.liveTime = liveTime;
+    }
+
+    public String getLove() {
+        return love;
+    }
+
+    public void setLove(String love) {
+        this.love = love;
     }
 }

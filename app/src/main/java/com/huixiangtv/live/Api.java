@@ -64,6 +64,9 @@ public class Api {
     //进场消息
     public static final String INTO_ROOM = BASE_URL+"chat/sendEnterMsg";
 
+    //关闭直播
+    public static final String LIVEING_CLOSE = BASE_URL+"live/liveStatusNotify";
+
 
     public static String UP_PWD = BASE_URL+"auth/resetPaswd";
 
