@@ -109,6 +109,8 @@ public class LoginOrRegActivity extends BaseBackActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+
+
     }
 
 

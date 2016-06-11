@@ -283,4 +283,25 @@ public class CommonHelper {
             }
         }, Other.class);
     }
+
+    public static void myAccount(final ApiCallback<Other> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        RequestUtils.sendPostRequest(Api.ACCOUNT, params, new ResponseCallBack<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                super.onSuccess(data);
+                if(null!=data){
+                    apiCallback.onSuccess(data);
+                }else{
+                    apiCallback.onSuccess(null);
+                }
+            }
+
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, Other.class);
+    }
 }

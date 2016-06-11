@@ -320,6 +320,10 @@ public class App extends Application {
         loginHelper.setValue("loves", loves);
     }
 
+    public static void upUserBalance(String balance) {
+        loginHelper.setValue("coins", balance);
+    }
+
 
     /**
      * setting body information
