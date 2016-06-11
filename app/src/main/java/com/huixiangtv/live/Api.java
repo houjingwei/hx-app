@@ -67,6 +67,7 @@ public class Api {
     public static final String CANCEL_ATTENTION = BASE_URL+"fans/removeFollow";
     //关注状态
     public static final String ATTENTIOIN_STATUS = BASE_URL+"fans/isFollowed";
+
     //我关注的人
     public static String GETCOLLECTARTIST = BASE_URL+"fans/getCollectArtist";
     //我的粉丝
@@ -95,6 +96,7 @@ public class Api {
 
     //获取用户资料
     public static String USER_INFO = BASE_URL + "user/userInfo/get";
+    public static final String ACCOUNT =BASE_URL + "account/balance";
 
 
 

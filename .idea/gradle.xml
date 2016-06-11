@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/ijkplayer-java" />
             <option value="$PROJECT_DIR$/libraryrefresh" />
             <option value="$PROJECT_DIR$/photopicker" />
+            <option value="$PROJECT_DIR$/social_sdk_library_project" />
           </set>
         </option>
         <option name="myModules">
@@ -29,6 +30,7 @@
             <option value="$PROJECT_DIR$/ijkplayer-java" />
             <option value="$PROJECT_DIR$/libraryrefresh" />
             <option value="$PROJECT_DIR$/photopicker" />
+            <option value="$PROJECT_DIR$/social_sdk_library_project" />
           </set>
         </option>
       </GradleProjectSettings>

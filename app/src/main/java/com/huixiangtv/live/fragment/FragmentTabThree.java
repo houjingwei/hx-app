@@ -169,9 +169,30 @@ public class FragmentTabThree extends RootFragment{
 			});
 
 
+			CommonHelper.myAccount(new ApiCallback<Other>() {
+				@Override
+				public void onSuccess(Other data) {
+					if(null!=data){
+						tvAccount.setText(data.getBalance());
+						tvLoves.setText(data.getLoves());
 
-			tvAccount.setText(user.getCoins());
-			tvLoves.setText(user.getLoves());
+						App.upUserLove(data.getLoves());
+						App.upUserBalance(data.getBalance());
+					}
+
+				}
+
+				@Override
+				public void onFailure(ServiceException e) {
+					super.onFailure(e);
+
+				}
+			});
+
+
+
+//			tvAccount.setText(user.getCoins());
+//			tvLoves.setText(user.getLoves());
 //			Map<String, String> params = new HashMap<String, String>();
 //			RequestUtils.sendPostRequest(Api.USER_INFO, params, new ResponseCallBack<User>() {
 //				@Override
