@@ -58,6 +58,15 @@ public class Api {
     public static final String GIFT_PAYMENT = BASE_URL+"pay/shoutGiftPayment";
     public static final String SHOUT_GIFT = BASE_URL+"gift/getShoutGiftInfo";
 
+    //奉献爱心
+    public static final String LOVEPAYMENT = BASE_URL+"pay/loveGiftPayment";
+
+    //进场消息
+    public static final String INTO_ROOM = BASE_URL+"chat/sendEnterMsg";
+
+    //关闭直播
+    public static final String LIVEING_CLOSE = BASE_URL+"live/liveStatusNotify";
+
 
     public static String UP_PWD = BASE_URL+"auth/resetPaswd";
 
@@ -83,6 +92,12 @@ public class Api {
 
 
     public  static String GETPOPULARITYRANK = BASE_URL +"/fans/getPopularityRank";
+
+
+    /**
+     * 爱心明细
+     */
+    public static String LOVE_DETAIL = BASE_URL+"account/getLoveDetail";
 
 
 }

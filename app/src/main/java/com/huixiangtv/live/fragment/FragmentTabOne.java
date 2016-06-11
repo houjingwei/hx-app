@@ -37,7 +37,11 @@ import com.huixiangtv.live.adapter.CommonAdapter;
 import com.huixiangtv.live.adapter.LiveBannerAdapter;
 import com.huixiangtv.live.adapter.ViewHolder;
 import com.huixiangtv.live.model.BannerModel;
+import com.huixiangtv.live.model.ChatMessage;
+import com.huixiangtv.live.model.HistoryMsg;
 import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.model.LiveMsg;
+import com.huixiangtv.live.model.MsgExt;
 import com.huixiangtv.live.model.PlayUrl;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
@@ -368,6 +372,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
                 if (data != null && data.size() > 0) {
 
+                    //loadMsg(data.get(0).getLid());
                     Long totalCount = Long.parseLong(data.size() + "");
                     if (0 == totalCount) {
                         CommonHelper.showTip(getActivity(),"已经没有更多内容了");
@@ -381,7 +386,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
                             viewpageModelList.addAll(data);
                             appPage.setAdapter(new LiveBannerAdapter(getActivity(),getContext(), data, i));
-//                            appPage.setNumColumns(1);
                             appPage.setOnItemClickListener(listener);
                             mSwitchScrollLayout.addView(appPage);
                             isLoad = true;
@@ -411,6 +415,46 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
     }
 
+
+    private void loadMsg(String lid) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("chatroom", lid);
+        RequestUtils.sendPostRequest(Api.HISTORY_MSG, params, new ResponseCallBack<HistoryMsg>() {
+            @Override
+            public void onSuccess(HistoryMsg data) {
+                super.onSuccess(data);
+                if (null != data.getLastMsg() && data.getLastMsg().size() > 0) {
+                    List<LiveMsg> ll = new ArrayList<LiveMsg>();
+                    for (ChatMessage message : data.getLastMsg()) {
+
+                        LiveMsg msg = new LiveMsg();
+                        MsgExt ext = message.getExt();
+                        if (null != ext) {
+                            msg.setMsgType(ext.getMsgType());
+                            msg.setNickName(ext.getNickName());
+                            msg.setUid(ext.getUid());
+                            msg.setPhoto(ext.getPhoto());
+                            msg.setRole(ext.getRole());
+                            msg.setOnline(ext.getOnline());
+                        }
+
+                        msg.setContent(message.getContent().toString());
+                        if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
+                            ll.add(msg);
+                        }
+
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, HistoryMsg.class);
+    }
 
     class SwitchPicThread implements Runnable {
         public void run() {
@@ -488,7 +532,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         //CommonHelper.viewSetBackageImag(live.getPhoto(),llInfo);
         tvInfo.setText(live.getNickName());
         tvLoveCount.setText(live.getLoveCount());
-        tvWeight.setText(live.getHeight() + "Cm     " + live.getWeight() + "    三围：" + live.getBwh());
+        tvWeight.setText(live.getHeight() + "Cm     " + live.getWeight() + "Kg    三围：" + live.getBwh());
     }
 
     public AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {

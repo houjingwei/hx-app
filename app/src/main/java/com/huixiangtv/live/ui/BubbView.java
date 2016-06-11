@@ -51,25 +51,25 @@ public class BubbView {
         baseY = locations[1];
         baseWidth = baseView.getWidth();
         baseHeight = baseView.getHeight();
-        if(b){
-            oneBubble();
-        }else{
-            handler.postDelayed(runnable, 500);
-        }
 
     }
 
-    private void oneBubble() {
+    public void oneBubble(){
         View view = createOneBubbleView();
         initOneAnimator(view);
         startAni(view);
-
     }
+
+    public void bubble(){
+        handler.postDelayed(runnable, 500);
+    }
+
+
 
     private View createOneBubbleView() {
         int imageWidth = WidgetUtil.dip2px(context,20);
         int randomWidth = getRandomNum(baseWidth,imageWidth);
-        int baseViewMarginImageTop = WidgetUtil.dip2px(context,10);
+        int baseViewMarginImageTop = WidgetUtil.dip2px(context,20);
 
         ImageView flowerAnim = new ImageView(context);
         rootView.addView(flowerAnim);
@@ -85,10 +85,10 @@ public class BubbView {
 
     private void initOneAnimator(View view) {
         animator1 = ObjectAnimator.ofFloat(view, "alpha",0.3f);
-        animator2 = ObjectAnimator.ofFloat(view, "scaleX",1.5f,3f);
-        animator5 = ObjectAnimator.ofFloat(view, "scaleY",1.5f,3f);
-        animator4 = ObjectAnimator.ofFloat(view, "translationX",0.f,5.f,10.f,25.f,40.f,60.f,75.f,90.f,1100.f,120.f);
-        animator3 = ObjectAnimator.ofFloat(view, "translationY", 0f, -600f);
+        animator2 = ObjectAnimator.ofFloat(view, "scaleX",0.9f,1.2f);
+        animator5 = ObjectAnimator.ofFloat(view, "scaleY",0.9f,1.2f);
+        setAnimator4(view);
+        animator3 = ObjectAnimator.ofFloat(view, "translationY", 0f, -500f);
     }
 
     Handler handler=new Handler();
@@ -153,7 +153,7 @@ public class BubbView {
     private View createBubbleView() {
         int imageWidth = WidgetUtil.dip2px(context,20);
         int randomWidth = getRandomNum(baseWidth,imageWidth);
-        int baseViewMarginImageTop = WidgetUtil.dip2px(context,40);
+        int baseViewMarginImageTop = WidgetUtil.dip2px(context,20);
 
         ImageView flowerAnim = new ImageView(context);
         rootView.addView(flowerAnim);
@@ -177,11 +177,11 @@ public class BubbView {
 
 
     private void initAnimator(View view) {
-        animator1 = ObjectAnimator.ofFloat(view, "alpha",0.3f);
-        animator2 = ObjectAnimator.ofFloat(view, "scaleX",1.5f);
-        animator5 = ObjectAnimator.ofFloat(view, "scaleY",1.5f);
+        animator1 = ObjectAnimator.ofFloat(view, "alpha",0.2f);
+        animator2 = ObjectAnimator.ofFloat(view, "scaleX",0.9f,1.2f);
+        animator5 = ObjectAnimator.ofFloat(view, "scaleY",0.9f,1.2f);
         setAnimator4(view);
-        animator3 = ObjectAnimator.ofFloat(view, "translationY", 0f, -600f);
+        animator3 = ObjectAnimator.ofFloat(view, "translationY", 0f, -500f);
     }
 
     private void setAnimator4(View view) {

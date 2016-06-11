@@ -26,6 +26,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/rlPhoenBind"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -71,6 +72,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/rlUpdatePwd"
         android:layout_width="match_parent"
         android:layout_height="50dp"

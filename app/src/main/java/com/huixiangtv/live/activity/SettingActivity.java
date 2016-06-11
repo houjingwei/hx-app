@@ -225,11 +225,11 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
      */
     private void login_Platform(SHARE_MEDIA platform) {
         if(!OauthHelper.isAuthenticated(SettingActivity.this, platform)) {
-            App.mShareAPI.doOauthVerify(SettingActivity.this, platform, umAuthListener);
+            App.mShareAPI.doOauthVerify(this, platform, umAuthListener);
         }
         else
         {
-            App.mShareAPI.deleteOauth(SettingActivity.this,platform,delumAuthListener);
+            App.mShareAPI.deleteOauth(this,platform,delumAuthListener);
         }
     }
 
@@ -237,7 +237,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-       // App.mShareAPI.onActivityResult(requestCode, resultCode, data);
+        //App.mShareAPI.onActivityResult(requestCode, resultCode, data);
     }
 
     private UMAuthListener delumAuthListener = new UMAuthListener() {

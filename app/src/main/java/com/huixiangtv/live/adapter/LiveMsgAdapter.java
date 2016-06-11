@@ -2,6 +2,9 @@ package com.huixiangtv.live.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.LiveMsg;
+import com.huixiangtv.live.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,9 +40,6 @@ public class LiveMsgAdapter extends BaseAdapter {
         this.context = activity;
     }
 
-    public LiveMsgAdapter() {
-    }
-
 
     @Override
     public int getCount() {
@@ -57,18 +59,33 @@ public class LiveMsgAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = convertView;
-        final LiveMsg message = (LiveMsg) getItem(position);
-        if (null == rowView) {
-            rowView = LayoutInflater.from(context).inflate(R.layout.live_msg_item, parent, false);
+        ViewHolder holder;
+        LiveMsg message = getItem(position);
+        if(convertView == null)
+        {
+            holder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.live_msg_item, parent, false);
+            holder.msg = (TextView) convertView .findViewById(R.id.tvMsg);
+            convertView.setTag(holder);
+        }else
+        {
+            holder = (ViewHolder)convertView.getTag();
         }
-        TextView msg = (TextView) rowView.findViewById(R.id.tvMsg);
-        Log.i("msgInfo","<<"+message.getNickName()+": "+message.getContent()+">>");
-//        SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
-//        ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        msg.setText(message.getContent());
-        return rowView;
+        if(StringUtil.isNotEmpty(message.getMsgType()) && message.getMsgType().equals(Constant.MSG_TYPE_ENTER)){
+            holder.msg.setTextColor(context.getResources().getColor(R.color.orange));
+            holder.msg.setText(message.getContent());
+        }else{
+            SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
+            ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.msg.setText(ss);
+        }
+
+        return convertView;
+
     }
+
+
+
 
     public void clear() {
         voList.clear();
@@ -85,6 +102,11 @@ public class LiveMsgAdapter extends BaseAdapter {
     public void add(LiveMsg msg) {
         voList.add(msg);
         notifyDataSetChanged();
+    }
 
+
+    static class ViewHolder
+    {
+        public TextView msg;
     }
 }

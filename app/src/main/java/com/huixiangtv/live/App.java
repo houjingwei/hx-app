@@ -16,7 +16,6 @@ import com.duanqu.qupai.auth.AuthService;
 import com.duanqu.qupai.auth.QupaiAuthListener;
 import com.huixiangtv.live.model.Gift;
 import com.huixiangtv.live.model.User;
-import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.ChatTokenCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
@@ -126,6 +125,8 @@ public class App extends Application {
 
     }
 
+
+
     public static void qupaiAuth() {
 
         AuthService service = AuthService.getInstance();
@@ -167,7 +168,7 @@ public class App extends Application {
      * 加载我的金币
      */
     private void loadMyCoin() {
-        userCoin = getLoginUser().getCoins();
+        userCoin = !getLoginUser().getCoins().equals("null")?getLoginUser().getCoins():"0";
     }
 
 
@@ -302,10 +303,10 @@ public class App extends Application {
 
     public static void upUserTag(String tags) {
         loginHelper.setValue("tags", tags);
+    }
 
-
-
-
+    public static void upUserLove(String loves) {
+        loginHelper.setValue("loves", loves);
     }
 
 
@@ -390,4 +391,6 @@ public class App extends Application {
                 context.getPackageName(), 0);
         return packInfo.versionCode;
     }
+
+
 }

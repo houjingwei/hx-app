@@ -8,6 +8,7 @@ import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -94,6 +95,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
     private int sharePlat = 0;
     private String pushUrl;
+    private String isRecord = "false";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             setTranslucentStatus(true);
         }
         isPlay = getIntent().getStringExtra("isPlay");
+        isRecord = getIntent().getStringExtra("isRecord");
         if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
             playUrl = getIntent().getStringExtra("playUrl");
             lid = getIntent().getStringExtra("lid");
@@ -143,9 +146,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     }
 
     private void initPlayView() {
-
-
-
         final Map<String, String> param = new HashMap<String, String>();
         param.put("lid", lid);
         RequestUtils.sendPostRequest(Api.LIVEINFO, param, new ResponseCallBack<Live>() {
@@ -156,6 +156,8 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                     cp.dismiss();
                 }
                 living(data);
+
+
             }
 
             @Override
@@ -332,7 +334,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                     cp.dismiss();
                 }
                 live =data;
-
+                startPush();
                 living(data);
                 ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);
                 animIn.setDuration(500);
@@ -614,8 +616,11 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         liveView = new LiveView(LiveActivity.this);
         liveView.setActivity(LiveActivity.this);
         liveView.setInfo(data);
+        if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
+            liveView.isSendIntoRoomMsg(true);
+        }
         flCover.addView(liveView);
-        liveView.loadLive(null);
+        liveView.loadLive();
 
         if(sharePlat==1){
             CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
@@ -682,16 +687,33 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             liveView.removeMsgListener();
         }
 
+
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        
+        if (StringUtil.isNotEmpty(isRecord) && isRecord.equals("true")) {
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    //人气，爱心，在线人数，播放时长
+                    String[] closeInfo = liveView.getCloseInfo();
+                    closeLiving(closeInfo);
+                }
+            }, 1000);
+
+
+        }
         if(null!=recordView){
             //停止推流
             stopRecorder();
             _Client.stopPreview();
             _Client.onDestroy();
+
+            //停止直播
+            stopLive();
 
         }
 
@@ -705,6 +727,43 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             }
 
         }
+
+    }
+
+
+    /**
+     * 直播结束
+     * @param closeInfo
+     */
+    private void closeLiving(String[] closeInfo) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("lid", live.getLid());
+        params.put("online", closeInfo[2]);
+        params.put("hots", closeInfo[0]);
+        params.put("liveTime", closeInfo[3]);
+        params.put("loves", closeInfo[1]);
+
+        params.put("type", "0");
+        params.put("chatroom", live.getChatroom());
+        params.put("nickName", null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
+
+        params.put("photo", null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
+        RequestUtils.sendPostRequest(Api.LIVEING_CLOSE, params, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccess(String str) {
+                super.onSuccess(str);
+
+            }
+
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, String.class);
+    }
+
+    private void stopLive() {
 
     }
 
@@ -734,6 +793,8 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         }
 
     }
+
+
 
 
 }

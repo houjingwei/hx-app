@@ -1,24 +1,13 @@
 package com.huixiangtv.live.activity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.huixiangtv.live.Api;
-import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.MyFansAdapter;
 import com.huixiangtv.live.service.RequestUtils;
@@ -26,12 +15,10 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.CommonHelper;
-import com.huixiangtv.live.utils.image.ImageUtils;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +34,7 @@ public class FanedMeActivity extends BaseBackActivity   {
     PtrClassicFrameLayout ptrClassicFrameLayout;
     ListView mListView;
 
-    List<Fans> fansList ;
+
 
     int page = 1;
 
@@ -83,14 +70,10 @@ public class FanedMeActivity extends BaseBackActivity   {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        page = 1;
-                        loadFanedMe(true);
-                        ptrClassicFrameLayout.loadMoreComplete(true);
-                        page++;
-                    }
-                }, 1500);
+
+                page = 1;
+                loadFanedMe(true);
+
 
             }
         });
@@ -99,12 +82,10 @@ public class FanedMeActivity extends BaseBackActivity   {
 
             @Override
             public void loadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        page++;
-                        loadFanedMe(false);
-                    }
-                }, 1500);
+
+                page++;
+                loadFanedMe(false);
+
 
 
             }
@@ -120,7 +101,7 @@ public class FanedMeActivity extends BaseBackActivity   {
 
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", page + "");
-        paramsMap.put("pageSize", "120");
+        paramsMap.put("pageSize", "10");
 
 
         RequestUtils.sendPostRequest(Api.GETCOLLECTARTIST, paramsMap, new ResponseCallBack<Fans>() {
@@ -131,32 +112,39 @@ public class FanedMeActivity extends BaseBackActivity   {
                     if(page==1){
                         adapter.clear();
                     }
-                    Long totalCount = Long.parseLong(data.size() + "");
-                    if (0 == totalCount) {
-                        Toast.makeText(FanedMeActivity.this, "已经没有更多内容了", Toast.LENGTH_LONG).show();
-                    } else {
-                        fansList = data;
-                        adapter.addList(fansList);
-                        if(bool) {
-                            ptrClassicFrameLayout.refreshComplete();
+                    adapter.addList(data);
+                    if(bool) {
+                        if(data.size() > 9) {
                             ptrClassicFrameLayout.setLoadMoreEnable(true);
-                        }else{
-                            ptrClassicFrameLayout.loadMoreComplete(true);
-                            ptrClassicFrameLayout.refreshComplete();
                         }
+                        ptrClassicFrameLayout.refreshComplete();
+
+                    }else{
+                        ptrClassicFrameLayout.loadMoreComplete(true);
                     }
-                } else {
+                }else{
+                    if(bool) {
+                        ptrClassicFrameLayout.refreshComplete();
+                    }else{
+                        ptrClassicFrameLayout.loadMoreComplete(true);
+                    }
+                    ptrClassicFrameLayout.setLoadMoreEnable(false);
                 }
+
             }
 
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 CommonHelper.showTip(FanedMeActivity.this, e.getMessage());
+                if(bool) {
+                    ptrClassicFrameLayout.refreshComplete();
+                    ptrClassicFrameLayout.setLoadMoreEnable(false);
+                }else{
+                    ptrClassicFrameLayout.loadMoreComplete(true);
+                }
             }
         }, Fans.class);
     }
-
-
 
 }

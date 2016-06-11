@@ -150,6 +150,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
@@ -181,14 +182,14 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="110dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="60dp">
 
             <ListView
                 android:id="@+id/msgList"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="none"
@@ -358,7 +359,7 @@
     <RelativeLayout
         android:id="@+id/rlGift"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="170dp"
         android:layout_gravity="bottom"
         android:visibility="gone">
 

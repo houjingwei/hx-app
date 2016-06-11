@@ -270,7 +270,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         long currentTime = Calendar.getInstance().getTimeInMillis();
         if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
             lastClickTime = currentTime;
-            ForwardUtils.target(MainActivity.this, Constant.START_LIVE, null);
+            Map<String, String> params = new HashMap<>();
+            params.put("isRecord","true");
+            ForwardUtils.target(MainActivity.this, Constant.START_LIVE, params);
         }
 
     }
