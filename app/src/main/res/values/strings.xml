@@ -221,5 +221,7 @@
     <string name="play_live">观看直播</string>
     <string name="stop_live">停止观看</string>
     <string name="goto_watch_live">测试观看直播</string>
+    <string name="labenHot">人气</string>
+    <string name="attention_me">关注我的人</string>
 
 </resources>

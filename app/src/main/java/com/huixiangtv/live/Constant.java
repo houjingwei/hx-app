@@ -36,6 +36,7 @@ public class Constant {
     public static final String FANED_ME = BASE_PRE+"faned_me";
 
     public static final String POPULARITY = BASE_PRE+"popularity";
+    public static final String MY_HOTS = BASE_PRE+"hots";
 
     public static String MY_LOVES = BASE_PRE+"my_loves";
 

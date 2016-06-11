@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FanedMeActivity extends BaseBackActivity   {
+public class MyAttentionActivity extends BaseBackActivity   {
 
 
 
@@ -44,7 +44,7 @@ public class FanedMeActivity extends BaseBackActivity   {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_faned_me);
+        setContentView(R.layout.activity_my_attention);
         x.view().inject(this);
         initview();
 
@@ -107,42 +107,21 @@ public class FanedMeActivity extends BaseBackActivity   {
         RequestUtils.sendPostRequest(Api.GETCOLLECTARTIST, paramsMap, new ResponseCallBack<Fans>() {
             @Override
             public void onSuccessList(List<Fans> data) {
-
                 if (data != null && data.size() > 0) {
                     if(page==1){
                         adapter.clear();
                     }
                     adapter.addList(data);
-                    if(bool) {
-                        if(data.size()>9){
-                            ptrClassicFrameLayout.setLoadMoreEnable(true);
-                        }
-                        ptrClassicFrameLayout.refreshComplete();
-
-                    }else{
-                        ptrClassicFrameLayout.loadMoreComplete(true);
-                    }
-                }else{
-                    if(bool) {
-                        ptrClassicFrameLayout.refreshComplete();
-                    }else{
-                        ptrClassicFrameLayout.loadMoreComplete(true);
-                    }
-                    ptrClassicFrameLayout.setLoadMoreEnable(false);
                 }
+                ptrClassicFrameLayout.loadComplete(true);
 
             }
 
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
-                CommonHelper.showTip(FanedMeActivity.this, e.getMessage());
-                if(bool) {
-                    ptrClassicFrameLayout.refreshComplete();
-                    ptrClassicFrameLayout.setLoadMoreEnable(false);
-                }else{
-                    ptrClassicFrameLayout.loadMoreComplete(true);
-                }
+                CommonHelper.showTip(MyAttentionActivity.this, e.getMessage());
+                ptrClassicFrameLayout.loadComplete(false);
             }
         }, Fans.class);
     }

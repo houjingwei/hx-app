@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/llTop"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/white">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <TextView
+                    style="@style/gray_bigger_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:drawableLeft="@mipmap/icon_search"
+                    android:drawablePadding="5dp"
+                    android:text="@string/searchfans" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+
+        <View style="@style/split_line" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll2"
+            android:visibility="invisible"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/thesecond"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginBottom="5dp"
+                android:src="@mipmap/icon_secondfan" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivPhoto2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/default_head"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp" />
+
+            <TextView
+                android:id="@+id/tvNickName2"
+                style="@style/black_normal_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/fansname1" />
+
+            <TextView
+                android:id="@+id/tvHot2"
+                style="@style/red_small_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="345667" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll1"
+            android:visibility="invisible"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/thefirst"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginBottom="5dp"
+                android:src="@mipmap/icon_firstfan" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivPhoto1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/default_head"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp" />
+
+            <TextView
+                android:id="@+id/tvNickName1"
+                style="@style/black_normal_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/fansname2" />
+
+            <TextView
+                android:id="@+id/tvHot1"
+                style="@style/red_small_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="345667" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll3"
+            android:visibility="invisible"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/thethird"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginBottom="5dp"
+                android:src="@mipmap/icon_thirdfan" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivPhoto3"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/default_head"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp" />
+
+            <TextView
+                android:id="@+id/tvNickName3"
+                style="@style/black_normal_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/fansname3" />
+
+            <TextView
+                android:id="@+id/tvHot3"
+                style="@style/red_small_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="345667" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

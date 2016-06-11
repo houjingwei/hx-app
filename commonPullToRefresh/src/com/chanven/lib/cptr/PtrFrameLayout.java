@@ -940,6 +940,20 @@ public class PtrFrameLayout extends ViewGroup {
         dispatchTouchEventSupper(e);
     }
 
+    public void loadComplete(boolean bool) {
+        if(bool){
+            setLoadMoreEnable(true);
+            refreshComplete();
+            loadMoreComplete(true);
+        }else{
+            setLoadMoreEnable(false);
+            refreshComplete();
+            loadMoreComplete(true);
+        }
+
+    }
+
+
     public static class LayoutParams extends MarginLayoutParams {
 
         public LayoutParams(Context c, AttributeSet attrs) {
@@ -1078,6 +1092,8 @@ public class PtrFrameLayout extends ViewGroup {
         }
     }
 
+
+
     private OnScrollBottomListener onScrollBottomListener = new OnScrollBottomListener() {
         @Override
         public void onScorllBootom() {
@@ -1110,6 +1126,7 @@ public class PtrFrameLayout extends ViewGroup {
             setNoMoreData();
         }
     }
+
 
     public boolean isLoading() {
         return isLoading;

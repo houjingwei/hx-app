@@ -172,49 +172,49 @@
     </style>
 
     <style name="white_small_bold_style">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="white_normal_bold_style">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="white_bigger_bold_style">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="white_bigest_x_bold_style">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="white_bigest_xx_bold_style">
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
 
 
     <style name="gray_small_style">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/gray</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="gray_normal_style">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/gray</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="gray_bigger_style">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/gray</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="gray_bigest_style">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/gray</item>
         <item name="android:textStyle">normal</item>
     </style>
@@ -222,90 +222,90 @@
 
 
     <style name="gray02_small_style">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/gray02</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="gray02_normal_style">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/gray02</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="gray02_bigger_style">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/gray02</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="gray02_bigest_style">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/gray02</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="red_small_style">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/mainColor</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="red_normal_style">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/mainColor</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="red_bigger_style">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/mainColor</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="red_bigest_style">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/mainColor</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="red_bigest_x_style">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/mainColor</item>
         <item name="android:textStyle">normal</item>
     </style>
     <style name="red_bigest_xx_style">
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/mainColor</item>
         <item name="android:textStyle">normal</item>
     </style>
 
 
     <style name="black_small_style">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/normal_color</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="black_normal_style">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/normal_color</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="black_bigger_style">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/normal_color</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="black_bigest_style">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/normal_color</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="black_bold_bigger_style">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/normal_color</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="black_bold_bigest_style">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/normal_color</item>
         <item name="android:textStyle">bold</item>
     </style>

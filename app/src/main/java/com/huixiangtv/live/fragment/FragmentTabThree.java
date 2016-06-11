@@ -13,7 +13,9 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
+import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.User;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -35,7 +37,7 @@ public class FragmentTabThree extends RootFragment{
 
 	ImageView ivPhoto;
 	TextView tvUserName;
-	TextView tvMySj;
+	TextView tvHot;
 	TextView tvFans;
 	TextView haveFans;
 	TextView tvAccount;
@@ -74,12 +76,12 @@ public class FragmentTabThree extends RootFragment{
 		mRootView.findViewById(R.id.llTitle).setOnClickListener(this);
 		mRootView.findViewById(R.id.llMyfans).setOnClickListener(this);
 		mRootView.findViewById(R.id.llfaned).setOnClickListener(this);
-		mRootView.findViewById(R.id.llsj).setOnClickListener(this);
+		mRootView.findViewById(R.id.llHot).setOnClickListener(this);
 
 
 		ivPhoto = (ImageView) mRootView.findViewById(R.id.ivPhoto);
 		tvUserName = (TextView) mRootView.findViewById(R.id.tvUserName);
-		tvMySj = (TextView) mRootView.findViewById(R.id.tvMySj);
+		tvHot = (TextView) mRootView.findViewById(R.id.tvHot);
 		tvFans = (TextView) mRootView.findViewById(R.id.tvFans);
 		haveFans = (TextView) mRootView.findViewById(R.id.haveFans);
 		tvAccount = (TextView) mRootView.findViewById(R.id.tvAccount);
@@ -126,8 +128,8 @@ public class FragmentTabThree extends RootFragment{
 			case R.id.llfaned:
 				ForwardUtils.target(getActivity(), Constant.FANED_ME,null);
 				break;
-			case R.id.llsj:
-				//ForwardUtils.target(getActivity(), Constant.POPULARITY,null);
+			case R.id.llHot:
+				ForwardUtils.target(getActivity(), Constant.MY_HOTS,null);
 				break;
 
 		}
@@ -135,6 +137,10 @@ public class FragmentTabThree extends RootFragment{
 
 
 	public void onDelayLoad() {
+
+
+
+
 		User user = App.getLoginUser();
 		if (user != null) {
 			tvUserName.setText(user.getNickName());
@@ -143,13 +149,45 @@ public class FragmentTabThree extends RootFragment{
 				CommonHelper.viewSetBackageImag(user.getPhoto(),llUserTop);
 			}
 
-			tvMySj.setText(user.getHots());
-			tvFans.setText(StringUtil.isNotEmpty(user.getFans())?user.getFans():"100");
-			haveFans.setText(StringUtil.isNotEmpty(user.getFans())?user.getFans():"3298");
+
+			CommonHelper.myFansCount(new ApiCallback<Other>() {
+				@Override
+				public void onSuccess(Other data) {
+					if(null!=data){
+						haveFans.setText(data.getCollects());
+						tvFans.setText(data.getFans());
+						tvHot.setText(data.getHots());
+					}
+
+				}
+
+				@Override
+				public void onFailure(ServiceException e) {
+					super.onFailure(e);
+
+				}
+			});
+
+
+
 			tvAccount.setText(user.getCoins());
 			tvLoves.setText(user.getLoves());
+//			Map<String, String> params = new HashMap<String, String>();
+//			RequestUtils.sendPostRequest(Api.USER_INFO, params, new ResponseCallBack<User>() {
+//				@Override
+//				public void onSuccess(User user) {
+//					super.onSuccess(user);
+//					App.saveLoginUser(user);
+//					resetUserInfo(user);
+//				}
+//
+//				@Override
+//				public void onFailure(ServiceException e) {
+//					super.onFailure(e);
+//				}
+//			}, User.class);
 		} else {
-			tvMySj.setText("0");
+			tvHot.setText("0");
 			tvFans.setText("0");
 			haveFans.setText("0");
 			tvAccount.setText("0");
@@ -159,6 +197,38 @@ public class FragmentTabThree extends RootFragment{
 			llUserTop.setBackgroundColor(getActivity().getResources().getColor(R.color.mainColor));
 
 		}
+	}
+
+	private void resetUserInfo(User user) {
+		tvUserName.setText(user.getNickName());
+		if (null != user.getPhoto() && user.getPhoto().length() > 0) {
+			ImageUtils.displayAvator(ivPhoto, user.getPhoto());
+			CommonHelper.viewSetBackageImag(user.getPhoto(),llUserTop);
+		}
+
+
+
+		CommonHelper.myFansCount(new ApiCallback<Other>() {
+			@Override
+			public void onSuccess(Other data) {
+				if(null!=data){
+					tvFans.setText(data.getCollects());
+					haveFans.setText(data.getHots());
+				}
+
+			}
+
+			@Override
+			public void onFailure(ServiceException e) {
+				super.onFailure(e);
+
+			}
+		});
+
+
+
+		tvAccount.setText(user.getCoins());
+		tvLoves.setText(user.getLoves());
 	}
 
 
@@ -178,7 +248,6 @@ public class FragmentTabThree extends RootFragment{
 	 * get user status by auth
 	 */
 	public   void getUserStatus() {
-
 		try {
 			String token = App.getPreferencesValue("token");
 			String uid = App.getPreferencesValue("uid");

@@ -48,7 +48,7 @@ public class SelectPicWayWindow extends BasePopupWindow implements
 	public void initPopUpWindow() {
 		view = RelativeLayout.inflate(context, R.layout.pop_select_pic, null);
 		bottom = (ScrollView) view.findViewById(R.id.bottom);
-		view.findViewById(R.id.pop_layout).setOnClickListener(this);
+		view.findViewById(R.id.pplayout).setOnClickListener(this);
 		llAlbum=(LinearLayout) view.findViewById(R.id.ll_album);
 		llCapture=(LinearLayout) view.findViewById(R.id.ll_capture);
 		super.setFocusable(true);
