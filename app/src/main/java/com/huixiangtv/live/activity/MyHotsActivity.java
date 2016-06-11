@@ -78,7 +78,7 @@ public class MyHotsActivity extends BaseBackActivity {
 
     private void initview() {
         commonTitle.setActivity(this);
-        commonTitle.setTitleText(getResources().getString(R.string.myfans));
+        commonTitle.setTitleText(getResources().getString(R.string.labenHotRank));
 
         adapter = new MyFansAdapter();
         ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
@@ -176,17 +176,17 @@ public class MyHotsActivity extends BaseBackActivity {
                     ll1.setVisibility(View.VISIBLE);
                     ImageUtils.displayAvator(ivPhoto1,fans.getPhoto());
                     tvNickName1.setText(fans.getNickName());
-                    tvHot1.setText(fans.getHots());
+                    tvHot1.setText(fans.getDevoteValue());
                 }else if(i==1){
                     ll2.setVisibility(View.VISIBLE);
                     ImageUtils.displayAvator(ivPhoto2,fans.getPhoto());
                     tvNickName2.setText(fans.getNickName());
-                    tvHot2.setText(fans.getHots());
+                    tvHot2.setText(fans.getDevoteValue());
                 }else if(i==2){
                     ll3.setVisibility(View.VISIBLE);
                     ImageUtils.displayAvator(ivPhoto3,fans.getPhoto());
                     tvNickName3.setText(fans.getNickName());
-                    tvHot3.setText(fans.getHots());
+                    tvHot3.setText(fans.getDevoteValue());
                 }
             }
         }

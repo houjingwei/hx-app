@@ -10,6 +10,8 @@ public class Other {
     private String hots;
     private String fans;
     private String collects;
+    private String balance;
+    private String loves;
 
     public String getIsFollowed() {
         return isFollowed;
@@ -41,5 +43,22 @@ public class Other {
 
     public void setCollects(String collects) {
         this.collects = collects;
+    }
+
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
+    public String getLoves() {
+        return loves;
+    }
+
+    public void setLoves(String loves) {
+        this.loves = loves;
     }
 }
