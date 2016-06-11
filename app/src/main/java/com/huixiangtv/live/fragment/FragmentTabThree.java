@@ -116,6 +116,7 @@ public class FragmentTabThree extends RootFragment{
 				}
 				break;
 			case R.id.setting:
+				if(TokenChecker.checkToken(getActivity()))
 				ForwardUtils.target(getActivity(), Constant.SETINT,null);
 				break;
 			case R.id.llTitle:

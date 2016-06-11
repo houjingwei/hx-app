@@ -8,7 +8,10 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/commonPullToRefresh/commonPullToRefresh.iml" filepath="$PROJECT_DIR$/commonPullToRefresh/commonPullToRefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/commonPullToRefresh/commonPullToRefresh.iml" filepath="$PROJECT_DIR$/commonPullToRefresh/commonPullToRefresh.iml" />
+<<<<<<< HEAD
+=======
       <module fileurl="file://$PROJECT_DIR$/huixiang.iml" filepath="$PROJECT_DIR$/huixiang.iml" />
+>>>>>>> 5801938f8b3c119ad53feb9c62a8cb8fbfbf5834
       <module fileurl="file://$PROJECT_DIR$/huixiang-android.iml" filepath="$PROJECT_DIR$/huixiang-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/ijkplayer-exo/ijkplayer-exo.iml" filepath="$PROJECT_DIR$/ijkplayer-exo/ijkplayer-exo.iml" />
       <module fileurl="file://$PROJECT_DIR$/ijkplayer-exo/ijkplayer-exo.iml" filepath="$PROJECT_DIR$/ijkplayer-exo/ijkplayer-exo.iml" />

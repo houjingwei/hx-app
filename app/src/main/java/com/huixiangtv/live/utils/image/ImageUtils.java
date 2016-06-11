@@ -185,6 +185,7 @@ public final class ImageUtils {
             public void onUploadSucceed(FileInfo fileInfo) {
                 Log.i("successful", "upload succeed: " + fileInfo.url);
                 callBack.onSuccess(fileInfo);
+
             }
 
             @Override

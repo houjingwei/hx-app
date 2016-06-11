@@ -10,7 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        multiDexEnabled false
+        multiDexEnabled true
     }
     signingConfigs {
         release {
@@ -46,9 +46,18 @@ android {
         preDexLibraries = false
     }
 
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a'
+            universalApk false
+        }
+    }
+
     productFlavors {
-        all32 { minSdkVersion 14 }
-        all64 { minSdkVersion 21 }
+        //all32 { minSdkVersion 14 }
+        //all64 { minSdkVersion 21 }
         // armv5 {}
         // armv7a {}
         // arm64 { minSdkVersion 21 }

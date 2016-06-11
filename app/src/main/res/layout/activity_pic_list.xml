@@ -89,12 +89,14 @@
                             <TextView
                                 android:textColor="@color/white"
                                 android:layout_width="wrap_content"
+                                android:id="@+id/txtWeight"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:text="50kg" />
 
                             <TextView
                                 android:textColor="@color/white"
+                                android:id="@+id/txtSj"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
@@ -120,6 +122,7 @@
 
                             <TextView
                                 android:textColor="@color/white"
+                                android:id="@+id/txtHeight"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
@@ -127,6 +130,7 @@
 
                             <TextView
                                 android:textColor="@color/white"
+                                android:id="@+id/txtFansi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"

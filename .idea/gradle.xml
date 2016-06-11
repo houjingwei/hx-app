@@ -20,6 +20,8 @@
             <option value="$PROJECT_DIR$/social_sdk_library_project" />
           </set>
         </option>
+<<<<<<< HEAD
+=======
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -33,6 +35,7 @@
             <option value="$PROJECT_DIR$/social_sdk_library_project" />
           </set>
         </option>
+>>>>>>> 5801938f8b3c119ad53feb9c62a8cb8fbfbf5834
       </GradleProjectSettings>
     </option>
   </component>
