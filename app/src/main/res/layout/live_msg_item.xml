@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:minHeight="24dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/live_chat_msg_bg"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -17,11 +16,15 @@
 
         <TextView
             android:id="@+id/tvMsg"
-            style="@style/white_small_style"
+            style="@style/white_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:gravity="center"
+            android:shadowColor="@color/normal_color"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
             android:text="小清新小清新小清新小清新小清新小清新" />
     </LinearLayout>
 

@@ -68,6 +68,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Message;
 import io.rong.message.TextMessage;
 
 /**
@@ -304,31 +305,20 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         msgList = new ArrayList<LiveMsg>();
         msgListView.setAdapter(msgAdapter);
         loadMsg();
-        //注册消息监听
-        registReceiver();
+        App.imClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
         checkRongyunConnectionAndJoinRoom();
-
-
-
-
     }
 
-    private ReciveMsgReceiver receiver;
-    private void registReceiver() {
-        receiver = new ReciveMsgReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(ACTION_NAME);
-        //动态注册BroadcastReceiver
-        activity.registerReceiver(receiver, filter);
-    }
 
-    private class ReciveMsgReceiver extends BroadcastReceiver {
-
+    private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
         @Override
-        public void onReceive(Context context, Intent intent) {
-           final LiveMsg msg = (LiveMsg) intent.getSerializableExtra("msg");
-            Log.i("msgType",msg.getContent());
-            if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
+        public boolean onReceived(Message message, int i) {
+            if (message.getContent() instanceof TextMessage) {
+                TextMessage tm = (TextMessage) message.getContent();
+                final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
+                msg.setContent(tm.getContent().toString());
+                Log.i("msgType", msg.getMsgType());
+                if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
 
                     msgListView.post(new Runnable() {
 
@@ -389,7 +379,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     msgListView.post(new Runnable() {
                         public void run() {
                             if(StringUtil.isNotEmpty(msg.getAddhot())){
-                                int old = Integer.parseInt(tvHot.getText().toString());
+                                int old = Integer.parseInt(tvLove.getText().toString());
                                 int addhot = Integer.parseInt(msg.getCount());
                                 String loves = old+addhot+"";
                                 tvLove.setText(loves);
@@ -409,6 +399,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     });
                 }
 
+            }
+            return false;
         }
     }
 
@@ -674,7 +666,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 sendLove();
                 break;
             case R.id.liveClose:
-                activity.unregisterReceiver(receiver);
+
                 activity.onBackPressed();
                 break;
         }
@@ -1118,16 +1110,5 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         KeyBoardUtils.closeKeybord(etChatMsg, ct);
     }
 
-
-
-
-
-
-
-
-
-
-
-    private static final String ACTION_NAME = "RONGYUN_MSG";
 
 }

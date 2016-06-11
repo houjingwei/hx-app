@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:gravity="top"
-                        android:text="6767" />
+                        android:text="0" />
 
                     <TextView
                         android:id="@+id/hots"
@@ -149,14 +149,14 @@
                         style="@style/red_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1232" />
+                        android:text="0" />
 
                     <TextView
                         style="@style/white_small_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="获得人气" />
+                        android:text="获得爱心" />
                 </LinearLayout>
 
                 <View
