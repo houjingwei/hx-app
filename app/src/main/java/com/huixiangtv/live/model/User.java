@@ -21,10 +21,19 @@ public class User implements Serializable {
     private String signature;
     private String tags;
     private String phoneNum;
+    private String status;
 
 
     public String getBust() {
         return bust;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setBust(String bust) {
@@ -113,6 +122,52 @@ public class User implements Serializable {
     private String img3;
     private String img4;
     private String img5;
+
+    public String getImgLoc1() {
+        return imgLoc1;
+    }
+
+    public void setImgLoc1(String imgLoc1) {
+        this.imgLoc1 = imgLoc1;
+    }
+
+    public String getImgLoc2() {
+        return imgLoc2;
+    }
+
+    public void setImgLoc2(String imgLoc2) {
+        this.imgLoc2 = imgLoc2;
+    }
+
+    public String getImgLoc3() {
+        return imgLoc3;
+    }
+
+    public void setImgLoc3(String imgLoc3) {
+        this.imgLoc3 = imgLoc3;
+    }
+
+    public String getImgLoc4() {
+        return imgLoc4;
+    }
+
+    public void setImgLoc4(String imgLoc4) {
+        this.imgLoc4 = imgLoc4;
+    }
+
+    public String getImgLoc5() {
+        return imgLoc5;
+    }
+
+    public void setImgLoc5(String imgLoc5) {
+        this.imgLoc5 = imgLoc5;
+    }
+
+    private String imgLoc1;
+    private String imgLoc2;
+    private String imgLoc3;
+    private String imgLoc4;
+    private String imgLoc5;
 
     private Drawable drawableImg1;
     private Drawable drawableImg2;

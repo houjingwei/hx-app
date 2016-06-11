@@ -199,7 +199,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", currPage + "");
-        paramsMap.put("pagesize", PAGE_SIZE + "");
+        paramsMap.put("pageSize", PAGE_SIZE + "");
         paramsMap.put("cNo", "");
 
 
@@ -380,7 +380,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                                 viewpageModelList.clear();
 
                             viewpageModelList.addAll(data);
-                            appPage.setAdapter(new LiveBannerAdapter(getContext(), data, i));
+                            appPage.setAdapter(new LiveBannerAdapter(getActivity(),getContext(), data, i));
 //                            appPage.setNumColumns(1);
                             appPage.setOnItemClickListener(listener);
                             mSwitchScrollLayout.addView(appPage);
@@ -485,7 +485,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
     private void initViewInfo(Live live)
     {
-        CommonHelper.viewSetBackageImag(live.getPhoto(),llInfo);
+        //CommonHelper.viewSetBackageImag(live.getPhoto(),llInfo);
         tvInfo.setText(live.getNickName());
         tvLoveCount.setText(live.getLoveCount());
         tvWeight.setText(live.getHeight() + "Cm     " + live.getWeight() + "    三围：" + live.getBwh());

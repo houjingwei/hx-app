@@ -323,6 +323,24 @@ public class App extends Application {
 
     }
 
+    public static void saveBodyPic(User user)
+    {
+        loginHelper.setValue("img1",user.getImg1());
+        loginHelper.setValue("img2",user.getImg2());
+        loginHelper.setValue("img3",user.getImg3());
+        loginHelper.setValue("img4",user.getImg4());
+        loginHelper.setValue("img5",user.getImg5());
+    }
+
+    public static void saveBodyLocPic(User user)
+    {
+        loginHelper.setValue("imgloc1",user.getImgLoc1());
+        loginHelper.setValue("imgloc2",user.getImgLoc2());
+        loginHelper.setValue("imgloc3",user.getImgLoc3());
+        loginHelper.setValue("imgloc4",user.getImgLoc4());
+        loginHelper.setValue("imgloc5",user.getImgLoc5());
+    }
+
     /**
      * 签到时间
      * @param context

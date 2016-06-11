@@ -1,14 +1,24 @@
 package com.huixiangtv.live.activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.huixiangtv.live.Api;
+import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.MyFansAdapter;
 import com.huixiangtv.live.service.RequestUtils;
@@ -16,8 +26,12 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.image.ImageUtils;
+
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,6 +142,7 @@ public class FanedMeActivity extends BaseBackActivity   {
                             ptrClassicFrameLayout.setLoadMoreEnable(true);
                         }else{
                             ptrClassicFrameLayout.loadMoreComplete(true);
+                            ptrClassicFrameLayout.refreshComplete();
                         }
                     }
                 } else {
@@ -141,5 +156,7 @@ public class FanedMeActivity extends BaseBackActivity   {
             }
         }, Fans.class);
     }
+
+
 
 }

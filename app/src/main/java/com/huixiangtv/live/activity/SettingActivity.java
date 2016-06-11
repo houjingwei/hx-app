@@ -1,6 +1,7 @@
 package com.huixiangtv.live.activity;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -19,14 +20,17 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.ForwardUtils;
+import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.utils.OauthHelper;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class SettingActivity extends BaseBackActivity implements View.OnClickListener {
 
@@ -118,13 +122,14 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
             case R.id.rlUpdatePwd:
                 break;
             case R.id.rlQqBind:
-
+                    login_Platform(SHARE_MEDIA.QQ);
+//                App.mShareAPI.deleteOauth(SettingActivity.this, SHARE_MEDIA.QQ, umAuthListener);
                 break;
             case R.id.rlWxBind:
-
+                login_Platform(SHARE_MEDIA.WEIXIN);
                 break;
             case R.id.rlSinaBind:
-
+                login_Platform(SHARE_MEDIA.SINA);
                 break;
         }
     }
@@ -135,8 +140,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
         String uid = App.getPreferencesValue("uid");
         cp = ColaProgress.show(SettingActivity.this, "正在加载...", false, true, null);
         Map<String, String> params = new HashMap<String, String>();
-        params.put("token",token);
-        params.put("uid",uid);
+
         RequestUtils.sendPostRequest(Api.AUTH_GETACCOUNT_BINDINFO, params, new ResponseCallBack<AccountBindInfoModel>() {
             @Override
             public void onSuccess(AccountBindInfoModel data) {
@@ -146,7 +150,6 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
                     setBindandUnbandGB("qq", data.qq);
                     setBindandUnbandGB("wx", data.wx);
                     setBindandUnbandGB("wb", data.wb);
-                    Toast.makeText(SettingActivity.this, "Loading BindInfo is Successfully", Toast.LENGTH_LONG).show();
                 }
 
                 if (null != cp) {
@@ -168,29 +171,33 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
     }
 
 
-    private void Auth_Account_Bind(String platform, String assessToken) {
-        String token = App.getPreferencesValue("token");
-        String uid = App.getPreferencesValue("uid");
+    private void Auth_Account_Bind(SHARE_MEDIA platform, String assessToken,String actionType) {
+
+        String flag = "";
+        if(platform==SHARE_MEDIA.QQ){
+            flag="2";
+        }else if(platform==SHARE_MEDIA.WEIXIN){
+            flag="3";
+        }else if(platform==SHARE_MEDIA.SINA){
+            flag="4";
+        }
+
         cp = ColaProgress.show(SettingActivity.this, "正在加载...", false, true, null);
         cp.setCancelable(false);
         Map<String, String> params = new HashMap<String, String>();
-        params.put("token", token);
-        params.put("uid", uid);
-        params.put("platform", platform);
+        params.put("platform", flag);
         params.put("verifyCode", "");
-        params.put("phone", "");
+//        params.put("phone", "");
         params.put("code", assessToken);
+        params.put("actionType",actionType);
 
 
-        RequestUtils.sendPostRequest(Api.AUTH_ACCOUNTBIND, params, new ResponseCallBack<AccountBindInfoModel>() {
+        RequestUtils.sendPostRequest(Api.AUTH_ACCOUNTBIND, params, new ResponseCallBack<String>() {
             @Override
-            public void onSuccess(AccountBindInfoModel data) {
+            public void onSuccess(String data) {
                 super.onSuccess(data);
                 if (data != null) {
-                    setBindandUnbandGB("phone", data.phone);
-                    setBindandUnbandGB("qq", data.qq);
-                    setBindandUnbandGB("wx", data.wx);
-                    setBindandUnbandGB("wb", data.wb);
+
                     Toast.makeText(SettingActivity.this, "Bind is Successfully", Toast.LENGTH_LONG).show();
                 }
 
@@ -207,7 +214,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
                 }
                 Toast.makeText(SettingActivity.this, "Bind is Failed", Toast.LENGTH_LONG).show();
             }
-        }, AccountBindInfoModel.class);
+        }, String.class);
     }
 
 
@@ -217,20 +224,55 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
      * @param platform
      */
     private void login_Platform(SHARE_MEDIA platform) {
-        App.mShareAPI.doOauthVerify(SettingActivity.this, platform, umAuthListener);
+        if(!OauthHelper.isAuthenticated(SettingActivity.this, platform)) {
+            App.mShareAPI.doOauthVerify(SettingActivity.this, platform, umAuthListener);
+        }
+        else
+        {
+            App.mShareAPI.deleteOauth(SettingActivity.this,platform,delumAuthListener);
+        }
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+       // App.mShareAPI.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private UMAuthListener delumAuthListener = new UMAuthListener() {
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            Toast.makeText(SettingActivity.this, "del Authorize Successfully", Toast.LENGTH_SHORT).show();
+         App.mShareAPI.getPlatformInfo(SettingActivity.this, platform, umAuthListener);
+            if (null != data && data.size() > 0) {
+
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            Toast.makeText(SettingActivity.this, "del Authorize fail", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            Toast.makeText(SettingActivity.this, "del Authorize cancel", Toast.LENGTH_SHORT).show();
+        }
+    };
+
 
     private UMAuthListener umAuthListener = new UMAuthListener() {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            App.mShareAPI.getPlatformInfo(SettingActivity.this, platform, umAuthListener);
-            //App.mShareAPI.deleteOauth(getActivity(), platform, umAuthListener);
+            Toast.makeText(SettingActivity.this, "Authorize Successfully", Toast.LENGTH_SHORT).show();
+//            App.mShareAPI.getPlatformInfo(SettingActivity.this, platform, umAuthListener);
             if (null != data && data.size() > 0) {
                 String refresh_token = data.get("refresh_token");
                 String access_token = data.get("access_token");
                 String uid = data.get("uid");
                 //授权成功，下一步 绑定账号
-                Auth_Account_Bind(platform.toString(), access_token);
+                Auth_Account_Bind(platform, access_token,"0");
             }
         }
 
@@ -260,24 +302,25 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
                 setTVBg(weibobind, status,rlSinaBind);
                 break;
             case "wx":
-                setTVBg(weixinbind, status,rlSinaBind);
+                setTVBg(weixinbind, status,rlWxBind);
                 break;
         }
     }
 
 
     private void setTVBg(TextView view, String tag, RelativeLayout rootView) {
-        if (tag == "1") {
+        if (tag .equals ("1")) {
             rootView.setClickable(false);
             view.setClickable(false);
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_bind));
-            view.setTextAppearance(SettingActivity.this,R.style.white_normal_style);
-        } else {
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_qqbind));
-            view.setTextAppearance(SettingActivity.this,R.style.black_normal_style);
+            view.setTextAppearance(SettingActivity.this, R.style.black_normal_style);
+            view.setText("已绑定");
+        }  if (tag .equals("0")) {
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_bind));
+            view.setTextAppearance(SettingActivity.this, R.style.white_normal_style);
+            view.setText("绑定");
 
         }
-        view.setText(R.string.bind);
     }
 
 

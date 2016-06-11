@@ -21,6 +21,16 @@ public class DropImageModel implements Serializable {
 
     private  int isFinish;
 
+    public String getLocUrl() {
+        return locUrl;
+    }
+
+    public void setLocUrl(String locUrl) {
+        this.locUrl = locUrl;
+    }
+
+    private String locUrl;
+
     public DropImageModel() {
 
     }
@@ -29,6 +39,7 @@ public class DropImageModel implements Serializable {
         this.iconId = bean.getIconId();
         this.name = bean.getName();
         this.isFinish = bean.getIsFinish();
+        this.locUrl = bean.getLocUrl();
     }
 
     /**

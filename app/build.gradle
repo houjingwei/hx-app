@@ -46,6 +46,15 @@ android {
         preDexLibraries = false
     }
 
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a'
+            universalApk false
+        }
+    }
+
     productFlavors {
         all32 { minSdkVersion 14 }
         all64 { minSdkVersion 21 }

@@ -228,6 +228,30 @@ public class GaussUtils {
         }
     }
 
+    public static Bitmap GetLocalOrNetBitmap(String url)
+    {
+        Bitmap bitmap = null;
+        InputStream in = null;
+        BufferedOutputStream out = null;
+        try
+        {
+            in = new BufferedInputStream(new URL(url).openStream(), Constant.IO_BUFFER_SIZE);
+            final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+            out = new BufferedOutputStream(dataStream, Constant.IO_BUFFER_SIZE);
+            copy(in, out);
+            out.flush();
+            byte[] data = dataStream.toByteArray();
+            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            data = null;
+            return bitmap;
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private static void copy(InputStream in, OutputStream out)
             throws IOException {
         byte[] b = new byte[Constant.IO_BUFFER_SIZE];

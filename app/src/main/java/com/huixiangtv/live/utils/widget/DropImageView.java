@@ -80,6 +80,16 @@ public class DropImageView extends ImageView implements OnTouchListener,
     private int textColor = Color.WHITE;
     private float textSize = 30;
     private int isFinish = 0;
+
+    public String getLocUrl() {
+        return locUrl;
+    }
+
+    public void setLocUrl(String locUrl) {
+        this.locUrl = locUrl;
+    }
+
+    private String locUrl;
     private String text = "";
     private Drawable icon;
 
