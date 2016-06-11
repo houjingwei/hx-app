@@ -15,14 +15,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
+import com.huixiangtv.live.Api;
+import com.huixiangtv.live.model.LoveGift;
+import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.LoginWindow;
 import com.huixiangtv.live.pop.ShareWindow;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.LoginCallBack;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgressTip;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by hjw on 16/5/18.
@@ -200,5 +209,99 @@ public class CommonHelper {
                 showTip(activity,"分享取消了");
             }
         });
+    }
+
+
+    /**
+     * 关注
+     * @param artistId
+     * @param apiCallback
+     */
+    public static void addFen(final String artistId, final ApiCallback<String> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("artistId",artistId);
+        RequestUtils.sendPostRequest(Api.ATTENTIOIN_STATUS, params, new ResponseCallBack<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                super.onSuccess(data);
+                if(null!=data && data.getIsFollowed().equals("1")){
+                    apiCallback.onFailure(new ServiceException("已关注过"));
+                }else{
+                    toFen(artistId,apiCallback);
+                }
+            }
+
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, Other.class);
+    }
+
+    private static void toFen(String artistId, final ApiCallback<String> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("followid",artistId);
+        RequestUtils.sendPostRequest(Api.ATTENTION, params, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccess(String data) {
+                super.onSuccess(data);
+                apiCallback.onSuccess(data);
+            }
+
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                apiCallback.onSuccess(e.getMessage());
+            }
+        }, String.class);
+    }
+
+
+    /**
+     * 我的粉丝数量
+     * @param apiCallback
+     */
+    public static void myFansCount(final ApiCallback<Other> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        RequestUtils.sendPostRequest(Api.FANS_COUNT, params, new ResponseCallBack<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                super.onSuccess(data);
+                if(null!=data){
+                    apiCallback.onSuccess(data);
+                }else{
+                    apiCallback.onSuccess(null);
+                }
+            }
+
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, Other.class);
+    }
+
+    public static void myAccount(final ApiCallback<Other> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        RequestUtils.sendPostRequest(Api.ACCOUNT, params, new ResponseCallBack<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                super.onSuccess(data);
+                if(null!=data){
+                    apiCallback.onSuccess(data);
+                }else{
+                    apiCallback.onSuccess(null);
+                }
+            }
+
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, Other.class);
     }
 }

@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_11"
-    android:orientation="vertical"
-    tools:context=".activity.FanedMeActivity">
+    android:orientation="vertical">
 
     <com.huixiangtv.live.ui.CommonTitle
         android:id="@+id/myTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+
     <com.chanven.lib.cptr.PtrClassicFrameLayout
         xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/test_list_view_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f0f0f0"
         cube_ptr:ptr_duration_to_close="200"
         cube_ptr:ptr_duration_to_close_header="700"
         cube_ptr:ptr_keep_header_when_refresh="true"
@@ -31,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="0dp"
+            android:divider="@color/trans"
             android:background="@android:color/white" />
     </com.chanven.lib.cptr.PtrClassicFrameLayout>
-
 </LinearLayout>

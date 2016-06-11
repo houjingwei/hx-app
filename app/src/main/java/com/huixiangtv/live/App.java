@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
@@ -12,16 +13,20 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.duanqu.qupai.auth.AuthService;
 import com.duanqu.qupai.auth.QupaiAuthListener;
 import com.huixiangtv.live.model.Gift;
+import com.huixiangtv.live.model.LiveMsg;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.ChatTokenCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.PreferencesHelper;
 import com.huixiangtv.live.utils.RongyunUtils;
+import com.huixiangtv.live.utils.StringUtil;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -36,12 +41,14 @@ import java.util.List;
 import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
+import io.rong.message.TextMessage;
 
 /**
  * Created by hjw on 16/5/4.
  */
 public class App extends Application {
     private static final String TAG = "App";
+    private static final String ACTION_NAME = "RONGYUN_MSG";
     private static App sContext;
     public static UMShareAPI mShareAPI ;
 
@@ -107,11 +114,11 @@ public class App extends Application {
             RongIMClient.init(this);
         }
         imClient = RongIMClient.getInstance();
-
         final RongyunUtils rongyun = new RongyunUtils(this);
         rongyun.chatToken(new ChatTokenCallBack() {
             @Override
             public void getTokenSuccess(String token) {
+                RongIMClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
                 rongyun.connect(token,null);
             }
         });
@@ -262,12 +269,16 @@ public class App extends Application {
             loginUser.setSex(loginHelper.getValue("sex", ""));
             loginUser.setPhoto(loginHelper.getValue("photo", ""));
             loginUser.setBirthday(loginHelper.getValue("birthday", ""));
-            loginUser.setCoins(loginHelper.getValue("coins", ""));
+            if(loginHelper.getValue("coins", "").equals("null")){
+                loginUser.setCoins("0");
+            }else{
+                loginUser.setCoins(loginHelper.getValue("coins", ""));
+            }
             loginUser.setHots(loginHelper.getValue("hots", ""));
             loginUser.setFans(loginHelper.getValue("fans", ""));
             loginUser.setOrders(loginHelper.getValue("orders", ""));
             loginUser.setLives(loginHelper.getValue("lives", ""));
-            loginUser.setLoves(loginHelper.getValue("loves", ""));
+            loginUser.setLoves(loginHelper.getValue("loves", "0"));
             loginUser.setTags(loginHelper.getValue("tags",""));
 
 
@@ -307,6 +318,10 @@ public class App extends Application {
 
     public static void upUserLove(String loves) {
         loginHelper.setValue("loves", loves);
+    }
+
+    public static void upUserBalance(String balance) {
+        loginHelper.setValue("coins", balance);
     }
 
 
@@ -390,6 +405,32 @@ public class App extends Application {
         PackageInfo packInfo = packageManager.getPackageInfo(
                 context.getPackageName(), 0);
         return packInfo.versionCode;
+    }
+
+
+
+
+    /**
+     * 接收消息监听
+     */
+    private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
+        @Override
+        public boolean onReceived(io.rong.imlib.model.Message message, int i) {
+            if (message.getContent() instanceof TextMessage) {
+                TextMessage tm = (TextMessage) message.getContent();
+                final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
+                Log.i("msgType","----------"+msg.getMsgType()+"----------");
+                msg.setContent(tm.getContent().toString());
+                Intent mIntent = new Intent(ACTION_NAME);
+                mIntent.putExtra("msg",msg);
+                //发送广播
+                sendBroadcast(mIntent);
+                Log.i("msgmsg", msg.toString());
+            }
+
+
+            return false;
+        }
     }
 
 

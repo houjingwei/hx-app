@@ -695,7 +695,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         super.onBackPressed();
 
         
-        if (StringUtil.isNotEmpty(isRecord) && isRecord.equals("true")) {
+        if (StringUtil.isNotEmpty(isRecord) && isRecord.equals("true") && null!=liveView) {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     //人气，爱心，在线人数，播放时长

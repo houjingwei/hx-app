@@ -17,7 +17,7 @@ public class User implements Serializable {
     private String fans;//粉丝数
     private String orders;
     private String lives;
-    private String coins;
+    private String coins = "0";
     private String signature;
     private String tags;
     private String phoneNum;

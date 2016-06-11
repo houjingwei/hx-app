@@ -6,12 +6,13 @@ import android.content.Intent;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.AccountActivity;
-import com.huixiangtv.live.activity.FanedMeActivity;
+import com.huixiangtv.live.activity.AttentionMeActivity;
+import com.huixiangtv.live.activity.MyAttentionActivity;
 import com.huixiangtv.live.activity.H5Activity;
 import com.huixiangtv.live.activity.HelpActivity;
 import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.activity.LoginOrRegActivity;
-import com.huixiangtv.live.activity.MyFansActivity;
+import com.huixiangtv.live.activity.MyHotsActivity;
 import com.huixiangtv.live.activity.MylovesActivity;
 import com.huixiangtv.live.activity.PhoneBindActivity;
 import com.huixiangtv.live.activity.PopularityActivity;
@@ -97,7 +98,7 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, RegLiveMainActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.FANS)){
-                Intent intent = new Intent(oriActivity, FanedMeActivity.class);
+                Intent intent = new Intent(oriActivity, MyAttentionActivity.class);
                 toIntent(oriActivity,params,intent);
             }else if (url.startsWith(Constant.HELP)){
                 Intent intent = new Intent(oriActivity, HelpActivity.class);
@@ -106,10 +107,10 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, PhoneBindActivity.class);
                 toIntent(oriActivity,params,intent);
             }else if (url.startsWith(Constant.MY_FANS)){
-                Intent intent = new Intent(oriActivity, MyFansActivity.class);
+                Intent intent = new Intent(oriActivity, AttentionMeActivity.class);
                 toIntent(oriActivity,params,intent);
             }else if (url.startsWith(Constant.FANED_ME)){
-                Intent intent = new Intent(oriActivity, FanedMeActivity.class);
+                Intent intent = new Intent(oriActivity, MyAttentionActivity.class);
                 toIntent(oriActivity,params,intent);
             }else if (url.startsWith(Constant.MY_LOVES)){
                 Intent intent = new Intent(oriActivity, MylovesActivity.class);
@@ -117,8 +118,8 @@ public class ForwardUtils {
             }else if (url.startsWith(Constant.PIC_LIST)){
                 Intent intent = new Intent(oriActivity, RegPicListActivity.class);
                 toIntent(oriActivity,params,intent);
-            }else if (url.startsWith(Constant.POPULARITY)){
-                Intent intent = new Intent(oriActivity, PopularityActivity.class);
+            }else if (url.startsWith(Constant.MY_HOTS)){
+                Intent intent = new Intent(oriActivity, MyHotsActivity.class);
                 toIntent(oriActivity,params,intent);
             }
 

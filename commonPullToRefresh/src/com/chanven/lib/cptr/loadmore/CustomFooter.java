@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import com.chanven.lib.cptr.R;
 
+import org.w3c.dom.Text;
+
 /**
  * default load more view
  */
@@ -38,14 +40,17 @@ public class CustomFooter implements ILoadViewMoreFactory {
 
 
         private ImageView imageView;
+        private TextView tvNoData;
         private AnimationDrawable animationDrawable;
 
         protected OnClickListener onClickRefreshListener;
+
 
         @Override
         public void init(FootViewAdder footViewHolder, OnClickListener onClickRefreshListener) {
             View view = footViewHolder.addFootView(R.layout.custom_footer);
             imageView = (ImageView) view.findViewById(R.id.ptr_classic_header_rotate_view);
+            tvNoData  = (TextView) view.findViewById(R.id.tvNoData);
             imageView.setImageResource(R.drawable.animation);
             animationDrawable = (AnimationDrawable) imageView.getDrawable();
             this.onClickRefreshListener = onClickRefreshListener;
@@ -54,12 +59,15 @@ public class CustomFooter implements ILoadViewMoreFactory {
 
         @Override
         public void showNormal() {
-
+            tvNoData.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.GONE);
         }
 
 
         @Override
         public void showLoading() {
+            tvNoData.setVisibility(View.GONE);
+            imageView.setVisibility(View.VISIBLE);
             animationDrawable.start();
         }
 
@@ -67,6 +75,8 @@ public class CustomFooter implements ILoadViewMoreFactory {
         public void showFail(Exception exception) {
             animationDrawable.stop();
         }
+
+
 
         @Override
         public void showNomore() {

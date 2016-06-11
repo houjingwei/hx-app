@@ -15,6 +15,7 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.PayCoinAdapter;
 import com.huixiangtv.live.model.Coin;
 import com.huixiangtv.live.model.PayMode;
+import com.huixiangtv.live.pay.alipay.AliPayUtils;
 import com.huixiangtv.live.pop.PayModeWindow;
 import com.huixiangtv.live.pop.UpdateSexWindow;
 import com.huixiangtv.live.service.RequestUtils;
@@ -107,7 +108,7 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
 
     private ColaProgress cp = null;
     private void choisePayWay(final Coin coin) {
-        //cp = ColaProgress.show(AccountActivity.this, "加载支付方式", false, true, null);
+        cp = ColaProgress.show(AccountActivity.this, "加载支付方式", false, true, null);
         //加载支付方式
         Map<String, String> map = new HashMap<String, String>();
         map.put("platform", "Android");
@@ -158,6 +159,11 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
     }
 
     private void toPay(Coin coin, PayMode payMode) {
+        if(payMode.getPid().equals("alipay")){
+
+        }else if(payMode.getPid().equals("wx")){
+
+        }
         CommonHelper.showTip(AccountActivity.this,coin.getName()+payMode.getName());
     }
 

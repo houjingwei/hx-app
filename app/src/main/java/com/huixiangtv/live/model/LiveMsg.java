@@ -1,9 +1,11 @@
 package com.huixiangtv.live.model;
 
+import java.io.Serializable;
+
 /**
  * Created by hjw on 16/5/17.
  */
-public class LiveMsg {
+public class LiveMsg implements Serializable{
     private String msgType;
     private String nickName;
     private String uid;

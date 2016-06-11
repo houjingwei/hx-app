@@ -61,6 +61,24 @@ public class Api {
     //奉献爱心
     public static final String LOVEPAYMENT = BASE_URL+"pay/loveGiftPayment";
 
+    //关注
+    public static final String ATTENTION = BASE_URL+"fans/addFollow";
+    //取消
+    public static final String CANCEL_ATTENTION = BASE_URL+"fans/removeFollow";
+    //关注状态
+    public static final String ATTENTIOIN_STATUS = BASE_URL+"fans/isFollowed";
+
+    //我关注的人
+    public static String GETCOLLECTARTIST = BASE_URL+"fans/getCollectArtist";
+    //我的粉丝
+    public  static String GETOWNFANS = BASE_URL+"fans/getOwnFans";
+    //我的粉丝数量
+    public  static String FANS_COUNT = BASE_URL+"fans/getOwnFansCount";
+    //人气贡献榜
+    public  static String MY_HOTS = BASE_URL+"fans/getPopularityRank";
+
+
+
     //进场消息
     public static final String INTO_ROOM = BASE_URL+"chat/sendEnterMsg";
 
@@ -76,6 +94,12 @@ public class Api {
     //set Artist Card Info
     public static String SET_ARTIST_CARD_INFO = BASE_URL + "user/setArtistCardInfo";
 
+    //获取用户资料
+    public static String USER_INFO = BASE_URL + "user/userInfo/get";
+    public static final String ACCOUNT =BASE_URL + "account/balance";
+
+
+
 
     //set User info status by Artistcard
     public static String GET_USER_ARTISTCARD_STATUS = BASE_URL+"user/getArtistCardStatus";
@@ -84,11 +108,9 @@ public class Api {
     //get User Info status by Artistcard
     public  static  String GET_USER_ARTISTCARD =BASE_URL+"user/getArtistCardInfo";
 
-    //my fans
-    public  static String GETOWNFANS = BASE_URL+"fans/getOwnFans";
 
-    //my attention
-    public static String GETCOLLECTARTIST = BASE_URL+"fans/getCollectArtist";
+
+
 
 
     public  static String GETPOPULARITYRANK = BASE_URL +"/fans/getPopularityRank";
@@ -98,6 +120,7 @@ public class Api {
      * 爱心明细
      */
     public static String LOVE_DETAIL = BASE_URL+"account/getLoveDetail";
+
 
 
 }

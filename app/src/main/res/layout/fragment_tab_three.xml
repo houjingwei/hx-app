@@ -109,7 +109,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:gravity="top"
-                            android:text="6767" />
+                            android:text="0" />
 
                         <TextView
                             android:id="@+id/fans"
@@ -140,7 +140,7 @@
                             style="@style/white_bigger_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1232" />
+                            android:text="0" />
 
                         <TextView
                             style="@style/white_small_style"
@@ -156,7 +156,7 @@
                         android:background="@color/white_01" />
 
                     <LinearLayout
-                        android:id="@+id/llsj"
+                        android:id="@+id/llHot"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
@@ -164,18 +164,18 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tvMySj"
+                            android:id="@+id/tvHot"
                             style="@style/white_bigger_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1232" />
+                            android:text="0" />
 
                         <TextView
                             style="@style/white_small_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
-                            android:text="@string/labenSj" />
+                            android:text="@string/labenHot" />
                     </LinearLayout>
                 </LinearLayout>
 

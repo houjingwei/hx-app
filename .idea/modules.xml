@@ -3,14 +3,26 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/QupaiLiveSDK-release1.0.1/QupaiLiveSDK-release1.0.1.iml" filepath="$PROJECT_DIR$/QupaiLiveSDK-release1.0.1/QupaiLiveSDK-release1.0.1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/QupaiLiveSDK-release1.0.1/QupaiLiveSDK-release1.0.1.iml" filepath="$PROJECT_DIR$/QupaiLiveSDK-release1.0.1/QupaiLiveSDK-release1.0.1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/commonPullToRefresh/commonPullToRefresh.iml" filepath="$PROJECT_DIR$/commonPullToRefresh/commonPullToRefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/commonPullToRefresh/commonPullToRefresh.iml" filepath="$PROJECT_DIR$/commonPullToRefresh/commonPullToRefresh.iml" />
+<<<<<<< HEAD
+=======
+      <module fileurl="file://$PROJECT_DIR$/huixiang.iml" filepath="$PROJECT_DIR$/huixiang.iml" />
+>>>>>>> 5801938f8b3c119ad53feb9c62a8cb8fbfbf5834
       <module fileurl="file://$PROJECT_DIR$/huixiang-android.iml" filepath="$PROJECT_DIR$/huixiang-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/ijkplayer-exo/ijkplayer-exo.iml" filepath="$PROJECT_DIR$/ijkplayer-exo/ijkplayer-exo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ijkplayer-exo/ijkplayer-exo.iml" filepath="$PROJECT_DIR$/ijkplayer-exo/ijkplayer-exo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ijkplayer-java/ijkplayer-java.iml" filepath="$PROJECT_DIR$/ijkplayer-java/ijkplayer-java.iml" />
       <module fileurl="file://$PROJECT_DIR$/ijkplayer-java/ijkplayer-java.iml" filepath="$PROJECT_DIR$/ijkplayer-java/ijkplayer-java.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraryrefresh/libraryrefresh.iml" filepath="$PROJECT_DIR$/libraryrefresh/libraryrefresh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraryrefresh/libraryrefresh.iml" filepath="$PROJECT_DIR$/libraryrefresh/libraryrefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/photopicker/photopicker.iml" filepath="$PROJECT_DIR$/photopicker/photopicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/photopicker/photopicker.iml" filepath="$PROJECT_DIR$/photopicker/photopicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/social_sdk_library_project/social_sdk_library_project.iml" filepath="$PROJECT_DIR$/social_sdk_library_project/social_sdk_library_project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/social_sdk_library_project/social_sdk_library_project.iml" filepath="$PROJECT_DIR$/social_sdk_library_project/social_sdk_library_project.iml" />
     </modules>
   </component>
 </project>

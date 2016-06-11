@@ -243,10 +243,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             setTabSelection(0);
             sendToOneFragment("1");
             isSwitch = false;
+            changeIcon(true);
         } else {
             sendToOneFragment("0");
             iv1.setImageResource(R.mipmap.tab1);
             isSwitch = true;
+            changeIcon(false);
         }
 //        if (System.currentTimeMillis() - lastTipTimeMills > 300) {
 //            lastTipTimeMills = System.currentTimeMillis();
@@ -255,6 +257,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //
 //
 //        }
+    }
+
+    private void changeIcon(boolean bool) {
+        if(bool){
+            iv1.setImageResource(R.mipmap.tab1_pressed);
+        }else{
+            iv1.setImageResource(R.mipmap.tab1_big);
+        }
+
     }
 
     /**

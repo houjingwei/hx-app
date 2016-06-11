@@ -43,7 +43,7 @@ public class PopularityActivity extends BaseBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_faned_me);
+        setContentView(R.layout.activity_attention_me);
         x.view().inject(this);
         initview();
 

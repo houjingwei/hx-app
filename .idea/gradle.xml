@@ -17,8 +17,25 @@
             <option value="$PROJECT_DIR$/ijkplayer-java" />
             <option value="$PROJECT_DIR$/libraryrefresh" />
             <option value="$PROJECT_DIR$/photopicker" />
+            <option value="$PROJECT_DIR$/social_sdk_library_project" />
           </set>
         </option>
+<<<<<<< HEAD
+=======
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/QupaiLiveSDK-release1.0.1" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/commonPullToRefresh" />
+            <option value="$PROJECT_DIR$/ijkplayer-exo" />
+            <option value="$PROJECT_DIR$/ijkplayer-java" />
+            <option value="$PROJECT_DIR$/libraryrefresh" />
+            <option value="$PROJECT_DIR$/photopicker" />
+            <option value="$PROJECT_DIR$/social_sdk_library_project" />
+          </set>
+        </option>
+>>>>>>> 5801938f8b3c119ad53feb9c62a8cb8fbfbf5834
       </GradleProjectSettings>
     </option>
   </component>

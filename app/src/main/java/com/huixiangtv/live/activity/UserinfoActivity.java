@@ -88,6 +88,8 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
 
     private void setUserInfo(String tags) {
         User user = App.getLoginUser();
+
+        photo = user.getPhoto();
         ImageUtils.displayAvator(ivPhoto, user.getPhoto());
         etNickName.setText(user.getNickName());
         tvSex.setText(user.getSex().equals("1")?"男":"女");
