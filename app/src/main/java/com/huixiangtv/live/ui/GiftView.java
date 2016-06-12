@@ -26,7 +26,6 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.GiftAdapter;
-import com.huixiangtv.live.message.GiftMessage;
 import com.huixiangtv.live.message.MessageBase;
 import com.huixiangtv.live.model.Gift;
 import com.huixiangtv.live.model.Live;
@@ -71,6 +70,8 @@ public class GiftView extends RelativeLayout {
     private Live liveInfo;
     private TextView tvHot;
 
+    private TextView tvCoin;
+
 
     public GiftView(Context context) {
         super(context);
@@ -80,12 +81,25 @@ public class GiftView extends RelativeLayout {
     }
 
     public void initView() {
+        tvCoin = (TextView) findViewById(R.id.tvCoin);
+        if(null!=App.getLoginUser()){
+            tvCoin.setText(App.getLoginUser().getCoins());
+        }
         if(null== App.giftList){
-            App.loadFreeGiftList();
-            CommonHelper.showTip(activity,"免费礼物加载失败");
-            activity.onBackPressed();
+
+        }else{
+            App.loadFreeGiftList(new ApiCallback() {
+                @Override
+                public void onSuccess(Object data) {
+                    initGiftPanel();
+                }
+            });
 
         }
+
+    }
+
+    private void initGiftPanel() {
         giftList = App.giftList;
         giftViewCount = giftList.size()%5==0? giftList.size()/5: giftList.size()/5+1;
 
@@ -109,8 +123,6 @@ public class GiftView extends RelativeLayout {
             giftViews.add(view);
 
         }
-
-
 
 
         llPointView = (LinearLayout) findViewById(R.id.llPointView);
@@ -204,7 +216,8 @@ public class GiftView extends RelativeLayout {
                 super.onSuccess(data);
 
                 //更新金币数量
-                App.userCoin = data.getAmount()+"";
+                App.upUserBalance(data.getAmount()+"");
+                tvCoin.setText(data.getAmount());
 
                 int old = Integer.parseInt(tvHot.getText().toString());
                 int addhot = Integer.parseInt(data.getHots());
@@ -356,10 +369,8 @@ public class GiftView extends RelativeLayout {
 
 
 
-    private final int ANIM_SHOW_GIFT=1;
+
     private final int ANIM_SHOW_MARKS=2;
-    private final int ANIM_REMOVE_MARKS=3;
-    private final int ANIM_SEND_GIFT=4;
     private Handler videoHandler = new Handler(){
 
         @Override
@@ -369,16 +380,6 @@ public class GiftView extends RelativeLayout {
                 MessageBase messageBase = null == data ? null : (MessageBase) data.get("message");
                 AnimHelper animHelper = new AnimHelper(activity, videoHandler);
                 switch (msg.what) {
-                    case ANIM_SHOW_GIFT:
-                        break;
-                    case ANIM_REMOVE_MARKS:
-                        TextView view = (TextView) data.get("animView");
-                        rootView.removeView(view);
-                        break;
-                    case ANIM_SEND_GIFT:
-                        GiftMessage giftMsg = (GiftMessage) messageBase;
-                        animHelper.showGiftRightTips(rootView, giftMsg);
-                        break;
                     case ANIM_SHOW_MARKS:
                         View barrageArea = (View) data.get("barrageArea");
                         ImageView animView = (ImageView) data.get("animView");
@@ -386,8 +387,6 @@ public class GiftView extends RelativeLayout {
                         Long remarks = Long.parseLong(data.get("remarks").toString());
                         animHelper.showGiftMarksAnim(rootView, barrageArea, remarks);
                         break;
-
-
                 }
             }catch (Exception ex){
                 ex.printStackTrace();;

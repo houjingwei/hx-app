@@ -1,13 +1,11 @@
 package com.huixiangtv.live.ui;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -32,6 +30,7 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.adapter.LiveMsgAdapter;
 import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
 import com.huixiangtv.live.adapter.RecyclerviewListener;
@@ -309,100 +308,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         checkRongyunConnectionAndJoinRoom();
     }
 
-
-    private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
-        @Override
-        public boolean onReceived(Message message, int i) {
-            if (message.getContent() instanceof TextMessage) {
-                TextMessage tm = (TextMessage) message.getContent();
-                final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
-                msg.setContent(tm.getContent().toString());
-                Log.i("msgType", msg.getMsgType());
-                if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
-
-                    msgListView.post(new Runnable() {
-
-                        public void run() {
-                            msgAdapter.add(msg);
-                            msgListView.setSelection(msgAdapter.getCount()-1);
-
-                        }
-
-                    });
-
-                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_ENTER)){
-
-                    msgListView.post(new Runnable() {
-
-                        public void run() {
-                            msgAdapter.add(msg);
-                            msgListView.setSelection(msgAdapter.getCount()-1);
-
-
-                            User user = new User();
-                            user.setPhoto(msg.getPhoto());
-                            user.setNickName(msg.getNickName());
-                            mAdapter.addData(user);
-                            mRecyclerView.setAdapter(mAdapter);
-
-                            onLineNum++;
-                        }
-
-                    });
-
-                } else if(msg.getMsgType().equals(Constant.MSG_TYPE_BARRAGE)){
-                    msgListView.post(new Runnable() {
-
-                        public void run() {
-                            CommonHelper.showTip(activity,"收到弹幕消息");
-
-                        }
-
-                    });
-
-                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_GIFT)){
-                    msgListView.post(new Runnable() {
-                        public void run() {
-                            if(StringUtil.isNotEmpty(msg.getAddhot())){
-                                int old = Integer.parseInt(tvHot.getText().toString());
-                                int addhot = Integer.parseInt(msg.getAddhot());
-                                String loves = old+addhot+"";
-                                tvHot.setText(loves);
-                                startHot = startHot + addhot;
-                            }
-
-                        }
-
-                    });
-
-                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_LOVE)){
-                    msgListView.post(new Runnable() {
-                        public void run() {
-                            if(StringUtil.isNotEmpty(msg.getAddhot())){
-                                int old = Integer.parseInt(tvLove.getText().toString());
-                                int addhot = Integer.parseInt(msg.getCount());
-                                String loves = old+addhot+"";
-                                tvLove.setText(loves);
-
-                                startLove = startLove + addhot;
-                            }
-
-                        }
-
-                    });
-
-                }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
-                    msgListView.post(new Runnable() {
-                        public void run() {
-                            showCloseInfo(msg);
-                        }
-                    });
-                }
-
-            }
-            return false;
-        }
-    }
 
     private void checkRongyunConnectionAndJoinRoom() {
         int flag = App.imClient.getCurrentConnectionStatus().getValue();
@@ -806,6 +711,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void onSuccess(BasePayent data) {
                 super.onSuccess(data);
+                hideKeyBoard();
                 if (null != data) {
                     etChatMsg.setText("");
                     //更新金币数量
@@ -856,7 +762,15 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void select(int flag) {
                 super.select(flag);
-                CommonHelper.showTip(activity, "choise" + flag);
+                //1:切换像头 2：切图 3：美颜
+                if(flag==1){
+                    ((LiveActivity)activity).changeCamera();
+                }else if(flag==2){
+                    ((LiveActivity)activity).cutScreen();
+                }else if(flag==3){
+                    ((LiveActivity)activity).changeBeau();
+                }
+
             }
         });
     }
@@ -1109,6 +1023,143 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     private void hideKeyBoard() {
         KeyBoardUtils.closeKeybord(etChatMsg, ct);
     }
+
+
+
+
+
+    private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
+        @Override
+        public boolean onReceived(Message message, int i) {
+            if (message.getContent() instanceof TextMessage) {
+                TextMessage tm = (TextMessage) message.getContent();
+                final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
+                msg.setContent(tm.getContent().toString());
+                Log.i("msgType", msg.getMsgType());
+                if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
+
+                    msgListView.post(new Runnable() {
+
+                        public void run() {
+                            msgAdapter.add(msg);
+                            msgListView.setSelection(msgAdapter.getCount()-1);
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_ENTER)){
+
+                    msgListView.post(new Runnable() {
+
+                        public void run() {
+                            msgAdapter.add(msg);
+                            msgListView.setSelection(msgAdapter.getCount()-1);
+
+
+                            User user = new User();
+                            user.setPhoto(msg.getPhoto());
+                            user.setNickName(msg.getNickName());
+                            mAdapter.addData(user);
+                            mRecyclerView.setAdapter(mAdapter);
+
+                            onLineNum++;
+                        }
+
+                    });
+
+                } else if(msg.getMsgType().equals(Constant.MSG_TYPE_BARRAGE)){
+                    Log.i("msgType", msg.getNickName());
+                    msgListView.post(new Runnable() {
+                        public void run() {
+
+                            android.os.Message barrageMsg = new android.os.Message();
+                            barrageMsg.what=BARRAGE;
+                            barrageMsg.obj = msg;
+                            videoHandler.sendMessage(barrageMsg);
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_GIFT)){
+                    msgListView.post(new Runnable() {
+                        public void run() {
+                            if(StringUtil.isNotEmpty(msg.getAddhot())){
+                                int old = Integer.parseInt(tvHot.getText().toString());
+                                int addhot = Integer.parseInt(msg.getAddhot());
+                                String loves = old+addhot+"";
+                                tvHot.setText(loves);
+                                startHot = startHot + addhot;
+                                showGiftAni(msg);
+                            }
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_LOVE)){
+                    msgListView.post(new Runnable() {
+                        public void run() {
+                            if(StringUtil.isNotEmpty(msg.getAddhot())){
+                                int old = Integer.parseInt(tvLove.getText().toString());
+                                int addhot = Integer.parseInt(msg.getCount());
+                                String loves = old+addhot+"";
+                                tvLove.setText(loves);
+
+                                startLove = startLove + addhot;
+                            }
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
+                    msgListView.post(new Runnable() {
+                        public void run() {
+                            showCloseInfo(msg);
+                        }
+                    });
+                }
+
+            }
+            return false;
+        }
+    }
+
+    private void showGiftAni(LiveMsg msg) {
+        AnimHelper.showGiftAni(activity,flLive,msg);
+    }
+
+    private void showBarrageAni(LiveMsg msg) {
+        AnimHelper.showBarrageAni(activity,flLive,msg);
+    }
+
+
+
+
+    //喊话弹幕
+    private final int BARRAGE = 1;
+
+
+    private Handler videoHandler = new Handler(){
+        @Override
+        public void handleMessage(android.os.Message message) {
+            super.handleMessage(message);
+
+            switch (message.what) {
+                case BARRAGE:
+                    LiveMsg msg = (LiveMsg) message.obj;
+                    showBarrageAni(msg);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+
+
 
 
 }

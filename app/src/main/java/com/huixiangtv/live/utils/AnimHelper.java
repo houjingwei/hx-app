@@ -1,14 +1,20 @@
 package com.huixiangtv.live.utils;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -23,6 +29,8 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.message.GiftMessage;
 import com.huixiangtv.live.model.Gift;
+import com.huixiangtv.live.model.LiveMsg;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 
@@ -601,4 +609,239 @@ public class AnimHelper {
     }
 
 
+    public static void showBarrageAni(Activity activity, final FrameLayout flLive, LiveMsg msg) {
+        final View barrageView = View.inflate(activity, R.layout.shout_barrage, null);
+        flLive.addView(barrageView);
+        TextView tvNickName = (TextView) barrageView.findViewById(R.id.tvNickName);
+        TextView tvMsg = (TextView) barrageView.findViewById(R.id.tvMsg);
+        ImageView ivPhoto = (ImageView) barrageView.findViewById(R.id.ivPhoto);
+        tvMsg.setText(msg.getContent());
+        tvNickName.setText(msg.getNickName());
+        if(StringUtil.isNotEmpty(msg.getPhoto())){
+            ImageUtils.displayAvator(ivPhoto,msg.getPhoto());
+        }
+
+
+        int w = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
+        barrageView.measure(w, h);
+        int height = barrageView.getMeasuredHeight();
+        int width = barrageView.getMeasuredWidth();
+
+
+
+        int minY = App.screenHeight/3;
+        int randomY =  App.screenHeight-(minY-getRandomOffset(minY/5));
+        Log.i("msgType",randomY+"");
+        Log.i("msgType",randomY+"--width"+width+"---height"+height);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.topMargin = randomY;
+        barrageView.setLayoutParams(params);
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(barrageView, "translationX",App.screenWidth,-width);
+        animator.setDuration(10000);
+        animator.start();
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                animator.cancel();
+                if(null!=barrageView){
+                    flLive.removeView(barrageView);
+                }
+            }
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+
+
+
+
+    }
+
+    private static int getRandomOffset(int offset) {
+        java.util.Random random=new java.util.Random();
+        int result=random.nextInt(offset);
+        return result;
+    }
+
+
+
+
+    static boolean giftAnim = false;
+    /**
+     * 接收到的消息动画
+     * @param activity
+     * @param flLive
+     * @param msg
+     */
+    public static void showGiftAni(final Activity activity, final FrameLayout flLive, final LiveMsg msg) {
+        giftAnim = true;
+
+        final View barrageView = View.inflate(activity, R.layout.gift_barrage, null);
+        flLive.addView(barrageView);
+        TextView tvNickName = (TextView) barrageView.findViewById(R.id.tvNickName);
+        TextView tvMsg = (TextView) barrageView.findViewById(R.id.tvMsg);
+        final ImageView ivPhoto = (ImageView) barrageView.findViewById(R.id.ivPhoto);
+        final ImageView ivGift = (ImageView) barrageView.findViewById(R.id.ivGift);
+
+        tvMsg.setText(msg.getContent());
+        tvNickName.setText(msg.getNickName());
+        if(StringUtil.isNotEmpty(msg.getPhoto())){
+            ImageUtils.displayAvator(ivPhoto,msg.getPhoto());
+        }
+        if(null!=App.giftMap){
+            if(null!=App.giftMap.get(msg.getGid())){
+                ImageUtils.displayAvator(ivGift,App.giftMap.get(msg.getGid()).getIcon());
+            }
+
+        }else{
+            App.loadFreeGiftList(new ApiCallback() {
+                @Override
+                public void onSuccess(Object data) {
+                    if(null!=App.giftMap.get(msg.getGid())){
+                        ImageUtils.displayAvator(ivGift,App.giftMap.get(msg.getGid()).getIcon());
+                    }
+
+                }
+            });
+        }
+
+
+        int w = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
+        barrageView.measure(w, h);
+        final int height = barrageView.getMeasuredHeight();
+        final int width = barrageView.getMeasuredWidth();
+
+
+
+        final int randomY =  App.screenHeight/2;
+        int startX = -width;
+        final int offsetX = WidgetUtil.dip2px(activity,10);
+        Log.i("msgType",randomY+"");
+        Log.i("msgType",randomY+"--width"+width+"---height"+height);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.topMargin = randomY;
+        barrageView.setLayoutParams(params);
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(barrageView, "translationX",startX,offsetX);
+        animator.setDuration(600);
+        animator.setInterpolator(new AccelerateInterpolator());
+        animator.start();
+
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                    Log.i("msgType","laile");
+                    int numX = width;
+                    int numY = randomY;
+                    Log.i("msgType","laile"+numX+"---"+numY);
+                    showGiftCount(numX,numY,flLive,activity,barrageView);
+
+
+            }
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+    }
+
+    static AnimatorSet animSet =null;
+    private static void showGiftCount(int numX, int numY, final FrameLayout flLive, Activity activity, final View barrageView) {
+
+        final View numView = View.inflate(activity, R.layout.gift_num, null);
+        flLive.addView(numView);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.topMargin = numY;
+        params.leftMargin = numX;
+        numView.setLayoutParams(params);
+
+
+        numView.setVisibility(View.VISIBLE);
+        animSet = new AnimatorSet();
+        ObjectAnimator animator = ObjectAnimator.ofFloat(numView, "scaleX",1.0f,1.5f,0.8f);
+        animator.setDuration(600);
+
+
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(numView, "scaleY",1.0f,1.5f,0.8f);
+        animator2.setDuration(600);
+
+
+        animSet.play(animator).with(animator2);
+        animSet.setInterpolator(new AccelerateInterpolator());
+        animSet.start();
+
+        Log.i("msgType","ex");
+        animSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                Log.i("msgType","finish");
+                if(null!=barrageView){
+                    hideAndRemoveBarrageView(flLive,barrageView);
+                }
+                if(null!=numView){
+                    flLive.removeView(numView);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+    }
+
+    private static void hideAndRemoveBarrageView(final FrameLayout flLive, final View barrageView) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(barrageView, "alpha",1.0f,0.1f);
+        animator.setDuration(500);
+        animator.start();
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                flLive.removeView(barrageView);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+    }
 }

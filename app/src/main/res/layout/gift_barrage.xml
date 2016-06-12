@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/giftBarrageWrapper"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rlBrrage"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/gift_barrage_bg"
+            android:gravity="center_vertical"
+            android:paddingRight="70dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ivPhoto"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2dp"
+                android:src="@drawable/default_head"
+                app:civ_border_color="@color/white" />
+
+            <LinearLayout
+                android:id="@+id/llRight"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/ivPhoto"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvNickName"
+                    style="@style/white_normal_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kimil" />
+
+                <TextView
+                    android:id="@+id/tvMsg"
+                    style="@style/white_small_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLength="40"
+                    android:text="好稀饭你呀a" />
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/ivGift"
+            android:layout_alignRight="@+id/rlBrrage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/b6" />
+    </RelativeLayout>
+</RelativeLayout>
+
+
