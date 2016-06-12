@@ -371,7 +371,7 @@ public class RegPicListActivity extends Activity {
                     }
                     return false;
             }
-            // 显示缩放后的图片
+            // Display scaled image
             imageView.setImageMatrix(matrix);
             return true;
         }
@@ -380,7 +380,7 @@ public class RegPicListActivity extends Activity {
 
 
     /**
-     * 计算两点之间的距离
+     * Calculate the distance between two points
      *
      * @param event
      * @return
@@ -392,7 +392,7 @@ public class RegPicListActivity extends Activity {
     }
 
     /**
-     * 计算两点之间的中间点
+     * Intermediate point between the two points is calculated
      *
      * @param event
      * @return
@@ -404,10 +404,17 @@ public class RegPicListActivity extends Activity {
     }
 
 
+    /**
+     *  5 is Finished
+     *  0 is Init
+     *  locUrl is location image
+     *  IconId is location Drawable
+     *  Status 2 is init
+     *  Status 1 have setting
+     *  Status 0 is don't setting
+     * @param status
+     */
     private void addData(String status) {
-
-
-
         DropImageModel dropImageModel = new DropImageModel();
         if (mertoBeans.size() == 0) {
             if (status.equals("1")) {
@@ -490,7 +497,9 @@ public class RegPicListActivity extends Activity {
 
     }
 
-
+    /**
+     * init setting view
+     */
     private void setView() {
         for (int i = 0; i < mertoItemViews.size(); i++) {
             if (mertoBeans.size() > i) {
@@ -515,7 +524,11 @@ public class RegPicListActivity extends Activity {
     }
 
 
+
     boolean isdbClick = false;
+    /**
+     * drop imageview listener
+     */
     private DropImageView.DropImageViewListener onMertoItemViewListener = new DropImageView.DropImageViewListener() {
 
         @Override
@@ -557,6 +570,13 @@ public class RegPicListActivity extends Activity {
             }
         }
 
+        /**
+         * move object
+         * @param v
+         * @param e1
+         * @param e2
+         * @return
+         */
         @Override
         public boolean onMove(DropImageView v, MotionEvent e1, MotionEvent e2) {
             if (!isMove) {
@@ -623,6 +643,11 @@ public class RegPicListActivity extends Activity {
         moveView.setLayoutParams(moveParams);
     }
 
+    /**
+     * change object data for imageview
+     * @param x
+     * @param y
+     */
     private void changeData(int x, int y) {
         if (positionView != null) {
             positionView.setVisibility(View.VISIBLE);
@@ -644,6 +669,11 @@ public class RegPicListActivity extends Activity {
         }
     }
 
+    /**
+     * change object tag for imageview
+     * @param x
+     * @param y
+     */
     private void changeTag(int x, int y) {
         moveTag = -1;
         for (int i = 0; i < mertoItemViews.size(); i++) {
@@ -700,6 +730,12 @@ public class RegPicListActivity extends Activity {
     }
 
 
+    /**
+     * select take photo the return result to elements control
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -805,6 +841,13 @@ public class RegPicListActivity extends Activity {
         }
     }
 
+    /**
+     * Write bm to location
+     * @param bm
+     * @param i
+     * @return
+     * @throws IOException
+     */
     private String WriteFileImgLoc(Bitmap bm, int i) throws IOException {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -862,6 +905,10 @@ public class RegPicListActivity extends Activity {
         startActivityForResult(intent, REQUEST_CODE_CAT);
     }
 
+    /**
+     * Share info
+     * @param context
+     */
     public static void showShareAlert(final Context context) {
 
         final AlertDialog dlg = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT).create();
@@ -924,6 +971,10 @@ public class RegPicListActivity extends Activity {
 
     }
 
+    /**
+     * sj info
+     * @param context
+     */
     public static void showRegAlert(final Context context) {
 
         try {

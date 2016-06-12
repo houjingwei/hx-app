@@ -149,14 +149,7 @@
                     android:layout_alignParentBottom="true"
                     android:background="#8f00000f"
                     android:gravity="center"></com.huixiangtv.live.utils.widget.SwitchPageControlView>
-
             </RelativeLayout>
-
-            <!--<FrameLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom">-->
-
             <LinearLayout
                 android:id="@+id/llInfo"
                 android:layout_gravity="bottom"
@@ -324,23 +317,6 @@
                         android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
-
-            <!--<ImageView-->
-            <!--android:id="@+id/ivFt"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:scaleType="centerCrop"-->
-            <!--android:src="@drawable/umeng_socialize_oauth_check_off"-->
-            <!--android:layout_height="230dp" />-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/text"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="230dp"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:textStyle="bold"-->
-            <!--android:textSize="48sp" />-->
-            <!--</FrameLayout>-->
-
         </FrameLayout>
     </LinearLayout>
 </LinearLayout>
