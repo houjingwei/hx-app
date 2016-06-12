@@ -1027,6 +1027,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
 
+    //喊话弹幕
+    private final int BARRAGE = 11;
+    private final int BARRAGE_FINISH = 12;
+
+    //礼物接收
+    private final int GIFT_ANIM = 13;
+    private final int GIFT_FINISH =14;
 
     private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
         @Override
@@ -1076,7 +1083,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                             android.os.Message barrageMsg = new android.os.Message();
                             barrageMsg.what=BARRAGE;
                             barrageMsg.obj = msg;
-                            videoHandler.sendMessage(barrageMsg);
+                            liveHandler.sendMessage(barrageMsg);
 
                         }
 
@@ -1091,7 +1098,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                                 String loves = old+addhot+"";
                                 tvHot.setText(loves);
                                 startHot = startHot + addhot;
-                                showGiftAni(msg);
+                                android.os.Message barrageMsg = new android.os.Message();
+                                barrageMsg.what=GIFT_ANIM;
+                                barrageMsg.obj = msg;
+                                liveHandler.sendMessage(barrageMsg);
                             }
 
                         }
@@ -1127,30 +1137,81 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         }
     }
 
-    private void showGiftAni(LiveMsg msg) {
-        AnimHelper.showGiftAni(activity,flLive,msg);
+    private void showGiftAni(List<LiveMsg> ls, Handler liveHandler, int road) {
+        AnimHelper.showGiftAni(activity,flLive,ls,liveHandler,road);
     }
 
-    private void showBarrageAni(LiveMsg msg) {
-        AnimHelper.showBarrageAni(activity,flLive,msg);
+    private void showBarrageAni(final LiveMsg msg, final Handler liveHandler, final int road) {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                AnimHelper.showBarrageAni(activity,flLive,msg,road,liveHandler);
+            }
+        }, getRandomNum(1200));
+
+    }
+
+    private long getRandomNum(int time) {java.util.Random random=new java.util.Random();
+        long result=random.nextInt(time);
+        return result;
     }
 
 
 
+    private int  firstGiftAnimRun = 0;
+    private int firstBarrageAnimRun = 0;
 
-    //喊话弹幕
-    private final int BARRAGE = 1;
 
+    private List<LiveMsg> giftMsgs = new ArrayList<>();
+    private List<LiveMsg> barrageMsgs = new ArrayList<>();
 
-    private Handler videoHandler = new Handler(){
+    private Handler liveHandler = new Handler(){
         @Override
         public void handleMessage(android.os.Message message) {
             super.handleMessage(message);
-
             switch (message.what) {
                 case BARRAGE:
                     LiveMsg msg = (LiveMsg) message.obj;
-                    showBarrageAni(msg);
+                    if(firstBarrageAnimRun<2){
+                        firstBarrageAnimRun++;
+                        showBarrageAni(msg,liveHandler,firstBarrageAnimRun);
+                    }else{
+                        barrageMsgs.add(msg);
+                    }
+
+                    break;
+                case BARRAGE_FINISH:
+                    int currRoad = (int) message.obj;
+                    if(null!=barrageMsgs && barrageMsgs.size()>0){
+                        LiveMsg m = barrageMsgs.get(0);
+                        barrageMsgs.remove(0);
+                        showBarrageAni(m, liveHandler,currRoad);
+                    }else{
+                        firstBarrageAnimRun=0;
+                    }
+                    break;
+                case GIFT_ANIM:
+                    LiveMsg giftMsg = (LiveMsg) message.obj;
+                    if(firstGiftAnimRun<1){
+                        firstGiftAnimRun++;
+                        List<LiveMsg> ls = new ArrayList<LiveMsg>();
+                        ls.add(giftMsg);
+                        showGiftAni(ls,liveHandler, firstGiftAnimRun);
+                    }else{
+                        giftMsgs.add(giftMsg);
+                        Log.i("msgType","giftMsgs.size"+giftMsgs.size());
+                    }
+
+                    break;
+                case GIFT_FINISH:
+                    Log.i("msgType","giftMsgs.size"+giftMsgs.size());
+                    int road = (int) message.obj;
+                    Log.i("msgType","road"+road);
+                    if(null!=giftMsgs && giftMsgs.size()>0){
+                        top10GiftMsgAndAnim(road);
+
+                    }else{
+                        firstGiftAnimRun=0;
+                    }
                     break;
                 default:
                     break;
@@ -1160,6 +1221,48 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
 
+    private void top10GiftMsgAndAnim(final int road) {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                List<LiveMsg> top10 = new ArrayList<LiveMsg>();
+                List<LiveMsg> sameList = new ArrayList<LiveMsg>();
+                LiveMsg msg = null;
+
+                if(null!=giftMsgs){
+                    msg = giftMsgs.get(0);
+                    if(giftMsgs.size()>10){
+                        for (int i=0;i<10;i++){
+                            sameList.add(giftMsgs.get(i));
+                            giftMsgs.remove(i);
+
+                        }
+                    }else{
+                        top10 = giftMsgs;
+                        for (int i=0;i<giftMsgs.size();i++){
+                            top10.add(giftMsgs.get(i));
+                            giftMsgs.remove(i);
+                        }
+                    }
+                }
+
+                if(top10.size()>0){
+                    for (int i=0;i<top10.size();i++){
+                        if(msg.getUid().equals(top10.get(i).getUid()) && msg.getGid().equals(top10.get(i).getGid())){
+                            sameList.add(top10.get(i));
+                        }
+                    }
+                }
+
+                if(sameList.size()==0){
+                    sameList.add(msg);
+                    giftMsgs.remove(0);
+                }else{
+
+                }
+                showGiftAni(sameList,liveHandler, road);
+            }
+        }, 100);
+    }
 
 
 }
