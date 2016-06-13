@@ -2,11 +2,11 @@ package com.huixiangtv.live;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -45,7 +45,7 @@ import io.rong.message.TextMessage;
 /**
  * Created by hjw on 16/5/4.
  */
-public class App extends Application {
+public class App extends MultiDexApplication {
     private static final String TAG = "App";
     private static final String ACTION_NAME = "RONGYUN_MSG";
     private static App sContext;
