@@ -284,11 +284,12 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     private ColaProgress cp = null;
     private void toLive() {
         final Map<String, String> params = new HashMap<String, String>();
-        if (TextUtils.isEmpty(startLiveView.getEtTitle().getText().toString())) {
-            CommonHelper.showTip(LiveActivity.this, "请输入直播标题");
-            startLiveView.getEtTitle().requestFocus();
-            return;
-        } else if (startLiveView.getTvTheme().getText().toString().equals(R.string.selTheme)) {
+//        if (TextUtils.isEmpty(startLiveView.getEtTitle().getText().toString())) {
+//            CommonHelper.showTip(LiveActivity.this, "请输入直播标题");
+//            startLiveView.getEtTitle().requestFocus();
+//            return;
+//        } else
+        if (startLiveView.getTvTheme().getText().toString().equals(R.string.selTheme)) {
             CommonHelper.showTip(LiveActivity.this, "请选择一个话题");
             return;
         }

@@ -185,7 +185,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:text="深圳 - 南山"
+                            android:text=""
                             android:textColor="@color/white" />
                     </LinearLayout>
 
@@ -195,15 +195,6 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="12dp"
                         android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:text="送爱心"
-                            android:textColor="#C1BFC0" />
-
                         <TextView
                             android:id="@+id/tvLoveCount"
                             android:layout_width="wrap_content"

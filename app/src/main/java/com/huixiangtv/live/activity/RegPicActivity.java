@@ -9,6 +9,7 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;

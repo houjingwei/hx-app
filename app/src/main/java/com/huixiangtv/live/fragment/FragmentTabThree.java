@@ -107,10 +107,12 @@ public class FragmentTabThree extends RootFragment{
 				}
 				break;
 			case R.id.llAccount:
+				if(TokenChecker.checkToken(getActivity()))
 				ForwardUtils.target(getActivity(), Constant.ACCOUNT,null);
 				break;
 			case R.id.llLoves:
-				ForwardUtils.target(getActivity(), Constant.MY_LOVES,null);
+				if(TokenChecker.checkToken(getActivity()))
+					ForwardUtils.target(getActivity(), Constant.MY_LOVES,null);
 				break;
 			case R.id.tvUserName:
 				if(null!=App.getLoginUser()){
@@ -130,13 +132,16 @@ public class FragmentTabThree extends RootFragment{
 				getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 				break;
 			case R.id.llMyfans:
-				ForwardUtils.target(getActivity(), Constant.MY_FANS,null);
+				if(TokenChecker.checkToken(getActivity()))
+					ForwardUtils.target(getActivity(), Constant.MY_FANS,null);
 				break;
 			case R.id.llfaned:
-				ForwardUtils.target(getActivity(), Constant.FANED_ME,null);
+				if(TokenChecker.checkToken(getActivity()))
+					ForwardUtils.target(getActivity(), Constant.FANED_ME,null);
 				break;
 			case R.id.llHot:
-				ForwardUtils.target(getActivity(), Constant.MY_HOTS,null);
+				if(TokenChecker.checkToken(getActivity()))
+					ForwardUtils.target(getActivity(), Constant.MY_HOTS,null);
 				break;
 
 		}

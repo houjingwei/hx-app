@@ -44,14 +44,15 @@ public class MyHotsActivity extends BaseBackActivity {
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 
+    @ViewInject(R.id.tv_list_empty)
+    TextView tv_list_empty;
+
     PtrClassicFrameLayout ptrClassicFrameLayout;
     ListView mListView;
 
 
-
     int page = 1;
     MyFansAdapter adapter;
-
 
     LinearLayout ll1;
     LinearLayout ll2;
@@ -65,7 +66,6 @@ public class MyHotsActivity extends BaseBackActivity {
     TextView tvHot1;
     TextView tvHot2;
     TextView tvHot3;
-
 
 
     @Override
@@ -131,23 +131,30 @@ public class MyHotsActivity extends BaseBackActivity {
 
 
     private void loadData() {
-        Map<String,String> params  = new HashMap<String,String>();
-        params.put("page", page+"");
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("page", page + "");
         params.put("pageSize", Constant.PAGE_SIZE);
         RequestUtils.sendPostRequest(Api.MY_HOTS, params, new ResponseCallBack<Fans>() {
             @Override
             public void onSuccessList(List<Fans> data) {
                 super.onSuccessList(data);
                 if (data != null && data.size() > 0) {
-                    if(page==1){
+                    if (page == 1) {
                         adapter.clear();
                         List<Fans> fansList = setTop3AndFanslist(data);
                         adapter.addList(fansList);
-                    }else{
+                    } else {
                         adapter.addList(data);
                     }
                 }
+
                 ptrClassicFrameLayout.loadComplete(true);
+
+                if (adapter.getCount() == 0) {
+                    ptrClassicFrameLayout.setVisibility(View.GONE);
+                    tv_list_empty.setVisibility(View.VISIBLE);
+                    mListView.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -156,35 +163,35 @@ public class MyHotsActivity extends BaseBackActivity {
                 CommonHelper.showTip(MyHotsActivity.this, e.getMessage());
                 ptrClassicFrameLayout.loadComplete(false);
             }
-        },Fans.class);
+        }, Fans.class);
 
     }
 
     private List<Fans> setTop3AndFanslist(List<Fans> fansList) {
         List<Fans> top3 = null;
-        if(null!=fansList && fansList.size()>3){
-            top3 = fansList.subList(0,3);
-            fansList = fansList.subList(3,fansList.size());
-        }else{
+        if (null != fansList && fansList.size() > 3) {
+            top3 = fansList.subList(0, 3);
+            fansList = fansList.subList(3, fansList.size());
+        } else {
             top3 = fansList;
             fansList = null;
         }
-        if(null!=top3){
-            for (int i=0;i<top3.size();i++){
+        if (null != top3) {
+            for (int i = 0; i < top3.size(); i++) {
                 Fans fans = top3.get(i);
-                if(i==0){
+                if (i == 0) {
                     ll1.setVisibility(View.VISIBLE);
-                    ImageUtils.displayAvator(ivPhoto1,fans.getPhoto());
+                    ImageUtils.displayAvator(ivPhoto1, fans.getPhoto());
                     tvNickName1.setText(fans.getNickName());
                     tvHot1.setText(fans.getDevoteValue());
-                }else if(i==1){
+                } else if (i == 1) {
                     ll2.setVisibility(View.VISIBLE);
-                    ImageUtils.displayAvator(ivPhoto2,fans.getPhoto());
+                    ImageUtils.displayAvator(ivPhoto2, fans.getPhoto());
                     tvNickName2.setText(fans.getNickName());
                     tvHot2.setText(fans.getDevoteValue());
-                }else if(i==2){
+                } else if (i == 2) {
                     ll3.setVisibility(View.VISIBLE);
-                    ImageUtils.displayAvator(ivPhoto3,fans.getPhoto());
+                    ImageUtils.displayAvator(ivPhoto3, fans.getPhoto());
                     tvNickName3.setText(fans.getNickName());
                     tvHot3.setText(fans.getDevoteValue());
                 }

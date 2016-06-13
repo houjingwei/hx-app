@@ -74,6 +74,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private final int PAGE_SIZE = 120;
     private int currPage = 1;
     private ColaProgress cp = null;
+    private TextView tvAddress;
     private BannerView bannerView;
     private TextView tvInfo, tvLoveCount, tvWeight,tvbName1,tvContent1,tvbName2,tvContent2,tvbName3,tvContent3,tvbName4,tvContent4;
     private PullToRefreshScrollView mRefreshLayout;
@@ -113,6 +114,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         tvInfo = (TextView) view.findViewById(R.id.tvInfo);
         tvLoveCount = (TextView) view.findViewById(R.id.tvLoveCount);
         tvWeight = (TextView) view.findViewById(R.id.tvWeight);
+        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
         bannerView = (BannerView) view.findViewById(R.id.banner);
         tvbName1 = (TextView) view.findViewById(R.id.tvbName1);
         tvContent1 = (TextView) view.findViewById(R.id.tvContent1);
@@ -272,7 +274,8 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
             TextView tvTitle = helper.getView(R.id.tvTitle);
             TextView tvTime = helper.getView(R.id.tvTime);
-            tvTitle.setText(item.getNickName());
+            String city = item.getCity()==null?"":item.getCity();
+            tvTitle.setText(item.getNickName()+" "+city);
             tvTime.setText(item.getTime());
             ImageView ivIcon = helper.getView(R.id.ivIcon);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIcon.getLayoutParams();
@@ -564,10 +567,11 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         //CommonHelper.viewSetBackageImag(live.getPhoto(),llInfo);
         tvInfo.setText(live.getNickName());
         tvLoveCount.setText(live.getLoveCount());
-        String hei =  live.getHeight()==null?"0 Cm  ":live.getHeight() + "Cm  ";
-        String wei =  live.getWeight()==null?"0 Kg  ":live.getWeight() + "Kg  ";
-        String bwh =  live.getBwh() == null?"三围: 0" :"三围:  "+live.getBwh();
+        String hei =  live.getHeight()==null?"165 Cm  ":live.getHeight() + "Cm  ";
+        String wei =  live.getWeight()==null?"4 5 Kg  ":live.getWeight() + "Kg  ";
+        String bwh =  live.getBwh() == null?"    " :"三围:  "+live.getBwh();
         tvWeight.setText(hei+ wei+bwh);
+        tvAddress.setText(live.getCity()==null?"":live.getCity());
         loadMsg(live.getLid());
     }
 

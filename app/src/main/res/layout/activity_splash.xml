@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.huixiangtv.live.activity.SplashActivity">
     <ImageView
         android:id="@+id/rlSplash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@mipmap/splash_img"/>
+        android:src="@mipmap/launch_page"/>
 
 </RelativeLayout>

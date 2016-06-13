@@ -142,6 +142,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         ct = context;
 
         initView();
+       //
+
     }
 
     private void initView() {
@@ -232,7 +234,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         tvHot = (TextView) findViewById(R.id.tvHot);
         tvLove = (TextView) findViewById(R.id.tvLove);
         tvOnline = (TextView) findViewById(R.id.tvOnline);
-
+        FendStatus();//是否关注
     }
 
     public void loadLive() {
@@ -435,7 +437,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void onSuccessList(List<User> data) {
                 super.onSuccessList(data);
-                if(null!=data){
+                if (null != data) {
                     mAdapter.addData(data);
                     mRecyclerView.setAdapter(mAdapter);
 
@@ -578,6 +580,25 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     }
 
 
+
+    private void FendStatus(){
+
+        CommonHelper.addFen(live.getUid(),false,new ApiCallback<String>(){
+
+            @Override
+            public void onSuccess(String data) {
+                ivAddFen.setVisibility(GONE);
+
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                ivAddFen.setVisibility(GONE);
+            }
+        });
+
+    }
     /**
      * 加关注
      */
@@ -587,10 +608,11 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             CommonHelper.showTip(activity,"不可以关注自己哦");
             return;
         }
-        CommonHelper.addFen(live.getUid(),new ApiCallback<String>(){
+        CommonHelper.addFen(live.getUid(),true,new ApiCallback<String>(){
 
             @Override
             public void onSuccess(String data) {
+                ivAddFen.setVisibility(GONE);
                 CommonHelper.showTip(activity,"关注成功");
             }
 

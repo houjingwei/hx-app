@@ -27,6 +27,7 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.UpdateApp;
 import com.huixiangtv.live.utils.ForwardUtils;
+import com.huixiangtv.live.utils.TokenChecker;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.xutils.view.annotation.ViewInject;
@@ -278,12 +279,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 开启直播
      */
     private void startLive() {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-            lastClickTime = currentTime;
-            Map<String, String> params = new HashMap<>();
-            params.put("isRecord","true");
-            ForwardUtils.target(MainActivity.this, Constant.START_LIVE, params);
+        if(TokenChecker.checkToken(MainActivity.this)) {
+            long currentTime = Calendar.getInstance().getTimeInMillis();
+            if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+                lastClickTime = currentTime;
+                Map<String, String> params = new HashMap<>();
+                params.put("isRecord", "true");
+                ForwardUtils.target(MainActivity.this, Constant.START_LIVE, params);
+            }
         }
 
     }

@@ -222,7 +222,7 @@ public class CommonHelper {
      * @param artistId
      * @param apiCallback
      */
-    public static void addFen(final String artistId, final ApiCallback<String> apiCallback) {
+    public static void addFen(final String artistId,final boolean istoFen, final ApiCallback<String> apiCallback) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("artistId",artistId);
         RequestUtils.sendPostRequest(Api.ATTENTIOIN_STATUS, params, new ResponseCallBack<Other>() {
@@ -232,6 +232,7 @@ public class CommonHelper {
                 if(null!=data && data.getIsFollowed().equals("1")){
                     apiCallback.onFailure(new ServiceException("已关注过"));
                 }else{
+                    if(istoFen)
                     toFen(artistId,apiCallback);
                 }
             }
@@ -243,6 +244,10 @@ public class CommonHelper {
             }
         }, Other.class);
     }
+
+
+
+
 
     private static void toFen(String artistId, final ApiCallback<String> apiCallback) {
         Map<String, String> params = new HashMap<String, String>();

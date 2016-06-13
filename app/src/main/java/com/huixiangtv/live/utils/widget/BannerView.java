@@ -1,6 +1,7 @@
 package com.huixiangtv.live.utils.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.view.PagerAdapter;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.WebActivity;
 import com.huixiangtv.live.model.BannerModel;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
@@ -234,9 +236,7 @@ public class BannerView extends FrameLayout implements Runnable {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    Toast.makeText(mContext,"doing", Toast.LENGTH_LONG).show();
-
+                    gotoWebActivity(context,ps.target);
                 }
             });
             container.addView(imageView);
@@ -265,4 +265,11 @@ public class BannerView extends FrameLayout implements Runnable {
 
     }
 
+
+    private void gotoWebActivity(Context mContext,String url)
+    {
+        Intent intent = new Intent(mContext, WebActivity.class);
+        intent.putExtra("url", "https://www.pgyer.com/");
+        mContext.startActivity(intent);
+    }
 }

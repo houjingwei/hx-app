@@ -24,6 +24,15 @@ public class Live {
     private String followCount;
     private String chatroom;
     private String time;
+    private String city;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public String getLid() {
         return lid;
