@@ -525,16 +525,21 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 shareWin();
                 break;
             case R.id.ivCamera:
-                if (null == App.getLoginUser()) {
-                    CommonHelper.showLoginPopWindow(activity, R.id.liveMain, new LoginCallBack() {
-                        @Override
-                        public void loginSuccess() {
-                            showCameraWin();
-                        }
-                    });
-                    return;
+                if(isSendIntoRoomMsg){
+                    ImageUtils.catImage(activity);
+                }else{
+                    if (null == App.getLoginUser()) {
+                        CommonHelper.showLoginPopWindow(activity, R.id.liveMain, new LoginCallBack() {
+                            @Override
+                            public void loginSuccess() {
+                                showCameraWin();
+                            }
+                        });
+                        return;
+                    }
+                    showCameraWin();
                 }
-                showCameraWin();
+
                 break;
             case R.id.ivGift:
                 if (null == App.getLoginUser()) {

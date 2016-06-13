@@ -3,10 +3,7 @@ package com.huixiangtv.live.activity;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
@@ -23,7 +20,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -56,14 +52,12 @@ import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
 import com.huixiangtv.live.utils.StringUtil;
+import com.huixiangtv.live.utils.image.ImageUtils;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -377,7 +371,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     private BeautyRender beautyRender;
     private void addRecordView() {
         recordView = LayoutInflater.from(LiveActivity.this).inflate(R.layout.record_view, null, false);
-
         _CameraSurface = (SurfaceView) recordView.findViewById(R.id.camera_surface);
         _CameraSurface.getHolder().addCallback(_CameraSurfaceCallback);
         _CameraSurface.setOnTouchListener(mOnTouchListener);
@@ -392,10 +385,14 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         _Client.setCameraFacing(Camera.CameraInfo.CAMERA_FACING_FRONT);//设置摄像头为前置摄像头
         _Client.setContentSize(384, 640);//设置摄像头分辨率，这里建议与VideoStream设置同样尺寸，否则会产生黑边。VideoStream设置参考【视频流设置】
 
-        //初始化美颜
-        beautyRender = BeautyRender.getInstance();
-        beautyRender.initRenderer(getAssets(),_Client);
-        beautyRender.switchBeauty(true);
+        try{
+            //初始化美颜
+            beautyRender = BeautyRender.getInstance();
+            beautyRender.initRenderer(getAssets(),_Client);
+            beautyRender.switchBeauty(true);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         flPlayView.addView(recordView);
         if(null!=recordView){
@@ -408,6 +405,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
 
     }
+
 
 
     private ScaleGestureDetector.OnScaleGestureListener mScaleGestureListener = new ScaleGestureDetector.OnScaleGestureListener() {
@@ -481,30 +479,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             return true;
         }
     };
-    private final CompoundButton.OnCheckedChangeListener _SwitchBeautyOnCheckedChange =
-            new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    beautyRender.switchBeauty(isChecked);
-                }
-            };
 
-    private final CompoundButton.OnCheckedChangeListener _CameraOnCheckedChange =
-            new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (_Client != null && _Client.hasSession()) {
-                        if (mIsRecording) {
-                            mVideoStream.stopMediaCodec();
-                        }
-                        _Client.nextCamera();
-                        if (mIsRecording) {
-                            mVideoStream.setMirrored(_Client.isFrontCamera());
-                            mVideoStream.startMediaCodec();
-                        }
-                    }
-                }
-            };
 
     private CameraClient.Callback mCameraClientCallback = new CameraClient.Callback() {
         @Override
@@ -593,25 +568,39 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             Log.i(TAG, "Stop live stream stopRecord!");
             mLiveRecorder.stop();
             mIsRecording = false;
+            _Client.stopPreview();
+            removeRecord();
         }
     }
+
+    private void removeRecord() {
+        flPlayView.removeView(recordView);
+    }
+
     private final SurfaceHolder.Callback _CameraSurfaceCallback = new SurfaceHolder.Callback() {
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
+            Log.i("activityHJW","surfaceCreated");
+            if(null==holder){
+                onRestart();
+            }else{
+                holder.setKeepScreenOn(true);
+                _SurfaceControl = _Client.addSurface(holder);
+                _SurfaceControl.setVisible(true);
+                _SurfaceControl.setDisplayMethod(CameraSurfaceController.FullScreen | CameraSurfaceController.ScaleEnabled);
+            }
 
-            holder.setKeepScreenOn(true);
-            _SurfaceControl = _Client.addSurface(holder);
-            _SurfaceControl.setVisible(true);
-            _SurfaceControl.setDisplayMethod(CameraSurfaceController.FullScreen | CameraSurfaceController.ScaleEnabled);
         }
 
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            Log.i("activityHJW","surfaceChanged");
             _SurfaceControl.setResolution(width, height);
         }
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
+            Log.i("activityHJW","surfaceDestroyed");
             _Client.removeSurface(holder);
             _SurfaceControl = null;
             _Client = null;
@@ -648,7 +637,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
         @Override
         public void onSuccess(String data) {
-            startPush();
+            //startPush();
         }
     };
 
@@ -685,22 +674,13 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (null != liveView) {
-            liveView.removeGlobalListener();
-            liveView.removeMsgListener();
-        }
 
-
-    }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-        
+
         if (StringUtil.isNotEmpty(isRecord) && isRecord.equals("true") && null!=liveView) {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -773,8 +753,29 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
     }
 
+
+
+    @Override
+    protected void onRestart() {
+        super.onResume();
+        addRecordView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("activityHJW","onDestroy()");
+        if (null != liveView) {
+            liveView.removeGlobalListener();
+            liveView.removeMsgListener();
+        }
+
+
+    }
+
     @Override
     protected void onStop() {
+        Log.i("activityHJW","onStop");
         super.onStop();
         if (null != mVideoView) {
             if (!mVideoView.isBackgroundPlayEnabled()) {
@@ -791,14 +792,20 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
     }
 
+
+
     @Override
     protected void onResume() {
+        Log.i("activityHJW","onResume");
         super.onResume();
         if (null != mVideoView) {
             mVideoView.start();
         }
 
+
     }
+
+
 
 
     /**
@@ -823,7 +830,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     public void cutScreen() {
         //savePic(takeScreenShot(LiveActivity.this), "sdcard/xx.png");
 
-        CommonHelper.cutScreen(LiveActivity.this);
+        ImageUtils.catImage(LiveActivity.this);
     }
 
 
@@ -832,9 +839,13 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
      */
     boolean isBeauty = true;
     public void changeBeau() {
-        isBeauty = !isBeauty;
-        beautyRender.switchBeauty(isBeauty);
+        if(null!=beautyRender) {
+            isBeauty = !isBeauty;
+            Log.i("qupai",isBeauty+"");
+            beautyRender.switchBeauty(isBeauty);
+        }
     }
+
 
 
 
