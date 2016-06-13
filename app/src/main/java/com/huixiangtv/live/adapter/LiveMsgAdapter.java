@@ -5,7 +5,6 @@ import android.content.Context;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,9 +74,9 @@ public class LiveMsgAdapter extends BaseAdapter {
             //holder.msg.setTextColor(context.getResources().getColor(R.color.orange));
             holder.msg.setText(message.getContent());
         }else{
-//            SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
-//            ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.mainColor)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.msg.setText(message.getNickName()+": "+message.getContent());
+            SpannableString ss = new SpannableString(message.getNickName()+": "+message.getContent());
+            ss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.yellow)), 0, message.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.msg.setText(ss);
         }
 
         return convertView;

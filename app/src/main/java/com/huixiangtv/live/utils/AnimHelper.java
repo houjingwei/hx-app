@@ -82,6 +82,7 @@ public class AnimHelper {
         TranslateAnimation translateUpAnimation = new TranslateAnimation(0,0,moveY,0);
         translateUpAnimation.setDuration(500);
         translateUpAnimation.setFillAfter(true);
+        translateUpAnimation.setInterpolator(new AccelerateInterpolator());
         animationUpSet.addAnimation(translateUpAnimation);
         view.startAnimation(animationUpSet);
     }
@@ -91,6 +92,7 @@ public class AnimHelper {
         AnimationSet animationDownSet = new AnimationSet(false);
         TranslateAnimation translateDownAnimation = new TranslateAnimation(0,0,0,moveY);
         translateDownAnimation.setDuration(500);
+        translateDownAnimation.setInterpolator(new AccelerateInterpolator());
         translateDownAnimation.setFillAfter(true);
         animationDownSet.addAnimation(translateDownAnimation);
         view.startAnimation(animationDownSet);
