@@ -97,7 +97,7 @@ public class CameraWindow extends BasePopupWindow implements OnClickListener {
                 break;
             case R.id.llMeiyan:
                 if (listener != null) {
-                    listener.select(2);
+                    listener.select(3);
                 }
                 dismiss();
                 break;

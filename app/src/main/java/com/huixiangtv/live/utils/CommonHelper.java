@@ -32,6 +32,7 @@ import com.huixiangtv.live.ui.ColaProgressTip;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -315,12 +316,21 @@ public class CommonHelper {
         }, Other.class);
     }
 
-    public static void cutScreen(Activity activity) {
+    public static void cutScreen(Activity activity)  {
+        String dir = getSDCardPath();
+        String filepath = dir+"/"+ System.currentTimeMillis()+".png";
+        File path = new File(dir);
+        File file = new File(filepath);
+        try{
+            if(!path.exists()){
+                path.mkdirs();
+            }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        }catch(Exception e){
 
-
-
-
-        String fileName = Environment.getExternalStorageDirectory()+"/screen/"+ System.currentTimeMillis()+".png";
+        }
         // View是你需要截图的View
         View view = activity.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
@@ -345,18 +355,33 @@ public class CommonHelper {
 
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(fileName);
+            fos = new FileOutputStream(filepath);
             if (null != fos) {
                 b.compress(Bitmap.CompressFormat.PNG, 90, fos);
                 fos.flush();
                 fos.close();
             }
-            CommonHelper.showTip(activity,"截图已保存至:"+fileName);
+            CommonHelper.showTip(activity,"截图已保存至:"+filepath);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * 获取SDCard的目录路径功能
+     * @return
+     */
+    private static String getSDCardPath(){
+        File sdcardDir = null;
+        //判断SDCard是否存在
+        boolean sdcardExist = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+        if(sdcardExist){
+            sdcardDir = Environment.getExternalStorageDirectory();
+        }
+        return sdcardDir.toString();
     }
 
 }

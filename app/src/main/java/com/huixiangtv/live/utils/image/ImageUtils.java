@@ -3,8 +3,11 @@ package com.huixiangtv.live.utils.image;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.huixiangtv.live.Api;
@@ -15,6 +18,7 @@ import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -38,6 +42,7 @@ import com.tencent.upload.task.data.FileInfo;
 import com.tencent.upload.task.impl.PhotoUploadTask;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Map;
 
 /**
@@ -210,8 +215,73 @@ public final class ImageUtils {
         task.setAuth(data.getSig());
         fileUploadMgr.upload(task);
 
+    }
 
 
 
+
+
+
+
+
+
+    /**
+     * 获取和保存当前屏幕的截图
+     */
+    public static void catImage(final Activity activity)
+    {
+
+        //1.构建Bitmap
+        WindowManager windowManager = activity.getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        int w = display.getWidth();
+        int h = display.getHeight();
+        Bitmap Bmp = Bitmap.createBitmap( w, h, Bitmap.Config.ARGB_8888 );
+        //2.获取屏幕
+        View decorview = activity.getWindow().getDecorView();
+        decorview.setDrawingCacheEnabled(true);
+        Bmp = decorview.getDrawingCache();
+        String SavePath = getSDCardPath()+"/cutImage";
+        //3.保存Bitmap
+        try {
+            File path = new File(SavePath);
+            //文件
+            String filepath = SavePath + "/"+ System.currentTimeMillis()+".png";
+            File file = new File(filepath);
+            if(!path.exists()){
+                path.mkdirs();
+            }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileOutputStream fos = null;
+            fos = new FileOutputStream(file);
+            if (null != fos) {
+                Bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                fos.flush();
+                fos.close();
+                CommonHelper.showTip(activity,"截屏文件已保存至"+file.getAbsolutePath());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     * 获取SDCard的目录路径功能
+     * @return
+     */
+    private static String getSDCardPath(){
+        File sdcardDir = null;
+        //判断SDCard是否存在
+        boolean sdcardExist = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+        if(sdcardExist){
+            sdcardDir = Environment.getExternalStorageDirectory();
+        }
+        return sdcardDir.toString();
     }
 }
