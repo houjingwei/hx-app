@@ -66,6 +66,8 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class LiveActivity extends BaseBackActivity implements View.OnClickListener ,LiveRecorderManager.OnStatusCallback{
 
+
+
     private static final String TAG = "LiveActivity";
     @ViewInject(R.id.flCover)
     FrameLayout flCover;
@@ -73,14 +75,13 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     FrameLayout flPlayView;
 
 
+    private View recordView;
+
+
 
     TextView tvTheme;
     TextView tvStart;
     StartLiveView startLiveView;
-
-    LiveView liveView;
-
-
 
     private String isPlay = "false";
     private String playUrl = "";
@@ -88,14 +89,14 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     private IjkVideoView mVideoView;
     private ColaProgress  copro = null;
 
-    private View recordView;
 
+    LiveView liveView;
 
     private Live live;
-
     private int sharePlat = 0;
     private String pushUrl;
     private String isRecord = "false";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,30 +121,10 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             initStartView();
 
         }
+
     }
 
-    private void startPush() {
-        if (null != Constant.accessToken){
-            try {
-                LiveService.getInstance().createLive(Constant.accessToken, Constant.SPACE, Constant.LIVE_URL);
-                LiveService.getInstance().setCreateLiveListener(new CreateLiveListener() {
-                    @Override
-                    public void onCreateLiveError(int errorCode, String message) {
-                        Log.e("live", "errorCode:" + errorCode + "message" + message);
-                    }
 
-                    @Override
-                    public void onCreateLiveSuccess(String pushUrl, String playUrl) {
-                        pushUrl = pushUrl;
-                        startRecorder(live.getPushUrl(), playUrl);
-                    }
-                });
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                Log.e(TAG, ex.getMessage().toString());
-            }
-        }
-    }
 
     private void initPlayView() {
         final Map<String, String> param = new HashMap<String, String>();
@@ -156,8 +137,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                     cp.dismiss();
                 }
                 living(data);
-
-
             }
 
             @Override
@@ -213,6 +192,21 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     }
 
 
+    @TargetApi(19)
+    private void setTranslucentStatus(boolean on) {
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
+    }
+
+
+
     private void initStartView() {
         startLiveView = new StartLiveView(this);
         startLiveView.setActivity(this);
@@ -223,137 +217,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         tvStart.setOnClickListener(this);
         KeyBoardUtils.closeKeybord(startLiveView.getEtTitle(), this);
     }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tvTheme:
-                //选择主题
-                ForwardUtils.target(LiveActivity.this, Constant.LIVE_TOPIC, null);
-                break;
-            case R.id.tvStart:
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("local", startLiveView.getLocal() + "");
-                params.put("platform", startLiveView.getPlatform() + "");
-                //请求开始直播
-                toLive();
-                break;
-
-        }
-    }
-
-
-
-    private void startRecorder(String pushUrl,String playUrl) {
-        if (mLiveRecorder != null) {
-            return;
-        }
-
-        Log.i(TAG, "************** Start live stream startRecord! ************** ");
-        initLiveRecord();
-        //ip_address这里修改为可以直接ip推流.就近原则。建议使用httpDNS得到最优ip.直接推流.不用即直接传null
-        mLiveRecorder.start(this,null);
-        mIsRecording = true;
-        Log.i(TAG, "************** Starting live stream! **************");
-    }
-
-    private void initLiveRecord() {
-        mLiveRecorder = new LiveRecorderManager();
-        mLiveRecorder.init(live.getPushUrl(), "flv");//flv为推流文件格式，目前仅支持flv
-        mLiveRecorder.setNetworkThreshHold(90);//设置网络最大buffer阈值.可不设，默认为90
-        mVideoStream = mLiveRecorder.addVideoStream();
-        mVideoStream.init(384, 640, 600000, 20, 3);//参数分别为：宽、高、码率、帧数、帧数间隔；宽384为推荐设置，可解决部分手机不支持16倍数的问题
-        mVideoStream.setInput(_Client);
-        mVideoStream.setMirrored(_Client.isFrontCamera());
-        mVideoStream.setBitRateRange(600000,1000000);//设置最小码率和最大码率，可根据网络状况自动调节码率.会自动调节码率
-        mAudioStream = mLiveRecorder.addAudioStream();
-        mAudioStream.init(44100, 32000);//音频采样率、码率
-        mLiveRecorder.setOnStatusCallback(this);
-    }
-
-    /**
-     * 请求开始直播
-     */
-    private ColaProgress cp = null;
-    private void toLive() {
-        final Map<String, String> params = new HashMap<String, String>();
-        if (TextUtils.isEmpty(startLiveView.getEtTitle().getText().toString())) {
-            CommonHelper.showTip(LiveActivity.this, "请输入直播标题");
-            startLiveView.getEtTitle().requestFocus();
-            return;
-        } else if (startLiveView.getTvTheme().getText().toString().equals(R.string.selTheme)) {
-            CommonHelper.showTip(LiveActivity.this, "请选择一个话题");
-            return;
-        }
-        params.put("title", startLiveView.getEtTitle().getText().toString());
-        params.put("topic", startLiveView.getTvTheme().getText().toString());
-        String[] jwd = startLiveView.getJwd();
-        params.put("lon", jwd[0]);
-        params.put("lat", jwd[1]);
-        params.put("address", jwd[2]);
-        ObjectAnimator anim = ObjectAnimator.ofFloat(startLiveView, "alpha", 0f);
-        anim.setDuration(1000);
-        anim.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                sharePlat = startLiveView.platform;
-                if (null != startLiveView) {
-                    flCover.removeView(startLiveView);
-                }
-                showLive(params);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-
-        });
-        anim.start();
-
-
-    }
-
-    private void showLive(Map<String, String> params) {
-        cp = ColaProgress.show(LiveActivity.this, "准备直播", false, true, null);
-        RequestUtils.sendPostRequest(Api.LIVE_SHOW, params, new ResponseCallBack<Live>() {
-            @Override
-            public void onSuccess(Live data) {
-                super.onSuccess(data);
-                if (null != cp) {
-                    cp.dismiss();
-                }
-                live =data;
-                startPush();
-                living(data);
-                ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);
-                animIn.setDuration(500);
-                animIn.start();
-            }
-
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-                if (null != cp) {
-                    cp.dismiss();
-                }
-            }
-        }, Live.class);
-    }
-
-
-
-
 
 
     private SurfaceView _CameraSurface;
@@ -367,8 +230,8 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     private boolean mIsRecording = false;
 
     private final float mMaxZoomLevel = 3;
-
     private BeautyRender beautyRender;
+
     private void addRecordView() {
         recordView = LayoutInflater.from(LiveActivity.this).inflate(R.layout.record_view, null, false);
         _CameraSurface = (SurfaceView) recordView.findViewById(R.id.camera_surface);
@@ -402,11 +265,38 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 _SurfaceControl.setVisible(true);
             }
         }
-
-
     }
 
+    private CameraClient.Callback mCameraClientCallback = new CameraClient.Callback() {
+        @Override
+        public void onDeviceAttach(CameraClient client) {
+            //摄像头开启成功
+            SessionRequest request = client.getSessionRequest();
+            request.mExposureCompensation = client.getCharacteristics().getMaxExposureCompensation() / 3;
+            request.previewFrameRate = 20;
+        }
 
+        @Override
+        public void onSessionAttach(CameraClient client) {
+            //成功开启预览
+            _Client.autoFocus(0.5f, 0.5f, _SurfaceControl);
+        }
+
+        @Override
+        public void onCaptureUpdate(CameraClient client) {
+            //暂时用不到
+        }
+
+        @Override
+        public void onSessionDetach(CameraClient client) {
+            //关闭预览成功
+        }
+
+        @Override
+        public void onDeviceDetach(CameraClient client) {
+            //关闭摄像头成功
+        }
+    };
 
     private ScaleGestureDetector.OnScaleGestureListener mScaleGestureListener = new ScaleGestureDetector.OnScaleGestureListener() {
         @Override
@@ -428,6 +318,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
         }
     };
+
 
     private GestureDetector mDetector;
     private ScaleGestureDetector mScaleDetector;
@@ -470,7 +361,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         }
     };
 
-
     private View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -480,37 +370,33 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         }
     };
 
-
-    private CameraClient.Callback mCameraClientCallback = new CameraClient.Callback() {
+    private final SurfaceHolder.Callback _CameraSurfaceCallback = new SurfaceHolder.Callback() {
         @Override
-        public void onDeviceAttach(CameraClient client) {
-            //摄像头开启成功
-            SessionRequest request = client.getSessionRequest();
-            request.mExposureCompensation = client.getCharacteristics().getMaxExposureCompensation() / 3;
-            request.previewFrameRate = 20;
+        public void surfaceCreated(SurfaceHolder holder) {
+            Log.i("myTest","surfaceCreated");
+            holder.setKeepScreenOn(true);
+
+            _SurfaceControl = _Client.addSurface(holder);
+            _SurfaceControl.setVisible(true);
+            _SurfaceControl.setDisplayMethod(CameraSurfaceController.FullScreen | CameraSurfaceController.ScaleEnabled);
         }
 
         @Override
-        public void onSessionAttach(CameraClient client) {
-            //成功开启预览
-            _Client.autoFocus(0.5f, 0.5f, _SurfaceControl);
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            Log.i("myTest","surfaceChanged");
+            _SurfaceControl.setResolution(width, height);
         }
 
         @Override
-        public void onCaptureUpdate(CameraClient client) {
-            //暂时用不到
-        }
-
-        @Override
-        public void onSessionDetach(CameraClient client) {
-            //关闭预览成功
-        }
-
-        @Override
-        public void onDeviceDetach(CameraClient client) {
-            //关闭摄像头成功
+        public void surfaceDestroyed(SurfaceHolder holder) {
+            Log.i("myTest","surfaceDestroyed");
+            _Client.removeSurface(holder);
+            _SurfaceControl = null;
         }
     };
+
+
+
 
 
     @Override
@@ -521,6 +407,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 break;
             case LiveStreamStatus.CONNECTION_ESTABLISHED:
                 Log.i(TAG, "Live stream connection is established!");
+                Log.e("myTest", "startPush");
                 break;
             case LiveStreamStatus.CONNECTION_CLOSED:
                 Log.i(TAG, "Live stream connection is closed!");
@@ -563,83 +450,141 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 break;
         }
     }
+
+
     private void stopRecorder() {
         if (mIsRecording) {
+
             Log.i(TAG, "Stop live stream stopRecord!");
             mLiveRecorder.stop();
             mIsRecording = false;
-            _Client.stopPreview();
-            removeRecord();
         }
     }
 
-    private void removeRecord() {
-        flPlayView.removeView(recordView);
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tvTheme:
+                //选择主题
+                ForwardUtils.target(LiveActivity.this, Constant.LIVE_TOPIC, null);
+                break;
+            case R.id.tvStart:
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("local", startLiveView.getLocal() + "");
+                params.put("platform", startLiveView.getPlatform() + "");
+                //请求开始直播
+                toLive();
+                break;
+
+        }
     }
 
-    private final SurfaceHolder.Callback _CameraSurfaceCallback = new SurfaceHolder.Callback() {
-        @Override
-        public void surfaceCreated(SurfaceHolder holder) {
-            Log.i("activityHJW","surfaceCreated");
-            if(null==holder){
-                onRestart();
-            }else{
-                holder.setKeepScreenOn(true);
-                _SurfaceControl = _Client.addSurface(holder);
-                _SurfaceControl.setVisible(true);
-                _SurfaceControl.setDisplayMethod(CameraSurfaceController.FullScreen | CameraSurfaceController.ScaleEnabled);
+
+
+
+
+    /**
+     * 请求开始直播
+     */
+    private ColaProgress cp = null;
+    private void toLive() {
+        final Map<String, String> params = new HashMap<String, String>();
+        if (TextUtils.isEmpty(startLiveView.getEtTitle().getText().toString())) {
+            CommonHelper.showTip(LiveActivity.this, "请输入直播标题");
+            startLiveView.getEtTitle().requestFocus();
+            return;
+        } else if (startLiveView.getTvTheme().getText().toString().equals(R.string.selTheme)) {
+            CommonHelper.showTip(LiveActivity.this, "请选择一个话题");
+            return;
+        }
+        params.put("title", startLiveView.getEtTitle().getText().toString());
+        params.put("topic", startLiveView.getTvTheme().getText().toString());
+        String[] jwd = startLiveView.getJwd();
+        params.put("lon", jwd[0]);
+        params.put("lat", jwd[1]);
+        params.put("address", jwd[2]);
+        ObjectAnimator anim = ObjectAnimator.ofFloat(startLiveView, "alpha", 0f);
+        anim.setDuration(1000);
+        anim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+            @Override
+            public void onAnimationEnd(Animator animator) {
+
+                if (null != startLiveView) {
+                    flCover.removeView(startLiveView);
+                }
+                showLive(params);
             }
 
-        }
+            @Override
+            public void onAnimationCancel(Animator animator) {
 
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            Log.i("activityHJW","surfaceChanged");
-            _SurfaceControl.setResolution(width, height);
-        }
+            }
 
-        @Override
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            Log.i("activityHJW","surfaceDestroyed");
-            _Client.removeSurface(holder);
-            _SurfaceControl = null;
-            _Client = null;
-        }
-    };
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+
+        });
+        anim.start();
+    }
+
+
+
+    private void showLive(Map<String, String> params) {
+        cp = ColaProgress.show(LiveActivity.this, "准备直播", false, true, null);
+        RequestUtils.sendPostRequest(Api.LIVE_SHOW, params, new ResponseCallBack<Live>() {
+            @Override
+            public void onSuccess(Live data) {
+                super.onSuccess(data);
+                if (null != cp) {
+                    cp.dismiss();
+                }
+                live =data;
+                startPush();
+                living(data);
+                ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);
+                animIn.setDuration(500);
+                animIn.start();
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                if (null != cp) {
+                    cp.dismiss();
+                }
+            }
+        }, Live.class);
+    }
+
+
 
     private void living(Live data) {
         liveView = new LiveView(LiveActivity.this);
         liveView.setActivity(LiveActivity.this);
         liveView.setInfo(data);
-        if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
-            liveView.isSendIntoRoomMsg(true);
-        }
         flCover.addView(liveView);
         liveView.loadLive();
-
         if(sharePlat==1){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
         }else if(sharePlat==2){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QQ,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QQ,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
         }else if(sharePlat==3){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QZONE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QZONE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
         }else if(sharePlat==4){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
         }else if(sharePlat==5){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN_CIRCLE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN_CIRCLE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
         }else if(sharePlat==6){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SINA,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),back);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SINA,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
         }
-
     }
-
-    ApiCallback back = new ApiCallback<String>(){
-
-        @Override
-        public void onSuccess(String data) {
-            //startPush();
-        }
-    };
 
 
     @Override
@@ -650,7 +595,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 if (resultCode == RESULT_OK && requestCode == 1) {
                     String tid = data.getStringExtra("tid");
                     String topic = data.getStringExtra("topic");
-                    tvTheme.setText("# " + topic + " #");
+                    tvTheme.setText( topic);
                 }
                 break;
 
@@ -660,152 +605,57 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     }
 
 
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
-    }
+    private void startPush() {
+        if (null != Constant.accessToken){
+            try {
+                LiveService.getInstance().createLive(Constant.accessToken, Constant.SPACE, Constant.LIVE_URL);
+                LiveService.getInstance().setCreateLiveListener(new CreateLiveListener() {
+                    @Override
+                    public void onCreateLiveError(int errorCode, String message) {
+                        Log.e("myTest", "errorCode:" + errorCode + "message" + message);
+                    }
 
-
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-
-        if (StringUtil.isNotEmpty(isRecord) && isRecord.equals("true") && null!=liveView) {
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    //人气，爱心，在线人数，播放时长
-                    String[] closeInfo = liveView.getCloseInfo();
-                    closeLiving(closeInfo);
-                }
-            }, 1000);
-
-
-        }
-        if(null!=recordView){
-            //停止推流
-            stopRecorder();
-            _Client.stopPreview();
-            _Client.onDestroy();
-
-            //停止直播
-            stopLive();
-
-        }
-
-        flPlayView.removeAllViews();
-        if (null != mVideoView) {
-            if (!mVideoView.isBackgroundPlayEnabled()) {
-                mVideoView.stopPlayback();
-                mVideoView.stopBackgroundPlay();
-            } else {
-                mVideoView.enterBackground();
-            }
-
-        }
-
-    }
-
-
-    /**
-     * 直播结束
-     * @param closeInfo
-     */
-    private void closeLiving(String[] closeInfo) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("lid", live.getLid());
-        params.put("online", closeInfo[2]);
-        params.put("hots", closeInfo[0]);
-        params.put("liveTime", closeInfo[3]);
-        params.put("loves", closeInfo[1]);
-
-        params.put("type", "0");
-        params.put("chatroom", live.getChatroom());
-        params.put("nickName", null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
-
-        params.put("photo", null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
-        RequestUtils.sendPostRequest(Api.LIVEING_CLOSE, params, new ResponseCallBack<String>() {
-            @Override
-            public void onSuccess(String str) {
-                super.onSuccess(str);
-
-            }
-
-
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-            }
-        }, String.class);
-    }
-
-    private void stopLive() {
-
-    }
-
-
-
-    @Override
-    protected void onRestart() {
-        super.onResume();
-        addRecordView();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("activityHJW","onDestroy()");
-        if (null != liveView) {
-            liveView.removeGlobalListener();
-            liveView.removeMsgListener();
-        }
-
-
-    }
-
-    @Override
-    protected void onStop() {
-        Log.i("activityHJW","onStop");
-        super.onStop();
-        if (null != mVideoView) {
-            if (!mVideoView.isBackgroundPlayEnabled()) {
-                mVideoView.stopPlayback();
-                mVideoView.stopBackgroundPlay();
-            } else {
-                mVideoView.enterBackground();
+                    @Override
+                    public void onCreateLiveSuccess(String pushUrl, String playUrl) {
+                        pushUrl = pushUrl;
+                        Log.e("myTest", "startPush");
+                        startRecorder(live.getPushUrl(), playUrl);
+                    }
+                });
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                Log.e(TAG, ex.getMessage().toString());
             }
         }
-
-        //停止推流
-        stopRecorder();
-
-
     }
 
 
-
-    @Override
-    protected void onResume() {
-        Log.i("activityHJW","onResume");
-        super.onResume();
-        if (null != mVideoView) {
-            mVideoView.start();
+    private void startRecorder(String pushUrl,String playUrl) {
+        if (mLiveRecorder != null) {
+            return;
         }
 
-
+        Log.i(TAG, "************** Start live stream startRecord! ************** ");
+        initLiveRecord();
+        //ip_address这里修改为可以直接ip推流.就近原则。建议使用httpDNS得到最优ip.直接推流.不用即直接传null
+        mLiveRecorder.start(this,null);
+        mIsRecording = true;
+        Log.i(TAG, "************** Starting live stream! **************");
     }
 
-
+    private void initLiveRecord() {
+        mLiveRecorder = new LiveRecorderManager();
+        mLiveRecorder.init(live.getPushUrl(), "flv");//flv为推流文件格式，目前仅支持flv
+        mLiveRecorder.setNetworkThreshHold(90);//设置网络最大buffer阈值.可不设，默认为90
+        mVideoStream = mLiveRecorder.addVideoStream();
+        mVideoStream.init(384, 640, 600000, 20, 3);//参数分别为：宽、高、码率、帧数、帧数间隔；宽384为推荐设置，可解决部分手机不支持16倍数的问题
+        mVideoStream.setInput(_Client);
+        mVideoStream.setMirrored(_Client.isFrontCamera());
+        mVideoStream.setBitRateRange(600000,1000000);//设置最小码率和最大码率，可根据网络状况自动调节码率.会自动调节码率
+        mAudioStream = mLiveRecorder.addAudioStream();
+        mAudioStream.init(44100, 32000);//音频采样率、码率
+        mLiveRecorder.setOnStatusCallback(this);
+    }
 
 
     /**
@@ -851,6 +701,115 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
 
 
+    /**
+     * 直播结束
+     * @param closeInfo
+     */
+    private void closeLiving(String[] closeInfo) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("lid", live.getLid());
+        params.put("online", closeInfo[2]);
+        params.put("hots", closeInfo[0]);
+        params.put("liveTime", closeInfo[3]);
+        params.put("loves", closeInfo[1]);
+
+        params.put("type", "0");
+        params.put("chatroom", live.getChatroom());
+        params.put("nickName", null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
+
+        params.put("photo", null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
+        RequestUtils.sendPostRequest(Api.LIVEING_CLOSE, params, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccess(String str) {
+                super.onSuccess(str);
+
+            }
 
 
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, String.class);
+    }
+
+
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        stopRecorder();
+
+        if (StringUtil.isNotEmpty(isRecord) && isRecord.equals("true") && null!=liveView) {
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    //人气，爱心，在线人数，播放时长
+                    String[] closeInfo = liveView.getCloseInfo();
+                    closeLiving(closeInfo);
+                }
+            }, 1000);
+        }
+
+        if (null != mVideoView) {
+            if (!mVideoView.isBackgroundPlayEnabled()) {
+                mVideoView.stopPlayback();
+                mVideoView.stopBackgroundPlay();
+            } else {
+                mVideoView.enterBackground();
+            }
+
+        }
+    }
+
+
+    @Override
+    protected void onRestart() {
+        Log.i("myTest","onRestart");
+        super.onRestart();
+        startPush();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i("myTest","onResume");
+        super.onResume();
+        if (null != mVideoView) {
+            mVideoView.start();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        Log.i("myTest","onPause");
+        super.onPause();
+        stopRecorder();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i("myTest","onStop");
+        super.onStop();
+        stopRecorder();
+        if (null != mVideoView) {
+            if (!mVideoView.isBackgroundPlayEnabled()) {
+                mVideoView.stopPlayback();
+                mVideoView.stopBackgroundPlay();
+            } else {
+                mVideoView.enterBackground();
+            }
+
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != liveView) {
+            liveView.removeGlobalListener();
+            liveView.removeMsgListener();
+        }
+    }
 }
