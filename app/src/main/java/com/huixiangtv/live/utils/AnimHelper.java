@@ -6,12 +6,9 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -26,16 +23,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huixiangtv.live.App;
-import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.message.GiftMessage;
 import com.huixiangtv.live.model.Gift;
 import com.huixiangtv.live.model.LiveMsg;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -285,7 +279,7 @@ public class AnimHelper {
             randomY =  App.screenHeight-minY;
         }else if(road==2){
             barrangeFreRoad = 1;
-            randomY =  App.screenHeight-(minY-minY/5);
+            randomY =  App.screenHeight-(minY+minY/5);
         }
 
         final View barrageView = View.inflate(activity, R.layout.shout_barrage, null);
@@ -307,10 +301,6 @@ public class AnimHelper {
         int width = barrageView.getMeasuredWidth();
 
 
-
-
-        Log.i("msgType",randomY+"");
-        Log.i("msgType",randomY+"--width"+width+"---height"+height);
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         params.topMargin = randomY;
@@ -368,7 +358,7 @@ public class AnimHelper {
         final ImageView ivPhoto = (ImageView) barrageView.findViewById(R.id.ivPhoto);
         final ImageView ivGift = (ImageView) barrageView.findViewById(R.id.ivGift);
 
-        tvMsg.setText(msg.getContent());
+
         tvNickName.setText(msg.getNickName());
         if(StringUtil.isNotEmpty(msg.getPhoto())){
             ImageUtils.displayAvator(ivPhoto,msg.getPhoto());
@@ -376,6 +366,8 @@ public class AnimHelper {
         if(null!=App.giftMap){
             if(null!=App.giftMap.get(msg.getGid())){
                 ImageUtils.displayAvator(ivGift,App.giftMap.get(msg.getGid()).getIcon());
+                tvMsg.setText(msg.getNickName()+"打赏了"+App.giftMap.get(msg.getGid()).getName());
+
             }
 
         }else{
@@ -399,8 +391,7 @@ public class AnimHelper {
 
         int startX = -width;
         final int offsetX = WidgetUtil.dip2px(activity,10);
-        Log.i("msgType",randomY+"");
-        Log.i("msgType",randomY+"--width"+width+"---height"+height);
+
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         params.topMargin = randomY;
@@ -479,22 +470,20 @@ public class AnimHelper {
 
         numView.setVisibility(View.VISIBLE);
         animSet = new AnimatorSet();
-        ObjectAnimator animator = ObjectAnimator.ofFloat(numView, "scaleX",1.0f,1.5f,0.8f);
-        animator.setDuration(600);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(numView, "scaleX",1.2f,1.5f,1.0f);
+        animator.setDuration(300);
 
 
-        ObjectAnimator animator2 = ObjectAnimator.ofFloat(numView, "scaleY",1.0f,1.5f,0.8f);
-        animator2.setDuration(600);
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(numView, "scaleY",1.2f,1.5f,1.0f);
+        animator2.setDuration(300);
 
 
         animSet.play(animator).with(animator2);
         animSet.setInterpolator(new AccelerateInterpolator());
         animSet.start();
 
-        Log.i("msgType","size"+size);
-        Log.i("msgType","index"+index);
         final int finalI =index;
-        Log.i("msgType","finalI"+finalI);
+
         animSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -518,13 +507,14 @@ public class AnimHelper {
                     }
                 }
                 if (finalI == size) {
-                    Log.i("msgType","giftFreeRoad>>>"+giftFreeRoad);
+
                     if (null != barrageView) {
                         hideAndRemoveBarrageView(flLive, barrageView);
                     }
                     Message barrageMsg = new Message();
                     barrageMsg.what = 14;
                     barrageMsg.obj = giftFreeRoad;
+
                     liveHandler.sendMessage(barrageMsg);
                 }
 

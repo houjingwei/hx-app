@@ -1042,7 +1042,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 TextMessage tm = (TextMessage) message.getContent();
                 final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
                 msg.setContent(tm.getContent().toString());
-                Log.i("msgType", msg.getMsgType());
+
                 if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
 
                     msgListView.post(new Runnable() {
@@ -1076,7 +1076,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     });
 
                 } else if(msg.getMsgType().equals(Constant.MSG_TYPE_BARRAGE)){
-                    Log.i("msgType", msg.getNickName());
+
                     msgListView.post(new Runnable() {
                         public void run() {
 
@@ -1162,6 +1162,9 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
     private List<LiveMsg> giftMsgs = new ArrayList<>();
+    private List<LiveMsg> allGiftMsgs = new ArrayList<>();
+
+
     private List<LiveMsg> barrageMsgs = new ArrayList<>();
 
     private Handler liveHandler = new Handler(){
@@ -1198,16 +1201,19 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                         showGiftAni(ls,liveHandler, firstGiftAnimRun);
                     }else{
                         giftMsgs.add(giftMsg);
-                        Log.i("msgType","giftMsgs.size"+giftMsgs.size());
                     }
 
                     break;
                 case GIFT_FINISH:
-                    Log.i("msgType","giftMsgs.size"+giftMsgs.size());
+
                     int road = (int) message.obj;
-                    Log.i("msgType","road"+road);
-                    if(null!=giftMsgs && giftMsgs.size()>0){
-                        top10GiftMsgAndAnim(road);
+
+                    allGiftMsgs.addAll(giftMsgs);
+
+                    giftMsgs.clear();
+
+                    if(null!=allGiftMsgs && allGiftMsgs.size()>0){
+                        top10GiftMsgAndAnim(road,allGiftMsgs);
 
                     }else{
                         firstGiftAnimRun=0;
@@ -1221,44 +1227,43 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
 
-    private void top10GiftMsgAndAnim(final int road) {
+    private void top10GiftMsgAndAnim(final int road, final List<LiveMsg> allGiftMsgs) {
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 List<LiveMsg> top10 = new ArrayList<LiveMsg>();
                 List<LiveMsg> sameList = new ArrayList<LiveMsg>();
                 LiveMsg msg = null;
 
-                if(null!=giftMsgs){
-                    msg = giftMsgs.get(0);
-                    if(giftMsgs.size()>10){
-                        for (int i=0;i<10;i++){
-                            sameList.add(giftMsgs.get(i));
-                            giftMsgs.remove(i);
+
+                if(null!=allGiftMsgs && allGiftMsgs.size()>0){
+                    msg = allGiftMsgs.get(0);
+                    if(allGiftMsgs.size()>10){
+                        try{
+                            top10.addAll(allGiftMsgs.subList(0,10));
+                        }catch (Exception e){
 
                         }
                     }else{
-                        top10 = giftMsgs;
-                        for (int i=0;i<giftMsgs.size();i++){
-                            top10.add(giftMsgs.get(i));
-                            giftMsgs.remove(i);
-                        }
+                        top10.addAll(allGiftMsgs);
                     }
+                    Log.i("msgType","top10:"+top10.size());
+                    allGiftMsgs.removeAll(top10);
                 }
-
                 if(top10.size()>0){
+
                     for (int i=0;i<top10.size();i++){
+
                         if(msg.getUid().equals(top10.get(i).getUid()) && msg.getGid().equals(top10.get(i).getGid())){
                             sameList.add(top10.get(i));
                         }
                     }
+
                 }
 
                 if(sameList.size()==0){
                     sameList.add(msg);
-                    giftMsgs.remove(0);
-                }else{
-
                 }
+
                 showGiftAni(sameList,liveHandler, road);
             }
         }, 100);

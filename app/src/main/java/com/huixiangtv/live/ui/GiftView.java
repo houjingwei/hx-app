@@ -371,6 +371,7 @@ public class GiftView extends RelativeLayout {
 
 
     private final int ANIM_SHOW_MARKS=2;
+    private final int ANIM_REMOVE_MARKS=3;
     private Handler videoHandler = new Handler(){
 
         @Override
@@ -387,7 +388,12 @@ public class GiftView extends RelativeLayout {
                         Long remarks = Long.parseLong(data.get("remarks").toString());
                         animHelper.showGiftMarksAnim(rootView, barrageArea, remarks);
                         break;
+                    case ANIM_REMOVE_MARKS:
+                        TextView view = (TextView) data.get("animView");
+                        rootView.removeView(view);
+                        break;
                 }
+
             }catch (Exception ex){
                 ex.printStackTrace();;
             }

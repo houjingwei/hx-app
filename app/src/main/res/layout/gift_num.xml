@@ -6,8 +6,8 @@
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/ivGift"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignRight="@+id/rlBrrage"
         android:layout_marginRight="10dp"
         android:src="@drawable/num_1" />
