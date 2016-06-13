@@ -150,6 +150,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
         final View playView = LayoutInflater.from(LiveActivity.this).inflate(R.layout.play_view, null, false);
         mVideoView = (IjkVideoView) playView.findViewById(R.id.video_view);
+        mVideoView.setActivity(LiveActivity.this);
         mVideoView.setRender(2);
         IjkMediaPlayer.loadLibrariesOnce(null);
         IjkMediaPlayer.native_profileBegin("libijkplayer.so");
@@ -769,7 +770,9 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     protected void onRestart() {
         Log.i("myTest","onRestart");
         super.onRestart();
-        startPush();
+        if (!isPlay.equals("true")) {
+            startPush();
+        }
     }
 
     @Override

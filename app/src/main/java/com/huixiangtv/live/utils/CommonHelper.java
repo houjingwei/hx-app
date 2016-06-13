@@ -125,8 +125,7 @@ public class CommonHelper {
             @Override
             public void select(SHARE_MEDIA platForm) {
                 super.select(platForm);
-                showTip(activity,"share to " + platForm);
-                //App.share(activity, platForm, content, cover, targetUrl);
+
             }
         });
     }
@@ -217,6 +216,29 @@ public class CommonHelper {
         });
     }
 
+
+    /**
+     * 关注状态
+     * @param artistId
+     * @param apiCallback
+     */
+    public static void fenStatus(final String artistId, final ApiCallback<Other> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("artistId",artistId);
+        RequestUtils.sendPostRequest(Api.ATTENTIOIN_STATUS, params, new ResponseCallBack<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                super.onSuccess(data);
+                apiCallback.onSuccess(data);
+            }
+
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, Other.class);
+    }
 
     /**
      * 关注

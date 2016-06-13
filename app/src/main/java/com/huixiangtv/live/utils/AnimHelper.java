@@ -80,7 +80,7 @@ public class AnimHelper {
         view.setVisibility(View.VISIBLE);
         AnimationSet animationUpSet = new AnimationSet(false);
         TranslateAnimation translateUpAnimation = new TranslateAnimation(0,0,moveY,0);
-        translateUpAnimation.setDuration(500);
+        translateUpAnimation.setDuration(300);
         translateUpAnimation.setFillAfter(true);
         translateUpAnimation.setInterpolator(new AccelerateInterpolator());
         animationUpSet.addAnimation(translateUpAnimation);
@@ -91,7 +91,7 @@ public class AnimHelper {
         view.setVisibility(View.GONE);
         AnimationSet animationDownSet = new AnimationSet(false);
         TranslateAnimation translateDownAnimation = new TranslateAnimation(0,0,0,moveY);
-        translateDownAnimation.setDuration(500);
+        translateDownAnimation.setDuration(300);
         translateDownAnimation.setInterpolator(new AccelerateInterpolator());
         translateDownAnimation.setFillAfter(true);
         animationDownSet.addAnimation(translateDownAnimation);

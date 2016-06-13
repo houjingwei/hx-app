@@ -17,6 +17,7 @@
 package com.huixiangtv.live.ijk.widget.media;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -40,8 +41,10 @@ import android.widget.MediaController;
 import android.widget.TableLayout;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.ijk.application.Settings;
 import com.huixiangtv.live.ijk.services.MediaPlayerService;
+import com.huixiangtv.live.utils.CommonHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -117,6 +120,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private int mVideoSarDen;
 
     private InfoHudViewHolder mHudViewHolder;
+    private Activity activity;
 
     public IjkVideoView(Context context) {
         super(context);
@@ -551,21 +555,22 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                             messageId = R.string.VideoView_error_text_unknown;
                         }
 
-                        new AlertDialog.Builder(getContext())
-                                .setMessage(messageId)
-                                .setPositiveButton(R.string.VideoView_error_button,
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int whichButton) {
-                                            /* If we get here, there is no onError listener, so
-                                             * at least inform them that the video is over.
-                                             */
-                                                if (mOnCompletionListener != null) {
-                                                    mOnCompletionListener.onCompletion(mMediaPlayer);
-                                                }
-                                            }
-                                        })
-                                .setCancelable(false)
-                                .show();
+//                        new AlertDialog.Builder(getContext())
+//                                .setMessage(messageId)
+//                                .setPositiveButton(R.string.VideoView_error_button,
+//                                        new DialogInterface.OnClickListener() {
+//                                            public void onClick(DialogInterface dialog, int whichButton) {
+//                                            /* If we get here, there is no onError listener, so
+//                                             * at least inform them that the video is over.
+//                                             */
+//                                                if (mOnCompletionListener != null) {
+//                                                    mOnCompletionListener.onCompletion(mMediaPlayer);
+//                                                }
+//                                            }
+//                                        })
+//                                .setCancelable(false)
+//                                .show();
+                        CommonHelper.showTip(activity,"直播已结束");
                     }
                     return true;
                 }
@@ -1223,5 +1228,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
     public int getSelectedTrack(int trackType) {
         return MediaPlayerCompat.getSelectedTrack(mMediaPlayer, trackType);
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 }

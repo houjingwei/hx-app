@@ -41,6 +41,7 @@ import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.LiveMsg;
 import com.huixiangtv.live.model.LoveGift;
 import com.huixiangtv.live.model.MsgExt;
+import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.ShoutGift;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.CameraWindow;
@@ -237,7 +238,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     public void loadLive() {
 
-
+        //检测当前登录用户是否已经关注了艺人
+        if(null!=App.getLoginUser()) {
+            fendStatus();
+        }
 
         //开始时间
         startTime = System.currentTimeMillis();
@@ -256,6 +260,21 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void onSuccess(ShoutGift data) {
                 shoutGift = data;
+            }
+        });
+    }
+
+
+    /**
+     * 关注状态
+     */
+    private void fendStatus() {
+        CommonHelper.fenStatus(live.getUid(), new ApiCallback<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                if(data.getIsFollowed().equals("1")){
+                    ivAddFen.setVisibility(GONE);
+                }
             }
         });
     }
@@ -334,7 +353,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         App.imClient.joinChatRoom(live.getChatroom(), -1, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
-                CommonHelper.showTip(activity, "进入聊天室成功");
                 if(isSendIntoRoomMsg){
                     sendIntoRoomMsg();
                 }
@@ -597,6 +615,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void onSuccess(String data) {
                 CommonHelper.showTip(activity,"关注成功");
+                ivAddFen.setVisibility(GONE);
             }
 
             @Override

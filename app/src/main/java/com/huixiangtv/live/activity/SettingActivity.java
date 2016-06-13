@@ -52,8 +52,11 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
     @ViewInject(R.id.weixinbind)
     TextView weixinbind;
 
-    @ViewInject(R.id.helpcentre)
-    RelativeLayout helpcentre;
+    @ViewInject(R.id.rlHelp)
+    RelativeLayout rlHelp;
+
+    @ViewInject(R.id.rlUs)
+    RelativeLayout rlUs;
 
     @ViewInject(R.id.tvLoginOut)
     TextView tvLoginOut;
@@ -93,13 +96,18 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
         commonTitle.setTitleText(getResources().getString(R.string.set));
 
 
-        helpcentre.setOnClickListener(this);
+        rlHelp.setOnClickListener(this);
+        rlUs.setOnClickListener(this);
         tvLoginOut.setOnClickListener(this);
         rlPhoenBind.setOnClickListener(this);
         rlUpdatePwd.setOnClickListener(this);
         rlQqBind.setOnClickListener(this);
         rlWxBind.setOnClickListener(this);
         rlSinaBind.setOnClickListener(this);
+
+        if(null!=App.getLoginUser()){
+            tvLoginOut.setVisibility(View.VISIBLE);
+        }
 
 
     }
@@ -112,8 +120,11 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
                 App.clearLoginUser();
                 onBackPressed();
                 break;
-            case R.id.helpcentre:
-                ForwardUtils.target(this, Constant.HELP, null);
+            case R.id.rlHelp:
+                ForwardUtils.target(SettingActivity.this, Constant.HELP, null);
+                break;
+            case R.id.rlUs:
+                ForwardUtils.target(SettingActivity.this, Constant.GYWM, null);
                 break;
             case R.id.rlPhoenBind:
                 Map<String,String> params = new HashMap<String,String>();

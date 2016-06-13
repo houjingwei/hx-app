@@ -103,10 +103,20 @@ public class FragmentTabThree extends RootFragment{
 				}
 				break;
 			case R.id.llAccount:
-				ForwardUtils.target(getActivity(), Constant.ACCOUNT,null);
+				if(null!=App.getLoginUser()){
+					ForwardUtils.target(getActivity(), Constant.ACCOUNT,null);
+				}else{
+					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
+				}
+
 				break;
 			case R.id.llLoves:
-				ForwardUtils.target(getActivity(), Constant.MY_LOVES,null);
+				if(null!=App.getLoginUser()){
+					ForwardUtils.target(getActivity(), Constant.MY_LOVES,null);
+				}else{
+					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
+				}
+
 				break;
 			case R.id.tvUserName:
 				if(null!=App.getLoginUser()){
@@ -124,13 +134,28 @@ public class FragmentTabThree extends RootFragment{
 				   ForwardUtils.target(getActivity(), Constant.PIC_LIST,null);
 				break;
 			case R.id.llMyfans:
-				ForwardUtils.target(getActivity(), Constant.MY_FANS,null);
+				if(null!=App.getLoginUser()){
+					ForwardUtils.target(getActivity(), Constant.MY_FANS,null);
+				}else{
+					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
+				}
+
 				break;
 			case R.id.llfaned:
-				ForwardUtils.target(getActivity(), Constant.FANED_ME,null);
+				if(null!=App.getLoginUser()){
+					ForwardUtils.target(getActivity(), Constant.FANED_ME,null);
+				}else{
+					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
+				}
+
 				break;
 			case R.id.llHot:
-				ForwardUtils.target(getActivity(), Constant.MY_HOTS,null);
+				if(null!=App.getLoginUser()){
+					ForwardUtils.target(getActivity(), Constant.MY_HOTS,null);
+				}else{
+					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
+				}
+
 				break;
 
 		}

@@ -1,4 +1,4 @@
-package com.huixiangtv.live.activity;
+package com.huixiangtv.live.model;
 
 /**
  * Created by hjw on 16/5/23.

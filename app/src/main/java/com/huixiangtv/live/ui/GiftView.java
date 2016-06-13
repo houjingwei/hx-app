@@ -37,6 +37,7 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.AnimHelper;
 import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.ForwardUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +72,7 @@ public class GiftView extends RelativeLayout {
     private TextView tvHot;
 
     private TextView tvCoin;
+    private TextView tvPay;
 
 
     public GiftView(Context context) {
@@ -82,6 +84,13 @@ public class GiftView extends RelativeLayout {
 
     public void initView() {
         tvCoin = (TextView) findViewById(R.id.tvCoin);
+        tvPay = (TextView) findViewById(R.id.tvPay);
+        tvPay.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ForwardUtils.target(activity,Constant.ACCOUNT,null);
+            }
+        });
         if(null!=App.getLoginUser()){
             tvCoin.setText(App.getLoginUser().getCoins());
         }
@@ -216,7 +225,7 @@ public class GiftView extends RelativeLayout {
                 super.onSuccess(data);
 
                 //更新金币数量
-                App.upUserBalance(data.getAmount()+"");
+                App.upUserBalance(data.getAmount());
                 tvCoin.setText(data.getAmount());
 
                 int old = Integer.parseInt(tvHot.getText().toString());
@@ -230,7 +239,7 @@ public class GiftView extends RelativeLayout {
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
-                Log.e(Constant.TAG,"消费礼物出错!",e);
+                CommonHelper.showTip(activity,"礼物消费出错");
                 Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
                 if(null!=callback){
                     callback.onFailure(e);
@@ -246,14 +255,12 @@ public class GiftView extends RelativeLayout {
     //验证当前用户的金币余额
     private boolean checkCoinsBalance(long requiredNum){
         //验证金币
-//        if(requiredNum>Integer.parseInt(App.userCoin)){
-//            Toast.makeText(activity, "剩余金币不足，请充值!", Toast.LENGTH_SHORT).show();
-//            return false;
-//        }else{
-//            return true;
-//        }
-
-        return true;
+        if(requiredNum>Integer.parseInt(App.getLoginUser().getCoins())){
+            CommonHelper.showTip(activity,"剩余金币不足，请充值");
+            return false;
+        }else{
+            return true;
+        }
     }
 
 

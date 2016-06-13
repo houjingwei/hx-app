@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="20dp"
-                android:text="100个爱心相当于可以兑换8个h币" />
+                android:text="100个爱心可以兑换10个金币" />
 
         </LinearLayout>
     </RelativeLayout>
