@@ -3,12 +3,17 @@ package com.huixiangtv.live.common;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentActivity;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,6 +23,7 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.callback.CodeCallBack;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -142,6 +148,48 @@ public class CommonUtil {
                 codeCallBack.sendError(e.getMessage());
             }
         },String.class);
+    }
+
+
+    public static void setGuidImage(Activity act,int viewId, int imageId, String preferenceName,final ApiCallback<Object> apiCallback ) {
+        @SuppressWarnings("static-access")
+        SharedPreferences preferences = act.getSharedPreferences(preferenceName, act.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+        final String key = act.getClass().getName() + "_firstLogin";
+        if (!preferences.contains(key)) {
+            editor.putBoolean(key, true);
+            editor.commit();
+        }
+
+        //判断是否首次登陆
+        if (!preferences.getBoolean(key, true)) {
+            apiCallback.onSuccess("no");
+            return;
+        }
+        View view = act.getWindow().getDecorView().findViewById(viewId);
+        ViewParent viewParent = view.getParent();
+        if (viewParent instanceof FrameLayout) {
+            final FrameLayout frameLayout = (FrameLayout) viewParent;
+            final ImageView guideImage = new ImageView(act.getApplication());
+
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            params.gravity = Gravity.RIGHT;
+            guideImage.setLayoutParams(params);
+
+            guideImage.setScaleType(ImageView.ScaleType.FIT_XY);
+            guideImage.setImageResource(imageId);
+            guideImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    frameLayout.removeView(guideImage);
+                    editor.putBoolean(key, false);
+                    editor.commit();
+                    apiCallback.onSuccess("ok");
+                }
+            });
+            frameLayout.addView(guideImage);//添加引导图片
+
+        }
     }
 
 }

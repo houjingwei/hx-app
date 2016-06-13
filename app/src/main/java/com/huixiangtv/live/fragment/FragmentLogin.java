@@ -99,6 +99,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
 
 	private void login(SHARE_MEDIA platform) {
+//		App.mShareAPI.getPlatformInfo(getActivity(), platform, umAuthListener);
 		App.mShareAPI.doOauthVerify(getActivity(), platform, umAuthListener);
 	}
 

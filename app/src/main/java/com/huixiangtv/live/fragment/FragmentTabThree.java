@@ -13,12 +13,14 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
+import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.StringUtil;
@@ -42,6 +44,7 @@ public class FragmentTabThree extends RootFragment{
 	TextView haveFans;
 	TextView tvAccount;
 	TextView tvLoves;
+	TextView tvartist;
 	private RelativeLayout rlSign;
 	RelativeLayout llUserTop;
 
@@ -62,11 +65,12 @@ public class FragmentTabThree extends RootFragment{
 
 	@Override
 	protected void initData() {
-
+		ArtistCardInfoStatus();
 	}
 
 
 	private void initView() {
+
 
 		mRootView.findViewById(R.id.ivPhoto).setOnClickListener(this);
 		mRootView.findViewById(R.id.llAccount).setOnClickListener(this);
@@ -87,7 +91,7 @@ public class FragmentTabThree extends RootFragment{
 		tvAccount = (TextView) mRootView.findViewById(R.id.tvAccount);
 		tvLoves = (TextView) mRootView.findViewById(R.id.tvLoves);
 		llUserTop = (RelativeLayout) mRootView.findViewById(R.id.llUserTop);
-
+		tvartist =(TextView) mRootView.findViewById(R.id.artist);
 
 
 	}
@@ -122,6 +126,8 @@ public class FragmentTabThree extends RootFragment{
 			case R.id.llTitle:
 				if(TokenChecker.checkToken(getActivity()))
 				   ForwardUtils.target(getActivity(), Constant.PIC_LIST,null);
+
+				getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 				break;
 			case R.id.llMyfans:
 				ForwardUtils.target(getActivity(), Constant.MY_FANS,null);
@@ -312,5 +318,27 @@ public class FragmentTabThree extends RootFragment{
 		}
 	}
 
+
+	private void ArtistCardInfoStatus() {
+
+		RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD_STATUS, null, new ResponseCallBack<User>() {
+			@Override
+			public void onSuccess(User data) {
+				if (data != null) {
+
+					if (data.getStatus().equals("1")) //status
+					{
+						tvartist.setText("我的艺人卡");
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(ServiceException e) {
+				super.onFailure(e);
+
+			}
+		}, User.class);
+	}
 
 }

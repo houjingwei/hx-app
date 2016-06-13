@@ -163,6 +163,8 @@ public class RegPicListActivity extends Activity {
     @ViewInject(R.id.ll_per_info)
     LinearLayout ll_per_info;
 
+    @ViewInject(R.id.imgShare)
+    ImageView imgShare;
 
     @ViewInject(R.id.imageView1)
     ImageView imageView1;
@@ -255,15 +257,23 @@ public class RegPicListActivity extends Activity {
 
             }
         });
+
+        imgShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShareAlert(RegPicListActivity.this);
+            }
+        });
+
         txtSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //first validation
-                if (v.getTag().toString().equals("1")) {
+
                     for (DropImageView dropImageView : mertoItemViews) {
 
                         if (dropImageView.getIsFinish() != 5) {
-                            Toast.makeText(getBaseContext(), "请选择上传图片到第" + (Integer.parseInt(dropImageView.getTag().toString()) + 1) + "张卡片", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), "请选择选择图片到第" + (Integer.parseInt(dropImageView.getTag().toString()) + 1) + "张卡片", Toast.LENGTH_LONG).show();
                             return;
                         }
                     }
@@ -277,10 +287,7 @@ public class RegPicListActivity extends Activity {
                     });
 
 
-                } else {
 
-                    showShareAlert(RegPicListActivity.this);
-                }
             }
         });
 
@@ -405,13 +412,14 @@ public class RegPicListActivity extends Activity {
 
 
     /**
-     *  5 is Finished
-     *  0 is Init
-     *  locUrl is location image
-     *  IconId is location Drawable
-     *  Status 2 is init
-     *  Status 1 have setting
-     *  Status 0 is don't setting
+     * 5 is Finished
+     * 0 is Init
+     * locUrl is location image
+     * IconId is location Drawable
+     * Status 2 is init
+     * Status 1 have setting
+     * Status 0 is don't setting
+     *
      * @param status
      */
     private void addData(String status) {
@@ -474,11 +482,7 @@ public class RegPicListActivity extends Activity {
                 txtSF.setVisibility(View.GONE);
                 txtOpen.setVisibility(View.GONE);
 
-                Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
-                nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
-                txtSave.setCompoundDrawables(null, null, nav_up, null);
-                txtSave.setText("");
-                txtSave.setTag("0");
+
                 resetOnMertoItemViewListener();
 
 
@@ -524,7 +528,6 @@ public class RegPicListActivity extends Activity {
     }
 
 
-
     boolean isdbClick = false;
     /**
      * drop imageview listener
@@ -554,7 +557,6 @@ public class RegPicListActivity extends Activity {
                     lastClickTime = System.currentTimeMillis();
 
                 } else {
-
                     UrlLoc.clear();
                     for (DropImageView dropImageView : mertoItemViews) {
                         UrlLoc.add(dropImageView.getLocUrl());
@@ -645,6 +647,7 @@ public class RegPicListActivity extends Activity {
 
     /**
      * change object data for imageview
+     *
      * @param x
      * @param y
      */
@@ -671,6 +674,7 @@ public class RegPicListActivity extends Activity {
 
     /**
      * change object tag for imageview
+     *
      * @param x
      * @param y
      */
@@ -732,6 +736,7 @@ public class RegPicListActivity extends Activity {
 
     /**
      * select take photo the return result to elements control
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -739,8 +744,6 @@ public class RegPicListActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         try {
 
             List<String> photos = null;
@@ -823,6 +826,7 @@ public class RegPicListActivity extends Activity {
                         mertoItemViews.get(currentTag).setLocUrl(photos.get(0));
                     } else if (photos.size() > 1) {
                         for (int size = 0; size < photos.size(); size++) {
+                           // bm = BitmapHelper.decodeThumbBitmapForFile(photos.get(size), mertoItemViews.get(size).getWidth(), mertoItemViews.get(size).getHeight());
                             bm = BitmapHelper.copressImage(photos.get(size));
                             bd = new BitmapDrawable(bm);
                             mertoItemViews.get(size).setIcon(bd);
@@ -843,6 +847,7 @@ public class RegPicListActivity extends Activity {
 
     /**
      * Write bm to location
+     *
      * @param bm
      * @param i
      * @return
@@ -907,6 +912,7 @@ public class RegPicListActivity extends Activity {
 
     /**
      * Share info
+     *
      * @param context
      */
     public static void showShareAlert(final Context context) {
@@ -973,6 +979,7 @@ public class RegPicListActivity extends Activity {
 
     /**
      * sj info
+     *
      * @param context
      */
     public static void showRegAlert(final Context context) {
@@ -983,6 +990,7 @@ public class RegPicListActivity extends Activity {
             dlg.show();
             dlg.setCancelable(false);
             Window window = dlg.getWindow();
+            window.setWindowAnimations(R.style.dialogWindowAnim); //设置窗口弹出动画
             window.setContentView(R.layout.res_list_inner);
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.alpha = 0.9f;
@@ -1033,6 +1041,21 @@ public class RegPicListActivity extends Activity {
 
     }
 
+
+    public static void showFirstAlert(final Context context) {
+
+        final AlertDialog dlg = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT).create();
+        dlg.show();
+        dlg.setCancelable(false);
+        Window window = dlg.getWindow();
+        window.setContentView(R.layout.open_share);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.alpha = 1.9f;
+        window.setAttributes(lp);
+
+    }
+
+
     private void resetOnMertoItemViewListener() {
 
         drop_index = false;
@@ -1068,15 +1091,38 @@ public class RegPicListActivity extends Activity {
             public void onSuccess(User data) {
                 if (data != null) {
 
-                    if (data.getStatus().equals("1")) //status
+                    if (data.getStatus().equals("15")) //status
                     {
                         cp = ColaProgress.show(RegPicListActivity.this, "正在加载数据...", true, false, null);
                         //get Info
                         ArtistCardInfo();
                     } else {
+
                         mertoBeans.clear();
-                        for (int i = 0; i < 5; i++)
-                            addData("0");
+                       CommonUtil.setGuidImage(RegPicListActivity.this, R.id.r1, R.drawable.click_pic, "first1", new ApiCallback() {
+
+                           @Override
+                           public void onSuccess(Object data) {
+                               if(data.equals("no"))
+                               {
+                                   for (int i = 0; i < 5; i++)
+                                       addData("0");
+                               }
+                               else {
+                                   CommonUtil.setGuidImage(RegPicListActivity.this, R.id.r1, R.drawable.drop_pic, "first2", new ApiCallback() {
+
+                                       @Override
+                                       public void onSuccess(Object data) {
+                                           for (int i = 0; i < 5; i++)
+                                               addData("0");
+
+                                       }
+                                   });
+                               }
+                           }
+                       });
+
+
                     }
                 }
             }
@@ -1159,14 +1205,7 @@ public class RegPicListActivity extends Activity {
                 txtUpload.setVisibility(View.GONE);
                 txtSF.setVisibility(View.GONE);
                 txtOpen.setVisibility(View.GONE);
-
-                Drawable nav_up = getResources().getDrawable(R.drawable.txt_share);
-                nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
-                txtSave.setCompoundDrawables(null, null, nav_up, null);
-                txtSave.setText("");
-                txtSave.setTag("0");
                 resetOnMertoItemViewListener();
-                txtSave.setBackgroundDrawable(null);
                 cp.dismiss();
                 CommonHelper.showTip(RegPicListActivity.this, "保存成功");
 
@@ -1303,7 +1342,7 @@ public class RegPicListActivity extends Activity {
 
     private boolean compareWithLocalPic(User data) {
 
-        if(null!=App.getPreferencesValue("img1") && null!=App.getPreferencesValue("imgloc1")) {
+        if (null != App.getPreferencesValue("img1") && null != App.getPreferencesValue("imgloc1")) {
             if (App.getPreferencesValue("img1").equals(data.getImg1()) && App.getPreferencesValue("img2").equals(data.getImg2()) && App.getPreferencesValue("img3").equals(data.getImg3()) && App.getPreferencesValue("img4").equals(data.getImg4()) && App.getPreferencesValue("img5").equals(data.getImg5())) {
                 return true;
             }
