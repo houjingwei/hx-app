@@ -2,11 +2,11 @@ package com.huixiangtv.live;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -19,14 +19,13 @@ import com.duanqu.qupai.auth.QupaiAuthListener;
 import com.huixiangtv.live.model.Gift;
 import com.huixiangtv.live.model.LiveMsg;
 import com.huixiangtv.live.model.User;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.ChatTokenCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
-import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.PreferencesHelper;
 import com.huixiangtv.live.utils.RongyunUtils;
-import com.huixiangtv.live.utils.StringUtil;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -46,7 +45,7 @@ import io.rong.message.TextMessage;
 /**
  * Created by hjw on 16/5/4.
  */
-public class App extends Application {
+public class App extends MultiDexApplication {
     private static final String TAG = "App";
     private static final String ACTION_NAME = "RONGYUN_MSG";
     private static App sContext;
@@ -73,6 +72,7 @@ public class App extends Application {
     private String chatToken = "";
 
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -91,8 +91,9 @@ public class App extends Application {
         screenWidth = display.getWidth();
         screenHeight = display.getHeight();
         statuBarHeight = getStatusBarHeight(sContext);
+
         //加载免费礼物数据
-        loadFreeGiftList();
+        loadFreeGiftList(null);
 
 
 
@@ -234,12 +235,9 @@ public class App extends Application {
     //普通礼物列表
     public static List<Gift> giftList = new ArrayList<Gift>();
     //礼物ID与礼物的映射
-    public static Map<Integer, Gift> giftMap = new HashMap<Integer, Gift>();
+    public static Map<String, Gift> giftMap = new HashMap<String, Gift>();
 
-
-
-
-    public static void loadFreeGiftList() {
+    public static void loadFreeGiftList(final ApiCallback callback) {
         Map<String,String> giftParams = new HashMap<String, String>();
         giftParams.put("uid","001");
         giftParams.put("type","1");
@@ -248,7 +246,12 @@ public class App extends Application {
             public void onSuccessList(List<Gift> data) {
                 super.onSuccessList(data);
                 giftList = data;
-                giftList = data;
+                for (Gift gift : giftList) {
+                    giftMap.put(gift.getGid(), gift);
+                }
+                if(null!=callback){
+                    callback.onSuccess(giftMap);
+                }
             }
 
             @Override

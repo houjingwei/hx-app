@@ -50,10 +50,10 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/payCoin"
+            android:text="金币"
             style="@style/black_normal_style"/>
         <TextView
-            android:id="@+id/payNum"
+            android:id="@+id/tvCoin"
             android:layout_toRightOf="@+id/tvPayLavel"
             android:layout_marginLeft="3dp"
             android:layout_centerVertical="true"

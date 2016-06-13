@@ -35,7 +35,7 @@ import com.tencent.upload.UploadManager;
 import com.tencent.upload.task.ITask;
 import com.tencent.upload.task.IUploadTaskListener;
 import com.tencent.upload.task.data.FileInfo;
-import com.tencent.upload.task.impl.FileUploadTask;
+import com.tencent.upload.task.impl.PhotoUploadTask;
 
 import java.io.File;
 import java.util.Map;
@@ -178,19 +178,19 @@ public final class ImageUtils {
 
 
     public static void upFile(Activity activity,Upfeile data, String picUri,final ApiCallback callBack) {
-        UploadManager fileUploadMgr = new UploadManager(activity, data.getAppId(), Const.FileType.File, data.getPersistenceId());
 
-        FileUploadTask task = new FileUploadTask(data.getBucket(), picUri, data.getFileName(), "image", new IUploadTaskListener() {
+        UploadManager fileUploadMgr = new UploadManager(activity,data.getAppId(), Const.FileType.Photo,data.getPersistenceId());
+        PhotoUploadTask task = new PhotoUploadTask(picUri,new IUploadTaskListener() {
+
             @Override
             public void onUploadSucceed(FileInfo fileInfo) {
-                Log.i("successful", "upload succeed: " + fileInfo.url);
+                Log.i("upfile","ok "+fileInfo.toString());
                 callBack.onSuccess(fileInfo);
-
             }
 
             @Override
             public void onUploadFailed(int i, String s) {
-                callBack.onFailure(new ServiceException(s));
+                Log.i("upfile","onUploadFailed"+s);
             }
 
             @Override
@@ -203,9 +203,15 @@ public final class ImageUtils {
 
             }
         });
-        task.setAuth(data.getSig());
 
+
+        task.setBucket(data.getBucket());
+        task.setFileId(data.getFileName()); // 为图片自定义FileID(可选)
+        task.setAuth(data.getSig());
         fileUploadMgr.upload(task);
+
+
+
 
     }
 }

@@ -57,4 +57,5 @@
     <color name="dialog_bg">#f5f5f5</color>
     <color name="transparent">#00000000</color>
     <color name="proc_value">#FC5E90</color>
+    <color name="yellow">#f5eb2a</color>
 </resources>

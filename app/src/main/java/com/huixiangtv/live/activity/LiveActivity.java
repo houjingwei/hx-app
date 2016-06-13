@@ -3,7 +3,10 @@ package com.huixiangtv.live.activity;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
@@ -58,6 +61,9 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -793,6 +799,45 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         }
 
     }
+
+
+    /**
+     * 切换相机
+     */
+    public void changeCamera() {
+        if (_Client != null && _Client.hasSession()) {
+            if (mIsRecording) {
+                mVideoStream.stopMediaCodec();
+            }
+            _Client.nextCamera();
+            if (mIsRecording) {
+                mVideoStream.setMirrored(_Client.isFrontCamera());
+                mVideoStream.startMediaCodec();
+            }
+        }
+    }
+
+    /**
+     * 屏幕截图保存
+     */
+    public void cutScreen() {
+        //savePic(takeScreenShot(LiveActivity.this), "sdcard/xx.png");
+
+        CommonHelper.cutScreen(LiveActivity.this);
+    }
+
+
+    /**
+     * 美颜开启关闭
+     */
+    boolean isBeauty = true;
+    public void changeBeau() {
+        isBeauty = !isBeauty;
+        beautyRender.switchBeauty(isBeauty);
+    }
+
+
+
 
 
 

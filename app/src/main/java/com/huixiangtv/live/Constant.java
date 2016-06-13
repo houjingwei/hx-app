@@ -81,4 +81,18 @@ public class Constant {
     public static String accessToken;//accessToken 通过调用授权接口得到
     public static final String LIVE_URL="http://huixiangtv.s.qupai.me";
     public static final String SPACE = UUID.randomUUID().toString().replace("-",""); //存储目录 建议使用uid cid之类的信息
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

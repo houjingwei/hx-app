@@ -8,7 +8,9 @@
         android:id="@+id/back"
         android:layout_width="@dimen/baseTitleHeight"
         android:layout_height="@dimen/baseTitleHeight"
-        android:padding="12dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:paddingLeft="-10dp"
         android:src="@mipmap/icon_back"/>
     <TextView
         android:id="@+id/title"

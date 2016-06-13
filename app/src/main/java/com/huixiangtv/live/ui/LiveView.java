@@ -1,13 +1,11 @@
 package com.huixiangtv.live.ui;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -32,6 +30,7 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.adapter.LiveMsgAdapter;
 import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
 import com.huixiangtv.live.adapter.RecyclerviewListener;
@@ -309,100 +308,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         checkRongyunConnectionAndJoinRoom();
     }
 
-
-    private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
-        @Override
-        public boolean onReceived(Message message, int i) {
-            if (message.getContent() instanceof TextMessage) {
-                TextMessage tm = (TextMessage) message.getContent();
-                final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
-                msg.setContent(tm.getContent().toString());
-                Log.i("msgType", msg.getMsgType());
-                if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
-
-                    msgListView.post(new Runnable() {
-
-                        public void run() {
-                            msgAdapter.add(msg);
-                            msgListView.setSelection(msgAdapter.getCount()-1);
-
-                        }
-
-                    });
-
-                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_ENTER)){
-
-                    msgListView.post(new Runnable() {
-
-                        public void run() {
-                            msgAdapter.add(msg);
-                            msgListView.setSelection(msgAdapter.getCount()-1);
-
-
-                            User user = new User();
-                            user.setPhoto(msg.getPhoto());
-                            user.setNickName(msg.getNickName());
-                            mAdapter.addData(user);
-                            mRecyclerView.setAdapter(mAdapter);
-
-                            onLineNum++;
-                        }
-
-                    });
-
-                } else if(msg.getMsgType().equals(Constant.MSG_TYPE_BARRAGE)){
-                    msgListView.post(new Runnable() {
-
-                        public void run() {
-                            CommonHelper.showTip(activity,"收到弹幕消息");
-
-                        }
-
-                    });
-
-                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_GIFT)){
-                    msgListView.post(new Runnable() {
-                        public void run() {
-                            if(StringUtil.isNotEmpty(msg.getAddhot())){
-                                int old = Integer.parseInt(tvHot.getText().toString());
-                                int addhot = Integer.parseInt(msg.getAddhot());
-                                String loves = old+addhot+"";
-                                tvHot.setText(loves);
-                                startHot = startHot + addhot;
-                            }
-
-                        }
-
-                    });
-
-                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_LOVE)){
-                    msgListView.post(new Runnable() {
-                        public void run() {
-                            if(StringUtil.isNotEmpty(msg.getAddhot())){
-                                int old = Integer.parseInt(tvLove.getText().toString());
-                                int addhot = Integer.parseInt(msg.getCount());
-                                String loves = old+addhot+"";
-                                tvLove.setText(loves);
-
-                                startLove = startLove + addhot;
-                            }
-
-                        }
-
-                    });
-
-                }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
-                    msgListView.post(new Runnable() {
-                        public void run() {
-                            showCloseInfo(msg);
-                        }
-                    });
-                }
-
-            }
-            return false;
-        }
-    }
 
     private void checkRongyunConnectionAndJoinRoom() {
         int flag = App.imClient.getCurrentConnectionStatus().getValue();
@@ -806,6 +711,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void onSuccess(BasePayent data) {
                 super.onSuccess(data);
+                hideKeyBoard();
                 if (null != data) {
                     etChatMsg.setText("");
                     //更新金币数量
@@ -856,7 +762,15 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void select(int flag) {
                 super.select(flag);
-                CommonHelper.showTip(activity, "choise" + flag);
+                //1:切换像头 2：切图 3：美颜
+                if(flag==1){
+                    ((LiveActivity)activity).changeCamera();
+                }else if(flag==2){
+                    ((LiveActivity)activity).cutScreen();
+                }else if(flag==3){
+                    ((LiveActivity)activity).changeBeau();
+                }
+
             }
         });
     }
@@ -1108,6 +1022,251 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
      */
     private void hideKeyBoard() {
         KeyBoardUtils.closeKeybord(etChatMsg, ct);
+    }
+
+
+
+
+    //喊话弹幕
+    private final int BARRAGE = 11;
+    private final int BARRAGE_FINISH = 12;
+
+    //礼物接收
+    private final int GIFT_ANIM = 13;
+    private final int GIFT_FINISH =14;
+
+    private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
+        @Override
+        public boolean onReceived(Message message, int i) {
+            if (message.getContent() instanceof TextMessage) {
+                TextMessage tm = (TextMessage) message.getContent();
+                final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
+                msg.setContent(tm.getContent().toString());
+
+                if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
+
+                    msgListView.post(new Runnable() {
+
+                        public void run() {
+                            msgAdapter.add(msg);
+                            msgListView.setSelection(msgAdapter.getCount()-1);
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_ENTER)){
+
+                    msgListView.post(new Runnable() {
+
+                        public void run() {
+                            msgAdapter.add(msg);
+                            msgListView.setSelection(msgAdapter.getCount()-1);
+
+
+                            User user = new User();
+                            user.setPhoto(msg.getPhoto());
+                            user.setNickName(msg.getNickName());
+                            mAdapter.addData(user);
+                            mRecyclerView.setAdapter(mAdapter);
+
+                            onLineNum++;
+                        }
+
+                    });
+
+                } else if(msg.getMsgType().equals(Constant.MSG_TYPE_BARRAGE)){
+
+                    msgListView.post(new Runnable() {
+                        public void run() {
+
+                            android.os.Message barrageMsg = new android.os.Message();
+                            barrageMsg.what=BARRAGE;
+                            barrageMsg.obj = msg;
+                            liveHandler.sendMessage(barrageMsg);
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_GIFT)){
+                    msgListView.post(new Runnable() {
+                        public void run() {
+                            if(StringUtil.isNotEmpty(msg.getAddhot())){
+                                int old = Integer.parseInt(tvHot.getText().toString());
+                                int addhot = Integer.parseInt(msg.getAddhot());
+                                String loves = old+addhot+"";
+                                tvHot.setText(loves);
+                                startHot = startHot + addhot;
+                                android.os.Message barrageMsg = new android.os.Message();
+                                barrageMsg.what=GIFT_ANIM;
+                                barrageMsg.obj = msg;
+                                liveHandler.sendMessage(barrageMsg);
+                            }
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_LOVE)){
+                    msgListView.post(new Runnable() {
+                        public void run() {
+                            if(StringUtil.isNotEmpty(msg.getAddhot())){
+                                int old = Integer.parseInt(tvLove.getText().toString());
+                                int addhot = Integer.parseInt(msg.getCount());
+                                String loves = old+addhot+"";
+                                tvLove.setText(loves);
+
+                                startLove = startLove + addhot;
+                            }
+
+                        }
+
+                    });
+
+                }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
+                    msgListView.post(new Runnable() {
+                        public void run() {
+                            showCloseInfo(msg);
+                        }
+                    });
+                }
+
+            }
+            return false;
+        }
+    }
+
+    private void showGiftAni(List<LiveMsg> ls, Handler liveHandler, int road) {
+        AnimHelper.showGiftAni(activity,flLive,ls,liveHandler,road);
+    }
+
+    private void showBarrageAni(final LiveMsg msg, final Handler liveHandler, final int road) {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                AnimHelper.showBarrageAni(activity,flLive,msg,road,liveHandler);
+            }
+        }, getRandomNum(1200));
+
+    }
+
+    private long getRandomNum(int time) {java.util.Random random=new java.util.Random();
+        long result=random.nextInt(time);
+        return result;
+    }
+
+
+
+    private int  firstGiftAnimRun = 0;
+    private int firstBarrageAnimRun = 0;
+
+
+    private List<LiveMsg> giftMsgs = new ArrayList<>();
+    private List<LiveMsg> allGiftMsgs = new ArrayList<>();
+
+
+    private List<LiveMsg> barrageMsgs = new ArrayList<>();
+
+    private Handler liveHandler = new Handler(){
+        @Override
+        public void handleMessage(android.os.Message message) {
+            super.handleMessage(message);
+            switch (message.what) {
+                case BARRAGE:
+                    LiveMsg msg = (LiveMsg) message.obj;
+                    if(firstBarrageAnimRun<2){
+                        firstBarrageAnimRun++;
+                        showBarrageAni(msg,liveHandler,firstBarrageAnimRun);
+                    }else{
+                        barrageMsgs.add(msg);
+                    }
+
+                    break;
+                case BARRAGE_FINISH:
+                    int currRoad = (int) message.obj;
+                    if(null!=barrageMsgs && barrageMsgs.size()>0){
+                        LiveMsg m = barrageMsgs.get(0);
+                        barrageMsgs.remove(0);
+                        showBarrageAni(m, liveHandler,currRoad);
+                    }else{
+                        firstBarrageAnimRun=0;
+                    }
+                    break;
+                case GIFT_ANIM:
+                    LiveMsg giftMsg = (LiveMsg) message.obj;
+                    if(firstGiftAnimRun<1){
+                        firstGiftAnimRun++;
+                        List<LiveMsg> ls = new ArrayList<LiveMsg>();
+                        ls.add(giftMsg);
+                        showGiftAni(ls,liveHandler, firstGiftAnimRun);
+                    }else{
+                        giftMsgs.add(giftMsg);
+                    }
+
+                    break;
+                case GIFT_FINISH:
+
+                    int road = (int) message.obj;
+
+                    allGiftMsgs.addAll(giftMsgs);
+
+                    giftMsgs.clear();
+
+                    if(null!=allGiftMsgs && allGiftMsgs.size()>0){
+                        top10GiftMsgAndAnim(road,allGiftMsgs);
+
+                    }else{
+                        firstGiftAnimRun=0;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+
+
+    private void top10GiftMsgAndAnim(final int road, final List<LiveMsg> allGiftMsgs) {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                List<LiveMsg> top10 = new ArrayList<LiveMsg>();
+                List<LiveMsg> sameList = new ArrayList<LiveMsg>();
+                LiveMsg msg = null;
+
+
+                if(null!=allGiftMsgs && allGiftMsgs.size()>0){
+                    msg = allGiftMsgs.get(0);
+                    if(allGiftMsgs.size()>10){
+                        try{
+                            top10.addAll(allGiftMsgs.subList(0,10));
+                        }catch (Exception e){
+
+                        }
+                    }else{
+                        top10.addAll(allGiftMsgs);
+                    }
+                    Log.i("msgType","top10:"+top10.size());
+                    allGiftMsgs.removeAll(top10);
+                }
+                if(top10.size()>0){
+
+                    for (int i=0;i<top10.size();i++){
+
+                        if(msg.getUid().equals(top10.get(i).getUid()) && msg.getGid().equals(top10.get(i).getGid())){
+                            sameList.add(top10.get(i));
+                        }
+                    }
+
+                }
+
+                if(sameList.size()==0){
+                    sameList.add(msg);
+                }
+
+                showGiftAni(sameList,liveHandler, road);
+            }
+        }, 100);
     }
 
 
