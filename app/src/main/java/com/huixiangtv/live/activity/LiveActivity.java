@@ -754,6 +754,11 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             }, 1000);
         }
 
+        if(null!=_Client){
+            _Client.stopPreview();
+            _Client.onDestroy();
+        }
+
         if (null != mVideoView) {
             if (!mVideoView.isBackgroundPlayEnabled()) {
                 mVideoView.stopPlayback();
