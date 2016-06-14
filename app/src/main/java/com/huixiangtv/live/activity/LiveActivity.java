@@ -3,6 +3,8 @@ package com.huixiangtv.live.activity;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.net.Uri;
@@ -11,12 +13,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -39,6 +44,8 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.ijk.widget.media.IjkVideoView;
 import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.model.LiveMsg;
+import com.huixiangtv.live.pop.LivingFinishWindow;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -716,10 +723,20 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         params.put("nickName", null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
 
         params.put("photo", null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
+
+        final LiveMsg msg = new LiveMsg();
+        msg.setOnline(closeInfo[2]);
+        msg.setAddhot(closeInfo[0]);
+        msg.setLove(closeInfo[1]);
+        msg.setLiveTime(closeInfo[3]);
+        msg.setPhoto(null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
+        msg.setNickName(null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
+
         RequestUtils.sendPostRequest(Api.LIVEING_CLOSE, params, new ResponseCallBack<String>() {
             @Override
             public void onSuccess(String str) {
                 super.onSuccess(str);
+                showCloseInfo(msg);
 
             }
 
@@ -731,17 +748,41 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         }, String.class);
     }
 
+    private void showCloseInfo(LiveMsg msg) {
+        LivingFinishWindow selectPicWayWindow = new LivingFinishWindow(LiveActivity.this, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,msg,live);
+        selectPicWayWindow.showAtLocation(LiveActivity.this.findViewById(R.id.liveMain), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        selectPicWayWindow.update();
+        selectPicWayWindow.setListener(new LivingFinishWindow.CloseListener() {
+            @Override
+            public void select() {
+                LiveActivity.this.onBackPressed();
+            }
+        });
+
+    }
+
 
 
 
 
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        stopRecorder();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+
+                dialog();
+                return false;
+            }
+        return false;
+
+    }
+
+
+    public void closeLiving() {
 
         if (StringUtil.isNotEmpty(isRecord) && isRecord.equals("true") && null!=liveView) {
+            stopRecorder();
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     //人气，爱心，在线人数，播放时长
@@ -749,7 +790,47 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                     closeLiving(closeInfo);
                 }
             }, 1000);
+        }else{
+            onBackPressed();
         }
+
+    }
+
+
+    protected void dialog() {
+
+        if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
+            onBackPressed();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(LiveActivity.this);
+            builder.setMessage("确定要退出直播吗?");
+            builder.setTitle("提示");
+            builder.setPositiveButton("退出",
+                    new android.content.DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            closeLiving();
+                        }
+                    });
+            builder.setNegativeButton("取消",
+                    new android.content.DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            builder.create().show();
+
+        }
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
 
         if(null!=_Client){
             _Client.stopPreview();
@@ -816,4 +897,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             liveView.removeMsgListener();
         }
     }
+
+
 }

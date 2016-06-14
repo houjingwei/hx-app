@@ -10,9 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.ui.CommonTitle;

@@ -19,13 +19,9 @@ import android.graphics.drawable.AnimationDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.chanven.lib.cptr.R;
-
-import org.w3c.dom.Text;
 
 /**
  * default load more view
@@ -65,7 +61,7 @@ public class CustomFooter implements ILoadViewMoreFactory {
 
         @Override
         public void showNomore() {
-            //rlRefresh.setVisibility(View.GONE);
+            rlRefresh.setVisibility(View.GONE);
         }
 
         @Override

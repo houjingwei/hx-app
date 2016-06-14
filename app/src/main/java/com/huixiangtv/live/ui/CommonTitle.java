@@ -39,6 +39,8 @@ public class CommonTitle extends RelativeLayout {
         tvTitle.setText(str);
     }
 
+
+
     public void backShow(int flag) {
         ivBack.setVisibility(flag);
     }

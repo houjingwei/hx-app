@@ -15,9 +15,7 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.PayCoinAdapter;
 import com.huixiangtv.live.model.Coin;
 import com.huixiangtv.live.model.PayMode;
-import com.huixiangtv.live.pay.alipay.AliPayUtils;
 import com.huixiangtv.live.pop.PayModeWindow;
-import com.huixiangtv.live.pop.UpdateSexWindow;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -170,6 +168,16 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
     private void initView() {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.moneyBag));
+
+        commonTitle.saveShow(View.VISIBLE);
+        commonTitle.getSave().setText("充值记录");
+        commonTitle.getSave().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ForwardUtils.target(AccountActivity.this, Constant.ORDER,null);
+            }
+        });
+
         tvXieyi.setOnClickListener(this);
 
     }
@@ -180,7 +188,7 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvXieyi:
-                ForwardUtils.target(AccountActivity.this,"http://www.baidu.com?title=支付协议",null);
+                ForwardUtils.target(AccountActivity.this, Constant.PAY_PRO,null);
                 break;
 
 

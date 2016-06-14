@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.callback.CodeCallBack;
 import com.huixiangtv.live.common.CommonUtil;
@@ -21,6 +22,7 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.RSAUtils;
 
@@ -38,6 +40,8 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 	EditText etAccount;
 	EditText etPwd;
 	EditText etCode;
+
+	TextView tvXieyi;
 
 	private TextView tvGetCode;
 
@@ -60,6 +64,8 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 		tvGetCode = (TextView) mRootView.findViewById(R.id.tvGetCode);
 		tvGetCode.setOnClickListener(this);
 
+		tvXieyi = (TextView) mRootView.findViewById(R.id.tvXieyi);
+
 	}
 
 
@@ -76,14 +82,8 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 					return;
 				}
 				KeyBoardUtils.closeKeybord(etAccount,getActivity());
-
-
-
-
 				tvGetCode.setEnabled(false);
 				cp = ColaProgress.show(getActivity(), "正在获取", false, true, null);
-
-
 				CommonUtil.getMsgCode(etAccount.getText().toString(),new CodeCallBack(){
 							@Override
 							public void sendSuccess() {
@@ -107,6 +107,9 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 						}
 
 				);
+				break;
+			case R.id.tvXieyi:
+				ForwardUtils.target(getActivity(), Constant.REG_PRO,null);
 				break;
 
 		}

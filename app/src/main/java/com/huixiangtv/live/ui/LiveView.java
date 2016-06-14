@@ -596,8 +596,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 sendLove();
                 break;
             case R.id.liveClose:
-
-                activity.onBackPressed();
+                LiveActivity ac = (LiveActivity)activity;
+                ac.closeLiving();
                 break;
         }
     }
@@ -1053,12 +1053,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 activity.onBackPressed();
             }
         });
-
-
-
-
-
-
 
     }
 

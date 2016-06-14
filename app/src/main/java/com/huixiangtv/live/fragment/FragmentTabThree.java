@@ -21,8 +21,6 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
-import com.huixiangtv.live.utils.StringUtil;
-import com.huixiangtv.live.utils.TokenChecker;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.HashMap;
@@ -42,8 +40,8 @@ public class FragmentTabThree extends RootFragment{
 	TextView haveFans;
 	TextView tvAccount;
 	TextView tvLoves;
-	private RelativeLayout rlSign;
 	RelativeLayout llUserTop;
+
 
 	@Override
 	protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,6 +71,7 @@ public class FragmentTabThree extends RootFragment{
 		mRootView.findViewById(R.id.llLoves).setOnClickListener(this);
 		mRootView.findViewById(R.id.tvUserName).setOnClickListener(this);
 		mRootView.findViewById(R.id.setting).setOnClickListener(this);
+		mRootView.findViewById(R.id.rlFeedBack).setOnClickListener(this);
 		mRootView.findViewById(R.id.llTitle).setOnClickListener(this);
 		mRootView.findViewById(R.id.llMyfans).setOnClickListener(this);
 		mRootView.findViewById(R.id.llfaned).setOnClickListener(this);
@@ -87,6 +86,7 @@ public class FragmentTabThree extends RootFragment{
 		tvAccount = (TextView) mRootView.findViewById(R.id.tvAccount);
 		tvLoves = (TextView) mRootView.findViewById(R.id.tvLoves);
 		llUserTop = (RelativeLayout) mRootView.findViewById(R.id.llUserTop);
+
 
 
 
@@ -132,6 +132,9 @@ public class FragmentTabThree extends RootFragment{
 				{
 					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
 				}
+				break;
+			case R.id.rlFeedBack:
+				ForwardUtils.target(getActivity(), Constant.FEEDBACK,null);
 				break;
 			case R.id.llTitle:
 				if(null!=App.getLoginUser()) {
