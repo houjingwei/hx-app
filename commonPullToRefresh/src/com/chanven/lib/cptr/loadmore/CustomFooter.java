@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chanven.lib.cptr.R;
@@ -40,17 +41,17 @@ public class CustomFooter implements ILoadViewMoreFactory {
 
 
         private ImageView imageView;
-        private TextView tvNoData;
         private AnimationDrawable animationDrawable;
 
         protected OnClickListener onClickRefreshListener;
-
+        View view ;
+        RelativeLayout rlRefresh;
 
         @Override
         public void init(FootViewAdder footViewHolder, OnClickListener onClickRefreshListener) {
-            View view = footViewHolder.addFootView(R.layout.custom_footer);
+            view = footViewHolder.addFootView(R.layout.custom_footer);
+            rlRefresh = (RelativeLayout)view.findViewById(R.id.rlRefresh);
             imageView = (ImageView) view.findViewById(R.id.ptr_classic_header_rotate_view);
-            tvNoData  = (TextView) view.findViewById(R.id.tvNoData);
             imageView.setImageResource(R.drawable.animation);
             animationDrawable = (AnimationDrawable) imageView.getDrawable();
             this.onClickRefreshListener = onClickRefreshListener;
@@ -59,15 +60,17 @@ public class CustomFooter implements ILoadViewMoreFactory {
 
         @Override
         public void showNormal() {
-            tvNoData.setVisibility(View.VISIBLE);
-            imageView.setVisibility(View.GONE);
+            rlRefresh.setVisibility(View.GONE);
         }
 
+        @Override
+        public void showNomore() {
+            //rlRefresh.setVisibility(View.GONE);
+        }
 
         @Override
         public void showLoading() {
-            tvNoData.setVisibility(View.GONE);
-            imageView.setVisibility(View.VISIBLE);
+            rlRefresh.setVisibility(View.VISIBLE);
             animationDrawable.start();
         }
 
@@ -78,10 +81,6 @@ public class CustomFooter implements ILoadViewMoreFactory {
 
 
 
-        @Override
-        public void showNomore() {
-
-        }
 
     }
 

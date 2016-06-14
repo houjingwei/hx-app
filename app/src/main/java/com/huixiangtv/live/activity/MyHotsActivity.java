@@ -1,6 +1,7 @@
 package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -59,6 +60,8 @@ public class MyHotsActivity extends BaseBackActivity {
     TextView tvHot2;
     TextView tvHot3;
 
+    View view;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +79,7 @@ public class MyHotsActivity extends BaseBackActivity {
         ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
         mListView = (ListView) this.findViewById(R.id.test_list_view);
         mListView.setAdapter(adapter);
-        View view = LayoutInflater.from(MyHotsActivity.this).inflate(R.layout.my_hot_header, null, false);
+        view = LayoutInflater.from(MyHotsActivity.this).inflate(R.layout.my_hot_header, null, false);
         mListView.addHeaderView(view);
 
 
@@ -93,13 +96,7 @@ public class MyHotsActivity extends BaseBackActivity {
         tvHot2 = (TextView) view.findViewById(R.id.tvHot2);
         tvHot3 = (TextView) view.findViewById(R.id.tvHot3);
 
-        ptrClassicFrameLayout.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                ptrClassicFrameLayout.autoRefresh(true);
-            }
-        }, 10);
+        loadData();
         ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
 
             @Override
@@ -133,20 +130,25 @@ public class MyHotsActivity extends BaseBackActivity {
                 if (data != null && data.size() > 0) {
                     if (page == 1) {
                         adapter.clear();
+                        Log.i("noData","123");
+
+                        Log.i("noData","2");
                         List<Fans> fansList = setTop3AndFanslist(data);
                         adapter.addList(fansList);
+
                     } else {
                         adapter.addList(data);
+                    }
+                }else{
+                    if (page == 1) {
+                        mListView.removeHeaderView(view);
+                        CommonHelper.noData("暂无人气贡献记录哦",mListView,MyHotsActivity.this);
                     }
                 }
 
                 ptrClassicFrameLayout.loadComplete(true);
 
-                if (adapter.getCount() == 0) {
-                    ptrClassicFrameLayout.setVisibility(View.GONE);
-                    tv_list_empty.setVisibility(View.VISIBLE);
-                    mListView.setVisibility(View.GONE);
-                }
+
             }
 
             @Override

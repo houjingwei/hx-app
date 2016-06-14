@@ -107,8 +107,14 @@ public class MyAttentionActivity extends BaseBackActivity   {
                         adapter.clear();
                     }
                     adapter.addList(data);
+                }else{
+                    if (page == 1) {
+                        CommonHelper.noData("还没有关注任何人哦",mListView,MyAttentionActivity.this);
+                    }
                 }
                 ptrClassicFrameLayout.loadComplete(true);
+
+
 
             }
 

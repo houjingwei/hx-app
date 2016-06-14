@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.LocationTool;
 
@@ -37,10 +38,13 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
     LinearLayout llLocal;
     TextView tvLocal;
     TextView tvStart;
+    TextView tvTt;
+    ImageView ivCamera;
 
 
     LinkedList<RadioButton> buttons;
     Activity activity;
+    LiveActivity ac;
 
 
     //要分享的平台
@@ -74,13 +78,16 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
 
     public void setActivity(Activity ac){
         this.activity = ac;
+        ac = (LiveActivity) activity;
     }
 
     private void initView() {
         llRoot = (LinearLayout) findViewById(R.id.llRoot);
         etTitle = (EditText) findViewById(R.id.etTitle);
         ivClose = (ImageView) findViewById(R.id.ivClose);
+        ivCamera= (ImageView) findViewById(R.id.ivCamera);
         tvTheme = (TextView) findViewById(R.id.tvTheme);
+        tvTt = (TextView) findViewById(R.id.tvTt);
 
         rbPhone = (RadioButton) findViewById(R.id.rbPhone);
         rbwx = (RadioButton) findViewById(R.id.rbWx);
@@ -98,6 +105,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
         llRoot.setOnClickListener(this);
         ivClose.setOnClickListener(this);
         tvTheme.setOnClickListener(this);
+        ivCamera.setOnClickListener(this);
 
         rbPhone.setOnClickListener(this);
         rbwx.setOnClickListener(this);
@@ -107,6 +115,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
         rbQzone.setOnClickListener(this);
         llLocal.setOnClickListener(this);
         tvStart.setOnClickListener(this);
+        tvTt.setOnClickListener(this);
 
     }
 
@@ -120,6 +129,10 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
             case R.id.ivClose:
                 hideKeyBoard();
                 onBackPressed();
+                break;
+            case R.id.ivCamera:
+
+                ac.changeCamera();
                 break;
             case R.id.rbPhone:
                 hideKeyBoard();
@@ -154,6 +167,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
                     local = 1;
                 }
                 break;
+
 
         }
     }

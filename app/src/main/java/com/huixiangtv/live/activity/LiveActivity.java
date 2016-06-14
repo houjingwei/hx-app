@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -40,7 +39,6 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.ijk.widget.media.IjkVideoView;
 import com.huixiangtv.live.model.Live;
-import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -491,11 +489,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     private ColaProgress cp = null;
     private void toLive() {
         final Map<String, String> params = new HashMap<String, String>();
-        if (TextUtils.isEmpty(startLiveView.getEtTitle().getText().toString())) {
-            CommonHelper.showTip(LiveActivity.this, "请输入直播标题");
-            startLiveView.getEtTitle().requestFocus();
-            return;
-        } else if (startLiveView.getTvTheme().getText().toString().equals(R.string.selTheme)) {
+        if (startLiveView.getTvTheme().getText().toString().equals(R.string.selTheme)) {
             CommonHelper.showTip(LiveActivity.this, "请选择一个话题");
             return;
         }
@@ -570,6 +564,9 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         liveView = new LiveView(LiveActivity.this);
         liveView.setActivity(LiveActivity.this);
         liveView.setInfo(data);
+        if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
+            liveView.isSendIntoRoomMsg(true);
+        }
         flCover.addView(liveView);
         liveView.loadLive();
         if(sharePlat==1){
@@ -793,7 +790,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     protected void onPause() {
         Log.i("myTest","onPause");
         super.onPause();
-        stopRecorder();
     }
 
     @Override

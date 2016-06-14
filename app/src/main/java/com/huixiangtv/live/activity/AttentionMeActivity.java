@@ -1,7 +1,6 @@
 package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -96,19 +95,20 @@ public class AttentionMeActivity extends BaseBackActivity   {
         RequestUtils.sendPostRequest(Api.GETOWNFANS, paramsMap, new ResponseCallBack<Fans>() {
             @Override
             public void onSuccessList(List<Fans> data) {
+
                 if (data != null && data.size() > 0) {
                     if(page==1){
                         adapter.clear();
                     }
                     adapter.addList(data);
+                }else{
+                    if (page == 1) {
+                        CommonHelper.noData("还没有粉丝哦",mListView,AttentionMeActivity.this);
+                    }
                 }
+
                 ptrClassicFrameLayout.loadComplete(true);
 
-                if (adapter.getCount() == 0) {
-                    ptrClassicFrameLayout.setVisibility(View.GONE);
-                    tv_list_empty.setVisibility(View.VISIBLE);
-                    mListView.setVisibility(View.GONE);
-                }
             }
 
             @Override

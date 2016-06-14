@@ -67,6 +67,9 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     @ViewInject(R.id.ivPhoto)
     ImageView ivPhoto;
 
+    @ViewInject(R.id.tvNoKeyWord)
+    TextView tvNoKeyWord;
+
     PictureHelper pictureHelper;
 
     String tagStr = "";
@@ -101,9 +104,14 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         }
 
         if(StringUtil.isNotEmpty(userTags)){
+            mFlowLayout.setVisibility(View.GONE);
+            tvNoKeyWord.setVisibility(View.VISIBLE);
             initTags(userTags.split(","));
             adapter.notifyDataChanged();
             userTag();
+        }else{
+            mFlowLayout.setVisibility(View.GONE);
+            tvNoKeyWord.setVisibility(View.VISIBLE);
         }
     }
 
