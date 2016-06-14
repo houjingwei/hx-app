@@ -515,7 +515,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             }
             @Override
             public void onAnimationEnd(Animator animator) {
-
+                sharePlat = startLiveView.platform;
                 if (null != startLiveView) {
                     flCover.removeView(startLiveView);
                 }
