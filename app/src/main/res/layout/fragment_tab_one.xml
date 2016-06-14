@@ -54,7 +54,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="0dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="10dp"
@@ -91,9 +91,9 @@
                     <com.huixiangtv.live.utils.widget.BannerView
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="10dp"
                         android:background="@color/sysBg"
-                        android:paddingBottom="10dp" />
+                        android:paddingBottom="5dp" />
 
                     <!--<com.huixiangtv.live.utils.widget.LoadingView-->
                     <!--android:id="@+id/loadView"-->
@@ -154,7 +154,7 @@
             <LinearLayout
                 android:id="@+id/llInfo"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="200dp"
                 android:layout_gravity="bottom"
 
                 android:background="@color/normal_color"

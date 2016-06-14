@@ -126,7 +126,7 @@ public class PhotoPickerFragment extends Fragment {
     recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     final Button btSwitchDirectory = (Button) rootView.findViewById(R.id.button);
-
+    btSwitchDirectory.getBackground().setAlpha(100);
     final ListPopupWindow listPopupWindow = new ListPopupWindow(getActivity());
     listPopupWindow.setWidth(ListPopupWindow.MATCH_PARENT);
     listPopupWindow.setAnchorView(btSwitchDirectory);

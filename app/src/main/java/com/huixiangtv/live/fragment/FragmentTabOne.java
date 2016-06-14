@@ -116,6 +116,9 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         tvWeight = (TextView) view.findViewById(R.id.tvWeight);
         tvAddress = (TextView) view.findViewById(R.id.tvAddress);
         bannerView = (BannerView) view.findViewById(R.id.banner);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,(int) (App.screenWidth * 0.28));
+        bannerView.setLayoutParams(layoutParams);
         tvbName1 = (TextView) view.findViewById(R.id.tvbName1);
         tvContent1 = (TextView) view.findViewById(R.id.tvContent1);
         tvbName2 = (TextView) view.findViewById(R.id.tvbName2);

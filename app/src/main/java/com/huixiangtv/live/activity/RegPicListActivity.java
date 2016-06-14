@@ -69,6 +69,7 @@ import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.DropImageView;
 import com.huixiangtv.live.utils.widget.MySeekBar;
 import com.tencent.upload.task.data.FileInfo;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import android.widget.FrameLayout.LayoutParams;
 
@@ -206,6 +207,8 @@ public class RegPicListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_list);
         x.view().inject(this);
+
+
         startOnMertoItemViewListener();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         imageView1.setTag(0);
@@ -214,6 +217,15 @@ public class RegPicListActivity extends Activity {
         imageView4.setTag(3);
         imageView5.setTag(4);
         user = new User();
+        String uid =  getIntent().getStringExtra("uid");
+        if(null == uid)
+        {
+            user.setUid(App.getPreferencesValue("uid"));
+        }
+        else
+        {
+            user.setUid(uid);
+        }
         mertoItemViews = new ArrayList<DropImageView>();
         mertoItemViews.add((DropImageView) imageView1);
         mertoItemViews.add((DropImageView) imageView2);
@@ -902,7 +914,6 @@ public class RegPicListActivity extends Activity {
 
         final AlertDialog dlg = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT).create();
         dlg.show();
-        dlg.setCancelable(false);
         Window window = dlg.getWindow();
         window.setContentView(R.layout.open_share);
         WindowManager.LayoutParams lp = window.getAttributes();
@@ -912,6 +923,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlqq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //CommonHelper.share(this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧", SHARE_MEDIA.SMS,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
                 Toast.makeText(context, "Share to qq", Toast.LENGTH_LONG).show();
                 dlg.dismiss();
             }
@@ -1084,53 +1096,55 @@ public class RegPicListActivity extends Activity {
 
     private void ArtistCardInfoStatus() {
 
-        RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD_STATUS, null, new ResponseCallBack<User>() {
-            @Override
-            public void onSuccess(User data) {
-                if (data != null) {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("uid", user.getUid());
+        paramsMap.put("token",App.getLoginUser().getToken());
 
-                    if (data.getStatus().equals("1")) //status
-                    {
-                        cp = ColaProgress.show(RegPicListActivity.this, "正在加载数据...", true, false, null);
-                        //get Info
-                        ArtistCardInfo();
-                    } else {
+                    RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD_STATUS, paramsMap, new ResponseCallBack<User>() {
+                        @Override
+                        public void onSuccess(User data) {
+                            if (data != null) {
 
-                        mertoBeans.clear();
-                       CommonUtil.setGuidImage(RegPicListActivity.this, R.id.r1, R.drawable.click_pic, "first1", new ApiCallback() {
+                                if (data.getStatus().equals("1")) //status
+                                {
+                                    cp = ColaProgress.show(RegPicListActivity.this, "正在加载数据...", true, false, null);
+                                    //get Info
+                                    ArtistCardInfo();
+                                } else {
 
-                           @Override
-                           public void onSuccess(Object data) {
-                               if(data.equals("no"))
-                               {
-                                   for (int i = 0; i < 5; i++)
-                                       addData("0");
-                               }
-                               else {
-                                   CommonUtil.setGuidImage(RegPicListActivity.this, R.id.r1, R.drawable.drop_pic, "first2", new ApiCallback() {
+                                    mertoBeans.clear();
+                                    CommonUtil.setGuidImage(RegPicListActivity.this, R.id.r1, R.drawable.click_pic, "first1", new ApiCallback() {
 
-                                       @Override
-                                       public void onSuccess(Object data) {
-                                           for (int i = 0; i < 5; i++)
-                                               addData("0");
+                                        @Override
+                                        public void onSuccess(Object data) {
+                                            if (data.equals("no")) {
+                                                for (int i = 0; i < 5; i++)
+                                                    addData("0");
+                                            } else {
+                                                CommonUtil.setGuidImage(RegPicListActivity.this, R.id.r1, R.drawable.drop_pic, "first2", new ApiCallback() {
 
-                                       }
-                                   });
-                               }
-                           }
-                       });
+                                                    @Override
+                                                    public void onSuccess(Object data) {
+                                                        for (int i = 0; i < 5; i++)
+                                                            addData("0");
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
 
 
-                    }
-                }
-            }
+                                }
+                            }
+                        }
 
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
+                        @Override
+                        public void onFailure(ServiceException e) {
+                            super.onFailure(e);
 
-            }
-        }, User.class);
+                        }
+                    }, User.class);
     }
 
     ColaProgress cp;
@@ -1235,7 +1249,11 @@ public class RegPicListActivity extends Activity {
 
     //get artist card info
     private void ArtistCardInfo() {
-        RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD, null, new ResponseCallBack<User>() {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("uid", user.getUid());
+        paramsMap.put("token",App.getLoginUser().getToken());
+
+        RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD, paramsMap, new ResponseCallBack<User>() {
             @Override
             public void onSuccess(User data) {
                 if (data != null) {

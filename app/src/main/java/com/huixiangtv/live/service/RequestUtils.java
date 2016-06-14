@@ -63,10 +63,9 @@ public class RequestUtils {
 
         RequestParams reParams = new RequestParams(url);
         reParams.setCharset("utf-8");
-        if(null!= App.getLoginUser()){
+        if(null!= App.getLoginUser() && (paramsMap==null || !paramsMap.containsKey("uid"))){
             reParams.addBodyParameter("uid", App.getLoginUser().getUid()+"");
             reParams.addBodyParameter("token",App.getLoginUser().getToken()+"");
-
         }
 
         //解析封装参数
