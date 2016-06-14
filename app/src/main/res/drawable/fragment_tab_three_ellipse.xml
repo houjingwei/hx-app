@@ -10,7 +10,7 @@
         android:topRightRadius="13dp"/>
     <stroke
         android:width="0.01dp"
-        android:color="@color/white" />
+        android:color="@color/transparent" />
 
     <padding
         android:bottom="4dp"
