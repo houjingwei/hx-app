@@ -29,6 +29,7 @@ public class CropImageUI extends Activity {
     {
         BitmapDrawable bd = new BitmapDrawable(BitmapHelper.copressImage(filePath));
 
+
         setContentView(R.layout.fragment_cropimage);
         final CropImageView mCropImage=(CropImageView)findViewById(R.id.cropImg);
         mCropImage.setDrawable(bd,300,300);

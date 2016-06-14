@@ -227,7 +227,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 isSwitch = true;
                 break;
             case R.id.tab3:
-                setTabSelection(1);
+                if(null!=App.getLoginUser()) {
+                    setTabSelection(1);
+
+                }
+                else
+                {
+                    ForwardUtils.target(MainActivity.this, Constant.LOGIN,null);
+                }
+
                 isSwitch = true;
                 break;
             default:

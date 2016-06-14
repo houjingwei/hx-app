@@ -31,6 +31,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.ClipboardManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -233,6 +234,8 @@ public class RegPicListActivity extends Activity {
         txtUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startOnMertoItemViewListener();
+                txtSave.setVisibility(View.VISIBLE);
                 checkPermission(RequestCode.Button);
             }
         });
@@ -443,7 +446,7 @@ public class RegPicListActivity extends Activity {
             dropImageModel.setIconId(user.getDrawableImg5() != null ? user.getDrawableImg5() : getResources().getDrawable(R.drawable.pic5));
             //have' a tag
             if (status.equals("1")) {
-
+                txtSave.setVisibility(View.GONE);
                 dropImageModel.setIsFinish(5);
                 dropImageModel.setLocUrl(user.getImgLoc5());
 
@@ -451,10 +454,6 @@ public class RegPicListActivity extends Activity {
 
                 if (cp.isShowing())
                     cp.dismiss();
-
-
-                txtUpload.setVisibility(View.GONE);
-
 
                 resetOnMertoItemViewListener();
 
@@ -954,6 +953,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlcopy).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                copy("szj",context);
                 Toast.makeText(context, "Share to copy", Toast.LENGTH_LONG).show();
                 dlg.dismiss();
             }
@@ -961,6 +961,12 @@ public class RegPicListActivity extends Activity {
 
     }
 
+
+    public static void copy(String content, Context context)
+    {
+        ClipboardManager cmb = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+        cmb.setText(content.trim());
+    }
     /**
      * sj info
      *
@@ -1321,7 +1327,7 @@ public class RegPicListActivity extends Activity {
         txtName.setText(user.getNickName() == null ? "" : user.getNickName());
         txtWeight.setText(user.getWeight() == null ? "" : user.getWeight() + "kg");
         txtHeight.setText(user.getHeight() == null ? "" : user.getHeight() + "CM");
-        txtSj.setText(user.getHots()==null?"0 :身价":user.getHots()+" :身价");
+        txtSj.setText(user.getHots() ==null?"0 :身价":user.getHots()+" :身价");
         tvLid.setText(user.getUid()==null?"回响号: 0":"回响号: "+user.getUid());
         tvShareId.setText(user.getLoves()==null?"0 :分享":user.getLoves()+" :分享");
         String yw = user.getHip()+"-"+user.getWaist()+"-"+user.getBust();

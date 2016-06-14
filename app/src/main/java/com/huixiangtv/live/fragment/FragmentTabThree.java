@@ -100,47 +100,31 @@ public class FragmentTabThree extends RootFragment{
 	protected void onNoDoubleClick(View view) {
 		switch (view.getId()){
 			case R.id.ivPhoto:
-				if(null!=App.getLoginUser()){
-					ForwardUtils.target(getActivity(),Constant.USERINFO,null);
-				}else{
-					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
-				}
+				ForwardUtils.target(getActivity(),Constant.USERINFO,null);
 				break;
 			case R.id.llAccount:
-				if(TokenChecker.checkToken(getActivity()))
 				ForwardUtils.target(getActivity(), Constant.ACCOUNT,null);
 				break;
 			case R.id.llLoves:
-				if(TokenChecker.checkToken(getActivity()))
 					ForwardUtils.target(getActivity(), Constant.MY_LOVES,null);
 				break;
 			case R.id.tvUserName:
-				if(null!=App.getLoginUser()){
 					ForwardUtils.target(getActivity(),Constant.USERINFO,null);
-				}else{
-					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
-				}
 				break;
 			case R.id.setting:
-				if(TokenChecker.checkToken(getActivity()))
 				ForwardUtils.target(getActivity(), Constant.SETINT,null);
 				break;
 			case R.id.llTitle:
-				if(TokenChecker.checkToken(getActivity()))
-				   ForwardUtils.target(getActivity(), Constant.PIC_LIST,null);
-
+				ForwardUtils.target(getActivity(), Constant.PIC_LIST,null);
 				getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 				break;
 			case R.id.llMyfans:
-				if(TokenChecker.checkToken(getActivity()))
 					ForwardUtils.target(getActivity(), Constant.MY_FANS,null);
 				break;
 			case R.id.llfaned:
-				if(TokenChecker.checkToken(getActivity()))
 					ForwardUtils.target(getActivity(), Constant.FANED_ME,null);
 				break;
 			case R.id.llHot:
-				if(TokenChecker.checkToken(getActivity()))
 					ForwardUtils.target(getActivity(), Constant.MY_HOTS,null);
 				break;
 

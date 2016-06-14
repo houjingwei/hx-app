@@ -47,6 +47,7 @@
                     android:layout_height="wrap_content" android:orientation="vertical">
                 <ImageView
                     android:id="@+id/iv_s1"
+                    android:layout_marginLeft="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/qq_s"
@@ -67,11 +68,12 @@
                 android:id="@+id/rlzone"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginLeft="66dp"
+                android:layout_marginLeft="26dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/iv_s2"
+                    android:layout_marginLeft="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/zon_s"
@@ -90,8 +92,8 @@
             <RelativeLayout
                 android:id="@+id/rlwx"
                 android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_marginLeft="66dp"
+                android:layout_gravity="center|center_horizontal"
+                android:layout_marginLeft="26dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
@@ -115,11 +117,12 @@
                 android:id="@+id/rlpyq"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginLeft="66dp"
+                android:layout_marginLeft="26dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/iv_s4"
+                    android:layout_marginLeft="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/qq_f_s"
@@ -139,7 +142,7 @@
                 android:id="@+id/rlwb"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginLeft="66dp"
+                android:layout_marginLeft="26dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
@@ -160,14 +163,15 @@
 
             <RelativeLayout
                android:id="@+id/rlcopy"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_marginLeft="66dp"
+                android:gravity="center|center_horizontal"
+                android:layout_gravity="center|center_horizontal"
+                android:layout_marginLeft="26dp"
                 android:layout_marginRight="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/iv_s6"
+                    android:layout_marginLeft="17dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/href_s"

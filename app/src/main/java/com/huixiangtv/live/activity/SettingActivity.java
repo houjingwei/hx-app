@@ -72,7 +72,6 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
     RelativeLayout rlSinaBind;
 
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
@@ -99,21 +98,21 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
         weixinbind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login_Platform(SHARE_MEDIA.SINA,weixinbind);
+                login_Platform(SHARE_MEDIA.SINA, weixinbind);
             }
         });
 
         qqbind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login_Platform(SHARE_MEDIA.SINA,qqbind);
+                login_Platform(SHARE_MEDIA.SINA, qqbind);
             }
         });
 
         weibobind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login_Platform(SHARE_MEDIA.SINA,weibobind);
+                login_Platform(SHARE_MEDIA.SINA, weibobind);
             }
         });
 
@@ -127,24 +126,25 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
             case R.id.tvLoginOut:
                 App.clearLoginUser();
                 onBackPressed();
+                ForwardUtils.target(SettingActivity.this, Constant.LOGIN, null);
                 break;
             case R.id.helpcentre:
                 ForwardUtils.target(this, Constant.HELP, null);
                 break;
             case R.id.rlPhoenBind:
-                Map<String,String> params = new HashMap<String,String>();
-                ForwardUtils.target(SettingActivity.this,Constant.PHONE_BIND,params);
+                Map<String, String> params = new HashMap<String, String>();
+                ForwardUtils.target(SettingActivity.this, Constant.PHONE_BIND, params);
                 break;
             case R.id.rlUpdatePwd:
                 break;
             case R.id.rlQqBind:
-                login_Platform(SHARE_MEDIA.QQ,qqbind);
+                login_Platform(SHARE_MEDIA.QQ, qqbind);
                 break;
             case R.id.rlWxBind:
-                login_Platform(SHARE_MEDIA.WEIXIN,weixinbind);
+                login_Platform(SHARE_MEDIA.WEIXIN, weixinbind);
                 break;
             case R.id.rlSinaBind:
-                login_Platform(SHARE_MEDIA.SINA,weibobind);
+                login_Platform(SHARE_MEDIA.SINA, weibobind);
                 break;
         }
     }
@@ -182,26 +182,26 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
     }
 
 
-    private void Auth_Account_Bind(final SHARE_MEDIA platform, String assessToken,final String actionType,String openid) {
+    private void Auth_Account_Bind(final SHARE_MEDIA platform, String assessToken, final String actionType, String openid) {
 
         String flag = "";
-        if(platform==SHARE_MEDIA.QQ){
-            flag="2";
-        }else if(platform==SHARE_MEDIA.WEIXIN){
-            flag="3";
-        }else if(platform==SHARE_MEDIA.SINA){
-            flag="4";
+        if (platform == SHARE_MEDIA.QQ) {
+            flag = "2";
+        } else if (platform == SHARE_MEDIA.WEIXIN) {
+            flag = "3";
+        } else if (platform == SHARE_MEDIA.SINA) {
+            flag = "4";
         }
         cp = ColaProgress.show(SettingActivity.this, "正在加载...", false, true, null);
         cp.setCancelable(false);
         Map<String, String> params = new HashMap<String, String>();
         params.put("platform", flag);
 
-        if(flag.equals("3"))
-        params.put("openid", openid);
+        if (flag.equals("3"))
+            params.put("openid", openid);
 
         params.put("code", assessToken);
-        params.put("actionType",actionType);
+        params.put("actionType", actionType);
 
 
         RequestUtils.sendPostRequest(Api.AUTH_ACCOUNTBIND, params, new ResponseCallBack<String>() {
@@ -210,8 +210,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
                 super.onSuccess(data);
                 if (data != null) {
 
-                    if(actionType .equals("1"))
-                    {
+                    if (actionType.equals("1")) {
                         App.mShareAPI.deleteOauth(SettingActivity.this, platform, delumAuthListener);
                         if (platform == SHARE_MEDIA.QQ) {
                             qqbind.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_bind));
@@ -226,8 +225,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
                             weibobind.setTextAppearance(SettingActivity.this, R.style.white_normal_style);
                             weibobind.setText("绑定");
                         }
-                    }
-                    else {
+                    } else {
 
                         if (platform == SHARE_MEDIA.QQ) {
                             qqbind.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_qqbind));
@@ -266,14 +264,12 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
      *
      * @param platform
      */
-    private void login_Platform(SHARE_MEDIA platform,TextView view) {
+    private void login_Platform(SHARE_MEDIA platform, TextView view) {
 
-        if(view.getText().equals("绑定")) {
+        if (view.getText().equals("绑定")) {
             App.mShareAPI.doOauthVerify(this, platform, umAuthListener);
 
-        }
-        else
-        {
+        } else {
             App.mShareAPI.doOauthVerify(this, platform, delumAuthListener);
 
         }
@@ -294,7 +290,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
                 String openid = data.get("openid");
                 String uid = data.get("uid");
                 //授权成功，下一步 绑定账号
-                Auth_Account_Bind(platform, access_token,"1",openid);
+                Auth_Account_Bind(platform, access_token, "1", openid);
             }
         }
 
@@ -319,7 +315,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
                 String openid = data.get("openid");
                 String uid = data.get("uid");
                 //授权成功，下一步 绑定账号
-                Auth_Account_Bind(platform, access_token,"0",openid);
+                Auth_Account_Bind(platform, access_token, "0", openid);
             }
         }
 
@@ -337,32 +333,34 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
 
     /**
      * 设置绑定图标
+     *
      * @param type
      * @param status
      */
     private void setBindandUnbandGB(String type, String status) {
         switch (type) {
             case "qq":
-                setTVBg(qqbind, status,rlQqBind);
+                setTVBg(qqbind, status, rlQqBind);
                 break;
             case "wb":
-                setTVBg(weibobind, status,rlSinaBind);
+                setTVBg(weibobind, status, rlSinaBind);
                 break;
             case "wx":
-                setTVBg(weixinbind, status,rlWxBind);
+                setTVBg(weixinbind, status, rlWxBind);
                 break;
         }
     }
 
 
     private void setTVBg(TextView view, String tag, RelativeLayout rootView) {
-        if (tag .equals ("1")) {
+        if (tag.equals("1")) {
 //            rootView.setClickable(false);
 //            view.setClickable(false);
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_qqbind));
             view.setTextAppearance(SettingActivity.this, R.style.black_normal_style);
             view.setText("解除绑定");
-        }  if (tag .equals("0")) {
+        }
+        if (tag.equals("0")) {
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_bind));
             view.setTextAppearance(SettingActivity.this, R.style.white_normal_style);
             view.setText("绑定");

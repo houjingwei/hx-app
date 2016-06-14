@@ -120,7 +120,8 @@
 
                             <TextView
                                 android:id="@+id/txtName"
-                                android:layout_width="wrap_content"
+                                android:layout_width="90dp"
+                                android:singleLine="true"
                                 android:layout_height="wrap_content"
                                 android:text="刘德华"
                                 android:textColor="@color/white"
