@@ -7,7 +7,6 @@
         android:id="@+id/giftItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -27,7 +26,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="洋酒"
-            style="@style/black_small_style" />
+            style="@style/white_small_style" />
 
         <TextView
             android:id="@+id/tvMangoCoin"

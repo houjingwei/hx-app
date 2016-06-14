@@ -10,8 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.activity.Fans;
-import com.huixiangtv.live.model.LiveMsg;
+import com.huixiangtv.live.model.Fans;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.ArrayList;

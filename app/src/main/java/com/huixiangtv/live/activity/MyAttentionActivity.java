@@ -10,6 +10,7 @@ import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.MyFansAdapter;
+import com.huixiangtv.live.model.Fans;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -59,20 +60,14 @@ public class MyAttentionActivity extends BaseBackActivity   {
         ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
         mListView = (ListView) this.findViewById(R.id.test_list_view);
         mListView.setAdapter(adapter);
-        ptrClassicFrameLayout.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                ptrClassicFrameLayout.autoRefresh(true);
-            }
-        }, 10);
+        loadFanedMe();
         ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
 
                 page = 1;
-                loadFanedMe(true);
+                loadFanedMe();
 
 
             }
@@ -84,7 +79,7 @@ public class MyAttentionActivity extends BaseBackActivity   {
             public void loadMore() {
 
                 page++;
-                loadFanedMe(false);
+                loadFanedMe();
 
 
 
@@ -97,7 +92,7 @@ public class MyAttentionActivity extends BaseBackActivity   {
 
     }
 
-    private void loadFanedMe(final boolean bool){
+    private void loadFanedMe(){
 
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", page + "");

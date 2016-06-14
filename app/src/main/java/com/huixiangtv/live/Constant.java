@@ -25,7 +25,10 @@ public class Constant {
     public static final String REG_LIVE_NEXT = BASE_PRE+"next";
     public static final String REG_LIVE_MAIN = BASE_PRE+"main";
     public static final String REG_LIVE_DES = BASE_PRE+"details";
-    public static final String HELP = BASE_PRE +"help";
+
+    public static final String HELP = "http://www.baidu.com";
+    public static final String GYWM = "http://www.souhu.com";
+
     public static final String FANS = BASE_PRE+"fans";
 
 
@@ -37,6 +40,7 @@ public class Constant {
 
     public static final String POPULARITY = BASE_PRE+"popularity";
     public static final String MY_HOTS = BASE_PRE+"hots";
+
 
     public static String MY_LOVES = BASE_PRE+"my_loves";
 

@@ -289,9 +289,9 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
 
 	public void getCode() {
-		if(TextUtils.isEmpty(etCode.getText().toString())){
+		if(TextUtils.isEmpty(etPhone.getText().toString())){
 			CommonHelper.showTip(getActivity(),"请输入手机号码");
-			etCode.requestFocus();
+			etPhone.requestFocus();
 			return;
 		}
 		KeyBoardUtils.closeKeybord(etPhone,getActivity());

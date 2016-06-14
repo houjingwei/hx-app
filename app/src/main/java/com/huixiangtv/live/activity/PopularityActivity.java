@@ -11,6 +11,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.MyFansAdapter;
+import com.huixiangtv.live.model.Fans;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;

@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/title"
-            style="@style/white_bigger_style"
+            style="@style/common_title_style"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"

@@ -68,8 +68,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivPhoto2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_marginBottom="5dp"
                 android:src="@drawable/default_head"
                 app:civ_border_color="@color/white"
@@ -110,8 +110,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivPhoto1"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_marginBottom="5dp"
                 android:src="@drawable/default_head"
                 app:civ_border_color="@color/white"
@@ -153,8 +153,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivPhoto3"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_marginBottom="5dp"
                 android:src="@drawable/default_head"
                 app:civ_border_color="@color/white"

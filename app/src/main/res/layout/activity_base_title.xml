@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:layout_centerInParent="true"
-        style="@style/white_bigger_style"
+        style="@style/common_title_style"
         android:text="标题"/>
 
     <TextView

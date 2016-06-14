@@ -239,6 +239,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rlUs"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/listview"
@@ -264,7 +265,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/helpcentre"
+        android:id="@+id/rlHelp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="5dp"
@@ -297,6 +298,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:id="@+id/tvLoginOut"
+            android:visibility="gone"
             style="@style/white_bigger_style"
             android:layout_width="match_parent"
             android:layout_height="45dp"

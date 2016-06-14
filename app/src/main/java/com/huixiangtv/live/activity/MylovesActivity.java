@@ -70,13 +70,7 @@ public class MylovesActivity extends BaseBackActivity {
             tvMyLoves.setText("0个");
         }
 
-        ptrClassicFrameLayout.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                ptrClassicFrameLayout.autoRefresh(true);
-            }
-        }, 10);
+        loadData();
         ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
 
             @Override

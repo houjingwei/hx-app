@@ -22,10 +22,12 @@ import com.huixiangtv.live.fragment.FragmentTabOne;
 import com.huixiangtv.live.fragment.FragmentTabThree;
 import com.huixiangtv.live.fragment.FragmentTabTwo;
 import com.huixiangtv.live.model.UpgradeLevel;
+import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.UpdateApp;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.TokenChecker;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -219,11 +221,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 onDBClick();
                 break;
             case R.id.tab2:
-                startLive();
+                if(null!=App.getLoginUser()){
+                    startLive();
+                }else{
+                    CommonHelper.showLoginPopWindow(MainActivity.this, R.id.main, new LoginCallBack() {
+                        @Override
+                        public void loginSuccess() {
+                            startLive();
+                        }
+                    });
+                }
+
                 isSwitch = true;
                 break;
             case R.id.iv2:
-                startLive();
+                if(null!=App.getLoginUser()){
+                    startLive();
+                }else{
+                    CommonHelper.showLoginPopWindow(MainActivity.this, R.id.main, new LoginCallBack() {
+                        @Override
+                        public void loginSuccess() {
+                            startLive();
+                        }
+                    });
+                }
                 isSwitch = true;
                 break;
             case R.id.tab3:
@@ -287,14 +308,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 开启直播
      */
     private void startLive() {
-        if(TokenChecker.checkToken(MainActivity.this)) {
-            long currentTime = Calendar.getInstance().getTimeInMillis();
-            if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-                lastClickTime = currentTime;
-                Map<String, String> params = new HashMap<>();
-                params.put("isRecord", "true");
-                ForwardUtils.target(MainActivity.this, Constant.START_LIVE, params);
-            }
+
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+            lastClickTime = currentTime;
+            Map<String, String> params = new HashMap<>();
+            params.put("isRecord","true");
+            ForwardUtils.target(MainActivity.this, Constant.START_LIVE, params);
         }
 
     }

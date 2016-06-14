@@ -21,7 +21,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="100dp"
                 android:gravity="center">
 
 
@@ -29,8 +29,8 @@
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/ivPhoto"
                     android:clickable="true"
-                    android:layout_width="66dp"
-                    android:layout_height="66dp"
+                    android:layout_width="76dp"
+                    android:layout_height="76dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerInParent="true"
                     android:src="@drawable/default_head"
@@ -55,6 +55,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:id="@+id/llTitle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
 
@@ -96,7 +98,7 @@
                     <LinearLayout
                         android:id="@+id/llMyfans"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:clickable="true"
                         android:gravity="center"
@@ -130,7 +132,7 @@
                     <LinearLayout
                         android:id="@+id/llfaned"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -158,7 +160,7 @@
                     <LinearLayout
                         android:id="@+id/llHot"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -313,8 +315,8 @@
 
             <ImageView
                 android:id="@+id/setimg"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
                 android:layout_centerVertical="true"
                 android:src="@mipmap/icon_set" />
 
@@ -349,8 +351,8 @@
 
             <ImageView
                 android:id="@+id/responseimg"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
                 android:layout_centerVertical="true"
                 android:src="@mipmap/icon_response" />
 

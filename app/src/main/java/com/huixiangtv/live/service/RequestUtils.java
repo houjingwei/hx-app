@@ -84,7 +84,7 @@ public class RequestUtils {
                 BaseResponse response = JSON.parseObject(result,BaseResponse.class);
                 if(null!=response){
                     if(response.getCode()!=0){
-                        callBack.onFailure(new ServiceException(response.getMsg()+",错误码:"+response.getCode()));
+                        callBack.onFailure(new ServiceException(response.getMsg()));
                     }else{
                         String jsonStr = String.valueOf(response.getData());
                         String firstChar = jsonStr.substring(0,1);
@@ -99,7 +99,7 @@ public class RequestUtils {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                callBack.onFailure(new ServiceException("服务器异常："+ex.getMessage()));
+                callBack.onFailure(new ServiceException("服务器异常"));
             }
 
             @Override

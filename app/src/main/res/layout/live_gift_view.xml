@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@color/white"
+    android:background="@color/black80"
     android:layout_height="match_parent">
 
 
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_alignParentBottom="true"
             >
 
@@ -41,7 +41,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/white"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:layout_alignParentBottom="true">
@@ -51,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="金币"
-            style="@style/black_normal_style"/>
+            style="@style/white_normal_style"/>
         <TextView
             android:id="@+id/tvCoin"
             android:layout_toRightOf="@+id/tvPayLavel"
@@ -59,11 +58,11 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1280"
+            android:text="0"
             style="@style/red_normal_style"/>
 
         <TextView
-            android:id="@+id/artist"
+            android:id="@+id/tvPay"
             style="@style/white_small_style"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
