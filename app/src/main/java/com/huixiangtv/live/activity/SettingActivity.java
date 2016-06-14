@@ -102,14 +102,14 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
         weixinbind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login_Platform(SHARE_MEDIA.SINA, weixinbind);
+                login_Platform(SHARE_MEDIA.WEIXIN, weixinbind);
             }
         });
 
         qqbind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login_Platform(SHARE_MEDIA.SINA, qqbind);
+                login_Platform(SHARE_MEDIA.QQ, qqbind);
             }
         });
 

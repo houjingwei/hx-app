@@ -378,7 +378,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", currentViewPage + "");
         paramsMap.put("pageSize", PAGE_SIZE + "");
-        paramsMap.put("cNo", "");
+        paramsMap.put("cNo", "TJ");
 
         RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<Live>() {
             @Override

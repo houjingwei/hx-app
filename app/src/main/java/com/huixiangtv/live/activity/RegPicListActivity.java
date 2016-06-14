@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler.Callback;
@@ -197,18 +198,22 @@ public class RegPicListActivity extends Activity {
     @ViewInject(R.id.txtUpload)
     TextView txtUpload;
 
+    @ViewInject(R.id.back)
+    ImageView back;
 
     private ArrayList<DropImageModel> mertoBeans = new ArrayList<DropImageModel>();
     private ArrayList<DropImageModel> startBeans;// 保存itme变换前的内容
     private static ArrayList<DropImageView> mertoItemViews;
-
+    MainActivity activity ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int flag=WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        Window window=RegPicListActivity.this.getWindow();
+        window.setFlags(flag, flag);
         setContentView(R.layout.activity_pic_list);
         x.view().inject(this);
-
-
         startOnMertoItemViewListener();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         imageView1.setTag(0);
@@ -260,7 +265,7 @@ public class RegPicListActivity extends Activity {
         ll_per_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  showRegAlert(RegPicListActivity.this);
+                showRegAlert(RegPicListActivity.this);
             }
         });
 
@@ -271,6 +276,12 @@ public class RegPicListActivity extends Activity {
             }
         });
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         txtSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -818,8 +829,10 @@ public class RegPicListActivity extends Activity {
                         mertoItemViews.get(currentTag).setLocUrl(photos.get(0));
                     } else if (photos.size() > 1) {
                         for (int size = 0; size < photos.size(); size++) {
-                            bm = BitmapHelper.zoomImg(BitmapHelper.copressImage(photos.get(size)), mertoItemViews.get(size).getWidth(), mertoItemViews.get(size).getHeight());
+                            //bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(photos.get(size))), mertoItemViews.get(size).getWidth(), mertoItemViews.get(size).getHeight());
 //                            bm = BitmapHelper.copressImage(photos.get(size));
+
+                            bm = BitmapHelper.readBitMap(new File(photos.get(size)));
                             bd = new BitmapDrawable(bm);
                             mertoItemViews.get(size).setIcon(bd);
                             mertoBeans.get(size).setIconId(bd);
@@ -917,7 +930,8 @@ public class RegPicListActivity extends Activity {
         Window window = dlg.getWindow();
         window.setContentView(R.layout.open_share);
         WindowManager.LayoutParams lp = window.getAttributes();
-        lp.alpha = 1.9f;
+        lp.width = App.screenHeight;
+        lp.alpha = 2.9f;
         window.setAttributes(lp);
 
         window.findViewById(R.id.rlqq).setOnClickListener(new View.OnClickListener() {
@@ -1341,7 +1355,7 @@ public class RegPicListActivity extends Activity {
     }
 
     private  void bindLeftInfo(User user) {
-        txtFansi.setText(user.getFans() == null ? "" : user.getFans() + " :粉丝");
+        txtFansi.setText(user.getFans() == null ? "0 :粉丝" : user.getFans() + " :粉丝");
         txtName.setText(user.getNickName() == null ? "" : user.getNickName());
         txtWeight.setText(user.getWeight() == null ? "" : user.getWeight() + "kg");
         txtHeight.setText(user.getHeight() == null ? "" : user.getHeight() + "CM");

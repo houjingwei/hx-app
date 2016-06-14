@@ -301,7 +301,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 		KeyBoardUtils.closeKeybord(etPhone,getActivity());
 		tvGetCode.setEnabled(false);
 		cp = ColaProgress.show(getActivity(), "正在获取", false, true, null);
-		CommonUtil.getMsgCode(etCode.getText().toString(),new CodeCallBack(){
+		CommonUtil.getMsgCode(etPhone.getText().toString(),new CodeCallBack(){
 					@Override
 					public void sendSuccess() {
 						if(null!=cp){
