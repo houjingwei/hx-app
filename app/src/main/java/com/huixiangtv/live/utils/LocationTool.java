@@ -36,13 +36,7 @@ public class LocationTool {
     public LocationTool(Context c) {
         super();
         context =c;
-        mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mLocation = mLocationManager.getLastKnownLocation(getProvider());
 
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, new MyLocationListener(this));
     }
 
     // 获取Location Provider
@@ -114,6 +108,7 @@ public class LocationTool {
     }
 
     public String[] jwd(){
+        initLocal();
         String[] jwd = new String[3];
         Location location = getLocation();
         closeLocation();
@@ -131,6 +126,16 @@ public class LocationTool {
 
         }
         return jwd;
+    }
+
+    private void initLocal() {
+        mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mLocation = mLocationManager.getLastKnownLocation(getProvider());
+
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, new MyLocationListener(this));
     }
 
     private List<Address> getAddressbyGeoPoint(Location location) {

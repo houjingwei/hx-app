@@ -355,6 +355,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         App.imClient.joinChatRoom(live.getChatroom(), -1, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
+                CommonHelper.showTip(activity,"成功进入聊天室");
                 if(isSendIntoRoomMsg){
                     sendIntoRoomMsg();
                 }

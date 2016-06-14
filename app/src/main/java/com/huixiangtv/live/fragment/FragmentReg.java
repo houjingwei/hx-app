@@ -65,6 +65,7 @@ public class FragmentReg extends Fragment implements View.OnClickListener {
 		tvGetCode.setOnClickListener(this);
 
 		tvXieyi = (TextView) mRootView.findViewById(R.id.tvXieyi);
+		tvXieyi.setOnClickListener(this);
 
 	}
 
