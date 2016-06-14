@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import java.util.List;
 import java.util.Locale;
@@ -108,23 +109,28 @@ public class LocationTool {
     }
 
     public String[] jwd(){
-        initLocal();
-        String[] jwd = new String[3];
-        Location location = getLocation();
-        closeLocation();
-        if(null!=location){
-            jwd[0] = location.getLongitude()+"";
-            jwd[1] = location.getLatitude()+"";
+        mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            List<Address> addrList=getAddressbyGeoPoint(location);
+        }
+        mLocation = mLocationManager.getLastKnownLocation(getProvider());
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, new MyLocationListener(this));
+        String[] jwd = new String[3];
+        closeLocation();
+        if(null!=mLocation){
+            jwd[0] = mLocation.getLongitude()+"";
+            jwd[1] = mLocation.getLatitude()+"";
+
+            List<Address> addrList=getAddressbyGeoPoint(mLocation);
             if(null!=addrList){
                 Address address = addrList.get(0);
-                jwd[2] = address.getAddressLine(0);
+                jwd[2] = address.getAdminArea()+address.getLocality()+address.getSubLocality();
             }else{
                 jwd[2] = " ";
             }
 
         }
+        Log.i("addressss",jwd[0]+"***"+jwd[1]+"***"+jwd[2]);
         return jwd;
     }
 

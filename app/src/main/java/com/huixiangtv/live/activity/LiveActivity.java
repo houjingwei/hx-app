@@ -99,6 +99,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
     private Live live;
     private int sharePlat = 0;
+    private int isLocal = 0;
     private String pushUrl;
     private String isRecord = "false";
 
@@ -502,10 +503,16 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         }
         params.put("title", startLiveView.getEtTitle().getText().toString());
         params.put("topic", startLiveView.getTvTheme().getText().toString());
-        String[] jwd = startLiveView.getJwd();
-        params.put("lon", jwd[0]);
-        params.put("lat", jwd[1]);
-        params.put("address", jwd[2]);
+        if(isLocal==1){
+            String[] jwd = startLiveView.getJwd();
+            params.put("lon", jwd[0]);
+            params.put("lat", jwd[1]);
+            params.put("address", jwd[2]);
+        }else{
+            params.put("lon", "");
+            params.put("lat", "");
+            params.put("address", "");
+        }
         ObjectAnimator anim = ObjectAnimator.ofFloat(startLiveView, "alpha", 0f);
         anim.setDuration(1000);
         anim.addListener(new Animator.AnimatorListener() {
@@ -853,7 +860,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     protected void onRestart() {
         Log.i("myTest","onRestart");
         super.onRestart();
-        if (!isPlay.equals("true")) {
+        if (null!=isRecord && isRecord.equals("true")) {
             startPush();
         }
     }
@@ -899,4 +906,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     }
 
 
+    public void setIsLocal(int isLocal) {
+        this.isLocal = isLocal;
+    }
 }
