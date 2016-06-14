@@ -46,7 +46,7 @@ int id ptr_classic_header_rotate_view_header_last_update 0x7f050002
 int id ptr_classic_header_rotate_view_header_text 0x7f050000
 int id ptr_classic_header_rotate_view_header_title 0x7f050001
 int id ptr_classic_header_rotate_view_progressbar 0x7f050004
-int id tvNoData 0x7f050005
+int id rlRefresh 0x7f050005
 int layout cube_ptr_classic_default_header 0x7f030000
 int layout custom_footer 0x7f030001
 int layout custom_header 0x7f030002

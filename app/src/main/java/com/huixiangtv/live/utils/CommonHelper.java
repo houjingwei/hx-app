@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.huixiangtv.live.Api;
@@ -29,6 +30,7 @@ import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgressTip;
+import com.huixiangtv.live.ui.EmptyView;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
@@ -406,4 +408,17 @@ public class CommonHelper {
         return sdcardDir.toString();
     }
 
+
+
+    public static void noData(String msg, ListView mListView, Activity activity) {
+        Log.i("noData","noData"+mListView.getHeaderViewsCount());
+        if(null!=mListView){
+            EmptyView view = new EmptyView(activity);
+            view.setMsg(msg);
+            if(mListView.getHeaderViewsCount()==0) {
+                mListView.addHeaderView(view);
+            }
+        }
+
+    }
 }

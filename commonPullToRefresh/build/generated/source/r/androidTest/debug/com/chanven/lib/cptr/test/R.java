@@ -116,7 +116,7 @@ containing a value of this type.
         public static final int ptr_classic_header_rotate_view_header_text=0x7f050000;
         public static final int ptr_classic_header_rotate_view_header_title=0x7f050001;
         public static final int ptr_classic_header_rotate_view_progressbar=0x7f050004;
-        public static final int tvNoData=0x7f050005;
+        public static final int rlRefresh=0x7f050005;
     }
     public static final class layout {
         public static final int cube_ptr_classic_default_header=0x7f030000;
