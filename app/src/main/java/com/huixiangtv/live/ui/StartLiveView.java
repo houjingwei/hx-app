@@ -44,7 +44,6 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
 
     LinkedList<RadioButton> buttons;
     Activity activity;
-    LiveActivity ac;
 
 
     //要分享的平台
@@ -78,7 +77,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
 
     public void setActivity(Activity ac){
         this.activity = ac;
-        ac = (LiveActivity) activity;
+
     }
 
     private void initView() {
@@ -132,6 +131,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
                 break;
             case R.id.ivCamera:
 
+                LiveActivity ac = (LiveActivity) activity;
                 ac.changeCamera();
                 break;
             case R.id.rbPhone:

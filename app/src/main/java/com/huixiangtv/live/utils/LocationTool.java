@@ -134,7 +134,6 @@ public class LocationTool {
             return;
         }
         mLocation = mLocationManager.getLastKnownLocation(getProvider());
-
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, new MyLocationListener(this));
     }
 
