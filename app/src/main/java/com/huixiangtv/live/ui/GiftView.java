@@ -38,6 +38,7 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.AnimHelper;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
+import com.huixiangtv.live.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -197,7 +198,7 @@ public class GiftView extends RelativeLayout {
      */
     private void sendGift(final Gift gift, final View baseLocationView, final View barrageArea,final boolean needClientAnim,String tip,String giftType,final ApiCallback<String> callback){
         if(null==gift){
-            Toast.makeText(activity, "礼物不存在!", Toast.LENGTH_SHORT).show();
+            CommonHelper.showTip(activity,"礼物不存在");
             return;
         }
         if(needClientAnim){
@@ -239,8 +240,11 @@ public class GiftView extends RelativeLayout {
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
-                CommonHelper.showTip(activity,"礼物消费出错");
-                Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                if(StringUtil.isNotEmpty(e.getMessage()) && e.getMessage().contains("token")){
+                    CommonHelper.showTip(activity,"礼物消费出错,用户令牌丢失，请重新登录");
+                }else{
+                    CommonHelper.showTip(activity,"礼物消费出错");
+                }
                 if(null!=callback){
                     callback.onFailure(e);
                 }

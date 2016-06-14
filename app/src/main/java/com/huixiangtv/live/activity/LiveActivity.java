@@ -172,6 +172,11 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             @Override
             public void onCompletion(IMediaPlayer mp) {
                 CommonHelper.showTip(LiveActivity.this,"播放完成");
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        onBackPressed();
+                    }
+                }, 1000);
             }
         });
         mVideoView.setOnInfoListener(new IMediaPlayer.OnInfoListener() {

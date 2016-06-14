@@ -26,6 +26,7 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.PreferencesHelper;
 import com.huixiangtv.live.utils.RongyunUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -79,6 +80,19 @@ public class App extends MultiDexApplication {
         sContext = this;
         x.Ext.init(this);
         x.Ext.setDebug(false); // 是否输出debug日志, 开启debug会影响性能.
+
+
+
+
+        CrashReport.initCrashReport(this, "900034558", true);
+
+
+
+
+
+
+
+
         PlatformConfig.setSinaWeibo("1912474872", "5ba10f129f1e5cdf37abd2c41bb7fd06");
         PlatformConfig.setWeixin("wxd42ecbf70403ea6e", "74e3218222aab649f12a0f7511957413");
         PlatformConfig.setQQZone("1105349203", "zMoNzPEO7NBREbdy");

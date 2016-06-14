@@ -55,6 +55,7 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.AnimHelper;
 import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.RongyunUtils;
 import com.huixiangtv.live.utils.StringUtil;
@@ -64,8 +65,10 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Message;
@@ -143,7 +146,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         ct = context;
 
         initView();
-       //
+
 
     }
 
@@ -176,6 +179,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         ivLove.setOnClickListener(this);
         ivGift.setOnClickListener(this);
         liveClose.setOnClickListener(this);
+        ivPhoto.setOnClickListener(this);
 
 
         rlChatView = (RelativeLayout) findViewById(R.id.rlChatView);
@@ -215,6 +219,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 }
             }
         });
+
 
 
     }
@@ -456,8 +461,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void onSuccessList(List<User> data) {
                 super.onSuccessList(data);
-                if (null != data) {
-                    mAdapter.addData(data);
+                if (null != data && data.size()>0) {
+                    List<User> list = removalUser(data);
+
+                    mAdapter.addData(list);
                     mRecyclerView.setAdapter(mAdapter);
 
                     onLineNum = data.size();
@@ -476,6 +483,34 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 super.onFailure(e);
             }
         }, User.class);
+    }
+
+    /**
+     * 去除重复在线用户
+     * @param data
+     * @return
+     */
+    private List<User> removalUser(List<User> data) {
+
+        List<User> list = new ArrayList<User>();
+        Set<String> uids = new HashSet<String>();
+        for (User user : data) {
+            uids.add(user.getUid());
+        }
+
+
+
+        for (String uid : uids) {
+            for (User user : data) {
+                if(uid.equals(user.getUid())){
+                    list.add(user);
+                    break;
+                }
+            }
+        }
+
+        return list;
+
     }
 
 
@@ -599,6 +634,15 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             case R.id.liveClose:
                 LiveActivity ac = (LiveActivity)activity;
                 ac.closeLiving();
+                break;
+            case R.id.ivPhoto:
+                Map<String,String> params = new HashMap<String,String>();
+                params.put("uid",live.getUid());
+                if (null != App.getLoginUser() && !live.getUid().equals(App.getLoginUser().getUid())) {
+                    ForwardUtils.target(activity, Constant.PIC_LIST, null);
+                }else if(null==App.getLoginUser()){
+                    ForwardUtils.target(activity, Constant.PIC_LIST, null);
+                }
                 break;
         }
     }
