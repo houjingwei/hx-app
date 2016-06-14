@@ -368,7 +368,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
 //            view.setClickable(false);
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_qqbind));
             view.setTextAppearance(SettingActivity.this, R.style.black_normal_style);
-            view.setText("解除绑定");
+            view.setText("解绑");
         }
         if (tag.equals("0")) {
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_bind));
