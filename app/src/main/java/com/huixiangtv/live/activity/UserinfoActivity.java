@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,15 +85,16 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         initView();
 
         if(null!=App.getLoginUser()){
-            setUserInfo(null);
+            setUserInfo(null,1);
         }
     }
 
-    private void setUserInfo(String tags) {
+    private void setUserInfo(String tags, int flag) {
         User user = App.getLoginUser();
-
-        photo = user.getPhoto();
-        ImageUtils.displayAvator(ivPhoto, user.getPhoto());
+        if(flag==1){
+            photo = user.getPhoto();
+            ImageUtils.displayAvator(ivPhoto, user.getPhoto());
+        }
         etNickName.setText(user.getNickName());
         tvSex.setText(user.getSex().equals("1")?"男":"女");
         String userTags = null;
@@ -103,8 +105,6 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         }
 
         if(StringUtil.isNotEmpty(userTags)){
-            mFlowLayout.setVisibility(View.GONE);
-
             initTags(userTags.split(","));
             adapter.notifyDataChanged();
             userTag();
@@ -187,6 +187,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         if(sb.length()>0){
             tagStr = sb.substring(0,sb.length()-1);
         }
+        Log.i("tagStr",tagStr);
     }
 
     /**
@@ -325,7 +326,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
 
         if (resultCode == RESULT_OK && requestCode==108) {
             String userTags= arg2.getStringExtra("topic");
-            setUserInfo(userTags);
+            setUserInfo(userTags, 2);
         }
 
 
