@@ -409,9 +409,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                             appPage.setAdapter(new LiveBannerAdapter(getActivity(), getContext(), data, i));
                             appPage.setOnItemClickListener(listener);
                             mSwitchScrollLayout.addView(appPage);
-
                             currentViewPage++;
-
                         }
                         Live live = viewpageModelList.get(0);
                         initViewInfo(live);

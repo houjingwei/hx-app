@@ -44,13 +44,12 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
 
     LinkedList<RadioButton> buttons;
     Activity activity;
-    LiveActivity ac;
 
 
     //要分享的平台
     public int platform = 0;
     //是否定位
-    int local = 1;
+    public int local = 1;
 
     String[] jwd;
 
@@ -78,7 +77,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
 
     public void setActivity(Activity ac){
         this.activity = ac;
-        ac = (LiveActivity) activity;
+
     }
 
     private void initView() {
@@ -132,6 +131,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
                 break;
             case R.id.ivCamera:
 
+                LiveActivity ac = (LiveActivity) activity;
                 ac.changeCamera();
                 break;
             case R.id.rbPhone:
@@ -159,6 +159,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
                 shareTo(6);
                 break;
             case R.id.llLocal:
+                LiveActivity a = (LiveActivity) activity;
                 if(local==1){
                     tvLocal.setText(R.string.localClose);
                     local = 0;
@@ -166,6 +167,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
                     tvLocal.setText(R.string.localOpen);
                     local = 1;
                 }
+                a.setIsLocal(local);
                 break;
 
 

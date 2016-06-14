@@ -225,10 +225,14 @@ public class RegPicListActivity extends Activity {
         String uid =  getIntent().getStringExtra("uid");
         if(null == uid)
         {
+            txtSave.setVisibility(View.GONE);
+            txtUpload.setText("编辑");
+            txtUpload.setTag("2");
             user.setUid(App.getPreferencesValue("uid"));
         }
         else
         {
+            txtSave.setVisibility(View.GONE);
             user.setUid(uid);
         }
         mertoItemViews = new ArrayList<DropImageView>();
@@ -251,9 +255,16 @@ public class RegPicListActivity extends Activity {
         txtUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startOnMertoItemViewListener();
-                txtSave.setVisibility(View.VISIBLE);
-                checkPermission(RequestCode.Button);
+                if(txtUpload.getTag().equals("2"))
+                {
+                    txtUpload.setText("上传");
+                    v.setTag("1");
+                    startOnMertoItemViewListener();
+                    txtSave.setVisibility(View.VISIBLE);
+                }
+                else {
+                    checkPermission(RequestCode.Button);
+                }
             }
         });
 
@@ -286,12 +297,19 @@ public class RegPicListActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //first validation
+                int i = 0;
                     for (DropImageView dropImageView : mertoItemViews) {
-                        if (dropImageView.getIsFinish() != 5) {
+                        if(dropImageView.getIsFinish()>5)
+                        {
+                            i++;
+                        }
+                        if (dropImageView.getIsFinish() < 5) {
+
                             Toast.makeText(getBaseContext(), "请选择选择图片到第" + (Integer.parseInt(dropImageView.getTag().toString()) + 1) + "张卡片", Toast.LENGTH_LONG).show();
                             return;
                         }
                     }
+               // if(i<5) {
                     ArtistCardInfoSave(new ApiCallback<Object>() {
 
                         @Override
@@ -300,6 +318,11 @@ public class RegPicListActivity extends Activity {
                             Log.i("successful", pics.toString());
                         }
                     });
+                //}
+//                else
+//                {
+//                    CommonHelper.showTip(RegPicListActivity.this, "保存成功");
+//                }
 
 
 
@@ -316,7 +339,7 @@ public class RegPicListActivity extends Activity {
         }
         for (DropImageView dropImageView : mertoItemViews) {
 
-            if (dropImageView.getIsFinish() != 5) {
+            if (dropImageView.getIsFinish() < 5) {
                 return false;
             }
         }
@@ -428,9 +451,9 @@ public class RegPicListActivity extends Activity {
         DropImageModel dropImageModel = new DropImageModel();
         if (mertoBeans.size() == 0) {
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(5);
+                dropImageModel.setIsFinish(6);
                 dropImageModel.setLocUrl(user.getImgLoc1());
-            } else {
+            } else  {
                 dropImageModel.setIsFinish(0);
             }
             dropImageModel.setIconId(user.getDrawableImg1() != null ? user.getDrawableImg1() : getResources().getDrawable(R.drawable.pic1));
@@ -438,7 +461,7 @@ public class RegPicListActivity extends Activity {
         } else if (mertoBeans.size() == 1) {
 
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(5);
+                dropImageModel.setIsFinish(6);
                 dropImageModel.setLocUrl(user.getImgLoc2());
             } else {
                 dropImageModel.setIsFinish(0);
@@ -447,7 +470,7 @@ public class RegPicListActivity extends Activity {
 
         } else if (mertoBeans.size() == 2) {
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(5);
+                dropImageModel.setIsFinish(6);
                 dropImageModel.setLocUrl(user.getImgLoc3());
             } else {
                 dropImageModel.setIsFinish(0);
@@ -458,35 +481,26 @@ public class RegPicListActivity extends Activity {
         } else if (mertoBeans.size() == 3) {
 
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(5);
+                dropImageModel.setIsFinish(6);
                 dropImageModel.setLocUrl(user.getImgLoc4());
             } else {
                 dropImageModel.setIsFinish(0);
             }
             dropImageModel.setIconId(user.getDrawableImg4() != null ? user.getDrawableImg4() : getResources().getDrawable(R.drawable.pic4));
         } else if (mertoBeans.size() == 4) {
-
             dropImageModel.setIconId(user.getDrawableImg5() != null ? user.getDrawableImg5() : getResources().getDrawable(R.drawable.pic5));
             //have' a tag
             if (status.equals("1")) {
-                txtSave.setVisibility(View.GONE);
-                dropImageModel.setIsFinish(5);
+                dropImageModel.setIsFinish(6);
                 dropImageModel.setLocUrl(user.getImgLoc5());
-
                 startOnMertoItemViewListener();
-
-
-
                 resetOnMertoItemViewListener();
-
-
             } else if (status.equals("0")) {
                 dropImageModel.setIsFinish(0);
                 showRegAlert(RegPicListActivity.this);
             } else {
                 dropImageModel.setIsFinish(0);
             }
-
         } else {
             return;
         }
@@ -665,6 +679,7 @@ public class RegPicListActivity extends Activity {
         if (tag != -1 && moveTag != -1) {
             mertoBeans = new ArrayList<DropImageModel>(startBeans);
             if (mertoBeans.size() <= 5) {
+                mertoBeans.get(tag).setIsFinish(6);
                 DropImageModel mertoBean = new DropImageModel(mertoBeans.get(tag));
                 mertoBeans.set(tag, mertoBeans.get(moveTag));
                 mertoBeans.set(moveTag, mertoBean);
@@ -1117,7 +1132,7 @@ public class RegPicListActivity extends Activity {
         cp = ColaProgress.show(RegPicListActivity.this, "正在加载数据...", true, false, null);
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("uid", user.getUid());
-        paramsMap.put("token",App.getLoginUser().getToken());
+        paramsMap.put("token", App.getLoginUser().getToken());
 
                     RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD_STATUS, paramsMap, new ResponseCallBack<User>() {
                         @Override
@@ -1232,6 +1247,8 @@ public class RegPicListActivity extends Activity {
                 resetOnMertoItemViewListener();
                 cp.dismiss();
                 txtSave.setVisibility(View.GONE);
+                txtUpload.setText("编辑");
+                txtUpload.setTag("2");
                 CommonHelper.showTip(RegPicListActivity.this, "保存成功");
             }
 
