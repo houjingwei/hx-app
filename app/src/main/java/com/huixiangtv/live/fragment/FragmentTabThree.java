@@ -126,12 +126,21 @@ public class FragmentTabThree extends RootFragment{
 				}
 				break;
 			case R.id.setting:
-				if(TokenChecker.checkToken(getActivity()))
-				ForwardUtils.target(getActivity(), Constant.SETINT,null);
+				if(null!=App.getLoginUser()) {
+					ForwardUtils.target(getActivity(), Constant.SETINT, null);
+				}else
+				{
+					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
+				}
 				break;
 			case R.id.llTitle:
-				if(TokenChecker.checkToken(getActivity()))
-				   ForwardUtils.target(getActivity(), Constant.PIC_LIST,null);
+				if(null!=App.getLoginUser()) {
+					ForwardUtils.target(getActivity(), Constant.PIC_LIST, null);
+				}
+				else
+				{
+					ForwardUtils.target(getActivity(), Constant.LOGIN,null);
+				}
 				break;
 			case R.id.llMyfans:
 				if(null!=App.getLoginUser()){

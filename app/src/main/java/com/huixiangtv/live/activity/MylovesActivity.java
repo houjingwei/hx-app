@@ -37,6 +37,8 @@ public class MylovesActivity extends BaseBackActivity {
     ListView mListView;
 
 
+    @ViewInject(R.id.tv_list_empty)
+    TextView tv_list_empty;
 
     int page = 1;
     MyLovesAdapter adapter;
@@ -105,6 +107,12 @@ public class MylovesActivity extends BaseBackActivity {
                     adapter.addList(data);
                 }
                 ptrClassicFrameLayout.loadComplete(true);
+
+                if (adapter.getCount() == 0) {
+                    ptrClassicFrameLayout.setVisibility(View.GONE);
+                    tv_list_empty.setVisibility(View.VISIBLE);
+                    mListView.setVisibility(View.GONE);
+                }
             }
 
             @Override

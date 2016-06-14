@@ -9,6 +9,7 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
@@ -39,6 +40,7 @@ public class RegPicActivity extends BaseBackActivity {
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 
+    ArrayList<String> mDatas ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +50,9 @@ public class RegPicActivity extends BaseBackActivity {
 
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.my_pic));
-
         try {
-            ArrayList<String> mDatas = (ArrayList<String>) getIntent().getSerializableExtra("images");
+            mDatas = (ArrayList<String>) getIntent().getSerializableExtra("images");
             int currentIndex = getIntent().getIntExtra("currentIndex",0);
-            File file;
             mImageViews = new ImageView[5];
             Bitmap bm;
             ImageView imageView;

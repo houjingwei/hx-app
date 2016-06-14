@@ -1,7 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/r1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical"
     tools:context=".RegPicListActivity">
 
@@ -11,13 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/white">
+        android:background="@color/black">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="1dp">
+            android:padding="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -28,27 +30,28 @@
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8">
+                    android:layout_weight="0.8"
+                    android:background="@color/black">
 
                     <com.huixiangtv.live.utils.widget.DropImageView
                         android:id="@+id/imageView1"
-                        android:minHeight="50dp"
-                        android:minWidth="50dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
-                        android:background="@color/white"
+                        android:background="@color/black"
+                        android:minHeight="50dp"
+                        android:minWidth="50dp"
                         android:scaleType="centerCrop" />
 
 
                     <LinearLayout
                         android:id="@+id/ll_per_info"
-                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|left"
                         android:background="@color/gray"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        >
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
@@ -57,25 +60,29 @@
                             android:layout_marginRight="8dp">
 
                             <TextView
-
-                                android:textColor="@color/white"
+                                android:id="@+id/tvLid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="回响号：HX-17" />
+                                android:text="回响号：0"
+                                android:textColor="@color/white" />
+
 
                             <TextView
-                                android:textColor="@color/white"
+
+                                android:id="@+id/tvYW"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
-                                android:text="84-63-89" />
+                                android:text="84-63-89"
+                                android:textColor="@color/white" />
 
                             <TextView
-                                android:textColor="@color/white"
+                                android:id="@+id/tvShareId"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:text="12566: 分享" />
+                                android:text="12566: 分享"
+                                android:textColor="@color/white" />
 
                         </RelativeLayout>
 
@@ -87,20 +94,20 @@
 
 
                             <TextView
-                                android:textColor="@color/white"
-                                android:layout_width="wrap_content"
                                 android:id="@+id/txtWeight"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
-                                android:text="50kg" />
+                                android:text="80kg"
+                                android:textColor="@color/white" />
 
                             <TextView
-                                android:textColor="@color/white"
                                 android:id="@+id/txtSj"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:text="12566: 身价" />
+                                android:text="12566: 身价"
+                                android:textColor="@color/white" />
 
 
                         </RelativeLayout>
@@ -112,29 +119,30 @@
                             android:layout_marginRight="8dp">
 
                             <TextView
-                                android:textColor="@color/white"
                                 android:id="@+id/txtName"
-                                android:textSize="18dp"
-                                android:layout_width="wrap_content"
+                                android:layout_width="90dp"
+                                android:singleLine="true"
                                 android:layout_height="wrap_content"
-                                android:text="刘德华" />
+                                android:text="刘德华"
+                                android:textColor="@color/white"
+                                android:textSize="18dp" />
 
 
                             <TextView
-                                android:textColor="@color/white"
                                 android:id="@+id/txtHeight"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
-                                android:text="175CM" />
+                                android:text="165CM"
+                                android:textColor="@color/white" />
 
                             <TextView
-                                android:textColor="@color/white"
                                 android:id="@+id/txtFansi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:text="12566: 粉丝" />
+                                android:text="12566: 粉丝"
+                                android:textColor="@color/white" />
 
 
                         </RelativeLayout>
@@ -152,6 +160,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="1dp"
                     android:layout_weight="1"
+                    android:background="@color/black"
                     android:orientation="vertical">
 
                     <com.huixiangtv.live.utils.widget.DropImageView
@@ -160,8 +169,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="2"
                         android:adjustViewBounds="true"
-                        android:layout_marginTop="1dp"
-                        android:background="@color/white"
+                        android:background="@color/transparent"
                         android:scaleType="centerCrop" />
 
                     <LinearLayout
@@ -174,51 +182,53 @@
                             android:id="@+id/imageView3"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="0dp"
                             android:layout_weight="1"
-                            android:layout_marginTop="0.5dp"
-                            android:background="@color/white"
+                            android:background="@color/transparent"
+                            android:padding="0dp"
                             android:scaleType="centerCrop" />
 
                         <com.huixiangtv.live.utils.widget.DropImageView
                             android:id="@+id/imageView4"
                             android:layout_width="0dp"
-                            android:layout_marginTop="1dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="1dp"
+                            android:layout_marginTop="1dp"
                             android:layout_weight="1"
-                            android:background="@color/white"
+                            android:background="@color/transparent"
                             android:scaleType="centerCrop" />
 
                         <com.huixiangtv.live.utils.widget.DropImageView
                             android:id="@+id/imageView5"
                             android:layout_width="0dp"
-                            android:layout_marginTop="1dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="1dp"
+                            android:layout_marginTop="1dp"
                             android:layout_weight="1"
-                            android:background="@color/white"
+                            android:background="@color/transparent"
                             android:scaleType="centerCrop" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtUpload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|left"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/reg_pic_bg"
-            android:clickable="true"
-            android:drawableLeft="@drawable/card_up"
-            android:gravity="center"
-            android:padding="10dp"
-            android:paddingRight="30dp"
-            android:text="上传图片"
-            android:textColor="@color/white"
-             />
+        <!--<TextView-->
+            <!--android:id="@+id/txtUpload"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom|left"-->
+            <!--android:layout_marginBottom="20dp"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:background="@drawable/reg_pic_bg"-->
+            <!--android:clickable="true"-->
+            <!--android:drawableLeft="@drawable/card_up"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="10dp"-->
+            <!--android:paddingRight="30dp"-->
+            <!--android:text="上传"-->
+            <!--android:textColor="@color/white" />-->
 
         <TextView
             android:id="@+id/txtSF"
@@ -231,19 +241,18 @@
             android:clickable="true"
             android:gravity="center"
             android:padding="10dp"
-            android:visibility="gone"
             android:paddingRight="30dp"
             android:text="缩放"
             android:textColor="@color/white"
-            />
+            android:visibility="gone" />
 
 
         <TextView
-            android:id="@+id/txtOpen"
+            android:id="@+id/txtUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="2dp"
             android:layout_marginRight="80dp"
             android:background="@drawable/reg_pic_bg"
             android:clickable="true"
@@ -251,16 +260,15 @@
             android:padding="10dp"
             android:paddingRight="30dp"
             android:tag="1"
-            android:text="身价"
-            android:textColor="@color/white"
-            />
+            android:text="上传"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/txtSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="2dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/reg_pic_bg"
             android:clickable="true"
@@ -269,10 +277,21 @@
             android:paddingRight="30dp"
             android:tag="1"
             android:text="保存"
-            android:textColor="@color/white"
-            />
-    </FrameLayout>
+            android:textColor="@color/white" />
 
+        <ImageView
+            android:id="@+id/imgShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="20dp"
+            android:src="@drawable/txt_share"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingRight="50dp"
+            android:textColor="@color/white" />
+    </FrameLayout>
 
 
 </LinearLayout>

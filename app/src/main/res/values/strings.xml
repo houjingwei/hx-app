@@ -133,17 +133,7 @@
     <string name="my_pic">浏览</string>
 
 
-
-
-
-
-
-
-
-
-
-
-<string name="N_A">N/A</string>
+    <string name="N_A">N/A</string>
     <string name="close">Close</string>
     <string name="sample">Sample</string>
     <string name="recent">Recent</string>
@@ -204,7 +194,6 @@
     <string name="VideoView_player_IjkExoMediaPlayer">Player: IjkExoMediaPlayer</string>
 
 
-
     <string name="output_video_size">输出视频大小</string>
     <string name="frame_rate">帧率:</string>
     <string name="defalut_frame_rate">默认帧率:</string>
@@ -224,5 +213,7 @@
     <string name="labenHot">人气</string>
     <string name="labenHotRank">人气贡献榜</string>
     <string name="attention_me">关注我的人</string>
+    <string name="empty_des">暂无数据</string>
+    <string name="bann_details">内容详情</string>
 
 </resources>

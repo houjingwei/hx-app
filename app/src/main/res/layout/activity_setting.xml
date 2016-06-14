@@ -14,7 +14,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:paddingLeft="10dp">
 
@@ -78,7 +79,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="0.1dp"
         android:background="@drawable/listview"
-        android:paddingLeft="10dp"
+        android:paddingLeft="8dp"
         android:paddingRight="10dp">
 
         <ImageView
@@ -110,7 +111,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/listview"
-        android:paddingLeft="10dp"
+        android:paddingLeft="8dp"
         android:paddingRight="10dp"
 
         >
@@ -126,6 +127,7 @@
             style="@style/black_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="15sp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/weixinbindimg"
@@ -138,6 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:textSize="18sp"
             android:background="@drawable/set_qqbind"
             android:clickable="true"
             android:text="@string/bind" />
@@ -149,7 +152,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="0.1dp"
         android:background="@drawable/listview"
-        android:paddingLeft="10dp"
+        android:paddingLeft="8dp"
         android:paddingRight="10dp">
 
         <ImageView
@@ -161,6 +164,7 @@
 
         <TextView
             style="@style/black_normal_style"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -176,6 +180,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/set_qqbind"
+            android:textSize="18sp"
             android:clickable="true"
             android:text="@string/bind" />
     </RelativeLayout>
@@ -186,7 +191,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="0.1dp"
         android:background="@drawable/listview"
-        android:paddingLeft="10dp"
+        android:paddingLeft="8dp"
         android:paddingRight="10dp">
 
         <ImageView
@@ -202,6 +207,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
+            android:textSize="15sp"
             android:layout_toRightOf="@id/weibobindimg"
             android:text="@string/weibobind" />
 
@@ -213,6 +219,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/set_bind"
+            android:textSize="18sp"
             android:clickable="true"
             android:text="@string/bind" />
     </RelativeLayout>
@@ -225,6 +232,7 @@
 
         <TextView
             style="@style/label_small_style"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/set" />
@@ -241,10 +249,11 @@
 
         <TextView
             style="@style/black_normal_style"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="2dp"
             android:text="@string/aboutus" />
 
         <ImageView
@@ -267,10 +276,11 @@
 
         <TextView
             style="@style/black_normal_style"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="2dp"
             android:text="@string/help" />
 
         <ImageView

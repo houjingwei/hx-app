@@ -29,6 +29,7 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.UpdateApp;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
+import com.huixiangtv.live.utils.TokenChecker;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.xutils.view.annotation.ViewInject;
@@ -247,7 +248,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 isSwitch = true;
                 break;
             case R.id.tab3:
-                setTabSelection(1);
+                if(null!=App.getLoginUser()) {
+                    setTabSelection(1);
+
+                }
+                else
+                {
+                    ForwardUtils.target(MainActivity.this, Constant.LOGIN,null);
+                }
+
                 isSwitch = true;
                 break;
             default:

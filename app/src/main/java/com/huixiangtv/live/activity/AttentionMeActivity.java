@@ -1,7 +1,9 @@
 package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -27,7 +29,8 @@ import java.util.Map;
 public class AttentionMeActivity extends BaseBackActivity   {
 
 
-
+    @ViewInject(R.id.tv_list_empty)
+    TextView tv_list_empty;
 
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
@@ -100,6 +103,12 @@ public class AttentionMeActivity extends BaseBackActivity   {
                     adapter.addList(data);
                 }
                 ptrClassicFrameLayout.loadComplete(true);
+
+                if (adapter.getCount() == 0) {
+                    ptrClassicFrameLayout.setVisibility(View.GONE);
+                    tv_list_empty.setVisibility(View.VISIBLE);
+                    mListView.setVisibility(View.GONE);
+                }
             }
 
             @Override

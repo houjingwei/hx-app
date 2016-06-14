@@ -3,6 +3,7 @@ package com.huixiangtv.live.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.view.View;
@@ -111,6 +112,40 @@ public class BitmapHelper {
     }
 
     static Bitmap bmap;
+    public static Bitmap copressImage(String imgPath,int detWidth,int detHeight){
+        File picture = new File(imgPath);
+        BitmapFactory.Options bitmapFactoryOptions = new BitmapFactory.Options();
+        //下面这个设置是将图片边界不可调节变为可调节
+        bitmapFactoryOptions.inJustDecodeBounds = true;
+        bitmapFactoryOptions.inSampleSize = 2;
+        int outWidth  = bitmapFactoryOptions.outWidth;
+        int outHeight = bitmapFactoryOptions.outHeight;
+        bmap = BitmapFactory.decodeFile(picture.getAbsolutePath(),
+                bitmapFactoryOptions);
+        float imagew = 150;
+        float imageh = 150;
+        int yRatio = (int) Math.ceil(bitmapFactoryOptions.outHeight
+                / imageh);
+        int xRatio = (int) Math
+                .ceil(bitmapFactoryOptions.outWidth / imagew);
+        if (yRatio > 1 || xRatio > 1) {
+            if (yRatio > xRatio) {
+                bitmapFactoryOptions.inSampleSize = yRatio;
+            } else {
+                bitmapFactoryOptions.inSampleSize = xRatio;
+            }
+
+        }
+        bitmapFactoryOptions.inJustDecodeBounds = false;
+        bmap = BitmapFactory.decodeFile(picture.getAbsolutePath(),
+                bitmapFactoryOptions);
+        if(bmap != null){
+            //ivwCouponImage.setImageBitmap(bmap);
+            return createScaleBitmap(bmap,detWidth,detHeight,bitmapFactoryOptions.inSampleSize);
+        }
+        return null;
+    }
+
     public static Bitmap copressImage(String imgPath){
         File picture = new File(imgPath);
         BitmapFactory.Options bitmapFactoryOptions = new BitmapFactory.Options();
@@ -145,63 +180,49 @@ public class BitmapHelper {
         return null;
     }
 
-//
-//    public static Bitmap readBitMap(File file) {
-//
-//        BitmapFactory.Options opt = new BitmapFactory.Options();
-//
-//        opt.inPreferredConfig = Bitmap.Config.RGB_565;
-//
-//        opt.inPurgeable = true;
-//
-//        opt.inInputShareable = true;
-//
-//
-//        return BitmapFactory.decodeFile(file.getAbsolutePath(), opt);
-//
-//    }
-//
-//    public static Bitmap zoomImg(Bitmap bm, int newWidth, int newHeight) {
-//        // 获得图片的宽高
-//        int width = bm.getWidth();
-//        int height = bm.getHeight();
-//        // 计算缩放比例
-//        float scaleWidth = ((float) newWidth) / width;
-//        float scaleHeight = ((float) newHeight) / height;
-//        // float scaleHeight = (((float)height/newHeight)*height)/newHeight;
-//        // 取得想要缩放的matrix参数
-//        Matrix matrix = new Matrix();
-//        matrix.postScale(scaleWidth, scaleHeight);
-//        // 得到新的图片 www.2cto.com
-//        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
-//                true);
-//        return newbm;
-//    }
 
-    public final static Bitmap returnBitMap(String url) {
-        URL myFileUrl = null;
-        Bitmap bitmap = null;
-
-        try {
-            myFileUrl = new URL(url);
-            HttpURLConnection conn;
-
-            conn = (HttpURLConnection) myFileUrl.openConnection();
-
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }  catch (IOException e) {
-            e.printStackTrace();
+    private static Bitmap createScaleBitmap(Bitmap src, int dstWidth, int dstHeight, int inSampleSize) {
+        //如果inSampleSize是2的倍数，也就说这个src已经是我们想要的缩略图了，直接返回即可。
+        if (inSampleSize % 2 == 0) {
+            return src;
         }
-        return bitmap;
+        // 如果是放大图片，filter决定是否平滑，如果是缩小图片，filter无影响，我们这里是缩小图片，所以直接设置为false
+        Bitmap dst = Bitmap.createScaledBitmap(src, dstWidth, dstHeight, false);
+        if (src != dst) { // 如果没有缩放，那么不回收
+            src.recycle(); // 释放Bitmap的native像素数组
+        }
+        return dst;
     }
 
+    public static Bitmap readBitMap(File file) {
+
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+
+        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+
+        opt.inPurgeable = true;
+
+        opt.inInputShareable = true;
 
 
+        return BitmapFactory.decodeFile(file.getAbsolutePath(), opt);
 
+    }
+//
+    public static Bitmap zoomImg(Bitmap bm, int newWidth, int newHeight) {
+        // 获得图片的宽高
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        // 计算缩放比例
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // float scaleHeight = (((float)height/newHeight)*height)/newHeight;
+        // 取得想要缩放的matrix参数
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        // 得到新的图片 www.2cto.com
+        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
+                true);
+        return newbm;
+    }
 }
