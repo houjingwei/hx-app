@@ -342,6 +342,7 @@
         <View style="@style/split_line" />
 
         <RelativeLayout
+            android:id="@+id/rlFeedBack"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/listview"

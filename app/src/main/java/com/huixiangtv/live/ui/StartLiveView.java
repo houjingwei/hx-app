@@ -50,7 +50,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
     //要分享的平台
     public int platform = 0;
     //是否定位
-    int local = 0;
+    int local = 1;
 
     String[] jwd;
 

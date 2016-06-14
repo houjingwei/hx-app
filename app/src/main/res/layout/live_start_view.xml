@@ -116,7 +116,7 @@ android:orientation="vertical">
             android:layout_height="wrap_content"
             android:background="@null"
             android:layout_alignParentLeft="true"
-            android:text="@string/localClose" />
+            android:text="@string/localOpen" />
     </LinearLayout>
 
 </RelativeLayout>

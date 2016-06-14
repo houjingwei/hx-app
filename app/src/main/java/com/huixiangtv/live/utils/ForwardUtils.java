@@ -7,15 +7,13 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.AccountActivity;
 import com.huixiangtv.live.activity.AttentionMeActivity;
-import com.huixiangtv.live.activity.MyAttentionActivity;
 import com.huixiangtv.live.activity.H5Activity;
-import com.huixiangtv.live.activity.HelpActivity;
 import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.activity.LoginOrRegActivity;
+import com.huixiangtv.live.activity.MyAttentionActivity;
 import com.huixiangtv.live.activity.MyHotsActivity;
 import com.huixiangtv.live.activity.MylovesActivity;
 import com.huixiangtv.live.activity.PhoneBindActivity;
-import com.huixiangtv.live.activity.PopularityActivity;
 import com.huixiangtv.live.activity.RegLiveActivity;
 import com.huixiangtv.live.activity.RegLiveMainActivity;
 import com.huixiangtv.live.activity.RegLiveNextActivity;
@@ -100,9 +98,6 @@ public class ForwardUtils {
             }else if (url.startsWith(Constant.FANS)){
                 Intent intent = new Intent(oriActivity, MyAttentionActivity.class);
                 toIntent(oriActivity,params,intent);
-            }else if (url.startsWith(Constant.HELP)){
-                Intent intent = new Intent(oriActivity, HelpActivity.class);
-                toIntent(oriActivity,params,intent);
             }else if (url.startsWith(Constant.PHONE_BIND)){
                 Intent intent = new Intent(oriActivity, PhoneBindActivity.class);
                 toIntent(oriActivity,params,intent);
@@ -132,17 +127,26 @@ public class ForwardUtils {
     }
 
     private static void toH5Intent(Activity oriActivity,String url, Intent intent) throws Exception {
-        int index = url.indexOf("?");
-        String s1 = url.substring(0,index);
+        int index = 0;
+        String s1 = "";
+        if(url.contains("?")){
+            index = url.indexOf("?");
+            s1 = url.substring(0,index);
+        }else{
+            s1 = url;
+        }
+
         Map params = new HashMap();
         params.put("url",URLDecoder.decode(s1,"utf-8"));
 
-        String s2 = url.substring(index+1,url.length());
-        if(StringUtil.isNotEmpty(s2)){
-            String[] s = s2.split("&");
-            for (String param : s) {
-                String[] s3 = param.split("=");
-                params.put(s3[0],s3[1]);
+        if(index>0){
+            String s2 = url.substring(index+1,url.length());
+            if(StringUtil.isNotEmpty(s2)){
+                String[] s = s2.split("&");
+                for (String param : s) {
+                    String[] s3 = param.split("=");
+                    params.put(s3[0],s3[1]);
+                }
             }
         }
         toIntent(oriActivity, params, intent);

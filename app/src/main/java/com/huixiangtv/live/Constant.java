@@ -26,8 +26,12 @@ public class Constant {
     public static final String REG_LIVE_MAIN = BASE_PRE+"main";
     public static final String REG_LIVE_DES = BASE_PRE+"details";
 
-    public static final String HELP = "http://www.baidu.com";
-    public static final String GYWM = "http://www.souhu.com";
+    public static final String HELP = "http://119.29.94.122:8888/h5/help.html";
+    public static final String GYWM = "http://119.29.94.122:8888/h5/about.html";
+    public static final String FEEDBACK = "http://119.29.94.122:8888/h5/feedback.html";
+    public static final String ORDER = "http://119.29.94.122:8888/h5/rechargeRecord.html?title=充值记录";
+    public static final String PAY_PRO = "http://119.29.94.122:8888/h5/payAgreeMent.html";
+    public static final String REG_PRO = "http://119.29.94.122:8888/h5/registAgreeMent.html";
 
     public static final String FANS = BASE_PRE+"fans";
 
@@ -40,6 +44,7 @@ public class Constant {
 
     public static final String POPULARITY = BASE_PRE+"popularity";
     public static final String MY_HOTS = BASE_PRE+"hots";
+
 
 
     public static String MY_LOVES = BASE_PRE+"my_loves";
@@ -85,17 +90,6 @@ public class Constant {
     public static String accessToken;//accessToken 通过调用授权接口得到
     public static final String LIVE_URL="http://huixiangtv.s.qupai.me";
     public static final String SPACE = UUID.randomUUID().toString().replace("-",""); //存储目录 建议使用uid cid之类的信息
-
-
-
-
-
-
-
-
-
-
-
 
 
 

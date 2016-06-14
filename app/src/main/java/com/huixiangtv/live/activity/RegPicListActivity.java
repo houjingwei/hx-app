@@ -259,7 +259,7 @@ public class RegPicListActivity extends Activity {
 
         ArtistCardInfoStatus();
 
-        ll_per_info.getBackground().setAlpha(100);
+        ll_per_info.getBackground().setAlpha(150);
 
 
         ll_per_info.setOnClickListener(new View.OnClickListener() {
@@ -475,8 +475,7 @@ public class RegPicListActivity extends Activity {
 
                 startOnMertoItemViewListener();
 
-                if (cp.isShowing())
-                    cp.dismiss();
+
 
                 resetOnMertoItemViewListener();
 
@@ -493,6 +492,9 @@ public class RegPicListActivity extends Activity {
         }
         mertoBeans.add(dropImageModel);
         setView();
+
+        if (cp!=null && cp.isShowing())
+            cp.dismiss();
 
     }
 
@@ -802,7 +804,8 @@ public class RegPicListActivity extends Activity {
                     //record first
                     if (current_corp_img.length() != 0) {
                         OffDrop(currentTag);
-                        bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(current_corp_img)), mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight());
+                        bm = BitmapHelper.readBitMap(new File(current_corp_img));
+                        //bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(current_corp_img)), mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight());
                         bd = new BitmapDrawable(bm);
                         mertoItemViews.get(currentTag).setIcon(bd);
                         mertoBeans.get(currentTag).setIconId(bd);
@@ -819,7 +822,8 @@ public class RegPicListActivity extends Activity {
                     if (photos.size() > 0 && photos.size() < 2) {
 
                         OffDrop(currentTag);
-                        bm =BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(photos.get(0))), mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight());
+                        bm = BitmapHelper.readBitMap(new File(photos.get(0)));
+                        //bm =BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(photos.get(0))), mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight());
                         bd = new BitmapDrawable(bm);
                         mertoItemViews.get(currentTag).setIcon(bd);
                         mertoBeans.get(currentTag).setIconId(bd);
@@ -832,7 +836,8 @@ public class RegPicListActivity extends Activity {
                             //bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(photos.get(size))), mertoItemViews.get(size).getWidth(), mertoItemViews.get(size).getHeight());
 //                            bm = BitmapHelper.copressImage(photos.get(size));
 
-                            bm = BitmapHelper.readBitMap(new File(photos.get(size)));
+                           // bm = BitmapHelper.readBitMap(new File(photos.get(size)));
+                            bm =BitmapHelper.readBitMap(new File(photos.get(size)));
                             bd = new BitmapDrawable(bm);
                             mertoItemViews.get(size).setIcon(bd);
                             mertoBeans.get(size).setIconId(bd);
@@ -880,7 +885,7 @@ public class RegPicListActivity extends Activity {
         }
         String local = outputImage.getAbsolutePath();
         fos = new FileOutputStream(outputImage);
-        bm.compress(Bitmap.CompressFormat.JPEG, 75, fos);// (0 -// 100)压缩文件
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);// (0 -// 100)压缩文件
         fos.flush();
         fos.close();
         return local;
@@ -1109,7 +1114,7 @@ public class RegPicListActivity extends Activity {
     }
 
     private void ArtistCardInfoStatus() {
-
+        cp = ColaProgress.show(RegPicListActivity.this, "正在加载数据...", true, false, null);
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("uid", user.getUid());
         paramsMap.put("token",App.getLoginUser().getToken());
@@ -1121,7 +1126,6 @@ public class RegPicListActivity extends Activity {
 
                                 if (data.getStatus().equals("1")) //status
                                 {
-                                    cp = ColaProgress.show(RegPicListActivity.this, "正在加载数据...", true, false, null);
                                     //get Info
                                     ArtistCardInfo();
                                 } else {

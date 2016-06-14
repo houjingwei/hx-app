@@ -1,23 +1,16 @@
 package com.chanven.lib.cptr;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
@@ -947,14 +940,18 @@ public class PtrFrameLayout extends ViewGroup {
     }
 
     public void loadComplete(boolean bool) {
-        if(bool){
-            setLoadMoreEnable(true);
-            refreshComplete();
-            loadMoreComplete(true);
-        }else{
-            setLoadMoreEnable(false);
-            refreshComplete();
-            loadMoreComplete(false);
+        try{
+            if(bool){
+                setLoadMoreEnable(true);
+                refreshComplete();
+                loadMoreComplete(true);
+            }else{
+                setLoadMoreEnable(false);
+                refreshComplete();
+                loadMoreComplete(false);
+            }
+        }catch(Exception e){
+
         }
 
     }
