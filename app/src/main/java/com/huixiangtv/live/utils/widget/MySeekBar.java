@@ -18,7 +18,7 @@ public class MySeekBar extends LinearLayout{
         super(context);
     }
 
-    public static int processValInner = 0;
+    public  int processValInner = 0;
     SeekBar seekBar;
     LinearLayout llsk;
     TextView tvHeightVal,tvName;
