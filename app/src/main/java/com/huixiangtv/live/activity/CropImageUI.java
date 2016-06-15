@@ -21,38 +21,47 @@ public class CropImageUI extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int width_int = 300;
+        int height_int = 300;
+        try {
+            width_int = getIntent().getIntExtra("width",300);
+            height_int = getIntent().getIntExtra("height",300);
 
-        String path = getIntent().getStringExtra("path");cropImage1(path);
+        }
+        catch (Exception ex)
+        {
+
+        }
+
+        String path = getIntent().getStringExtra("path");
+        cropImage1(path,width_int,height_int);
     }
 
-    private void cropImage1(final String filePath)
-    {
+    private void cropImage1(final String filePath,final int width,final int height) {
         BitmapDrawable bd = new BitmapDrawable(BitmapHelper.copressImage(filePath));
 
 
         setContentView(R.layout.fragment_cropimage);
-        final CropImageView mCropImage=(CropImageView)findViewById(R.id.cropImg);
-        mCropImage.setDrawable(bd,300,300);
+        final CropImageView mCropImage = (CropImageView) findViewById(R.id.cropImg);
+        mCropImage.setDrawable(bd, width, height);
 
-//        findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                new Thread(new Runnable(){
-//
-//                    @Override
-//                    public void run() {
-//                        //FileUtil.writeImage(mCropImage.getCropImage(), filePath, 100);
-//                        Intent mIntent=new Intent();
-//                        Bundle b = new Bundle();
-//                        b.putParcelable("data", mCropImage.getCropImage());
-//                        mIntent.putExtra("bundle", b);
-//                        setResult(12, mIntent);
-//                        finish();
-//                    }
-//                }).start();
-//            }
-//        });
+        findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        Intent mIntent=new Intent();
+                        Bundle b = new Bundle();
+                        b.putParcelable("data", mCropImage.getCropImage());
+                        mIntent.putExtra("bundle", b);
+                        setResult(12, mIntent);
+                        finish();
+                    }
+                }).start();
+            }
+        });
     }
 
 

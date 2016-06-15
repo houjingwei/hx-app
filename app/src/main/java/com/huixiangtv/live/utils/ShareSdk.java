@@ -41,15 +41,27 @@ public class ShareSdk {
 
     public static void startShare(Activity activity, String title, String content,  SHARE_MEDIA targetPlatform, String imgUrl) {
         if (TokenChecker.checkToken(activity)) {
-
-
             UMImage image = new UMImage(activity, imgUrl);
-            new ShareAction(activity).setPlatform(targetPlatform)
-                    .withMedia(image)
+            new ShareAction(activity).setPlatform(targetPlatform).setCallback(new UMShareListener() {
+                @Override
+                public void onResult(SHARE_MEDIA share_media) {
+                    String a = "";
+                }
+
+                @Override
+                public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+                    String a = "";
+                }
+
+                @Override
+                public void onCancel(SHARE_MEDIA share_media) {
+                    String a = "";
+                }
+            })
+
                             //.withMedia(new UMEmoji(ShareActivity.this,"http://img.newyx.net/news_img/201306/20/1371714170_1812223777.gif"))
                     .withText(content)
-                    .withTitle(title)
-                            //.withTargetUrl(url)
+                    .withMedia(image)
                     .share();
 
         }

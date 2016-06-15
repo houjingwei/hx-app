@@ -18,6 +18,7 @@ public class MySeekBar extends LinearLayout{
         super(context);
     }
 
+    public static int processValInner = 0;
     SeekBar seekBar;
     LinearLayout llsk;
     TextView tvHeightVal,tvName;
@@ -79,7 +80,7 @@ public class MySeekBar extends LinearLayout{
         public void onProgressChanged(SeekBar seekBar, int progress,
                                       boolean fromUser) {
             tvHeightVal.setText("" + (progress*changeVal)+unit);
-            tvHeightVal.setTag(progress);
+            processValInner =  (progress*changeVal);
 
         }
     };
@@ -91,6 +92,6 @@ public class MySeekBar extends LinearLayout{
 
     public String getProcess()
     {
-        return seekBar.getProgress()+"";
+        return processValInner+"";
     }
 }

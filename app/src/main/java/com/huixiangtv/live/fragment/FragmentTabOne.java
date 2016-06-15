@@ -232,11 +232,12 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                     if (enumUpdateTag == EnumUpdateTag.UPDATE) {
 
                         listview.removeAllViews();
-                        currentViewPage =1;
-                        switchPicHandler = new SwitchPicHandler(getContext(), 1);
-                        //起一个线程更新数据
-                        SwitchPicThread switchPicThread = new SwitchPicThread();
-                        new Thread(switchPicThread).start();
+                        if (isLoad) {
+                            currentViewPage = 1;
+                            //起一个线程更新数据
+                            SwitchPicThread switchPicThread = new SwitchPicThread();
+                            new Thread(switchPicThread).start();
+                        }
                     }
 
                     Long totalCount = Long.parseLong(data.size() + "");
@@ -256,7 +257,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 mRefreshLayout.onRefreshComplete();
-                CommonHelper.showTip(getActivity(),e.getMessage());
+                CommonHelper.showTip(getActivity(), e.getMessage());
             }
         }, Live.class);
     }
@@ -282,8 +283,9 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
             TextView tvTitle = helper.getView(R.id.tvTitle);
             TextView tvTime = helper.getView(R.id.tvTime);
-            String city = item.getCity()==null?"":item.getCity();
-            tvTitle.setText(item.getNickName()+" "+city);
+            String city = item.getCity()==null?"":"."+item.getCity();
+            String title = item.getTitle()==null?"":"."+item.getTitle();
+            tvTitle.setText(item.getNickName()+" "+city+title);
             tvTime.setText(item.getTime());
             ImageView ivIcon = helper.getView(R.id.ivIcon);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIcon.getLayoutParams();

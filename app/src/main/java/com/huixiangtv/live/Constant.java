@@ -25,6 +25,7 @@ public class Constant {
     public static final String REG_LIVE_NEXT = BASE_PRE+"next";
     public static final String REG_LIVE_MAIN = BASE_PRE+"main";
     public static final String REG_LIVE_DES = BASE_PRE+"details";
+    public static final String BINNER_URL = BASE_PRE+"banner";
 
     public static final String HELP = "http://119.29.94.122:8888/h5/help.html";
     public static final String GYWM = "http://119.29.94.122:8888/h5/about.html";
