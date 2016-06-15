@@ -1295,7 +1295,7 @@ public class RegPicListActivity extends Activity {
             @Override
             public void onSuccess(User data) {
                 if (data != null) {
-                    user = data;
+                    user = data; 
                     try {
                         ArrayList<Object> ss1 = new ArrayList<Object>();
                         ss1.add(data.getImg1());
