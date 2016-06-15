@@ -26,6 +26,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -571,6 +572,11 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 //                                .setCancelable(false)
 //                                .show();
                         CommonHelper.showTip(activity,"直播已结束");
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                activity.onBackPressed();
+                            }
+                        }, 1000);
                     }
                     return true;
                 }

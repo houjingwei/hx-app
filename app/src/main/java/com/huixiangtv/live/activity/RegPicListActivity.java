@@ -1141,7 +1141,7 @@ public class RegPicListActivity extends Activity {
                         public void onSuccess(User data) {
                             if (data != null) {
 
-                                if (data.getStatus().equals("15")) //status
+                                if (data.getStatus().equals("1")) //status
                                 {
                                     //get Info
                                     ArtistCardInfo();

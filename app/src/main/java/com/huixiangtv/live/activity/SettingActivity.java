@@ -319,7 +319,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
     private UMAuthListener umAuthListener = new UMAuthListener() {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            Toast.makeText(SettingActivity.this, "Authorize Successfully", Toast.LENGTH_SHORT).show();
+
             if (null != data && data.size() > 0) {
                 String access_token = data.get("access_token");
                 String openid = data.get("openid");
@@ -368,7 +368,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
 //            view.setClickable(false);
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_qqbind));
             view.setTextAppearance(SettingActivity.this, R.style.black_normal_style);
-            view.setText("解除绑定");
+            view.setText("解绑");
         }
         if (tag.equals("0")) {
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.set_bind));
