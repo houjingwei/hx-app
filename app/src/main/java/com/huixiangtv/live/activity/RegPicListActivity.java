@@ -331,10 +331,6 @@ public class RegPicListActivity extends Activity {
     }
 
     private void allEdit() {
-        txtSave.setVisibility(View.GONE);
-        txtUpload.setText("编辑");
-        ll_per_info.setTag("2");
-        txtUpload.setTag("2");
         user.setUid(App.getPreferencesValue("uid"));
     }
 
@@ -983,7 +979,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlzone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Share to zone", Toast.LENGTH_LONG).show();
+                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.QZONE, user.getPhoto(), "http://119.29.94.122:8888/h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
                 dlg.dismiss();
             }
         });
@@ -991,7 +987,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlwx).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Share to wechat", Toast.LENGTH_LONG).show();
+                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN, user.getPhoto(), "http://119.29.94.122:8888/h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
                 dlg.dismiss();
             }
         });
@@ -1000,7 +996,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlpyq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Share to pyq", Toast.LENGTH_LONG).show();
+                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN_FAVORITE, user.getPhoto(), "http://119.29.94.122:8888/h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
                 dlg.dismiss();
             }
         });
@@ -1017,7 +1013,7 @@ public class RegPicListActivity extends Activity {
             @Override
             public void onClick(View v) {
                 copy("szj",context);
-                Toast.makeText(context, "Share to copy", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "链接复制成功", Toast.LENGTH_LONG).show();
                 dlg.dismiss();
             }
         });
@@ -1159,9 +1155,15 @@ public class RegPicListActivity extends Activity {
 
                                 if (data.getStatus().equals("1")) //status
                                 {
+                                    txtSave.setVisibility(View.GONE);
+                                    txtUpload.setText("编辑");
+                                    ll_per_info.setTag("2");
+                                    txtUpload.setTag("2");
                                     //get Info
                                     ArtistCardInfo();
                                 } else {
+
+                                    ll_per_info.setTag("1");
                                     if (cp!=null && cp.isShowing())
                                         cp.dismiss();
                                     mertoBeans.clear();
@@ -1266,6 +1268,7 @@ public class RegPicListActivity extends Activity {
                 resetOnMertoItemViewListener();
                 cp.dismiss();
                 txtSave.setVisibility(View.GONE);
+                ll_per_info.setTag("2");
                 txtUpload.setText("编辑");
                 txtUpload.setTag("2");
                 CommonHelper.showTip(RegPicListActivity.this, "保存成功");
