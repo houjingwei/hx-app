@@ -501,14 +501,16 @@ public class RegPicListActivity extends Activity {
             } else {
                 dropImageModel.setIsFinish(0);
             }
+
+            if (cp!=null && cp.isShowing())
+                cp.dismiss();
         } else {
             return;
         }
         mertoBeans.add(dropImageModel);
         setView();
 
-        if (cp!=null && cp.isShowing())
-            cp.dismiss();
+
 
     }
 
@@ -1139,12 +1141,13 @@ public class RegPicListActivity extends Activity {
                         public void onSuccess(User data) {
                             if (data != null) {
 
-                                if (data.getStatus().equals("1")) //status
+                                if (data.getStatus().equals("15")) //status
                                 {
                                     //get Info
                                     ArtistCardInfo();
                                 } else {
-
+                                    if (cp!=null && cp.isShowing())
+                                        cp.dismiss();
                                     mertoBeans.clear();
                                     CommonUtil.setGuidImage(RegPicListActivity.this, R.id.r1, R.drawable.click_pic, "first1", new ApiCallback() {
 
