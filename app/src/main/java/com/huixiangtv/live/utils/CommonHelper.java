@@ -210,7 +210,7 @@ public class CommonHelper {
             @Override
             public void onResult(SHARE_MEDIA platform) {
                 if(null!=back){
-                    back.onSuccess("ok");
+                    back.onSuccess("ok"); 
                 }
                 shareAddLove(shareType,platform);
             }
