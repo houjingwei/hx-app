@@ -3,6 +3,7 @@ package com.huixiangtv.live.activity;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -58,6 +59,7 @@ import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
 import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
+import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.xutils.view.annotation.ViewInject;
@@ -69,7 +71,7 @@ import java.util.Map;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
-public class LiveActivity extends BaseBackActivity implements View.OnClickListener ,LiveRecorderManager.OnStatusCallback{
+public class LiveActivity extends Activity implements View.OnClickListener ,LiveRecorderManager.OnStatusCallback{
 
 
 
@@ -99,10 +101,11 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
     private Live live;
     private int sharePlat = 0;
-    private int isLocal = 0;
+    private int isLocal = 1;
     private String pushUrl;
     private String isRecord = "false";
 
+    private int startRecord = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +145,27 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                 if (null != cp) {
                     cp.dismiss();
                 }
-                living(data);
+                if(null!=data){
+                    if(data.getLiveStatus().equals("1")){
+                        living(data);
+                    }else if(data.getLiveStatus().equals("0")){
+                        CommonHelper.showTip(LiveActivity.this,"直播已结束");
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                onBackPressed();
+                            }
+                        }, 1000);
+                    }else if(data.getLiveStatus().equals("-1")){
+                        CommonHelper.showTip(LiveActivity.this,"直播被禁止，不可观看");
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                onBackPressed();
+                            }
+                        }, 1000);
+                    }
+
+                }
+
             }
 
             @Override
@@ -220,6 +243,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
 
     private void initStartView() {
+        startRecord = 1;
         startLiveView = new StartLiveView(this);
         startLiveView.setActivity(this);
         flCover.addView(startLiveView);
@@ -502,10 +526,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     private ColaProgress cp = null;
     private void toLive() {
         final Map<String, String> params = new HashMap<String, String>();
-        if (startLiveView.getTvTheme().getText().toString().equals(R.string.selTheme)) {
-            CommonHelper.showTip(LiveActivity.this, "请选择一个话题");
-            return;
-        }
+
         params.put("title", startLiveView.getEtTitle().getText().toString());
         params.put("topic", startLiveView.getTvTheme().getText().toString());
         if(isLocal==1){
@@ -529,6 +550,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             public void onAnimationEnd(Animator animator) {
                 sharePlat = startLiveView.platform;
                 if (null != startLiveView) {
+                    startRecord = 2;
                     flCover.removeView(startLiveView);
                 }
                 showLive(params);
@@ -589,24 +611,27 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         flCover.addView(liveView);
         liveView.loadLive();
         if(sharePlat==1){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
         }else if(sharePlat==2){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QQ,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QQ,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
         }else if(sharePlat==3){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QZONE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QZONE,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
         }else if(sharePlat==4){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
         }else if(sharePlat==5){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN_CIRCLE,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN_CIRCLE,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
         }else if(sharePlat==6){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SINA,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SINA,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
         }
     }
+
+
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK && requestCode == 1) {
@@ -636,7 +661,11 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                     public void onCreateLiveSuccess(String pushUrl, String playUrl) {
                         pushUrl = pushUrl;
                         Log.e("myTest", "startPush");
-                        startRecorder(live.getPushUrl(), playUrl);
+                        try{
+                            startRecorder(live.getPushUrl(), playUrl);
+                        }catch(Exception ee){
+
+                        }
                     }
                 });
             } catch (Exception ex) {
@@ -760,7 +789,10 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
         }, String.class);
     }
 
-    private void showCloseInfo(LiveMsg msg) {
+    public void showCloseInfo(LiveMsg msg) {
+        Log.i("status_status",showFinishWindow+"");
+        showFinishWindow = true;
+        Log.i("status_status",showFinishWindow+"");
         LivingFinishWindow selectPicWayWindow = new LivingFinishWindow(LiveActivity.this, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,msg,live);
         selectPicWayWindow.showAtLocation(LiveActivity.this.findViewById(R.id.liveMain), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
         selectPicWayWindow.update();
@@ -811,9 +843,7 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
 
     protected void dialog() {
 
-        if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
-            onBackPressed();
-        } else {
+        if(StringUtil.isNotEmpty(isRecord) && isRecord.equals("true") && startRecord==2 && showFinishWindow==false){
             AlertDialog.Builder builder = new AlertDialog.Builder(LiveActivity.this);
             builder.setMessage("确定要退出直播吗?");
             builder.setTitle("提示");
@@ -833,17 +863,20 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
                         }
                     });
             builder.create().show();
+        }else if(showFinishWindow){
 
+        }else{
+            onBackPressed();
         }
 
     }
+
+    private boolean showFinishWindow = false;
 
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-
         if(null!=_Client){
             _Client.stopPreview();
             _Client.onDestroy();
@@ -856,8 +889,10 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
             } else {
                 mVideoView.enterBackground();
             }
-
         }
+
+        overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+        finish();
     }
 
 
@@ -914,4 +949,6 @@ public class LiveActivity extends BaseBackActivity implements View.OnClickListen
     public void setIsLocal(int isLocal) {
         this.isLocal = isLocal;
     }
+
+
 }

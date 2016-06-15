@@ -194,28 +194,75 @@ public class CommonHelper {
     }
 
 
-
-
-    public static void share(final Activity activity, String title, String content, SHARE_MEDIA platForm, String url, String tarUrl, final ApiCallback back) {
+    /**
+     *
+     * @param activity
+     * @param title
+     * @param content
+     * @param platForm
+     * @param url
+     * @param tarUrl
+     * @param shareType 0:zhibo 1:yirenka
+     * @param back
+     */
+    public static void share(final Activity activity, String title, String content, SHARE_MEDIA platForm, String url, String tarUrl, final int shareType, final ApiCallback back) {
         ShareSdk.startShare(activity, title, content, platForm, url, tarUrl,new UMShareListener() {
             @Override
             public void onResult(SHARE_MEDIA platform) {
-                showTip(activity,"分享成功");
                 if(null!=back){
                     back.onSuccess("ok");
                 }
+                shareAddLove(shareType,platform);
             }
 
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
                 showTip(activity,"分享失败啦");
+                shareAddLove(shareType,platform);
             }
 
             @Override
             public void onCancel(SHARE_MEDIA platform) {
                 showTip(activity,"分享取消了");
+                shareAddLove(shareType,platform);
             }
         });
+    }
+
+
+    /**
+     * 分享送爱心
+     * @param shareType
+     * @param platform
+     */
+    private static void shareAddLove(int shareType, SHARE_MEDIA platform) {
+        String platForm = "0";
+        if(platform==SHARE_MEDIA.QQ){
+            platForm  = "1";
+        }else if(platform==SHARE_MEDIA.SINA){
+            platForm  = "2";
+        }else if(platform==SHARE_MEDIA.WEIXIN_CIRCLE){
+            platForm  = "3";
+        }else if(platform==SHARE_MEDIA.WEIXIN){
+            platForm  = "4";
+        }else if(platform==SHARE_MEDIA.QZONE){
+            platForm  = "5";
+        }
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("shareType",shareType+"");
+        params.put("platform",platForm);
+        RequestUtils.sendPostRequest(Api.ADD_LOVE, params, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccess(String data) {
+                super.onSuccess(data);
+            }
+
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, String.class);
     }
 
 

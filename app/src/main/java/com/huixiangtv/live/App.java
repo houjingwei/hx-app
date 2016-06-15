@@ -95,7 +95,7 @@ public class App extends MultiDexApplication {
         statuBarHeight = getStatusBarHeight(sContext);
 
         //加载免费礼物数据
-        loadFreeGiftList(null);
+        //loadFreeGiftList(null);
         model=android.os.Build.MODEL; // 手机型号
         deviceVersion=android.os.Build.VERSION.RELEASE; // android系统版本号
         if(null!=App.getLoginUser()){

@@ -5,6 +5,8 @@ package com.huixiangtv.live.model;
  */
 public class Live {
 
+
+    private String liveStatus;
     private String lid;
     private String pushUrl;
     private String title;
@@ -205,5 +207,13 @@ public class Live {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getLiveStatus() {
+        return liveStatus;
+    }
+
+    public void setLiveStatus(String liveStatus) {
+        this.liveStatus = liveStatus;
     }
 }

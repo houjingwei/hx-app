@@ -974,10 +974,11 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlqq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity,user.getNickName()+"的艺人卡", user.getNickName()+"的艺人卡",SHARE_MEDIA.QQ,user.getPhoto(),"http://119.29.94.122:8888/h5/card.html?aid="+user.getUid()+"&uid="+App.getPreferencesValue("uid").toString(),null);
+                CommonHelper.share(activity,user.getNickName()+"的艺人卡", user.getNickName()+"的艺人卡",SHARE_MEDIA.QQ,user.getPhoto(),"http://119.29.94.122:8888/h5/card.html?aid="+user.getUid()+"&uid="+App.getPreferencesValue("uid").toString(),1,null);
                 dlg.dismiss();
             }
         });
+
 
         window.findViewById(R.id.rlzone).setOnClickListener(new View.OnClickListener() {
             @Override

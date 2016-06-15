@@ -106,7 +106,7 @@
 
                         <TextView
                             android:id="@+id/tvFans"
-                            style="@style/white_bigger_style"
+                            style="@style/white_bigger_bold_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -115,11 +115,11 @@
 
                         <TextView
                             android:id="@+id/fans"
-                            style="@style/white_small_style"
+                            style="@style/white_smaller_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-
+                            android:layout_marginTop="3dp"
                             android:text="粉丝" />
                     </LinearLayout>
 
@@ -139,16 +139,16 @@
 
                         <TextView
                             android:id="@+id/haveFans"
-                            style="@style/white_bigger_style"
+                            style="@style/white_bigger_bold_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0" />
 
                         <TextView
-                            style="@style/white_small_style"
+                            style="@style/white_smaller_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:layout_marginTop="3dp"
                             android:text="@string/haveFans" />
                     </LinearLayout>
                     <View
@@ -167,16 +167,16 @@
 
                         <TextView
                             android:id="@+id/tvHot"
-                            style="@style/white_bigger_style"
+                            style="@style/white_bigger_bold_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0" />
 
                         <TextView
-                            style="@style/white_small_style"
+                            style="@style/white_smaller_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:layout_marginTop="3dp"
                             android:text="@string/labenHot" />
                     </LinearLayout>
                 </LinearLayout>
@@ -235,13 +235,13 @@
                     <TextView
                         android:id="@+id/tvAccount"
                         android:layout_marginTop="3dp"
-                        style="@style/gray_normal_style"
+                        style="@style/gray_small_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:text="576.8元" />
+                        android:text="0" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -280,13 +280,13 @@
                     <TextView
                         android:id="@+id/tvLoves"
                         android:layout_marginTop="3dp"
-                        style="@style/gray_normal_style"
+                        style="@style/gray_small_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:text="5767个" />
+                        android:text="0" />
 
                 </LinearLayout>
 
