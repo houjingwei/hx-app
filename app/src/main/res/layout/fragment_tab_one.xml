@@ -146,7 +146,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#8f00000f"
+                    android:background="@color/black80"
                     android:gravity="center"
                     android:visibility="gone"></com.huixiangtv.live.utils.widget.SwitchPageControlView>
             </RelativeLayout>
@@ -231,7 +231,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="李永波："
                         android:textColor="#CBBE40"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/tvContent1"
@@ -239,7 +239,7 @@
                         android:layout_height="wrap_content"
                         android:text="这个没有你的冬天，比以前冷哦。"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -255,7 +255,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="刘思佳："
                         android:textColor="#CBBE40"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/tvContent2"
@@ -263,7 +263,7 @@
                         android:layout_height="wrap_content"
                         android:text="黑白萌萌的头像就是我。"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -279,7 +279,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="繁星点点："
                         android:textColor="#CBBE40"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/tvContent3"
@@ -287,7 +287,7 @@
                         android:layout_height="wrap_content"
                         android:text="充满阳光的午后，听小美女唱歌,真的是一种享受，好幸福哦！"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -303,7 +303,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="张悦："
                         android:textColor="#CBBE40"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/tvContent4"
@@ -311,7 +311,7 @@
                         android:layout_height="wrap_content"
                         android:text="北方人，有精月彩唱歌跳舞才华。"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
 
