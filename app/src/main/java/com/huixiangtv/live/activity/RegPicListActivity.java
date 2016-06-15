@@ -1080,21 +1080,6 @@ public class RegPicListActivity extends Activity {
 
     }
 
-
-    public static void showFirstAlert(final Context context) {
-
-        final AlertDialog dlg = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT).create();
-        dlg.show();
-        dlg.setCancelable(false);
-        Window window = dlg.getWindow();
-        window.setContentView(R.layout.open_share);
-        WindowManager.LayoutParams lp = window.getAttributes();
-        lp.alpha = 1.9f;
-        window.setAttributes(lp);
-
-    }
-
-
     private void resetOnMertoItemViewListener() {
 
         drop_index = false;
