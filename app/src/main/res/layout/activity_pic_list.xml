@@ -47,6 +47,7 @@
 
                     <LinearLayout
                         android:id="@+id/ll_per_info"
+                        android:clickable="true"
                         android:layout_width="wrap_content"
                         android:layout_height="60dp"
                         android:layout_gravity="bottom|left"
@@ -260,12 +261,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_margin="10dp"
             android:src="@drawable/txt_share"
             android:clickable="true"
             android:gravity="center"
-            android:padding="5dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:textColor="@color/white" />
 
         <ImageView

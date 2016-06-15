@@ -65,6 +65,7 @@ import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.GaussUtils;
+import com.huixiangtv.live.utils.ShareSdk;
 import com.huixiangtv.live.utils.TokenChecker;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.DropImageView;
@@ -225,15 +226,11 @@ public class RegPicListActivity extends Activity {
         String uid =  getIntent().getStringExtra("uid");
         if(null == uid)
         {
-            txtSave.setVisibility(View.GONE);
-            txtUpload.setText("编辑");
-            txtUpload.setTag("2");
-            user.setUid(App.getPreferencesValue("uid"));
+            allEdit();
         }
         else
         {
-            txtSave.setVisibility(View.GONE);
-            user.setUid(uid);
+            noEdit(uid);
         }
         mertoItemViews = new ArrayList<DropImageView>();
         mertoItemViews.add((DropImageView) imageView1);
@@ -257,6 +254,7 @@ public class RegPicListActivity extends Activity {
             public void onClick(View v) {
                 if(txtUpload.getTag().equals("2"))
                 {
+                    ll_per_info.setTag("1");
                     txtUpload.setText("上传");
                     v.setTag("1");
                     startOnMertoItemViewListener();
@@ -276,21 +274,22 @@ public class RegPicListActivity extends Activity {
         ll_per_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showRegAlert(RegPicListActivity.this);
+                if(ll_per_info.getTag().equals("1"))
+                    showRegAlert(RegPicListActivity.this);
             }
         });
 
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showShareAlert(RegPicListActivity.this);
+                showShareAlert(RegPicListActivity.this,RegPicListActivity.this);
             }
         });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                finish();
             }
         });
         txtSave.setOnClickListener(new View.OnClickListener() {
@@ -315,7 +314,6 @@ public class RegPicListActivity extends Activity {
                         @Override
                         public void onSuccess(Object data) {
                             List<String> pics = (List<String>) data;
-                            Log.i("successful", pics.toString());
                         }
                     });
                 //}
@@ -330,6 +328,17 @@ public class RegPicListActivity extends Activity {
         });
 
         lastClickTime = 0;
+    }
+
+    private void allEdit() {
+        user.setUid(App.getPreferencesValue("uid"));
+    }
+
+    private void noEdit(String uid) {
+        txtUpload.setVisibility(View.GONE);
+        ll_per_info.setTag("2");
+        txtSave.setVisibility(View.GONE);
+        user.setUid(uid);
     }
 
     private boolean isMoveAll() {
@@ -564,6 +573,8 @@ public class RegPicListActivity extends Activity {
 //
                         Intent intent = new Intent(RegPicListActivity.this, CropImageUI.class);
                         intent.putExtra("path",v.getLocUrl());
+                        intent.putExtra("width",v.getWidth());
+                        intent.putExtra("height",v.getHeight());
                         //PhotoPickerIntent.setPhotoCount(intent, 1);
                         //PhotoPickerIntent.setShowCamera(intent, true);
                                  startActivityForResult(intent, REQUEST_CODE_CAT);
@@ -945,7 +956,7 @@ public class RegPicListActivity extends Activity {
      *
      * @param context
      */
-    public static void showShareAlert(final Context context) {
+    public static void showShareAlert(final Activity activity,final Context context) {
 
         final AlertDialog dlg = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT).create();
         dlg.show();
@@ -959,16 +970,16 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlqq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //CommonHelper.share(this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧", SHARE_MEDIA.SMS,live.getPhoto(),"http://h5.huixiangtv.com/live/"+live.getLid(),null);
-                Toast.makeText(context, "Share to qq", Toast.LENGTH_LONG).show();
+                CommonHelper.share(activity,user.getNickName()+"的艺人卡", user.getNickName()+"的艺人卡",SHARE_MEDIA.QQ,user.getPhoto(),"http://119.29.94.122:8888/h5/card.html?aid="+user.getUid()+"&uid="+App.getPreferencesValue("uid").toString(),1,null);
                 dlg.dismiss();
             }
         });
 
+
         window.findViewById(R.id.rlzone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Share to zone", Toast.LENGTH_LONG).show();
+                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.QZONE, user.getPhoto(), "http://119.29.94.122:8888/h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
                 dlg.dismiss();
             }
         });
@@ -976,7 +987,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlwx).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Share to wechat", Toast.LENGTH_LONG).show();
+                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN, user.getPhoto(), "http://119.29.94.122:8888/h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
                 dlg.dismiss();
             }
         });
@@ -985,7 +996,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlpyq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Share to pyq", Toast.LENGTH_LONG).show();
+                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN_FAVORITE, user.getPhoto(), "http://119.29.94.122:8888/h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
                 dlg.dismiss();
             }
         });
@@ -993,7 +1004,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlwb).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Share to sina", Toast.LENGTH_LONG).show();
+                ShareSdk.startShare(activity, user.getNickName() + "的艺人卡","", SHARE_MEDIA.SMS, "http://119.29.94.122:8888/h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString());
                 dlg.dismiss();
             }
         });
@@ -1002,7 +1013,7 @@ public class RegPicListActivity extends Activity {
             @Override
             public void onClick(View v) {
                 copy("szj",context);
-                Toast.makeText(context, "Share to copy", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "链接复制成功", Toast.LENGTH_LONG).show();
                 dlg.dismiss();
             }
         });
@@ -1132,9 +1143,10 @@ public class RegPicListActivity extends Activity {
 
     private void ArtistCardInfoStatus() {
         cp = ColaProgress.show(RegPicListActivity.this, "正在加载数据...", true, false, null);
+        String token = null == App.getLoginUser()?"":App.getLoginUser().getToken();
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("uid", user.getUid());
-        paramsMap.put("token", App.getLoginUser().getToken());
+        paramsMap.put("token", token);
 
                     RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD_STATUS, paramsMap, new ResponseCallBack<User>() {
                         @Override
@@ -1143,9 +1155,15 @@ public class RegPicListActivity extends Activity {
 
                                 if (data.getStatus().equals("1")) //status
                                 {
+                                    txtSave.setVisibility(View.GONE);
+                                    txtUpload.setText("编辑");
+                                    ll_per_info.setTag("2");
+                                    txtUpload.setTag("2");
                                     //get Info
                                     ArtistCardInfo();
                                 } else {
+
+                                    ll_per_info.setTag("1");
                                     if (cp!=null && cp.isShowing())
                                         cp.dismiss();
                                     mertoBeans.clear();
@@ -1250,6 +1268,7 @@ public class RegPicListActivity extends Activity {
                 resetOnMertoItemViewListener();
                 cp.dismiss();
                 txtSave.setVisibility(View.GONE);
+                ll_per_info.setTag("2");
                 txtUpload.setText("编辑");
                 txtUpload.setTag("2");
                 CommonHelper.showTip(RegPicListActivity.this, "保存成功");
@@ -1287,15 +1306,16 @@ public class RegPicListActivity extends Activity {
 
     //get artist card info
     private void ArtistCardInfo() {
+        String token = null == App.getLoginUser()?"":App.getLoginUser().getToken();
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("uid", user.getUid());
-        paramsMap.put("token",App.getLoginUser().getToken());
+        paramsMap.put("token",token);
 
         RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD, paramsMap, new ResponseCallBack<User>() {
             @Override
             public void onSuccess(User data) {
                 if (data != null) {
-                    user = data; 
+                    user = data;
                     try {
                         ArrayList<Object> ss1 = new ArrayList<Object>();
                         ss1.add(data.getImg1());

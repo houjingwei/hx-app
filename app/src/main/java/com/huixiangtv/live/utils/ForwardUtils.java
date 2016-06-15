@@ -24,6 +24,7 @@ import com.huixiangtv.live.activity.SettingActivity;
 import com.huixiangtv.live.activity.TopicActivity;
 import com.huixiangtv.live.activity.UserTagActivity;
 import com.huixiangtv.live.activity.UserinfoActivity;
+import com.huixiangtv.live.activity.WebActivity;
 
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -115,6 +116,11 @@ public class ForwardUtils {
                 toIntent(oriActivity,params,intent);
             }else if (url.startsWith(Constant.MY_HOTS)){
                 Intent intent = new Intent(oriActivity, MyHotsActivity.class);
+                toIntent(oriActivity,params,intent);
+            }
+
+            else if (url.startsWith(Constant.BINNER_URL)){
+                Intent intent = new Intent(oriActivity, WebActivity.class);
                 toIntent(oriActivity,params,intent);
             }
 

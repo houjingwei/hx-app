@@ -1,5 +1,6 @@
 package com.huixiangtv.live.utils.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -18,12 +19,16 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.WebActivity;
 import com.huixiangtv.live.model.BannerModel;
+import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -231,8 +236,6 @@ public class BannerView extends FrameLayout implements Runnable {
             imageView.setScaleType(ScaleType.FIT_XY);
             final BannerModel ps = listbannerModel.get(position);
             ImageUtils.display(imageView,ps.image);
-            final int pos = position;
-
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -259,17 +262,13 @@ public class BannerView extends FrameLayout implements Runnable {
                 mViewPager.setCurrentItem(position, false);
             }
         }
-
-
-
-
     }
 
 
     private void gotoWebActivity(Context mContext,String url)
     {
-        Intent intent = new Intent(mContext, WebActivity.class);
-        intent.putExtra("url", "https://www.pgyer.com/");
-        mContext.startActivity(intent);
+        Map<String,String> param = new HashMap<>();
+        param.put("url",url);
+        ForwardUtils.target((Activity)mContext, Constant.BINNER_URL, param);
     }
 }
