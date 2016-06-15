@@ -5,10 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.huixiangtv.live.App;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -56,10 +59,11 @@ public class BitmapHelper {
     }
 
     private static Context mContext;
-    public static BitmapHelper getInstance(Context context){
-        if(instance==null){
-            mContext=context;
-            instance=new BitmapHelper();
+
+    public static BitmapHelper getInstance(Context context) {
+        if (instance == null) {
+            mContext = context;
+            instance = new BitmapHelper();
 
             ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                     .build();
@@ -71,54 +75,54 @@ public class BitmapHelper {
 
 
     /**
-     *
      * @param container
      * @param uri
      * @param imageSize {@link ImageSize}
      */
-    public <T extends View> void display(T container,final String uri,final String imageSize,DefaultSize defaultSize) {
-        if(container instanceof ImageView) {
-            if(uri != null) {
+    public <T extends View> void display(T container, final String uri, final String imageSize, DefaultSize defaultSize) {
+        if (container instanceof ImageView) {
+            if (uri != null) {
                 String url = uri + imageSize;
                 DisplayImageOptions options = (defaultSize == DefaultSize.SMALL ?
                         displayImageOptionsSmall : displayImageOptionsBig);
-                ImageLoader.getInstance().displayImage(url, (ImageView)container, options);
+                ImageLoader.getInstance().displayImage(url, (ImageView) container, options);
             }
         }
     }
 
-    public <T extends View> void display(T container,final String uri) {
-        if(container instanceof ImageView) {
-            if(uri != null) {
+    public <T extends View> void display(T container, final String uri) {
+        if (container instanceof ImageView) {
+            if (uri != null) {
                 //String url = uri + ImageSize.ZI_XUN;
 
                 //ImageLoader.getInstance().displayImage(url, (ImageView) container, displayImageOptionsSmall);
             }
         }
     }
-    public static enum DefaultSize{
-        BIG,SMALL
+
+    public static enum DefaultSize {
+        BIG, SMALL
     }
 
     /**
-     *
-     * @descrption 各位置图片裁剪尺寸
      * @author stone
+     * @descrption 各位置图片裁剪尺寸
      * @date 2015-6-17
      */
-    public static class ImageSize{
+    public static class ImageSize {
 
 
     }
 
     static Bitmap bmap;
-    public static Bitmap copressImage(String imgPath,int detWidth,int detHeight){
+
+    public static Bitmap copressImage(String imgPath, int detWidth, int detHeight) {
         File picture = new File(imgPath);
         BitmapFactory.Options bitmapFactoryOptions = new BitmapFactory.Options();
         //下面这个设置是将图片边界不可调节变为可调节
         bitmapFactoryOptions.inJustDecodeBounds = true;
         bitmapFactoryOptions.inSampleSize = 2;
-        int outWidth  = bitmapFactoryOptions.outWidth;
+        int outWidth = bitmapFactoryOptions.outWidth;
         int outHeight = bitmapFactoryOptions.outHeight;
         bmap = BitmapFactory.decodeFile(picture.getAbsolutePath(),
                 bitmapFactoryOptions);
@@ -139,20 +143,20 @@ public class BitmapHelper {
         bitmapFactoryOptions.inJustDecodeBounds = false;
         bmap = BitmapFactory.decodeFile(picture.getAbsolutePath(),
                 bitmapFactoryOptions);
-        if(bmap != null){
+        if (bmap != null) {
             //ivwCouponImage.setImageBitmap(bmap);
-            return createScaleBitmap(bmap,detWidth,detHeight,bitmapFactoryOptions.inSampleSize);
+            return createScaleBitmap(bmap, detWidth, detHeight, bitmapFactoryOptions.inSampleSize);
         }
         return null;
     }
 
-    public static Bitmap copressImage(String imgPath){
+    public static Bitmap copressImage(String imgPath) {
         File picture = new File(imgPath);
         BitmapFactory.Options bitmapFactoryOptions = new BitmapFactory.Options();
         //下面这个设置是将图片边界不可调节变为可调节
         bitmapFactoryOptions.inJustDecodeBounds = true;
         bitmapFactoryOptions.inSampleSize = 2;
-        int outWidth  = bitmapFactoryOptions.outWidth;
+        int outWidth = bitmapFactoryOptions.outWidth;
         int outHeight = bitmapFactoryOptions.outHeight;
         bmap = BitmapFactory.decodeFile(picture.getAbsolutePath(),
                 bitmapFactoryOptions);
@@ -173,7 +177,7 @@ public class BitmapHelper {
         bitmapFactoryOptions.inJustDecodeBounds = false;
         bmap = BitmapFactory.decodeFile(picture.getAbsolutePath(),
                 bitmapFactoryOptions);
-        if(bmap != null){
+        if (bmap != null) {
             //ivwCouponImage.setImageBitmap(bmap);
             return bmap;
         }
@@ -208,7 +212,8 @@ public class BitmapHelper {
         return BitmapFactory.decodeFile(file.getAbsolutePath(), opt);
 
     }
-//
+
+    //
     public static Bitmap zoomImg(Bitmap bm, int newWidth, int newHeight) {
         // 获得图片的宽高
         int width = bm.getWidth();
@@ -224,5 +229,36 @@ public class BitmapHelper {
         Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
                 true);
         return newbm;
+    }
+
+
+    public static Bitmap setDrawable(Bitmap backGroundMap,int widthP,int heightP) {
+        int width = widthP; //App.screenWidth;
+        int height =heightP;// App.screenHeight;
+
+        int widthDrawable = backGroundMap.getWidth();
+        int heightDrawable = backGroundMap.getHeight();//获取背景图片的宽和高
+        float scaleWidth = (float) width / widthDrawable;
+        float scaleHeight = (float) height / heightDrawable;//宽高比
+
+        Bitmap resizeBmp;
+        Matrix matrix = new Matrix();
+        if (scaleWidth < scaleHeight) {
+            float scale = scaleHeight;//取大的
+            matrix.postScale(scale, scale);//缩放比例
+            int xStart = (int) (widthDrawable - widthDrawable / scale) / 2;
+
+
+            resizeBmp = Bitmap.createBitmap(backGroundMap, xStart, 0, (int) (widthDrawable / scale),
+                    heightDrawable, matrix, true);
+        } else {
+            float scale = scaleWidth;
+            matrix.postScale(scale, scale);
+            int yStart = (int) (scaleHeight - scaleHeight / scale) / 2;
+            resizeBmp = Bitmap.createBitmap(backGroundMap, 0, yStart, widthDrawable,
+                    (int) (heightDrawable / scale), matrix, true);
+        }
+        return resizeBmp;
+
     }
 }

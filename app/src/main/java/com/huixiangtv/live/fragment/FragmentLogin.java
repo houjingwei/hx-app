@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 	EditText etCode;
 	EditText etForgotPwd;
 	TextView tvGetCode;
+
 
 
 	@Override
@@ -230,14 +232,14 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 		Map<String,String> params = new HashMap<String, String>();
 		String pwd = RSAUtils.rsaPwd(etPwd.getText().toString());
 		params.put("phone",etAccount.getText().toString());
-		params.put("password",etPwd.getText().toString());
+		params.put("password", etPwd.getText().toString());
 
 		RequestUtils.sendPostRequest(Api.LOGIN, params, new ResponseCallBack<User>() {
 			@Override
 			public void onSuccess(User data) {
 				super.onSuccess(data);
 				saveLoginInfo(data);
-				if(null!=cp){
+				if (null != cp) {
 					cp.dismiss();
 				}
 			}
@@ -245,12 +247,12 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 			@Override
 			public void onFailure(ServiceException e) {
 				super.onFailure(e);
-				if(null!=cp){
+				if (null != cp) {
 					cp.dismiss();
 				}
-				CommonHelper.showTip(getActivity(),e.getMessage());
+				CommonHelper.showTip(getActivity(), e.getMessage());
 			}
-		},User.class);
+		}, User.class);
 	}
 
 	private void saveLoginInfo(User data) {
@@ -264,7 +266,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 		Map<String,String> params = new HashMap<String, String>();
 		params.put("code",code);
 		params.put("platform",platform);
-		params.put("openid",openid);
+		params.put("openid", openid);
 		RequestUtils.sendPostRequest(Api.AUTH_THIRDLOGIN, params, new ResponseCallBack<User>() {
 			@Override
 			public void onSuccess(User data) {
@@ -281,11 +283,13 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 				if (null != cp) {
 					cp.dismiss();
 				}
-				CommonHelper.showTip(getActivity(),e.getMessage());
+				CommonHelper.showTip(getActivity(), e.getMessage());
 			}
 		}, User.class);
 
 	}
+
+
 
 
 	public void getCode() {
@@ -297,7 +301,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 		KeyBoardUtils.closeKeybord(etPhone,getActivity());
 		tvGetCode.setEnabled(false);
 		cp = ColaProgress.show(getActivity(), "正在获取", false, true, null);
-		CommonUtil.getMsgCode(etCode.getText().toString(),new CodeCallBack(){
+		CommonUtil.getMsgCode(etPhone.getText().toString(),new CodeCallBack(){
 					@Override
 					public void sendSuccess() {
 						if(null!=cp){

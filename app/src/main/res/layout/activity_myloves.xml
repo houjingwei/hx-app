@@ -32,16 +32,4 @@
             android:background="@android:color/white" />
     </com.chanven.lib.cptr.PtrClassicFrameLayout>
 
-    <TextView
-        android:id="@+id/tv_list_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:drawablePadding="20dp"
-        android:drawableTop="@drawable/icon_no_data"
-        android:text="@string/empty_des"
-        android:textColor="#999999"
-        android:textSize="17sp"
-        android:visibility="gone" />
 </LinearLayout>

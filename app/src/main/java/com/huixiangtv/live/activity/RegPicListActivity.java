@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler.Callback;
@@ -197,18 +198,22 @@ public class RegPicListActivity extends Activity {
     @ViewInject(R.id.txtUpload)
     TextView txtUpload;
 
+    @ViewInject(R.id.back)
+    ImageView back;
 
     private ArrayList<DropImageModel> mertoBeans = new ArrayList<DropImageModel>();
     private ArrayList<DropImageModel> startBeans;// 保存itme变换前的内容
     private static ArrayList<DropImageView> mertoItemViews;
-
+    MainActivity activity ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int flag=WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        Window window=RegPicListActivity.this.getWindow();
+        window.setFlags(flag, flag);
         setContentView(R.layout.activity_pic_list);
         x.view().inject(this);
-
-
         startOnMertoItemViewListener();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         imageView1.setTag(0);
@@ -220,10 +225,14 @@ public class RegPicListActivity extends Activity {
         String uid =  getIntent().getStringExtra("uid");
         if(null == uid)
         {
+            txtSave.setVisibility(View.GONE);
+            txtUpload.setText("编辑");
+            txtUpload.setTag("2");
             user.setUid(App.getPreferencesValue("uid"));
         }
         else
         {
+            txtSave.setVisibility(View.GONE);
             user.setUid(uid);
         }
         mertoItemViews = new ArrayList<DropImageView>();
@@ -246,21 +255,28 @@ public class RegPicListActivity extends Activity {
         txtUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startOnMertoItemViewListener();
-                txtSave.setVisibility(View.VISIBLE);
-                checkPermission(RequestCode.Button);
+                if(txtUpload.getTag().equals("2"))
+                {
+                    txtUpload.setText("上传");
+                    v.setTag("1");
+                    startOnMertoItemViewListener();
+                    txtSave.setVisibility(View.VISIBLE);
+                }
+                else {
+                    checkPermission(RequestCode.Button);
+                }
             }
         });
 
         ArtistCardInfoStatus();
 
-        ll_per_info.getBackground().setAlpha(100);
+        ll_per_info.getBackground().setAlpha(150);
 
 
         ll_per_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  showRegAlert(RegPicListActivity.this);
+                showRegAlert(RegPicListActivity.this);
             }
         });
 
@@ -271,16 +287,29 @@ public class RegPicListActivity extends Activity {
             }
         });
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         txtSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //first validation
+                int i = 0;
                     for (DropImageView dropImageView : mertoItemViews) {
-                        if (dropImageView.getIsFinish() != 5) {
+                        if(dropImageView.getIsFinish()>5)
+                        {
+                            i++;
+                        }
+                        if (dropImageView.getIsFinish() < 5) {
+
                             Toast.makeText(getBaseContext(), "请选择选择图片到第" + (Integer.parseInt(dropImageView.getTag().toString()) + 1) + "张卡片", Toast.LENGTH_LONG).show();
                             return;
                         }
                     }
+               // if(i<5) {
                     ArtistCardInfoSave(new ApiCallback<Object>() {
 
                         @Override
@@ -289,6 +318,11 @@ public class RegPicListActivity extends Activity {
                             Log.i("successful", pics.toString());
                         }
                     });
+                //}
+//                else
+//                {
+//                    CommonHelper.showTip(RegPicListActivity.this, "保存成功");
+//                }
 
 
 
@@ -305,7 +339,7 @@ public class RegPicListActivity extends Activity {
         }
         for (DropImageView dropImageView : mertoItemViews) {
 
-            if (dropImageView.getIsFinish() != 5) {
+            if (dropImageView.getIsFinish() < 5) {
                 return false;
             }
         }
@@ -417,9 +451,9 @@ public class RegPicListActivity extends Activity {
         DropImageModel dropImageModel = new DropImageModel();
         if (mertoBeans.size() == 0) {
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(5);
+                dropImageModel.setIsFinish(6);
                 dropImageModel.setLocUrl(user.getImgLoc1());
-            } else {
+            } else  {
                 dropImageModel.setIsFinish(0);
             }
             dropImageModel.setIconId(user.getDrawableImg1() != null ? user.getDrawableImg1() : getResources().getDrawable(R.drawable.pic1));
@@ -427,7 +461,7 @@ public class RegPicListActivity extends Activity {
         } else if (mertoBeans.size() == 1) {
 
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(5);
+                dropImageModel.setIsFinish(6);
                 dropImageModel.setLocUrl(user.getImgLoc2());
             } else {
                 dropImageModel.setIsFinish(0);
@@ -436,7 +470,7 @@ public class RegPicListActivity extends Activity {
 
         } else if (mertoBeans.size() == 2) {
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(5);
+                dropImageModel.setIsFinish(6);
                 dropImageModel.setLocUrl(user.getImgLoc3());
             } else {
                 dropImageModel.setIsFinish(0);
@@ -447,29 +481,20 @@ public class RegPicListActivity extends Activity {
         } else if (mertoBeans.size() == 3) {
 
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(5);
+                dropImageModel.setIsFinish(6);
                 dropImageModel.setLocUrl(user.getImgLoc4());
             } else {
                 dropImageModel.setIsFinish(0);
             }
             dropImageModel.setIconId(user.getDrawableImg4() != null ? user.getDrawableImg4() : getResources().getDrawable(R.drawable.pic4));
         } else if (mertoBeans.size() == 4) {
-
             dropImageModel.setIconId(user.getDrawableImg5() != null ? user.getDrawableImg5() : getResources().getDrawable(R.drawable.pic5));
             //have' a tag
             if (status.equals("1")) {
-                txtSave.setVisibility(View.GONE);
-                dropImageModel.setIsFinish(5);
+                dropImageModel.setIsFinish(6);
                 dropImageModel.setLocUrl(user.getImgLoc5());
-
                 startOnMertoItemViewListener();
-
-                if (cp.isShowing())
-                    cp.dismiss();
-
                 resetOnMertoItemViewListener();
-
-
             } else if (status.equals("0")) {
                 dropImageModel.setIsFinish(0);
                 showRegAlert(RegPicListActivity.this);
@@ -477,11 +502,15 @@ public class RegPicListActivity extends Activity {
                 dropImageModel.setIsFinish(0);
             }
 
+            if (cp!=null && cp.isShowing())
+                cp.dismiss();
         } else {
             return;
         }
         mertoBeans.add(dropImageModel);
         setView();
+
+
 
     }
 
@@ -652,6 +681,7 @@ public class RegPicListActivity extends Activity {
         if (tag != -1 && moveTag != -1) {
             mertoBeans = new ArrayList<DropImageModel>(startBeans);
             if (mertoBeans.size() <= 5) {
+                mertoBeans.get(tag).setIsFinish(6);
                 DropImageModel mertoBean = new DropImageModel(mertoBeans.get(tag));
                 mertoBeans.set(tag, mertoBeans.get(moveTag));
                 mertoBeans.set(moveTag, mertoBean);
@@ -791,7 +821,8 @@ public class RegPicListActivity extends Activity {
                     //record first
                     if (current_corp_img.length() != 0) {
                         OffDrop(currentTag);
-                        bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(current_corp_img)), mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight());
+                        bm = BitmapHelper.readBitMap(new File(current_corp_img));
+                        //bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(current_corp_img)), mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight());
                         bd = new BitmapDrawable(bm);
                         mertoItemViews.get(currentTag).setIcon(bd);
                         mertoBeans.get(currentTag).setIconId(bd);
@@ -808,7 +839,8 @@ public class RegPicListActivity extends Activity {
                     if (photos.size() > 0 && photos.size() < 2) {
 
                         OffDrop(currentTag);
-                        bm =BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(photos.get(0))), mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight());
+                        bm = BitmapHelper.readBitMap(new File(photos.get(0)));
+                        //bm =BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(photos.get(0))), mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight());
                         bd = new BitmapDrawable(bm);
                         mertoItemViews.get(currentTag).setIcon(bd);
                         mertoBeans.get(currentTag).setIconId(bd);
@@ -818,8 +850,11 @@ public class RegPicListActivity extends Activity {
                         mertoItemViews.get(currentTag).setLocUrl(photos.get(0));
                     } else if (photos.size() > 1) {
                         for (int size = 0; size < photos.size(); size++) {
-                            bm = BitmapHelper.zoomImg(BitmapHelper.copressImage(photos.get(size)), mertoItemViews.get(size).getWidth(), mertoItemViews.get(size).getHeight());
+                            //bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(photos.get(size))), mertoItemViews.get(size).getWidth(), mertoItemViews.get(size).getHeight());
 //                            bm = BitmapHelper.copressImage(photos.get(size));
+
+                           // bm = BitmapHelper.readBitMap(new File(photos.get(size)));
+                            bm =BitmapHelper.readBitMap(new File(photos.get(size)));
                             bd = new BitmapDrawable(bm);
                             mertoItemViews.get(size).setIcon(bd);
                             mertoBeans.get(size).setIconId(bd);
@@ -867,7 +902,7 @@ public class RegPicListActivity extends Activity {
         }
         String local = outputImage.getAbsolutePath();
         fos = new FileOutputStream(outputImage);
-        bm.compress(Bitmap.CompressFormat.JPEG, 75, fos);// (0 -// 100)压缩文件
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);// (0 -// 100)压缩文件
         fos.flush();
         fos.close();
         return local;
@@ -917,7 +952,8 @@ public class RegPicListActivity extends Activity {
         Window window = dlg.getWindow();
         window.setContentView(R.layout.open_share);
         WindowManager.LayoutParams lp = window.getAttributes();
-        lp.alpha = 1.9f;
+        lp.width = App.screenHeight;
+        lp.alpha = 2.9f;
         window.setAttributes(lp);
 
         window.findViewById(R.id.rlqq).setOnClickListener(new View.OnClickListener() {
@@ -1095,10 +1131,10 @@ public class RegPicListActivity extends Activity {
     }
 
     private void ArtistCardInfoStatus() {
-
+        cp = ColaProgress.show(RegPicListActivity.this, "正在加载数据...", true, false, null);
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("uid", user.getUid());
-        paramsMap.put("token",App.getLoginUser().getToken());
+        paramsMap.put("token", App.getLoginUser().getToken());
 
                     RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD_STATUS, paramsMap, new ResponseCallBack<User>() {
                         @Override
@@ -1107,11 +1143,11 @@ public class RegPicListActivity extends Activity {
 
                                 if (data.getStatus().equals("1")) //status
                                 {
-                                    cp = ColaProgress.show(RegPicListActivity.this, "正在加载数据...", true, false, null);
                                     //get Info
                                     ArtistCardInfo();
                                 } else {
-
+                                    if (cp!=null && cp.isShowing())
+                                        cp.dismiss();
                                     mertoBeans.clear();
                                     CommonUtil.setGuidImage(RegPicListActivity.this, R.id.r1, R.drawable.click_pic, "first1", new ApiCallback() {
 
@@ -1214,6 +1250,8 @@ public class RegPicListActivity extends Activity {
                 resetOnMertoItemViewListener();
                 cp.dismiss();
                 txtSave.setVisibility(View.GONE);
+                txtUpload.setText("编辑");
+                txtUpload.setTag("2");
                 CommonHelper.showTip(RegPicListActivity.this, "保存成功");
             }
 
@@ -1257,7 +1295,7 @@ public class RegPicListActivity extends Activity {
             @Override
             public void onSuccess(User data) {
                 if (data != null) {
-                    user = data;
+                    user = data; 
                     try {
                         ArrayList<Object> ss1 = new ArrayList<Object>();
                         ss1.add(data.getImg1());
@@ -1341,7 +1379,7 @@ public class RegPicListActivity extends Activity {
     }
 
     private  void bindLeftInfo(User user) {
-        txtFansi.setText(user.getFans() == null ? "" : user.getFans() + " :粉丝");
+        txtFansi.setText(user.getFans() == null ? "0 :粉丝" : user.getFans() + " :粉丝");
         txtName.setText(user.getNickName() == null ? "" : user.getNickName());
         txtWeight.setText(user.getWeight() == null ? "" : user.getWeight() + "kg");
         txtHeight.setText(user.getHeight() == null ? "" : user.getHeight() + "CM");

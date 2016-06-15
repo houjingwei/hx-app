@@ -15,6 +15,7 @@
         android:layout_weight="1"
         android:background="@color/black">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -47,105 +48,108 @@
                     <LinearLayout
                         android:id="@+id/ll_per_info"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="60dp"
                         android:layout_gravity="bottom|left"
-                        android:background="@color/gray"
-                        android:orientation="vertical"
-                        >
+                        android:background="@color/black80"
+                        android:orientation="vertical">
 
                         <RelativeLayout
+                            android:background="@color/black80"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp">
+                            android:padding="5dp"
+                            android:layout_height="wrap_content">
 
                             <TextView
                                 android:id="@+id/tvLid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="回响号：0"
-                                android:textColor="@color/white" />
-
-
-                            <TextView
-
-                                android:id="@+id/tvYW"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:text="84-63-89"
-                                android:textColor="@color/white" />
+                                style="@style/white_small_style"/>
 
                             <TextView
                                 android:id="@+id/tvShareId"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                style="@style/white_small_style"
                                 android:layout_alignParentRight="true"
                                 android:text="12566: 分享"
                                 android:textColor="@color/white" />
 
-                        </RelativeLayout>
 
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp">
-
+                            <LinearLayout
+                                android:layout_centerInParent="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tvYW"
+                                android:layout_width="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                style="@style/white_small_style"
+                                android:layout_height="wrap_content"
+                                android:text="84-63-89"
+                                android:textColor="@color/white" />
 
                             <TextView
                                 android:id="@+id/txtWeight"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
                                 android:text="80kg"
+                                style="@style/white_small_style"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toLeftOf="@id/tvYW"
                                 android:textColor="@color/white" />
-
-                            <TextView
-                                android:id="@+id/txtSj"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:text="12566: 身价"
-                                android:textColor="@color/white" />
-
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp">
-
-                            <TextView
-                                android:id="@+id/txtName"
-                                android:layout_width="90dp"
-                                android:singleLine="true"
-                                android:layout_height="wrap_content"
-                                android:text="刘德华"
-                                android:textColor="@color/white"
-                                android:textSize="18dp" />
-
 
                             <TextView
                                 android:id="@+id/txtHeight"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
                                 android:text="165CM"
+                                style="@style/white_small_style"
+                                android:layout_marginLeft="20dp"
                                 android:textColor="@color/white" />
 
+                            </LinearLayout>
+
                             <TextView
+                                android:layout_below="@+id/tvShareId"
+                                android:id="@+id/txtSj"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="12566: 身价"
+                                style="@style/white_small_style"
+                                android:textColor="@color/white" />
+
+
+
+                            <TextView
+
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentLeft="true"
+                                android:id="@+id/txtName"
+                                android:layout_width="90dp"
+                                android:singleLine="true"
+                                android:layout_height="wrap_content"
+                                android:text="刘德华"
+                                style="@style/white_normal_style"/>
+
+
+
+
+                            <TextView
+                                android:layout_alignParentBottom="true"
                                 android:id="@+id/txtFansi"
+                                style="@style/white_small_style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:text="12566: 粉丝"
                                 android:textColor="@color/white" />
 
-
                         </RelativeLayout>
+
+
+
 
 
                     </LinearLayout>
@@ -214,54 +218,23 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!--<TextView-->
-            <!--android:id="@+id/txtUpload"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom|left"-->
-            <!--android:layout_marginBottom="20dp"-->
-            <!--android:layout_marginLeft="20dp"-->
-            <!--android:background="@drawable/reg_pic_bg"-->
-            <!--android:clickable="true"-->
-            <!--android:drawableLeft="@drawable/card_up"-->
-            <!--android:gravity="center"-->
-            <!--android:padding="10dp"-->
-            <!--android:paddingRight="30dp"-->
-            <!--android:text="上传"-->
-            <!--android:textColor="@color/white" />-->
-
-        <TextView
-            android:id="@+id/txtSF"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|left"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="130dp"
-            android:background="@drawable/reg_pic_bg"
-            android:clickable="true"
-            android:gravity="center"
-            android:padding="10dp"
-            android:paddingRight="30dp"
-            android:text="缩放"
-            android:textColor="@color/white"
-            android:visibility="gone" />
-
-
         <TextView
             android:id="@+id/txtUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="2dp"
-            android:layout_marginRight="80dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/reg_pic_bg"
             android:clickable="true"
             android:gravity="center"
-            android:padding="10dp"
-            android:paddingRight="30dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:tag="1"
             android:text="上传"
-            android:textColor="@color/white" />
+            style="@style/white_normal_style"/>
 
         <TextView
             android:id="@+id/txtSave"
@@ -269,12 +242,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="2dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="56dp"
             android:background="@drawable/reg_pic_bg"
             android:clickable="true"
+            style="@style/white_normal_style"
             android:gravity="center"
-            android:padding="10dp"
-            android:paddingRight="30dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:tag="1"
             android:text="保存"
             android:textColor="@color/white" />
@@ -284,13 +260,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_margin="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:src="@drawable/txt_share"
             android:clickable="true"
             android:gravity="center"
-            android:padding="10dp"
-            android:paddingRight="50dp"
+            android:padding="5dp"
             android:textColor="@color/white" />
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/baseTitleHeight"
+            android:layout_height="@dimen/baseTitleHeight"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:paddingLeft="-10dp"
+            android:src="@mipmap/icon_back"></ImageView>
     </FrameLayout>
 
 

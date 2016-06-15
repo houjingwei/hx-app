@@ -217,7 +217,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", currPage + "");
         paramsMap.put("pageSize", PAGE_SIZE + "");
-        paramsMap.put("cNo", "");
+        paramsMap.put("cNo", "TJ");
 
 
         RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<Live>() {
@@ -232,6 +232,11 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                     if (enumUpdateTag == EnumUpdateTag.UPDATE) {
 
                         listview.removeAllViews();
+                        currentViewPage =1;
+                        switchPicHandler = new SwitchPicHandler(getContext(), 1);
+                        //起一个线程更新数据
+                        SwitchPicThread switchPicThread = new SwitchPicThread();
+                        new Thread(switchPicThread).start();
                     }
 
                     Long totalCount = Long.parseLong(data.size() + "");
@@ -284,7 +289,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIcon.getLayoutParams();
             params.height = (int) (App.screenWidth * 0.75);
             ivIcon.setLayoutParams(params);
-            ImageUtils.display(ivIcon,item.getPhoto());
+            ImageUtils.display(ivIcon,item.getImg2());
 
         }
     }
@@ -378,12 +383,13 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", currentViewPage + "");
         paramsMap.put("pageSize", PAGE_SIZE + "");
-        paramsMap.put("cNo", "");
+        paramsMap.put("cNo", "TJ");
 
         RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<Live>() {
             @Override
             public void onSuccessList(List<Live> data) {
 
+                isLoad = true;
                 if (data != null && data.size() > 0) {
 
                     Long totalCount = Long.parseLong(data.size() + "");
@@ -394,16 +400,16 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                         for (int i = 0; i < pageNo; i++) {
                             ListView appPage = new ListView(getContext());
                             // get the "i" page data
-                            if(currentViewPage ==1)
+                            if(currentViewPage ==1) {
                                 viewpageModelList.clear();
+                                mSwitchScrollLayout.removeAllViews();
+                            }
 
                             viewpageModelList.addAll(data);
-                            appPage.setAdapter(new LiveBannerAdapter(getActivity(),getContext(), data, i));
+                            appPage.setAdapter(new LiveBannerAdapter(getActivity(), getContext(), data, i));
                             appPage.setOnItemClickListener(listener);
                             mSwitchScrollLayout.addView(appPage);
-                            isLoad = true;
                             currentViewPage++;
-
                         }
                         Live live = viewpageModelList.get(0);
                         initViewInfo(live);

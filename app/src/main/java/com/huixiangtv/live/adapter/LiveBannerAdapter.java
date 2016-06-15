@@ -73,7 +73,7 @@ public class LiveBannerAdapter extends BaseAdapter {
 
 
         ImageView ivIcon = appItem.sigImg;
-        ImageGlideUtils.display(mContext, mList.get(position).getPhoto(), ivIcon);
+        ImageGlideUtils.display(mContext, mList.get(position).getImg1(), ivIcon);
         ivIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

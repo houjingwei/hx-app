@@ -2,8 +2,10 @@ package com.huixiangtv.live.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
 import android.widget.ImageView;
@@ -36,11 +38,10 @@ public class RegPicActivity extends BaseBackActivity {
     @ViewInject(R.id.vp_photos)
     ViewPager vp_photos;
     private ImageView[] mImageViews;
+    ArrayList<String> mDatas;
 
-    @ViewInject(R.id.myTitle)
-    CommonTitle commonTitle;
-
-    ArrayList<String> mDatas ;
+    @ViewInject(R.id.img_back)
+    ImageView imgback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +49,16 @@ public class RegPicActivity extends BaseBackActivity {
         setContentView(R.layout.activity_regpic);
         x.view().inject(this);
 
-        commonTitle.setActivity(this);
-        commonTitle.setTitleText(getResources().getString(R.string.my_pic));
+
+        imgback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         try {
             mDatas = (ArrayList<String>) getIntent().getSerializableExtra("images");
-            int currentIndex = getIntent().getIntExtra("currentIndex",0);
+            int currentIndex = getIntent().getIntExtra("currentIndex", 0);
             mImageViews = new ImageView[5];
             Bitmap bm;
             ImageView imageView;
