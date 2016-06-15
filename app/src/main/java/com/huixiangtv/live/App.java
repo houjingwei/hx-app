@@ -107,7 +107,7 @@ public class App extends MultiDexApplication {
         statuBarHeight = getStatusBarHeight(sContext);
 
         //加载免费礼物数据
-        loadFreeGiftList(null);
+        //loadFreeGiftList(null);
 
 
 

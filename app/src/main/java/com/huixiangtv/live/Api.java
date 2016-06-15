@@ -67,6 +67,8 @@ public class Api {
     public static final String CANCEL_ATTENTION = BASE_URL+"fans/removeFollow";
     //关注状态
     public static final String ATTENTIOIN_STATUS = BASE_URL+"fans/isFollowed";
+    //分享加爱心
+    public static final String ADD_LOVE = BASE_URL+"promote/isShared";
 
     //我关注的人
     public static String GETCOLLECTARTIST = BASE_URL+"fans/getCollectArtist";

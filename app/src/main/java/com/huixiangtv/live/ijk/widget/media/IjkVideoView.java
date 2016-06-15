@@ -19,14 +19,12 @@ package com.huixiangtv.live.ijk.widget.media;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -42,7 +40,6 @@ import android.widget.MediaController;
 import android.widget.TableLayout;
 
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.ijk.application.Settings;
 import com.huixiangtv.live.ijk.services.MediaPlayerService;
 import com.huixiangtv.live.utils.CommonHelper;
@@ -572,11 +569,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 //                                .setCancelable(false)
 //                                .show();
                         CommonHelper.showTip(activity,"直播已结束");
-                        new Handler().postDelayed(new Runnable() {
-                            public void run() {
-                                activity.onBackPressed();
-                            }
-                        }, 1000);
+                        activity.onBackPressed();
+
                     }
                     return true;
                 }

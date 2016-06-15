@@ -124,7 +124,7 @@ public class LocationTool {
             List<Address> addrList=getAddressbyGeoPoint(mLocation);
             if(null!=addrList){
                 Address address = addrList.get(0);
-                jwd[2] = address.getAdminArea()+address.getLocality()+address.getSubLocality();
+                jwd[2] = address.getLocality()+address.getSubLocality();
             }else{
                 jwd[2] = " ";
             }

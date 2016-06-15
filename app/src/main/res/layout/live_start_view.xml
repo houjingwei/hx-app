@@ -92,7 +92,8 @@ android:orientation="vertical">
         android:background="@null"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:text="@string/selTheme" />
+        android:textColorHint="@color/white"
+        android:hint="@string/selTheme" />
     <LinearLayout
         android:id="@+id/llLocal"
         android:layout_alignParentRight="true"
@@ -110,7 +111,7 @@ android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvLocal"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="2dp"
             style="@style/white_bigger_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -174,6 +175,7 @@ android:orientation="vertical">
             android:gravity="center"
             android:orientation="vertical">
             <RadioButton
+                android:visibility="gone"
                 android:id="@+id/rbPhone"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -244,6 +246,7 @@ android:orientation="vertical">
             android:gravity="center"
             android:orientation="vertical">
             <RadioButton
+                android:visibility="gone"
                 android:id="@+id/rbSina"
                 android:layout_width="30dp"
                 android:layout_height="30dp"

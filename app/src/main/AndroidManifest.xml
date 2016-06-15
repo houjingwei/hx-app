@@ -141,6 +141,10 @@
             android:windowSoftInputMode="adjustResize"
             android:exported="false" >
         </activity>
+        <service
+            android:name="com.sina.weibo.sdk.net.DownloadService"
+            android:exported="false">
+        </service>
         <!-- 新浪微博 -->
 
         <activity
