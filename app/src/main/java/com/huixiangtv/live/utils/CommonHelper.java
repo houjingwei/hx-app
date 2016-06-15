@@ -217,13 +217,13 @@ public class CommonHelper {
 
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
-                showTip(activity,"分享失败啦");
+
                 shareAddLove(shareType,platform);
             }
 
             @Override
             public void onCancel(SHARE_MEDIA platform) {
-                showTip(activity,"分享取消了");
+
                 shareAddLove(shareType,platform);
             }
         });
