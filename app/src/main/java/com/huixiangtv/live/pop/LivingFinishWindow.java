@@ -63,7 +63,7 @@ public class LivingFinishWindow extends BasePopupWindow implements
 		this.setContentView(view);
 		this.setWidth(LayoutParams.FILL_PARENT);
 		this.setHeight(LayoutParams.FILL_PARENT);
-		this.setFocusable(true);
+		this.setFocusable(false);
 		this.setAnimationStyle(R.style.popupAnimation);
 
 		//设置直播信息
