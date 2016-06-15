@@ -650,24 +650,22 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
     private void startPush() {
         if (null != Constant.accessToken){
             try {
-                LiveService.getInstance().createLive(Constant.accessToken, Constant.SPACE, Constant.LIVE_URL);
-                LiveService.getInstance().setCreateLiveListener(new CreateLiveListener() {
-                    @Override
-                    public void onCreateLiveError(int errorCode, String message) {
-                        Log.e("myTest", "errorCode:" + errorCode + "message" + message);
-                    }
-
-                    @Override
-                    public void onCreateLiveSuccess(String pushUrl, String playUrl) {
-                        pushUrl = pushUrl;
-                        Log.e("myTest", "startPush");
-                        try{
-                            startRecorder(live.getPushUrl(), playUrl);
-                        }catch(Exception ee){
-
+                if(null!=live && StringUtil.isNotEmpty(live.getPushUrl())) {
+                    LiveService.getInstance().createLive(Constant.accessToken, Constant.SPACE, Constant.LIVE_URL);
+                    LiveService.getInstance().setCreateLiveListener(new CreateLiveListener() {
+                        @Override
+                        public void onCreateLiveError(int errorCode, String message) {
+                            Log.e("myTest", "errorCode:" + errorCode + "message" + message);
                         }
-                    }
-                });
+
+                        @Override
+                        public void onCreateLiveSuccess(String pushUrl, String playUrl) {
+                            pushUrl = pushUrl;
+                            Log.e("myTest", "startPush");
+                            startRecorder(live.getPushUrl(), playUrl);
+                        }
+                    });
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
                 Log.e(TAG, ex.getMessage().toString());

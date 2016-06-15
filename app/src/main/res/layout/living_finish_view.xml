@@ -7,206 +7,211 @@
 
     <ScrollView
         android:id="@+id/bottom"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:clickable="true" >
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:clickable="true" >
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5"
-            android:gravity="center"
-            android:orientation="vertical">
-
+            android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/btnClosed"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_gravity="right"
+                android:layout_alignParentRight="true"
                 android:padding="9dp"
                 android:src="@drawable/sign_close" />
-
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/ivPhoto"
-                android:layout_width="66dp"
-                android:layout_height="66dp"
-                android:layout_marginTop="15dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/default_head"
-                app:civ_border_color="@color/white"
-                app:civ_border_width="1dp" />
-
-            <TextView
-                android:id="@+id/tvNickname"
-                style="@style/white_normal_bold_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="黄灿灿" />
-
-            <TextView
-                style="@style/white_bigest_x_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="直播结束" />
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_marginTop="30dp"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:id="@+id/tvOnlineNum"
-                style="@style/red_bigger_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="88" />
-
-            <TextView
-                style="@style/white_bigger_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" 人观看" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
             <LinearLayout
+                android:layout_marginTop="100dp"
+                android:layout_centerInParent="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:orientation="horizontal"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp">
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/llMyfans"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
+                    android:padding="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tvHots"
-                        style="@style/red_normal_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="top"
-                        android:text="0" />
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/ivPhoto"
+                        android:layout_width="66dp"
+                        android:layout_height="66dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/default_head"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="1dp" />
 
                     <TextView
-                        android:id="@+id/hots"
-                        style="@style/white_small_style"
+                        android:id="@+id/tvNickname"
+                        style="@style/white_normal_bold_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="5dp"
-                        android:text="获得人气" />
+                        android:layout_marginTop="15dp"
+                        android:text="黄灿灿" />
+
+                    <TextView
+                        style="@style/white_bigest_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="直播结束" />
+
+
                 </LinearLayout>
 
-                <View
-                    android:layout_width="0.1dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center"
-                    android:background="@color/white_01" />
 
                 <LinearLayout
-                    android:id="@+id/llfaned"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
+
 
                     <TextView
-                        android:id="@+id/tvLoves"
-                        style="@style/red_normal_style"
+                        android:id="@+id/tvOnlineNum"
+                        style="@style/red_bigger_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0" />
+                        android:text="88" />
 
                     <TextView
-                        style="@style/white_small_style"
+                        style="@style/white_bigger_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="获得爱心" />
+                        android:text=" 人观看" />
+
+
                 </LinearLayout>
-
-                <View
-                    android:layout_width="0.1dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center"
-                    android:background="@color/white_01" />
 
                 <LinearLayout
-                    android:id="@+id/llsj"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tvTime"
-                        style="@style/red_normal_style"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1232" />
+                        android:layout_marginTop="50dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp">
+
+                        <LinearLayout
+                            android:id="@+id/llMyfans"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvHots"
+                                style="@style/red_normal_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="top"
+                                android:text="0" />
+
+                            <TextView
+                                android:id="@+id/hots"
+                                style="@style/white_small_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="5dp"
+                                android:text="获得人气" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0.1dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:background="@color/white_01" />
+
+                        <LinearLayout
+                            android:id="@+id/llfaned"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvLoves"
+                                style="@style/red_normal_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0" />
+
+                            <TextView
+                                style="@style/white_small_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="获得爱心" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0.1dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:background="@color/white_01" />
+
+                        <LinearLayout
+                            android:id="@+id/llsj"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvTime"
+                                style="@style/red_normal_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1232" />
+
+                            <TextView
+                                style="@style/white_small_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="直播时长" />
+                        </LinearLayout>
+                    </LinearLayout>
+
 
                     <TextView
-                        style="@style/white_small_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="直播时长" />
+                        android:id="@+id/tvGohome"
+                        style="@style/white_bigger_bold_style"
+                        android:layout_width="130dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="60dp"
+                        android:background="@drawable/red_40_text_border"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:minHeight="25dp"
+                        android:text="回到首页" />
+
                 </LinearLayout>
+
+
             </LinearLayout>
+        </RelativeLayout>
 
-
-            <TextView
-                android:id="@+id/tvGohome"
-                style="@style/white_bigger_bold_style"
-                android:layout_width="130dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/red_40_text_border"
-                android:clickable="true"
-                android:gravity="center"
-                android:minHeight="25dp"
-                android:text="回到首页" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
     </ScrollView>
 </RelativeLayout>

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.model.Other;
@@ -136,8 +137,15 @@ public class CommonHelper {
 
 
     public static void showTip(Context activity, String msg) {
-        ColaProgressTip cpTip = ColaProgressTip.show(activity, msg, false, true, null, null);
-        ColaProgressTip.showTip(900l, cpTip);
+
+
+        try{
+            ColaProgressTip cpTip = ColaProgressTip.show(activity, msg, false, true, null, null);
+            ColaProgressTip.showTip(900l, cpTip);
+        }catch (Exception e){
+            Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
