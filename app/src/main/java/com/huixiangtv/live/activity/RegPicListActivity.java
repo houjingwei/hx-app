@@ -11,30 +11,21 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler.Callback;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
-import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.ClipboardManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -46,15 +37,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
-import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.adapter.PhotoAdapter;
 import com.huixiangtv.live.common.CommonUtil;
+import com.huixiangtv.live.config.Config;
 import com.huixiangtv.live.model.DropImageModel;
-import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.Upfeile;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.ApiCallback;
@@ -64,9 +52,7 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.CommonHelper;
-import com.huixiangtv.live.utils.GaussUtils;
 import com.huixiangtv.live.utils.ShareSdk;
-import com.huixiangtv.live.utils.TokenChecker;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.DropImageView;
 import com.huixiangtv.live.utils.widget.MySeekBar;
@@ -75,17 +61,13 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import android.widget.FrameLayout.LayoutParams;
 
-import org.w3c.dom.Text;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -970,7 +952,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlqq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity,user.getNickName()+"的艺人卡", user.getNickName()+"的艺人卡",SHARE_MEDIA.QQ,user.getPhoto(),"http://119.29.94.122:8888/h5/card.html?aid="+user.getUid()+"&uid="+App.getPreferencesValue("uid").toString(),1,null);
+                CommonHelper.share(activity,user.getNickName()+"的艺人卡", user.getNickName()+"的艺人卡",SHARE_MEDIA.QQ,user.getPhoto(),Config.HOST+"h5/card.html?aid="+user.getUid()+"&uid="+App.getPreferencesValue("uid").toString(),1,null);
                 dlg.dismiss();
             }
         });
@@ -979,7 +961,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlzone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.QZONE, user.getPhoto(), "http://119.29.94.122:8888/h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
+                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.QZONE, user.getPhoto(), Config.HOST+"h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
                 dlg.dismiss();
             }
         });
@@ -987,7 +969,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlwx).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN, user.getPhoto(), "http://119.29.94.122:8888/h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
+                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN, user.getPhoto(), Config.HOST+"h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
                 dlg.dismiss();
             }
         });
@@ -996,7 +978,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlpyq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN_FAVORITE, user.getPhoto(), "http://119.29.94.122:8888/h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
+                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN_FAVORITE, user.getPhoto(), Config.HOST+"h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
                 dlg.dismiss();
             }
         });
@@ -1004,7 +986,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlwb).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareSdk.startShare(activity, user.getNickName() + "的艺人卡","", SHARE_MEDIA.SMS, "http://119.29.94.122:8888/h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString());
+                ShareSdk.startShare(activity, user.getNickName() + "的艺人卡","", SHARE_MEDIA.SMS, Config.HOST+"h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString());
                 dlg.dismiss();
             }
         });
@@ -1012,7 +994,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlcopy).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                copy("szj",context);
+                copy(Config.HOST+"h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(),context);
                 Toast.makeText(context, "链接复制成功", Toast.LENGTH_LONG).show();
                 dlg.dismiss();
             }
