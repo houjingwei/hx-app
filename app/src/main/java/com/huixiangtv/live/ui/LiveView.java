@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.ShoutGift;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.CameraWindow;
+import com.huixiangtv.live.pop.LivingFinishWindow;
 import com.huixiangtv.live.pop.ShareWindow;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.ChatTokenCallBack;
@@ -1200,7 +1202,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
                     msgListView.post(new Runnable() {
                         public void run() {
-                            ((LiveActivity)activity).showCloseInfo(msg);
+                            showCloseInfo(msg);
                         }
                     });
                 }
@@ -1209,6 +1211,23 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             return false;
         }
     }
+
+
+
+    private void showCloseInfo(LiveMsg msg) {
+
+        LivingFinishWindow selectPicWayWindow = new LivingFinishWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,msg,live);
+        selectPicWayWindow.showAtLocation(activity.findViewById(R.id.liveMain), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        selectPicWayWindow.update();
+        selectPicWayWindow.setListener(new LivingFinishWindow.CloseListener() {
+            @Override
+            public void select() {
+                activity.onBackPressed();
+            }
+        });
+
+    }
+
 
     private void showGiftAni(List<LiveMsg> ls, Handler liveHandler, int road) {
         AnimHelper.showGiftAni(activity,flLive,ls,liveHandler,road);
