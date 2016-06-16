@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.util.DisplayMetrics;
@@ -198,9 +200,11 @@ public class BitmapHelper {
         return dst;
     }
 
-    public static Bitmap readBitMap(File file) {
+    public static Bitmap readBitMap(File file,boolean isSS) {
 
         BitmapFactory.Options opt = new BitmapFactory.Options();
+        if(isSS)
+        opt.inSampleSize = 2;
 
         opt.inPreferredConfig = Bitmap.Config.RGB_565;
 
@@ -213,52 +217,118 @@ public class BitmapHelper {
 
     }
 
-    //
-    public static Bitmap zoomImg(Bitmap bm, int newWidth, int newHeight) {
-        // 获得图片的宽高
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        // 计算缩放比例
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // float scaleHeight = (((float)height/newHeight)*height)/newHeight;
-        // 取得想要缩放的matrix参数
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        // 得到新的图片 www.2cto.com
-        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
-                true);
-        return newbm;
-    }
 
-
-    public static Bitmap setDrawable(Bitmap backGroundMap,int widthP,int heightP) {
-        int width = widthP; //App.screenWidth;
-        int height =heightP;// App.screenHeight;
-
-        int widthDrawable = backGroundMap.getWidth();
-        int heightDrawable = backGroundMap.getHeight();//获取背景图片的宽和高
-        float scaleWidth = (float) width / widthDrawable;
-        float scaleHeight = (float) height / heightDrawable;//宽高比
-
-        Bitmap resizeBmp;
-        Matrix matrix = new Matrix();
-        if (scaleWidth < scaleHeight) {
-            float scale = scaleHeight;//取大的
-            matrix.postScale(scale, scale);//缩放比例
-            int xStart = (int) (widthDrawable - widthDrawable / scale) / 2;
-
-
-            resizeBmp = Bitmap.createBitmap(backGroundMap, xStart, 0, (int) (widthDrawable / scale),
-                    heightDrawable, matrix, true);
-        } else {
-            float scale = scaleWidth;
-            matrix.postScale(scale, scale);
-            int yStart = (int) (scaleHeight - scaleHeight / scale) / 2;
-            resizeBmp = Bitmap.createBitmap(backGroundMap, 0, yStart, widthDrawable,
-                    (int) (heightDrawable / scale), matrix, true);
+    private static int computeInitialSampleSize(BitmapFactory.Options options,int minSideLength, int maxNumOfPixels) {
+        double w = options.outWidth;
+        double h = options.outHeight;
+        int lowerBound = (maxNumOfPixels == -1) ? 1 : (int) Math.ceil(Math.sqrt(w * h / maxNumOfPixels));
+        int upperBound = (minSideLength == -1) ? 128 :(int) Math.min(Math.floor(w / minSideLength), Math.floor(h / minSideLength));
+        if (upperBound < lowerBound) {
+            // return the larger one when there is no overlapping zone.
+            return lowerBound;
         }
-        return resizeBmp;
-
+        if ((maxNumOfPixels == -1) && (minSideLength == -1)) {
+            return 1;
+        } else if (minSideLength == -1) {
+            return lowerBound;
+        } else {
+            return upperBound;
+        }
     }
+
+
+    public static Bitmap resizeBitmap(Bitmap bitmap, int maxWidth, int maxHeight) {
+
+        int originWidth  = bitmap.getWidth();
+        int originHeight = bitmap.getHeight();
+
+        // no need to resize
+        if (originWidth < maxWidth && originHeight < maxHeight) {
+            return bitmap;
+        }
+
+        int width  = originWidth;
+        int height = originHeight;
+
+        // 若图片过宽, 则保持长宽比缩放图片
+        if (originWidth > maxWidth) {
+            width = maxWidth;
+
+            double i = originWidth * 1.0 / maxWidth;
+            height = (int) Math.floor(originHeight / i);
+
+            bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+        }
+
+        // 若图片过长, 则从上端截取
+        //if (height > maxHeight) {
+            height = maxHeight;
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
+       // }
+
+//        Log.i(TAG, width + " width");
+//        Log.i(TAG, height + " height");
+
+        return bitmap;
+    }
+
+    public static Bitmap createScaledBitmap(Bitmap unscaledBitmap, int dstWidth, int dstHeight, String scalingLogic) {
+        Rect srcRect = calculateSrcRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
+        Rect dstRect = calculateDstRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
+        Bitmap scaledBitmap = Bitmap.createBitmap(dstRect.width(), dstRect.height(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.drawBitmap(unscaledBitmap, srcRect, dstRect, new Paint(Paint.FILTER_BITMAP_FLAG));return scaledBitmap;
+    }
+
+
+    public static Rect calculateSrcRect(int srcWidth, int srcHeight, int dstWidth, int dstHeight, String scalingLogic) {
+        if (scalingLogic .equals("CROP")) {
+            final float srcAspect = (float)srcWidth / (float)srcHeight;
+            final float dstAspect = (float)dstWidth / (float)dstHeight;
+            if (srcAspect > dstAspect) {
+                final int srcRectWidth = (int)(srcHeight * dstAspect);
+                final int srcRectLeft = (srcWidth - srcRectWidth) / 2;
+                return new Rect(srcRectLeft, 0, srcRectLeft + srcRectWidth, srcHeight);
+            } else {
+                final int srcRectHeight = (int)(srcWidth / dstAspect);
+                final int scrRectTop = (int)(srcHeight - srcRectHeight) / 2;
+                return new Rect(0, scrRectTop, srcWidth, scrRectTop + srcRectHeight);
+            }
+        } else {
+            return new Rect(0, 0, srcWidth, srcHeight);
+        }
+    }
+    public static Rect calculateDstRect(int srcWidth, int srcHeight, int dstWidth, int dstHeight, String scalingLogic) {
+        if (scalingLogic == "FIT") {
+            final float srcAspect = (float)srcWidth / (float)srcHeight;
+            final float dstAspect = (float)dstWidth / (float)dstHeight;
+            if (srcAspect > dstAspect) {
+                return new Rect(0, 0, dstWidth, (int)(dstWidth / srcAspect));
+            } else {
+                return new Rect(0, 0, (int)(dstHeight * srcAspect), dstHeight);
+            }
+        } else {
+            return new Rect(0, 0, dstWidth, dstHeight);
+        }
+    }
+
+
+    public static int calculateInSampleSize(BitmapFactory.Options options,
+                                            int reqWidth, int reqHeight) {
+        // 源图片的高度和宽度
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+        if (height > reqHeight || width > reqWidth) {
+            // 计算出实际宽高和目标宽高的比率
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            // 选择宽和高中最小的比率作为inSampleSize的值，这样可以保证最终图片的宽和高
+            // 一定都会大于等于目标的宽和高。
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        return inSampleSize;
+    }
+
+
 }

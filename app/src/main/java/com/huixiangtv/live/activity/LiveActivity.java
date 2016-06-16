@@ -887,11 +887,11 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-            if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-                isFinish = true;
-                dialog();
-                return false;
-            }
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            isFinish = true;
+            dialog();
+            return false;
+        }
         return false;
 
     }

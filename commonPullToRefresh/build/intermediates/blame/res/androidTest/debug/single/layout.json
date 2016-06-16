@@ -1,18 +1,18 @@
 [
     {
-        "merged": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/androidTest/debug/layout/cube_ptr_classic_default_header.xml",
-        "source": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/bundles/debug/res/layout/cube_ptr_classic_default_header.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/androidTest/debug/layout/loadmore_default_footer.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/bundles/debug/res/layout/loadmore_default_footer.xml"
     },
     {
-        "merged": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/androidTest/debug/layout/loadmore_default_footer.xml",
-        "source": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/bundles/debug/res/layout/loadmore_default_footer.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/androidTest/debug/layout/custom_header.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/bundles/debug/res/layout/custom_header.xml"
     },
     {
-        "merged": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/androidTest/debug/layout/custom_header.xml",
-        "source": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/bundles/debug/res/layout/custom_header.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/androidTest/debug/layout/custom_footer.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/bundles/debug/res/layout/custom_footer.xml"
     },
     {
-        "merged": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/androidTest/debug/layout/custom_footer.xml",
-        "source": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/bundles/debug/res/layout/custom_footer.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/androidTest/debug/layout/cube_ptr_classic_default_header.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/bundles/debug/res/layout/cube_ptr_classic_default_header.xml"
     }
 ]

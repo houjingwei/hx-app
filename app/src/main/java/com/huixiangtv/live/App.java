@@ -348,6 +348,13 @@ public class App extends MultiDexApplication {
         loginHelper.setLongValue("time", time);
     }
 
+
+    public static void setUpdateInDate(Context context, Date date) {
+        long time = date.getTime();
+        loginHelper.setLongValue("time", time);
+    }
+
+
     /**
      * 签到时间
      * @param key
@@ -379,13 +386,13 @@ public class App extends MultiDexApplication {
     /*
 	 * 获取当前程序的版本号
 	 */
-    public static int getVersionCode(Context context) throws Exception {
+    public static String getVersionCode(Context context) throws Exception {
         // 获取packagemanager的实例
         PackageManager packageManager = context.getPackageManager();
         // getPackageName()是你当前类的包名，0代表是获取版本信息
         PackageInfo packInfo = packageManager.getPackageInfo(
                 context.getPackageName(), 0);
-        return packInfo.versionCode;
+        return packInfo.versionName.toString();
     }
 
 

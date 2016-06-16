@@ -14,23 +14,19 @@
 
         <ImageView
             android:id="@+id/ivIcon"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:minWidth="50dp"
+            android:layout_height="25dp"
             android:layout_margin="10dp"
             android:background="@drawable/button_radius"
-            android:gravity="center_horizontal|center_vertical"
-            android:paddingBottom="5dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="5dp"
+            android:gravity="center"
             android:text="@string/index_button_live"
-            android:textColor="@color/white"
-            android:textSize="14dp" />
+            style="@style/white_small_style"/>
 
 
         <RelativeLayout
