@@ -330,7 +330,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         msgList = new ArrayList<LiveMsg>();
         msgListView.setAdapter(msgAdapter);
         loadMsg();
-        App.imClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
+
         checkRongyunConnectionAndJoinRoom();
     }
 
@@ -360,7 +360,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         App.imClient.joinChatRoom(live.getChatroom(), -1, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
-                CommonHelper.showTip(activity,"成功进入聊天室");
+                App.imClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
                 if(isSendIntoRoomMsg){
                     sendIntoRoomMsg();
                 }
@@ -1116,6 +1116,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             if (message.getContent() instanceof TextMessage) {
                 TextMessage tm = (TextMessage) message.getContent();
                 final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
+                Log.i("myCloseclose",msg.getMsgType()+"");
                 msg.setContent(tm.getContent().toString());
 
                 if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
@@ -1202,7 +1203,11 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
                     msgListView.post(new Runnable() {
                         public void run() {
+                            Log.i("myCloseclose","123");
+                            LiveActivity ac = (LiveActivity)activity;
+                            ac.setFinishLiving();
                             showCloseInfo(msg);
+
                         }
                     });
                 }

@@ -50,6 +50,7 @@ import com.huixiangtv.live.pop.LivingFinishWindow;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.LiveView;
 import com.huixiangtv.live.ui.StartLiveView;
@@ -134,7 +135,7 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
     }
 
 
-
+    CenterLoadingView loadingDialog = null;
     private void initPlayView() {
         final Map<String, String> param = new HashMap<String, String>();
         param.put("lid", lid);
@@ -188,9 +189,10 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
         mVideoView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(IMediaPlayer mp) {
-                copro = ColaProgress.show(LiveActivity.this, "连线中", false, true, null);
+
             }
         });
+
         mVideoView.setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(IMediaPlayer mp) {
@@ -202,11 +204,43 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
                 }, 1000);
             }
         });
+        mVideoView.setOnErrorListener(new IMediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(IMediaPlayer mp, int what, int extra) {
+                CommonHelper.showTip(LiveActivity.this,"直播错误");
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        onBackPressed();
+                    }
+                }, 1000);
+                return false;
+            }
+        });
         mVideoView.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(IMediaPlayer mp, int what, int extra) {
-                if(null!=copro){
-                    copro.dismiss();
+                Log.i("ijkplayer_status","setOnInfoListener ****"+what+"*****");
+                switch (what) {
+                    case IjkMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                        //开始缓冲
+                        if(isFinish==false){
+                            if(null==loadingDialog){
+                                loadingDialog = new CenterLoadingView(LiveActivity.this);
+                            }
+                            loadingDialog.setCancelable(true);
+                            loadingDialog.setTitle("正在连接");
+                            loadingDialog.show();
+                        }
+                        break;
+                    case IjkMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                        //媒体视频开始渲染
+                        break;
+                    case IjkMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                        if(null!=loadingDialog){
+                            loadingDialog.dismiss();
+                        }
+                        //缓冲结束
+                        break;
                 }
                 return false;
             }
@@ -440,13 +474,30 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
         switch (status) {
             case LiveStreamStatus.CONNECTION_START:
                 Log.i(TAG, "Start live stream connection!");
+                if(null!=loadingDialog){
+                    loadingDialog.dismiss();
+                }
                 break;
             case LiveStreamStatus.CONNECTION_ESTABLISHED:
+                Log.i(TAG, "Live stream connection is CONNECTION_ESTABLISHED!");
+                if(null!=loadingDialog){
+                    loadingDialog.dismiss();
+                }
                 Log.i(TAG, "Live stream connection is established!");
                 Log.e("myTest", "startPush");
+
                 break;
             case LiveStreamStatus.CONNECTION_CLOSED:
                 Log.i(TAG, "Live stream connection is closed!");
+                if(isFinish==false){
+                    if(null==loadingDialog ){
+                        loadingDialog = new CenterLoadingView(LiveActivity.this);
+                    }
+                    loadingDialog.setCancelable(true);
+                    loadingDialog.setTitle("无网络");
+                    loadingDialog.show();
+
+                }
                 mLiveRecorder.release();
                 mLiveRecorder = null;
                 break;
@@ -456,16 +507,38 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
             case LiveStreamStatus.CONNECTION_ERROR_BROKENPIPE:
             case LiveStreamStatus.CONNECTION_ERROR_INVALIDARGUMENT:
             case LiveStreamStatus.CONNECTION_ERROR_NETWORKUNREACHABLE:
-                Log.i(TAG, "Live stream connection error-->" + status);
+                Log.i(TAG, "Live stream connection is CONNECTION_ERROR_NETWORKUNREACHABLE!");
+                if(isFinish==false){
+                    if(null==loadingDialog ){
+                        loadingDialog = new CenterLoadingView(LiveActivity.this);
+                    }
+                    if(null==loadingDialog){
+                        loadingDialog = new CenterLoadingView(LiveActivity.this);
+                    }
+                    loadingDialog.setCancelable(true);
+                    loadingDialog.setTitle("网络异常，正在重连");
+                    loadingDialog.show();
+
+                }
+
                 if (mIsRecording) {
                     mLiveRecorder.reconnect(null);
                 } else {
                     mLiveRecorder.release();
                     mLiveRecorder = null;
                 }
+
                 break;
             case LiveStreamStatus.CONNECTION_ERROR_AUTH:
-                Log.i(TAG, "Live stream connection auth failure!");
+                if(isFinish==false){
+                    if(null==loadingDialog ){
+                        loadingDialog = new CenterLoadingView(LiveActivity.this);
+                    }
+                    loadingDialog.setCancelable(true);
+                    loadingDialog.setTitle("网络异常，正在重连");
+                    loadingDialog.show();
+
+                }
                 if (mIsRecording) {
                     stopRecorder();
                 }
@@ -812,7 +885,7 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
             if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-
+                isFinish = true;
                 dialog();
                 return false;
             }
@@ -822,7 +895,10 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
 
 
     public void closeLiving() {
-
+        isFinish = true;
+        if(null!=loadingDialog){
+            loadingDialog.dismiss();
+        }
         if (StringUtil.isNotEmpty(isRecord) && isRecord.equals("true") && null!=liveView) {
             stopRecorder();
             new Handler().postDelayed(new Runnable() {
@@ -858,6 +934,7 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            isFinish = false;
                         }
                     });
             builder.create().show();
@@ -949,4 +1026,12 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
     }
 
 
+    private boolean isFinish = false;
+    public void setFinishLiving() {
+        Log.i("myCloseclose","finish");
+        if(null!=loadingDialog){
+            loadingDialog.dismiss();
+        }
+        isFinish = true;
+    }
 }
