@@ -816,7 +816,6 @@ public class RegPicListActivity extends Activity {
                         OffDrop(currentTag);
                         bm = BitmapHelper.readBitMap(new File(current_corp_img));
                         bm = BitmapHelper.createScaledBitmap(bm, mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight(), "CROP");
-                        //bm = BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(current_corp_img)), mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight());
                         bd = new BitmapDrawable(bm);
                         mertoItemViews.get(currentTag).setIcon(bd);
                         mertoBeans.get(currentTag).setIconId(bd);
@@ -835,7 +834,6 @@ public class RegPicListActivity extends Activity {
                         OffDrop(currentTag);
                         bm = BitmapHelper.readBitMap(new File(photos.get(0)));
                         bm = BitmapHelper.createScaledBitmap(bm, mertoItemViews.get(0).getWidth(), mertoItemViews.get(0).getHeight(), "CROP");
-                        //bm =BitmapHelper.zoomImg(BitmapHelper.readBitMap(new File(photos.get(0))), mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight());
                         bd = new BitmapDrawable(bm);
                         mertoItemViews.get(currentTag).setIcon(bd);
                         mertoBeans.get(currentTag).setIconId(bd);
@@ -847,18 +845,14 @@ public class RegPicListActivity extends Activity {
                         for (int size = 0; size < photos.size(); size++) {
                             bm = BitmapHelper.readBitMap(new File(photos.get(size)));
                             bm = BitmapHelper.createScaledBitmap(bm, mertoItemViews.get(size).getWidth(), mertoItemViews.get(size).getHeight(), "CROP");
-//                            String loc = WriteFileImgLoc(bm, size);
                             String loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm,mertoItemViews.get(size).getWidth(), mertoItemViews.get(size).getHeight()),size);
                             bd = new BitmapDrawable(bm);
                             mertoItemViews.get(size).setIcon(bd);
                             mertoBeans.get(size).setIconId(bd);
                             mertoBeans.get(size).setIsFinish(5);
                             mertoBeans.get(size).setLocUrl(loc);
-//                            mertoBeans.get(size).setLocUrl(photos.get(size));
                             mertoItemViews.get(size).setIsFinish(5);
                             mertoItemViews.get(size).setLocUrl(loc);
-//                            mertoItemViews.get(size).setLocUrl(photos.get(size));
-
                             OffDrop(size);
                         }
                     }
