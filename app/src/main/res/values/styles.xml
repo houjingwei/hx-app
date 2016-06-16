@@ -478,4 +478,11 @@
         <item name="android:windowExitAnimation">@anim/dialog_out</item>
     </style>
 
+    <style name="dialog_loading">
+        <item name="android:windowBackground">@color/trans</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
+
 </resources>
