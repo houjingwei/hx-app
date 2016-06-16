@@ -1,6 +1,7 @@
 package com.huixiangtv.live.ui;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.MainActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,7 +48,7 @@ public class VProgressDialog extends Dialog {
     private static final int DOWN_OVER = 2;
     private static final String savePath ="/sdcard/huixiangdata/";
     private static final String saveFileName = savePath + "HuiXiang.apk";
-    public VProgressDialog(Context context,String apkUrl,String uplog,String status) {
+    public VProgressDialog(final Activity activity,final Context context,String apkUrl,String uplog,final String status) {
         super(context, R.style.Dialog);
         setContentView(R.layout.process_version_new);
         this.mContext=context;
@@ -66,12 +68,20 @@ public class VProgressDialog extends Dialog {
             }
         });
 
-
+        this.setCancelable(false);
         ivClose = (ImageView) findViewById(R.id.ivClose);
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dimiss1();
+
+                if(status.equals("1")){
+                     dimiss1();
+                    ((MainActivity)activity).updateClose();
+                }
+                else
+                {
+                    dimiss1();
+                }
             }
         });
 
@@ -92,21 +102,21 @@ public class VProgressDialog extends Dialog {
 
         pb=(ProgressBar) findViewById(R.id.pb);
         pb.setMax(100);
-        if(status.equals("1"))
-        {
-            tvLevelEv.setClickable(false);
-            ivClose.setVisibility(View.GONE);
-            tvLevelEv.setText("正在升级");
-            downLoadThread = new Thread(mdownApkRunnable);
-            downLoadThread.start();
-        }
+//        if(status.equals("1"))
+//        {
+//            tvLevelEv.setClickable(false);
+//            ivClose.setVisibility(View.GONE);
+//            tvLevelEv.setText("正在升级");
+//            downLoadThread = new Thread(mdownApkRunnable);
+//            downLoadThread.start();
+//        }
     }
 
     private Runnable mdownApkRunnable = new Runnable() {
         @Override
         public void run() {
             try {
-                URL url = new URL("http://static.yueapp.net/res/resources/apk/yueapp.apk");
+                URL url = new URL(apkUrl);
                 HttpURLConnection conn = (HttpURLConnection) url
                         .openConnection();
                 conn.connect();

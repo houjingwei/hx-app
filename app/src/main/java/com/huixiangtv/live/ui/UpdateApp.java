@@ -1,6 +1,7 @@
 package com.huixiangtv.live.ui;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -31,6 +32,7 @@ import java.net.URL;
  */
 public class UpdateApp {
 
+    private Activity activity;
     private Context mContext;
     // 返回的安装包url
     private String apkUrl = "";
@@ -45,8 +47,9 @@ public class UpdateApp {
     private int progress;
     private boolean interceptFlag = false;
 
-    public UpdateApp(Context context) {
+    public UpdateApp(Activity activity,Context context) {
         this.mContext = context;
+        this.activity = activity;
     }
 
     public boolean judgeVersion(String tab, String url,
@@ -90,7 +93,7 @@ public class UpdateApp {
 
 
     protected void showDownloadDialog(String status) {
-        new VProgressDialog(mContext, apkUrl, uplog, status).show();
+        new VProgressDialog(activity,mContext, apkUrl, uplog, status).show();
     }
 
     private Runnable mdownApkRunnable = new Runnable() {

@@ -33,7 +33,7 @@ public class Api {
     //直播拉流地址
     public static final String PLAY_URL = BASE_URL+ "live/getPlayUrl";;
     //版本升级
-    public static final String UPGRADE_LEVEL = BASE_URL + "Config/getUpgradeInfo";
+    public static final String UPGRADE_LEVEL = BASE_URL + "config/getUpgradeInfo";
 
     //获取聊天室token
     public static final String CHAT_TOKEN = BASE_URL+"chat/getToken";
