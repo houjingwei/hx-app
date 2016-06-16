@@ -352,6 +352,13 @@ public class App extends MultiDexApplication {
         loginHelper.setLongValue("time", time);
     }
 
+
+    public static void setUpdateInDate(Context context, Date date) {
+        long time = date.getTime();
+        loginHelper.setLongValue("time", time);
+    }
+
+
     /**
      * 签到时间
      * @param key
