@@ -209,9 +209,9 @@ public class RegPicListActivity extends Activity {
         imageView5.setTag(4);
         user = new User();
         String uid = getIntent().getStringExtra("uid");
-        if (null == uid && App.getLoginUser()!=null) {
+        if (null == uid && App.getLoginUser() != null) {
             allEdit();
-        } else if (null!=uid){
+        } else if (null != uid) {
             noEdit(uid);
         } else {
             Toast.makeText(RegPicListActivity.this, "UID is " + uid, Toast.LENGTH_SHORT).show();
@@ -534,9 +534,9 @@ public class RegPicListActivity extends Activity {
 //
                         Intent intent = new Intent(RegPicListActivity.this, CropImageUI.class);
                         intent.putExtra("path", v.getLocUrl());
-                        intent.putExtra("width", v.getWidth()*0.90);
-                        intent.putExtra("currentPage",currentTag);
-                        intent.putExtra("height", v.getHeight()*0.90);
+                        intent.putExtra("width", v.getWidth() * 0.90);
+                        intent.putExtra("currentPage", currentTag);
+                        intent.putExtra("height", v.getHeight() * 0.90);
                         //PhotoPickerIntent.setPhotoCount(intent, 1);
                         //PhotoPickerIntent.setShowCamera(intent, true);
                         startActivityForResult(intent, REQUEST_CODE_CAT);
@@ -569,8 +569,7 @@ public class RegPicListActivity extends Activity {
                         intent.putExtra("images", (ArrayList<String>) UrlLoc);
                         intent.putExtra("currentIndex", currentTag);
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
                         isdbClick = true;
                         Message message = new Message();
                         message.what = 1;
@@ -799,7 +798,7 @@ public class RegPicListActivity extends Activity {
                     //创建File对象用于存储拍照的图片 SD卡根目录
 //                    File outputImage = new File(Environment.getExternalStorageDirectory(),test.jpg);
                     path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-                    outputImage = new File(Environment.getExternalStorageDirectory(), "cj"+currentTag+".jpg");
+                    outputImage = new File(Environment.getExternalStorageDirectory(), "cj" + currentTag + ".jpg");
 
                     try {
                         if (outputImage.exists()) {
@@ -828,13 +827,14 @@ public class RegPicListActivity extends Activity {
                     if (current_corp_img.length() != 0) {
                         OffDrop(currentTag);
                         bm = BitmapHelper.readBitMap(new File(current_corp_img), true);
+                        String loc = WriteFileImgLoc(bm, currentTag);
                         bd = new BitmapDrawable(bm);
                         mertoItemViews.get(currentTag).setIcon(bd);
                         mertoBeans.get(currentTag).setIconId(bd);
                         mertoBeans.get(currentTag).setIsFinish(5);
-                        mertoBeans.get(currentTag).setLocUrl(current_corp_img);
+                        mertoBeans.get(currentTag).setLocUrl(loc);
                         mertoItemViews.get(currentTag).setIsFinish(5);
-                        mertoItemViews.get(currentTag).setLocUrl(current_corp_img);
+                        mertoItemViews.get(currentTag).setLocUrl(loc);
                         current_corp_img = "";
                     }
                 }
@@ -844,18 +844,19 @@ public class RegPicListActivity extends Activity {
                     if (photos.size() > 0 && photos.size() < 2) {
 
                         OffDrop(currentTag);
-                        bm = BitmapHelper.readBitMap(new File(photos.get(0)),true);
+                        bm = BitmapHelper.readBitMap(new File(photos.get(0)), true);
+                        String loc = WriteFileImgLoc(bm, currentTag);
                         bd = new BitmapDrawable(bm);
                         mertoItemViews.get(currentTag).setIcon(bd);
                         mertoBeans.get(currentTag).setIconId(bd);
-                        mertoBeans.get(currentTag).setLocUrl(photos.get(0));
+                        mertoBeans.get(currentTag).setLocUrl(loc);
                         mertoBeans.get(currentTag).setIsFinish(5);
                         mertoItemViews.get(currentTag).setIsFinish(5);
-                        mertoItemViews.get(currentTag).setLocUrl(photos.get(0));
+                        mertoItemViews.get(currentTag).setLocUrl(loc);
                     } else if (photos.size() > 1) {
                         for (int size = 0; size < photos.size(); size++) {
-                            bm = BitmapHelper.readBitMap(new File(photos.get(size)),true);
-                            String loc = WriteFileImgLoc(bm,size);
+                            bm = BitmapHelper.readBitMap(new File(photos.get(size)), true);
+                            String loc = WriteFileImgLoc(bm, size);
                             bd = new BitmapDrawable(bm);
                             mertoItemViews.get(size).setIcon(bd);
                             mertoBeans.get(size).setIconId(bd);
@@ -1178,9 +1179,9 @@ public class RegPicListActivity extends Activity {
         ArrayList<String> imgurl = new ArrayList<String>();
         try {
             for (DropImageView iv : mertoItemViews) {
-                bm = BitmapHelper.readBitMap(new File(iv.getLocUrl()),false);
-                bm = BitmapHelper.createScaledBitmap(bm, iv.getWidth(),iv.getHeight(), "CROP");
-                String loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm,iv.getWidth(), iv.getHeight()),Integer.parseInt(iv.getTag().toString()));
+                bm = BitmapHelper.readBitMap(new File(iv.getLocUrl()), false);
+                bm = BitmapHelper.createScaledBitmap(bm, iv.getWidth(), iv.getHeight(), "CROP");
+                String loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, iv.getWidth(), iv.getHeight()), Integer.parseInt(iv.getTag().toString()));
                 imgurl.add(loc);
             }
         } catch (Exception ex) {
@@ -1299,31 +1300,31 @@ public class RegPicListActivity extends Activity {
 
 
                         //compare local pic
-                        if (!compareWithLocalPic(data)) {
+                        if (!compareWithLocalPic(data) || isExistsFile()) {
                             App.saveBodyPic(data);
 
                             ArrayList<Object> ss2 = new ArrayList<Object>();
                             DownloadPic(ss1, ss2);
                         } else {
 
-                            Bitmap bm1 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc1")),false);
+                            Bitmap bm1 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc1")), false);
 //                          Bitmap bm1 = BitmapHelper.copressImage(App.getPreferencesValue("imgloc1"));
                             BitmapDrawable bd1 = new BitmapDrawable(bm1);
 
 
-                            Bitmap bm2 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc2")),false);
+                            Bitmap bm2 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc2")), false);
                             BitmapDrawable bd2 = new BitmapDrawable(bm2);
 
 
-                            Bitmap bm3 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc3")),false);
+                            Bitmap bm3 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc3")), false);
                             BitmapDrawable bd3 = new BitmapDrawable(bm3);
 
 
-                            Bitmap bm4 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc4")),false);
+                            Bitmap bm4 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc4")), false);
                             BitmapDrawable bd4 = new BitmapDrawable(bm4);
 
 
-                            Bitmap bm5 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc5")),false);
+                            Bitmap bm5 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc5")), false);
                             BitmapDrawable bd5 = new BitmapDrawable(bm5);
 
                             user.setImgLoc1(App.getPreferencesValue("imgloc1"));
@@ -1370,6 +1371,16 @@ public class RegPicListActivity extends Activity {
 
     }
 
+    private boolean isExistsFile() {
+
+        if (!new File(App.getPreferencesValue("imgloc1")).exists() || !new File(App.getPreferencesValue("imgloc2")).exists() || !new File(App.getPreferencesValue("imgloc3")).exists() && !new File(App.getPreferencesValue("imgloc4")).exists() || !new File(App.getPreferencesValue("imgloc5")).exists()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     private void bindLeftInfo(User user) {
         txtFansi.setText(user.getFans() == null ? "0 :粉丝" : user.getFans() + " :粉丝");
         txtName.setText(user.getNickName() == null ? "" : user.getNickName());
@@ -1407,11 +1418,11 @@ public class RegPicListActivity extends Activity {
                 if (ss2.size() == 5) {
 
                     try {
-                        user.setImgLoc1(WriteFileImgLoc((Bitmap) ss2.get(0), 1));
-                        user.setImgLoc2(WriteFileImgLoc((Bitmap) ss2.get(1), 2));
-                        user.setImgLoc3(WriteFileImgLoc((Bitmap) ss2.get(2), 3));
-                        user.setImgLoc4(WriteFileImgLoc((Bitmap) ss2.get(3), 4));
-                        user.setImgLoc5(WriteFileImgLoc((Bitmap) ss2.get(4), 5));
+                        user.setImgLoc1(WriteFileImgLoc((Bitmap) ss2.get(0), 0));
+                        user.setImgLoc2(WriteFileImgLoc((Bitmap) ss2.get(1), 1));
+                        user.setImgLoc3(WriteFileImgLoc((Bitmap) ss2.get(2), 2));
+                        user.setImgLoc4(WriteFileImgLoc((Bitmap) ss2.get(3), 3));
+                        user.setImgLoc5(WriteFileImgLoc((Bitmap) ss2.get(4), 4));
                         App.saveBodyLocPic(user);
                     } catch (IOException e) {
                         e.printStackTrace();
