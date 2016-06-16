@@ -763,10 +763,10 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
         mLiveRecorder.init(live.getPushUrl(), "flv");//flv为推流文件格式，目前仅支持flv
         mLiveRecorder.setNetworkThreshHold(90);//设置网络最大buffer阈值.可不设，默认为90
         mVideoStream = mLiveRecorder.addVideoStream();
-        mVideoStream.init(384, 640, 600000, 20, 3);//参数分别为：宽、高、码率、帧数、帧数间隔；宽384为推荐设置，可解决部分手机不支持16倍数的问题
+        mVideoStream.init(384, 640, 400000, 20, 3);//参数分别为：宽、高、码率、帧数、帧数间隔；宽384为推荐设置，可解决部分手机不支持16倍数的问题
         mVideoStream.setInput(_Client);
         mVideoStream.setMirrored(_Client.isFrontCamera());
-        mVideoStream.setBitRateRange(600000,1000000);//设置最小码率和最大码率，可根据网络状况自动调节码率.会自动调节码率
+        mVideoStream.setBitRateRange(400000,800000);//设置最小码率和最大码率，可根据网络状况自动调节码率.会自动调节码率
         mAudioStream = mLiveRecorder.addAudioStream();
         mAudioStream.init(44100, 32000);//音频采样率、码率
         mLiveRecorder.setOnStatusCallback(this);
