@@ -40,6 +40,7 @@ import android.widget.MediaController;
 import android.widget.TableLayout;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.ijk.application.Settings;
 import com.huixiangtv.live.ijk.services.MediaPlayerService;
 import com.huixiangtv.live.utils.CommonHelper;
@@ -568,8 +569,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 //                                        })
 //                                .setCancelable(false)
 //                                .show();
-                        CommonHelper.showTip(activity,"直播已结束");
-                        activity.onBackPressed();
+
+                        ((LiveActivity)activity).ijkFinish();
 
                     }
                     return true;

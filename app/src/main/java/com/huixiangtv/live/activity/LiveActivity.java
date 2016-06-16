@@ -70,6 +70,7 @@ import org.xutils.x;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.rong.imlib.RongIMClient;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -149,7 +150,9 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
                     cp.dismiss();
                 }
                 if(null!=data){
+                    live = data;
                     if(data.getLiveStatus().equals("1")){
+                        initPlayer();
                         living(data);
                     }else if(data.getLiveStatus().equals("0")){
                         CommonHelper.showTip(LiveActivity.this,"直播已结束");
@@ -180,6 +183,13 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
             }
         }, Live.class);
 
+
+
+
+
+    }
+
+    private void initPlayer() {
         final View playView = LayoutInflater.from(LiveActivity.this).inflate(R.layout.play_view, null, false);
         mVideoView = (IjkVideoView) playView.findViewById(R.id.video_view);
         mVideoView.setActivity(LiveActivity.this);
@@ -253,13 +263,7 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
         params.height = App.screenHeight;
         params.width = App.screenWidth;
         mVideoView.setLayoutParams(params);
-
-
-
         flPlayView.addView(playView);
-
-
-
     }
 
 
@@ -681,18 +685,20 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
         }
         flCover.addView(liveView);
         liveView.loadLive();
+
+
         if(sharePlat==1){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SMS,live.getPhoto(),Api.SHARE_URL+live.getLid(),0,null);
         }else if(sharePlat==2){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QQ,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QQ,live.getPhoto(),Api.SHARE_URL+live.getLid(),0,null);
         }else if(sharePlat==3){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QZONE,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.QZONE,live.getPhoto(),Api.SHARE_URL+live.getLid(),0,null);
         }else if(sharePlat==4){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN,live.getPhoto(),Api.SHARE_URL+live.getLid(),0,null);
         }else if(sharePlat==5){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN_CIRCLE,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.WEIXIN_CIRCLE,live.getPhoto(),Api.SHARE_URL+live.getLid(),0,null);
         }else if(sharePlat==6){
-            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SINA,live.getPhoto(),"http://119.29.94.122:8888/h5/index.html?uid=&lid="+live.getLid(),0,null);
+            CommonHelper.share(LiveActivity.this,live.getNickName()+live.getTitle(),live.getTopic()+"正在回响直播，赶紧来捧场吧",SHARE_MEDIA.SINA,live.getPhoto(),Api.SHARE_URL+live.getLid(),0,null);
         }
     }
 
@@ -706,7 +712,6 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK && requestCode == 1) {
-                    String tid = data.getStringExtra("tid");
                     String topic = data.getStringExtra("topic");
                     tvTheme.setText( topic);
                 }
@@ -949,6 +954,21 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
 
     @Override
     public void onBackPressed() {
+        if(null!=live){
+            App.imClient.quitChatRoom(live.getChatroom(),new RongIMClient.OperationCallback(){
+
+                @Override
+                public void onSuccess() {
+                    Log.i("rongyun","exit"+live.getChatroom()+"");
+                }
+
+                @Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
+
+                }
+            });
+        }
+
         if(null!=_Client){
             _Client.stopPreview();
             _Client.onDestroy();
@@ -1030,5 +1050,13 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
             loadingDialog.dismiss();
         }
         isFinish = true;
+    }
+
+    public void ijkFinish() {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                onBackPressed();
+            }
+        }, 1000);
     }
 }

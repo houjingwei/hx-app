@@ -70,6 +70,7 @@ public class Api {
     //分享加爱心
     public static final String ADD_LOVE = BASE_URL+"promote/isShared";
 
+
     //我关注的人
     public static String GETCOLLECTARTIST = BASE_URL+"fans/getCollectArtist";
     //我的粉丝
@@ -122,6 +123,12 @@ public class Api {
      * 爱心明细
      */
     public static String LOVE_DETAIL = BASE_URL+"account/getLoveDetail";
+
+
+    /**
+     * 分享地址
+     */
+    public static final String SHARE_URL = "http://119.29.94.122:8888/h5/index.html?uid=&lid=";
 
 
 
