@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
+    android:background="@color/sysBg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -24,97 +25,119 @@
 
     </RelativeLayout>
 
-    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
-        android:id="@+id/refreshLayout"
+
+    <com.chanven.lib.cptr.PtrClassicFrameLayout
+        xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/test_list_view_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
+        cube_ptr:ptr_duration_to_close="200"
+        cube_ptr:ptr_duration_to_close_header="700"
+        cube_ptr:ptr_keep_header_when_refresh="true"
+        cube_ptr:ptr_pull_to_fresh="false"
+        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        cube_ptr:ptr_resistance="1.8" >
 
-        android:scrollbars="none">
-
-        <ScrollView
-            android:id="@+id/sv"
+        <ListView
+            android:id="@+id/test_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:dividerHeight="0dp" />
+    </com.chanven.lib.cptr.PtrClassicFrameLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/ll_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginTop="10dp"
-                        android:background="#ffffff"
-                        android:gravity="center"
-                        android:padding="10dp">
+    <!--<com.handmark.pulltorefresh.library.PullToRefreshScrollView-->
+        <!--android:id="@+id/refreshLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:fillViewport="true"-->
 
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_vertical"
-                            android:background="@drawable/icon_search" />
+        <!--android:scrollbars="none">-->
 
-                        <TextView
-                            android:id="@+id/tvSearch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:background="@null"
-                            android:text="@string/input_your_favorite_video"
-                            android:textColor="#b3b3b3"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-                </LinearLayout>
+        <!--<ScrollView-->
+            <!--android:id="@+id/sv"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:fillViewport="true">-->
 
-                <LinearLayout
-                    android:id="@+id/llPer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#efefef"
-                    android:orientation="vertical">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:orientation="vertical">-->
 
-                    <com.huixiangtv.live.utils.widget.BannerView
-                        android:id="@+id/banner"
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp"
-                        android:background="@color/sysBg"
-                        android:paddingBottom="5dp" />
-
-                    <!--<com.huixiangtv.live.utils.widget.LoadingView-->
-                    <!--android:id="@+id/loadView"-->
-                    <!--android:layout_width="wrap_content"-->
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/ll_search"-->
+                    <!--android:layout_width="match_parent"-->
                     <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:visibility="gone"-->
-                    <!--app:loadingText="加载中..." />-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:visibility="gone">-->
 
-                    <com.huixiangtv.live.utils.widget.LinearLayoutForListView
-                        android:id="@+id/listview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:mydivider="@color/self_line"
-                        app:mydividerHeight="0dp" />
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_marginBottom="0dp"-->
+                        <!--android:layout_marginLeft="8dp"-->
+                        <!--android:layout_marginRight="15dp"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:background="#ffffff"-->
+                        <!--android:gravity="center"-->
+                        <!--android:padding="10dp">-->
 
-                </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
-    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+                        <!--<ImageView-->
+                            <!--android:layout_width="25dp"-->
+                            <!--android:layout_height="25dp"-->
+                            <!--android:layout_gravity="center_vertical"-->
+                            <!--android:background="@drawable/icon_search" />-->
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/tvSearch"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_gravity="center_vertical"-->
+                            <!--android:layout_marginLeft="10dp"-->
+                            <!--android:background="@null"-->
+                            <!--android:text="@string/input_your_favorite_video"-->
+                            <!--android:textColor="#b3b3b3"-->
+                            <!--android:textSize="15sp" />-->
+                    <!--</LinearLayout>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/llPer"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="#efefef"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<com.huixiangtv.live.utils.widget.BannerView-->
+                        <!--android:id="@+id/banner"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="10dp"-->
+                        <!--android:background="@color/sysBg"-->
+                        <!--android:paddingBottom="5dp" />-->
+
+                    <!--&lt;!&ndash;<com.huixiangtv.live.utils.widget.LoadingView&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/loadView"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_gravity="center"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:visibility="gone"&ndash;&gt;-->
+                    <!--&lt;!&ndash;app:loadingText="加载中..." />&ndash;&gt;-->
+
+                    <!--<com.huixiangtv.live.utils.widget.LinearLayoutForListView-->
+                        <!--android:id="@+id/listview"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="vertical"-->
+                        <!--app:mydivider="@color/self_line"-->
+                        <!--app:mydividerHeight="0dp" />-->
+
+                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
+        <!--</ScrollView>-->
+    <!--</com.handmark.pulltorefresh.library.PullToRefreshScrollView>-->
 
 
     <LinearLayout
