@@ -34,7 +34,7 @@ public class CenterLoadingView  extends Dialog {
         ivImage = (ImageView) findViewById(R.id.ivImage);
         tvMsg = (TextView) findViewById(R.id.tvMsg);
         initAnim();
-        getWindow().setWindowAnimations(R.anim.alpha_in);
+//        getWindow().setWindowAnimations(R.anim.alpha_in);
     }
 
     private void initAnim() {

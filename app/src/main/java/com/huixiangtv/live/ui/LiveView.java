@@ -360,6 +360,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         App.imClient.joinChatRoom(live.getChatroom(), -1, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
+
                 App.imClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
                 if(isSendIntoRoomMsg){
                     sendIntoRoomMsg();
@@ -1118,99 +1119,101 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
                 Log.i("myCloseclose",msg.getMsgType()+"");
                 msg.setContent(tm.getContent().toString());
+                if(null!=App.getLoginUser() && !msg.getUid().equals(App.getLoginUser().getUid())){
+                    if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
 
-                if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
+                        msgListView.post(new Runnable() {
 
-                    msgListView.post(new Runnable() {
+                            public void run() {
+                                msgAdapter.add(msg);
+                                msgListView.setSelection(msgAdapter.getCount()-1);
 
-                        public void run() {
-                            msgAdapter.add(msg);
-                            msgListView.setSelection(msgAdapter.getCount()-1);
+                            }
 
-                        }
+                        });
 
-                    });
+                    }else if(msg.getMsgType().equals(Constant.MSG_TYPE_ENTER)){
 
-                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_ENTER)){
+                        msgListView.post(new Runnable() {
 
-                    msgListView.post(new Runnable() {
-
-                        public void run() {
-                            msgAdapter.add(msg);
-                            msgListView.setSelection(msgAdapter.getCount()-1);
+                            public void run() {
+                                msgAdapter.add(msg);
+                                msgListView.setSelection(msgAdapter.getCount()-1);
 
 
-                            User user = new User();
-                            user.setPhoto(msg.getPhoto());
-                            user.setNickName(msg.getNickName());
-                            mAdapter.addData(user);
-                            mRecyclerView.setAdapter(mAdapter);
+                                User user = new User();
+                                user.setPhoto(msg.getPhoto());
+                                user.setNickName(msg.getNickName());
+                                mAdapter.addData(user);
+                                mRecyclerView.setAdapter(mAdapter);
 
-                            onLineNum++;
-                        }
+                                onLineNum++;
+                            }
 
-                    });
+                        });
 
-                } else if(msg.getMsgType().equals(Constant.MSG_TYPE_BARRAGE)){
+                    } else if(msg.getMsgType().equals(Constant.MSG_TYPE_BARRAGE)){
 
-                    msgListView.post(new Runnable() {
-                        public void run() {
+                        msgListView.post(new Runnable() {
+                            public void run() {
 
-                            android.os.Message barrageMsg = new android.os.Message();
-                            barrageMsg.what=BARRAGE;
-                            barrageMsg.obj = msg;
-                            liveHandler.sendMessage(barrageMsg);
-
-                        }
-
-                    });
-
-                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_GIFT)){
-                    msgListView.post(new Runnable() {
-                        public void run() {
-                            if(StringUtil.isNotEmpty(msg.getAddhot())){
-                                int old = Integer.parseInt(tvHot.getText().toString());
-                                int addhot = Integer.parseInt(msg.getAddhot());
-                                String loves = old+addhot+"";
-                                tvHot.setText(loves);
-                                startHot = startHot + addhot;
                                 android.os.Message barrageMsg = new android.os.Message();
-                                barrageMsg.what=GIFT_ANIM;
+                                barrageMsg.what=BARRAGE;
                                 barrageMsg.obj = msg;
                                 liveHandler.sendMessage(barrageMsg);
+
                             }
 
-                        }
+                        });
 
-                    });
+                    }else if(msg.getMsgType().equals(Constant.MSG_TYPE_GIFT)){
+                        msgListView.post(new Runnable() {
+                            public void run() {
+                                if(StringUtil.isNotEmpty(msg.getAddhot())){
+                                    int old = Integer.parseInt(tvHot.getText().toString());
+                                    int addhot = Integer.parseInt(msg.getAddhot());
+                                    String loves = old+addhot+"";
+                                    tvHot.setText(loves);
+                                    startHot = startHot + addhot;
+                                    android.os.Message barrageMsg = new android.os.Message();
+                                    barrageMsg.what=GIFT_ANIM;
+                                    barrageMsg.obj = msg;
+                                    liveHandler.sendMessage(barrageMsg);
+                                }
 
-                }else if(msg.getMsgType().equals(Constant.MSG_TYPE_LOVE)){
-                    msgListView.post(new Runnable() {
-                        public void run() {
-                            if(StringUtil.isNotEmpty(msg.getAddhot())){
-                                int old = Integer.parseInt(tvLove.getText().toString());
-                                int addhot = Integer.parseInt(msg.getCount());
-                                String loves = old+addhot+"";
-                                tvLove.setText(loves);
-
-                                startLove = startLove + addhot;
                             }
 
-                        }
+                        });
 
-                    });
+                    }else if(msg.getMsgType().equals(Constant.MSG_TYPE_LOVE)){
+                        msgListView.post(new Runnable() {
+                            public void run() {
+                                if(StringUtil.isNotEmpty(msg.getAddhot())){
+                                    int old = Integer.parseInt(tvLove.getText().toString());
+                                    int addhot = Integer.parseInt(msg.getCount());
+                                    String loves = old+addhot+"";
+                                    tvLove.setText(loves);
 
-                }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
-                    msgListView.post(new Runnable() {
-                        public void run() {
-                            Log.i("myCloseclose","123");
-                            LiveActivity ac = (LiveActivity)activity;
-                            ac.setFinishLiving();
-                            showCloseInfo(msg);
+                                    startLove = startLove + addhot;
+                                }
 
-                        }
-                    });
+                            }
+
+                        });
+
+                    }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
+                        msgListView.post(new Runnable() {
+                            public void run() {
+                                Log.i("myCloseclose","123");
+                                LiveActivity ac = (LiveActivity)activity;
+                                ac.setFinishLiving();
+                                showCloseInfo(msg);
+
+                            }
+                        });
+                    }
                 }
+
 
             }
             return false;

@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -77,6 +78,7 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
 
 
     private static final String TAG = "LiveActivity";
+
     @ViewInject(R.id.flCover)
     FrameLayout flCover;
     @ViewInject(R.id.flPlayView)
@@ -469,37 +471,22 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
 
 
 
+    int lineCount = 0;
     @Override
     public void onNetworkStatusChange(int status) {
+        android.os.Message msg = new android.os.Message();
         switch (status) {
             case LiveStreamStatus.CONNECTION_START:
-                Log.i(TAG, "Start live stream connection!");
-                if(null!=loadingDialog){
-                    loadingDialog.dismiss();
-                }
                 break;
             case LiveStreamStatus.CONNECTION_ESTABLISHED:
-                Log.i(TAG, "Live stream connection is CONNECTION_ESTABLISHED!");
-                if(null!=loadingDialog){
-                    loadingDialog.dismiss();
-                }
-                Log.i(TAG, "Live stream connection is established!");
-                Log.e("myTest", "startPush");
-
+                msg.what=NET_OK;
+                pushHandler.sendMessage(msg);
                 break;
             case LiveStreamStatus.CONNECTION_CLOSED:
-                Log.i(TAG, "Live stream connection is closed!");
-                if(isFinish==false){
-                    if(null==loadingDialog ){
-                        loadingDialog = new CenterLoadingView(LiveActivity.this);
-                    }
-                    loadingDialog.setCancelable(true);
-                    loadingDialog.setTitle("无网络");
-                    loadingDialog.show();
-
-                }
                 mLiveRecorder.release();
                 mLiveRecorder = null;
+                msg.what=NET_CLOSE;
+                pushHandler.sendMessage(msg);
                 break;
             case LiveStreamStatus.CONNECTION_ERROR_IO:
             case LiveStreamStatus.CONNECTION_ERROR_MEM:
@@ -507,48 +494,25 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
             case LiveStreamStatus.CONNECTION_ERROR_BROKENPIPE:
             case LiveStreamStatus.CONNECTION_ERROR_INVALIDARGUMENT:
             case LiveStreamStatus.CONNECTION_ERROR_NETWORKUNREACHABLE:
-                Log.i(TAG, "Live stream connection is CONNECTION_ERROR_NETWORKUNREACHABLE!");
-                if(isFinish==false){
-                    if(null==loadingDialog ){
-                        loadingDialog = new CenterLoadingView(LiveActivity.this);
-                    }
-                    if(null==loadingDialog){
-                        loadingDialog = new CenterLoadingView(LiveActivity.this);
-                    }
-                    loadingDialog.setCancelable(true);
-                    loadingDialog.setTitle("网络异常，正在重连");
-                    loadingDialog.show();
-
-                }
-
                 if (mIsRecording) {
                     mLiveRecorder.reconnect(null);
                 } else {
                     mLiveRecorder.release();
                     mLiveRecorder = null;
                 }
-
+                msg.what=NET_CLOSE;
+                pushHandler.sendMessage(msg);
                 break;
             case LiveStreamStatus.CONNECTION_ERROR_AUTH:
-                if(isFinish==false){
-                    if(null==loadingDialog ){
-                        loadingDialog = new CenterLoadingView(LiveActivity.this);
-                    }
-                    loadingDialog.setCancelable(true);
-                    loadingDialog.setTitle("网络异常，正在重连");
-                    loadingDialog.show();
-
-                }
                 if (mIsRecording) {
                     stopRecorder();
                 }
                 mLiveRecorder.release();
                 mLiveRecorder = null;
-
-                /* You can fetch another auth and start new live recorder here */
+                msg.what=NET_CLOSE;
+                pushHandler.sendMessage(msg);
                 break;
             default:
-                Log.i(TAG, "Live stream connection unexpected error-->" + status);
                 if (mIsRecording) {
                     mLiveRecorder.reconnect(null);
                 } else {
@@ -559,6 +523,40 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
                 break;
         }
     }
+
+
+
+    private static final int NET_CLOSE = -22;
+    private static final int NET_OK = -23;
+    Handler pushHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case NET_CLOSE:
+                    if(isFinish==false && lineCount==0){
+                        lineCount++;
+                        if(null==loadingDialog ){
+                            loadingDialog = new CenterLoadingView(LiveActivity.this);
+                        }
+                        loadingDialog.setCancelable(true);
+                        loadingDialog.setTitle("等待网络恢复");
+                        loadingDialog.show();
+
+                    }
+                    break;
+                case NET_OK:
+                    lineCount = 0;
+                    if(null!=loadingDialog){
+                        loadingDialog.dismiss();
+                    }
+                    break;
+            }
+        }
+    };
+
+
+
 
 
     private void stopRecorder() {
@@ -951,7 +949,6 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if(null!=_Client){
             _Client.stopPreview();
             _Client.onDestroy();
