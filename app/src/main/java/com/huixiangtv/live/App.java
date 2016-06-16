@@ -3,7 +3,6 @@ package com.huixiangtv.live;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.multidex.MultiDexApplication;
@@ -13,11 +12,9 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.duanqu.qupai.auth.AuthService;
 import com.duanqu.qupai.auth.QupaiAuthListener;
 import com.huixiangtv.live.model.Gift;
-import com.huixiangtv.live.model.LiveMsg;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.ChatTokenCallBack;
@@ -41,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
-import io.rong.message.TextMessage;
 
 /**
  * Created by hjw on 16/5/4.
@@ -114,7 +110,7 @@ public class App extends MultiDexApplication {
         rongyun.chatToken(new ChatTokenCallBack() {
             @Override
             public void getTokenSuccess(String token) {
-                RongIMClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
+
                 rongyun.connect(token,null);
             }
         });
@@ -397,32 +393,6 @@ public class App extends MultiDexApplication {
         PackageInfo packInfo = packageManager.getPackageInfo(
                 context.getPackageName(), 0);
         return packInfo.versionName.toString();
-    }
-
-
-
-
-    /**
-     * 接收消息监听
-     */
-    private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
-        @Override
-        public boolean onReceived(io.rong.imlib.model.Message message, int i) {
-            if (message.getContent() instanceof TextMessage) {
-                TextMessage tm = (TextMessage) message.getContent();
-                final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
-                Log.i("msgType","----------"+msg.getMsgType()+"----------");
-                msg.setContent(tm.getContent().toString());
-                Intent mIntent = new Intent(ACTION_NAME);
-                mIntent.putExtra("msg",msg);
-                //发送广播
-                sendBroadcast(mIntent);
-                Log.i("msgmsg", msg.toString());
-            }
-
-
-            return false;
-        }
     }
 
 
