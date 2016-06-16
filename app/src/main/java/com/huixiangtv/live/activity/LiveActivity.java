@@ -494,7 +494,7 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
                         loadingDialog = new CenterLoadingView(LiveActivity.this);
                     }
                     loadingDialog.setCancelable(true);
-                    loadingDialog.setTitle("无网络，等待重连");
+                    loadingDialog.setTitle("无网络");
                     loadingDialog.show();
 
                 }
