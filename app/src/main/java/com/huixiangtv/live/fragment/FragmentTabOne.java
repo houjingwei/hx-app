@@ -21,7 +21,6 @@ import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
-import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
@@ -66,7 +65,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private TextView tvAddress;
     private BannerView bannerView;
     private TextView tvInfo, tvLoveCount, tvWeight, tvbName1, tvContent1, tvbName2, tvContent2, tvbName3, tvContent3, tvbName4, tvContent4;
-    private PullToRefreshScrollView mRefreshLayout;
     private List<BannerModel> guangGao = new ArrayList<BannerModel>();
     private View mRootView;
     MainActivity activity;
@@ -391,11 +389,9 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
-                mRefreshLayout.onRefreshComplete();
-                CommonHelper.showTip(getActivity(), e.getMessage());
+                //CommonHelper.showTip(getActivity(), e.getMessage());
             }
         }, Live.class);
-
     }
 
 

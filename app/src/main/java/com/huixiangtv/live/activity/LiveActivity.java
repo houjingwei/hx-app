@@ -489,15 +489,15 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
                 break;
             case LiveStreamStatus.CONNECTION_CLOSED:
                 Log.i(TAG, "Live stream connection is closed!");
-                if(isFinish==false){
-                    if(null==loadingDialog ){
-                        loadingDialog = new CenterLoadingView(LiveActivity.this);
-                    }
-                    loadingDialog.setCancelable(true);
-                    loadingDialog.setTitle("无网络");
-                    loadingDialog.show();
-
-                }
+//                if(isFinish==false){
+//                    if(null==loadingDialog ){
+//                        loadingDialog = new CenterLoadingView(LiveActivity.this);
+//                    }
+//                    loadingDialog.setCancelable(true);
+//                    loadingDialog.setTitle("无网络");
+//                    loadingDialog.show();
+//
+//                }
                 mLiveRecorder.release();
                 mLiveRecorder = null;
                 break;

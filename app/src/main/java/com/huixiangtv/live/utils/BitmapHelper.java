@@ -200,10 +200,12 @@ public class BitmapHelper {
         return dst;
     }
 
-    public static Bitmap readBitMap(File file) {
+    public static Bitmap readBitMap(File file,boolean isSS) {
 
         BitmapFactory.Options opt = new BitmapFactory.Options();
+        if(isSS)
         opt.inSampleSize = 2;
+
         opt.inPreferredConfig = Bitmap.Config.RGB_565;
 
         opt.inPurgeable = true;
@@ -215,87 +217,6 @@ public class BitmapHelper {
 
     }
 
-    //
-    public static Bitmap zoomImg(Bitmap bm, int newWidth, int newHeight) {
-        // 获得图片的宽高
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        // 计算缩放比例
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // float scaleHeight = (((float)height/newHeight)*height)/newHeight;
-        // 取得想要缩放的matrix参数
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        // 得到新的图片 www.2cto.com
-        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
-                true);
-        return newbm;
-    }
-
-
-    public static Bitmap setDrawable(Bitmap backGroundMap,int widthP,int heightP) {
-        int width = widthP; //App.screenWidth;
-        int height =heightP;// App.screenHeight;
-
-        int widthDrawable = backGroundMap.getWidth();
-        int heightDrawable = backGroundMap.getHeight();//获取背景图片的宽和高
-        float scaleWidth = (float) width / widthDrawable;
-        float scaleHeight = (float) height / heightDrawable;//宽高比
-
-        Bitmap resizeBmp;
-        Matrix matrix = new Matrix();
-        if (scaleWidth < scaleHeight) {
-            float scale = scaleHeight;//取大的
-            matrix.postScale(scale, scale);//缩放比例
-            int xStart = (int) (widthDrawable - widthDrawable / scale) / 2;
-
-
-            resizeBmp = Bitmap.createBitmap(backGroundMap, xStart, 0, (int) (widthDrawable / scale),
-                    heightDrawable, matrix, true);
-        } else {
-            float scale = scaleWidth;
-            matrix.postScale(scale, scale);
-            int yStart = (int) (scaleHeight - scaleHeight / scale) / 2;
-            resizeBmp = Bitmap.createBitmap(backGroundMap, 0, yStart, widthDrawable,
-                    (int) (heightDrawable / scale), matrix, true);
-        }
-        return resizeBmp;
-
-    }
-
-
-
-    public static Bitmap createImageThumbnail(String filePath){
-        Bitmap bitmap = null;
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(filePath, opts);
-
-        opts.inSampleSize = computeSampleSize(opts, -1, 128*128);
-        opts.inJustDecodeBounds = false;
-
-        try {
-            bitmap = BitmapFactory.decodeFile(filePath, opts);
-        }catch (Exception e) {
-            // TODO: handle exception
-        }
-        return bitmap;
-    }
-
-    public static int computeSampleSize(BitmapFactory.Options options, int minSideLength, int maxNumOfPixels) {
-        int initialSize = computeInitialSampleSize(options, minSideLength, maxNumOfPixels);
-        int roundedSize;
-        if (initialSize <= 8) {
-            roundedSize = 1;
-            while (roundedSize < initialSize) {
-                roundedSize <<= 1;
-            }
-        } else {
-            roundedSize = (initialSize + 7) / 8 * 8;
-        }
-        return roundedSize;
-    }
 
     private static int computeInitialSampleSize(BitmapFactory.Options options,int minSideLength, int maxNumOfPixels) {
         double w = options.outWidth;
@@ -390,5 +311,24 @@ public class BitmapHelper {
             return new Rect(0, 0, dstWidth, dstHeight);
         }
     }
+
+
+    public static int calculateInSampleSize(BitmapFactory.Options options,
+                                            int reqWidth, int reqHeight) {
+        // 源图片的高度和宽度
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+        if (height > reqHeight || width > reqWidth) {
+            // 计算出实际宽高和目标宽高的比率
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            // 选择宽和高中最小的比率作为inSampleSize的值，这样可以保证最终图片的宽和高
+            // 一定都会大于等于目标的宽和高。
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        return inSampleSize;
+    }
+
 
 }

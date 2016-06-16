@@ -209,9 +209,9 @@ public class RegPicListActivity extends Activity {
         imageView5.setTag(4);
         user = new User();
         String uid = getIntent().getStringExtra("uid");
-        if (null == uid) {
+        if (null == uid && App.getLoginUser()!=null) {
             allEdit();
-        } else if (null != App.getLoginUser() && !uid.equals(App.getLoginUser().getUid())) {
+        } else if (null!=uid){
             noEdit(uid);
         } else {
             Toast.makeText(RegPicListActivity.this, "UID is " + uid, Toast.LENGTH_SHORT).show();
@@ -279,32 +279,13 @@ public class RegPicListActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //first validation
-                int i = 0;
                 for (DropImageView dropImageView : mertoItemViews) {
-                    if (dropImageView.getIsFinish() > 5) {
-                        i++;
-                    }
                     if (dropImageView.getIsFinish() < 5) {
-
                         Toast.makeText(getBaseContext(), "请选择选择图片到第" + (Integer.parseInt(dropImageView.getTag().toString()) + 1) + "张卡片", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
-                // if(i<5) {
-                ArtistCardInfoSave(new ApiCallback<Object>() {
-
-                    @Override
-                    public void onSuccess(Object data) {
-                        List<String> pics = (List<String>) data;
-                    }
-                });
-                //}
-//                else
-//                {
-//                    CommonHelper.showTip(RegPicListActivity.this, "保存成功");
-//                }
-
-
+                ArtistCardInfoSave();
             }
         });
 
@@ -441,7 +422,7 @@ public class RegPicListActivity extends Activity {
         DropImageModel dropImageModel = new DropImageModel();
         if (mertoBeans.size() == 0) {
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(6);
+                dropImageModel.setIsFinish(5);
                 dropImageModel.setLocUrl(user.getImgLoc1());
             } else {
                 dropImageModel.setIsFinish(0);
@@ -451,7 +432,7 @@ public class RegPicListActivity extends Activity {
         } else if (mertoBeans.size() == 1) {
 
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(6);
+                dropImageModel.setIsFinish(5);
                 dropImageModel.setLocUrl(user.getImgLoc2());
             } else {
                 dropImageModel.setIsFinish(0);
@@ -460,7 +441,7 @@ public class RegPicListActivity extends Activity {
 
         } else if (mertoBeans.size() == 2) {
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(6);
+                dropImageModel.setIsFinish(5);
                 dropImageModel.setLocUrl(user.getImgLoc3());
             } else {
                 dropImageModel.setIsFinish(0);
@@ -471,7 +452,7 @@ public class RegPicListActivity extends Activity {
         } else if (mertoBeans.size() == 3) {
 
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(6);
+                dropImageModel.setIsFinish(5);
                 dropImageModel.setLocUrl(user.getImgLoc4());
             } else {
                 dropImageModel.setIsFinish(0);
@@ -481,7 +462,7 @@ public class RegPicListActivity extends Activity {
             dropImageModel.setIconId(user.getDrawableImg5() != null ? user.getDrawableImg5() : getResources().getDrawable(R.drawable.pic5));
             //have' a tag
             if (status.equals("1")) {
-                dropImageModel.setIsFinish(6);
+                dropImageModel.setIsFinish(5);
                 dropImageModel.setLocUrl(user.getImgLoc5());
                 startOnMertoItemViewListener();
                 resetOnMertoItemViewListener();
@@ -553,8 +534,9 @@ public class RegPicListActivity extends Activity {
 //
                         Intent intent = new Intent(RegPicListActivity.this, CropImageUI.class);
                         intent.putExtra("path", v.getLocUrl());
-                        intent.putExtra("width", v.getWidth());
-                        intent.putExtra("height", v.getHeight());
+                        intent.putExtra("width", v.getWidth()*0.90);
+                        intent.putExtra("currentPage",currentTag);
+                        intent.putExtra("height", v.getHeight()*0.90);
                         //PhotoPickerIntent.setPhotoCount(intent, 1);
                         //PhotoPickerIntent.setShowCamera(intent, true);
                         startActivityForResult(intent, REQUEST_CODE_CAT);
@@ -570,14 +552,44 @@ public class RegPicListActivity extends Activity {
                     lastClickTime = System.currentTimeMillis();
 
                 } else {
-                    UrlLoc.clear();
-                    for (DropImageView dropImageView : mertoItemViews) {
-                        UrlLoc.add(dropImageView.getLocUrl());
+
+                    long currentTime = System.currentTimeMillis();
+                    if (currentTime - lastClickTime < 500) {
+                        isdbClick = false;
+                        currentTag = Integer.parseInt(v.getTag().toString());
+
+                        UrlLoc.clear();
+                        for (DropImageView dropImageView : mertoItemViews) {
+                            bm = BitmapHelper.readBitMap(new File(dropImageView.getLocUrl()), false);
+                            bm = BitmapHelper.createScaledBitmap(bm, dropImageView.getWidth(), dropImageView.getHeight(), "CROP");
+                            String loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, dropImageView.getWidth(), dropImageView.getHeight()), Integer.parseInt(dropImageView.getTag().toString()));
+                            UrlLoc.add(loc);
+                        }
+                        Intent intent = new Intent(RegPicListActivity.this, RegPicActivity.class);
+                        intent.putExtra("images", (ArrayList<String>) UrlLoc);
+                        intent.putExtra("currentIndex", currentTag);
+                        startActivity(intent);
                     }
-                    Intent intent = new Intent(RegPicListActivity.this, RegPicActivity.class);
-                    intent.putExtra("images", (ArrayList<String>) UrlLoc);
-                    intent.putExtra("currentIndex", currentTag);
-                    startActivity(intent);
+                    else {
+                        isdbClick = true;
+                        Message message = new Message();
+                        message.what = 1;
+                        message.arg1 = 10;
+                        handlerTow.sendMessageDelayed(message, 500);
+                        UrlLoc.clear();
+                        for (DropImageView dropImageView : mertoItemViews) {
+                            bm = BitmapHelper.readBitMap(new File(dropImageView.getLocUrl()), false);
+                            bm = BitmapHelper.createScaledBitmap(bm, dropImageView.getWidth(), dropImageView.getHeight(), "CROP");
+                            String loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, dropImageView.getWidth(), dropImageView.getHeight()), Integer.parseInt(dropImageView.getTag().toString()));
+                            UrlLoc.add(loc);
+                        }
+                        Intent intent = new Intent(RegPicListActivity.this, RegPicActivity.class);
+                        intent.putExtra("images", (ArrayList<String>) UrlLoc);
+                        intent.putExtra("currentIndex", currentTag);
+                        startActivity(intent);
+                    }
+                    lastClickTime = System.currentTimeMillis();
+
                 }
 
             } catch (Exception ex) {
@@ -606,8 +618,8 @@ public class RegPicListActivity extends Activity {
                 moveView = new DropImageView(RegPicListActivity.this);
                 moveView.setIcon(v.getIcon());
                 moveView.setText(v.getText());
-//                moveView.setIsFinish(v.getIsFinish());
-                moveView.setIsFinish(5);
+                moveView.setIsFinish(v.getIsFinish());
+//                moveView.setIsFinish(5);
                 moveView.setLocUrl(v.getLocUrl());
                 moveView.setTextColor(v.getTextColor());
                 moveView.setTextSize(v.getTextSize());
@@ -674,12 +686,12 @@ public class RegPicListActivity extends Activity {
             mertoBeans = new ArrayList<DropImageModel>(startBeans);
             if (mertoBeans.size() <= 5) {
                 DropImageModel mertoBean = new DropImageModel(mertoBeans.get(tag));
-                mertoBean.setIsFinish(5);
+//                mertoBean.setIsFinish(5);
                 mertoBeans.set(tag, mertoBeans.get(moveTag));
                 mertoBeans.set(moveTag, mertoBean);
             } else {
                 DropImageModel mertoBean = new DropImageModel(mertoBeans.get(tag - 1));
-                mertoBean.setIsFinish(5);
+//                mertoBean.setIsFinish(5);
                 mertoBeans.set(tag - 1, mertoBeans.get(moveTag - 1));
                 mertoBeans.set(moveTag - 1, mertoBean);
             }
@@ -779,6 +791,7 @@ public class RegPicListActivity extends Activity {
                 if (data != null) {
                     Bundle extras = data.getBundleExtra("bundle");
                     bm = extras.getParcelable("data");
+                    bm = extras.getParcelable("data");
                     //图片名称 时间命名
                     SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
                     //Date date = new Date(System.currentTimeMillis());
@@ -786,7 +799,7 @@ public class RegPicListActivity extends Activity {
                     //创建File对象用于存储拍照的图片 SD卡根目录
 //                    File outputImage = new File(Environment.getExternalStorageDirectory(),test.jpg);
                     path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-                    outputImage = new File(Environment.getExternalStorageDirectory(), "szj_cut.jpg");
+                    outputImage = new File(Environment.getExternalStorageDirectory(), "cj"+currentTag+".jpg");
 
                     try {
                         if (outputImage.exists()) {
@@ -798,7 +811,7 @@ public class RegPicListActivity extends Activity {
                     }
                     String local = outputImage.getAbsolutePath();
                     fos = new FileOutputStream(outputImage);
-                    bm.compress(Bitmap.CompressFormat.JPEG, 75, fos);// (0 -// 100)压缩文件
+                    bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);// (0 -// 100)压缩文件
                     fos.flush();
                     fos.close();
                     OffDrop(currentTag);
@@ -814,8 +827,7 @@ public class RegPicListActivity extends Activity {
                     //record first
                     if (current_corp_img.length() != 0) {
                         OffDrop(currentTag);
-                        bm = BitmapHelper.readBitMap(new File(current_corp_img));
-                        bm = BitmapHelper.createScaledBitmap(bm, mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight(), "CROP");
+                        bm = BitmapHelper.readBitMap(new File(current_corp_img), true);
                         bd = new BitmapDrawable(bm);
                         mertoItemViews.get(currentTag).setIcon(bd);
                         mertoBeans.get(currentTag).setIconId(bd);
@@ -832,8 +844,7 @@ public class RegPicListActivity extends Activity {
                     if (photos.size() > 0 && photos.size() < 2) {
 
                         OffDrop(currentTag);
-                        bm = BitmapHelper.readBitMap(new File(photos.get(0)));
-                        bm = BitmapHelper.createScaledBitmap(bm, mertoItemViews.get(0).getWidth(), mertoItemViews.get(0).getHeight(), "CROP");
+                        bm = BitmapHelper.readBitMap(new File(photos.get(0)),true);
                         bd = new BitmapDrawable(bm);
                         mertoItemViews.get(currentTag).setIcon(bd);
                         mertoBeans.get(currentTag).setIconId(bd);
@@ -843,9 +854,8 @@ public class RegPicListActivity extends Activity {
                         mertoItemViews.get(currentTag).setLocUrl(photos.get(0));
                     } else if (photos.size() > 1) {
                         for (int size = 0; size < photos.size(); size++) {
-                            bm = BitmapHelper.readBitMap(new File(photos.get(size)));
-                            bm = BitmapHelper.createScaledBitmap(bm, mertoItemViews.get(size).getWidth(), mertoItemViews.get(size).getHeight(), "CROP");
-                            String loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm,mertoItemViews.get(size).getWidth(), mertoItemViews.get(size).getHeight()),size);
+                            bm = BitmapHelper.readBitMap(new File(photos.get(size)),true);
+                            String loc = WriteFileImgLoc(bm,size);
                             bd = new BitmapDrawable(bm);
                             mertoItemViews.get(size).setIcon(bd);
                             mertoBeans.get(size).setIconId(bd);
@@ -1029,8 +1039,6 @@ public class RegPicListActivity extends Activity {
             final MySeekBar ms_bust = (MySeekBar) window.findViewById(R.id.ms_bust);
 
             if (user != null) {
-
-
                 if (!TextUtils.isEmpty(user.getHeight()))
                     ms_height.SetProcess(Integer.parseInt(user.getHeight()));
 
@@ -1163,14 +1171,17 @@ public class RegPicListActivity extends Activity {
 
     ColaProgress cp;
 
-    private void ArtistCardInfoSave(final ApiCallback<Object> apiCallback) {
+    private void ArtistCardInfoSave() {
 
         cp = ColaProgress.show(RegPicListActivity.this, "正在保存...", true, false, null);
 
         ArrayList<String> imgurl = new ArrayList<String>();
         try {
             for (DropImageView iv : mertoItemViews) {
-                imgurl.add(iv.getLocUrl());
+                bm = BitmapHelper.readBitMap(new File(iv.getLocUrl()),false);
+                bm = BitmapHelper.createScaledBitmap(bm, iv.getWidth(),iv.getHeight(), "CROP");
+                String loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm,iv.getWidth(), iv.getHeight()),Integer.parseInt(iv.getTag().toString()));
+                imgurl.add(loc);
             }
         } catch (Exception ex) {
 
@@ -1295,23 +1306,24 @@ public class RegPicListActivity extends Activity {
                             DownloadPic(ss1, ss2);
                         } else {
 
-                            Bitmap bm1 = BitmapHelper.copressImage(App.getPreferencesValue("imgloc1"));
+                            Bitmap bm1 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc1")),false);
+//                          Bitmap bm1 = BitmapHelper.copressImage(App.getPreferencesValue("imgloc1"));
                             BitmapDrawable bd1 = new BitmapDrawable(bm1);
 
 
-                            Bitmap bm2 = BitmapHelper.copressImage(App.getPreferencesValue("imgloc2"));
+                            Bitmap bm2 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc2")),false);
                             BitmapDrawable bd2 = new BitmapDrawable(bm2);
 
 
-                            Bitmap bm3 = BitmapHelper.copressImage(App.getPreferencesValue("imgloc3"));
+                            Bitmap bm3 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc3")),false);
                             BitmapDrawable bd3 = new BitmapDrawable(bm3);
 
 
-                            Bitmap bm4 = BitmapHelper.copressImage(App.getPreferencesValue("imgloc4"));
+                            Bitmap bm4 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc4")),false);
                             BitmapDrawable bd4 = new BitmapDrawable(bm4);
 
 
-                            Bitmap bm5 = BitmapHelper.copressImage(App.getPreferencesValue("imgloc5"));
+                            Bitmap bm5 = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc5")),false);
                             BitmapDrawable bd5 = new BitmapDrawable(bm5);
 
                             user.setImgLoc1(App.getPreferencesValue("imgloc1"));
@@ -1481,6 +1493,7 @@ public class RegPicListActivity extends Activity {
             conn.connect();
 
             BitmapFactory.Options opt = new BitmapFactory.Options();
+            //opt.inSampleSize =BitmapHelper.calculateInSampleSize(opt,opt.outWidth,opt.outHeight);
             opt.inPreferredConfig = Bitmap.Config.RGB_565;
             opt.inPurgeable = true;
             opt.inInputShareable = true;
@@ -1504,6 +1517,19 @@ public class RegPicListActivity extends Activity {
                 PhotoPickerIntent.setPhotoCount(intent, 1);
                 PhotoPickerIntent.setShowCamera(intent, true);
                 startActivityForResult(intent, REQUEST_CODE);
+            }
+            return false;
+        }
+    });
+
+    private Handler handlerTow = new Handler(new Callback() {
+        @Override
+        public boolean handleMessage(Message arg0) {
+            if (arg0.what == 1 && isdbClick) {
+//                Intent intent = new Intent(RegPicListActivity.this, PhotoPickerActivity.class);
+//                PhotoPickerIntent.setPhotoCount(intent, 1);
+//                PhotoPickerIntent.setShowCamera(intent, true);
+//                startActivityForResult(intent, REQUEST_CODE);
             }
             return false;
         }
