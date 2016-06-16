@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.util.DisplayMetrics;
@@ -201,7 +203,7 @@ public class BitmapHelper {
     public static Bitmap readBitMap(File file) {
 
         BitmapFactory.Options opt = new BitmapFactory.Options();
-
+        opt.inSampleSize = 2;
         opt.inPreferredConfig = Bitmap.Config.RGB_565;
 
         opt.inPurgeable = true;
@@ -261,4 +263,132 @@ public class BitmapHelper {
         return resizeBmp;
 
     }
+
+
+
+    public static Bitmap createImageThumbnail(String filePath){
+        Bitmap bitmap = null;
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, opts);
+
+        opts.inSampleSize = computeSampleSize(opts, -1, 128*128);
+        opts.inJustDecodeBounds = false;
+
+        try {
+            bitmap = BitmapFactory.decodeFile(filePath, opts);
+        }catch (Exception e) {
+            // TODO: handle exception
+        }
+        return bitmap;
+    }
+
+    public static int computeSampleSize(BitmapFactory.Options options, int minSideLength, int maxNumOfPixels) {
+        int initialSize = computeInitialSampleSize(options, minSideLength, maxNumOfPixels);
+        int roundedSize;
+        if (initialSize <= 8) {
+            roundedSize = 1;
+            while (roundedSize < initialSize) {
+                roundedSize <<= 1;
+            }
+        } else {
+            roundedSize = (initialSize + 7) / 8 * 8;
+        }
+        return roundedSize;
+    }
+
+    private static int computeInitialSampleSize(BitmapFactory.Options options,int minSideLength, int maxNumOfPixels) {
+        double w = options.outWidth;
+        double h = options.outHeight;
+        int lowerBound = (maxNumOfPixels == -1) ? 1 : (int) Math.ceil(Math.sqrt(w * h / maxNumOfPixels));
+        int upperBound = (minSideLength == -1) ? 128 :(int) Math.min(Math.floor(w / minSideLength), Math.floor(h / minSideLength));
+        if (upperBound < lowerBound) {
+            // return the larger one when there is no overlapping zone.
+            return lowerBound;
+        }
+        if ((maxNumOfPixels == -1) && (minSideLength == -1)) {
+            return 1;
+        } else if (minSideLength == -1) {
+            return lowerBound;
+        } else {
+            return upperBound;
+        }
+    }
+
+
+    public static Bitmap resizeBitmap(Bitmap bitmap, int maxWidth, int maxHeight) {
+
+        int originWidth  = bitmap.getWidth();
+        int originHeight = bitmap.getHeight();
+
+        // no need to resize
+        if (originWidth < maxWidth && originHeight < maxHeight) {
+            return bitmap;
+        }
+
+        int width  = originWidth;
+        int height = originHeight;
+
+        // 若图片过宽, 则保持长宽比缩放图片
+        if (originWidth > maxWidth) {
+            width = maxWidth;
+
+            double i = originWidth * 1.0 / maxWidth;
+            height = (int) Math.floor(originHeight / i);
+
+            bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+        }
+
+        // 若图片过长, 则从上端截取
+        //if (height > maxHeight) {
+            height = maxHeight;
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
+       // }
+
+//        Log.i(TAG, width + " width");
+//        Log.i(TAG, height + " height");
+
+        return bitmap;
+    }
+
+    public static Bitmap createScaledBitmap(Bitmap unscaledBitmap, int dstWidth, int dstHeight, String scalingLogic) {
+        Rect srcRect = calculateSrcRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
+        Rect dstRect = calculateDstRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
+        Bitmap scaledBitmap = Bitmap.createBitmap(dstRect.width(), dstRect.height(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.drawBitmap(unscaledBitmap, srcRect, dstRect, new Paint(Paint.FILTER_BITMAP_FLAG));return scaledBitmap;
+    }
+
+
+    public static Rect calculateSrcRect(int srcWidth, int srcHeight, int dstWidth, int dstHeight, String scalingLogic) {
+        if (scalingLogic .equals("CROP")) {
+            final float srcAspect = (float)srcWidth / (float)srcHeight;
+            final float dstAspect = (float)dstWidth / (float)dstHeight;
+            if (srcAspect > dstAspect) {
+                final int srcRectWidth = (int)(srcHeight * dstAspect);
+                final int srcRectLeft = (srcWidth - srcRectWidth) / 2;
+                return new Rect(srcRectLeft, 0, srcRectLeft + srcRectWidth, srcHeight);
+            } else {
+                final int srcRectHeight = (int)(srcWidth / dstAspect);
+                final int scrRectTop = (int)(srcHeight - srcRectHeight) / 2;
+                return new Rect(0, scrRectTop, srcWidth, scrRectTop + srcRectHeight);
+            }
+        } else {
+            return new Rect(0, 0, srcWidth, srcHeight);
+        }
+    }
+    public static Rect calculateDstRect(int srcWidth, int srcHeight, int dstWidth, int dstHeight, String scalingLogic) {
+        if (scalingLogic == "FIT") {
+            final float srcAspect = (float)srcWidth / (float)srcHeight;
+            final float dstAspect = (float)dstWidth / (float)dstHeight;
+            if (srcAspect > dstAspect) {
+                return new Rect(0, 0, dstWidth, (int)(dstWidth / srcAspect));
+            } else {
+                return new Rect(0, 0, (int)(dstHeight * srcAspect), dstHeight);
+            }
+        } else {
+            return new Rect(0, 0, dstWidth, dstHeight);
+        }
+    }
+
 }
