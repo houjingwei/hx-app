@@ -259,11 +259,6 @@
         <!-- 微信支付 -->
 
         <activity
-            android:name=".activity.PopularityActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/backStyle"></activity>
-
-        <activity
             android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:screenOrientation="landscape"
             android:theme="@style/myTheme"

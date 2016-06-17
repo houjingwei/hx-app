@@ -76,8 +76,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import me.iwf.photopicker.PhotoPickerActivity;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
@@ -85,7 +88,7 @@ import me.iwf.photopicker.utils.PhotoPickerIntent;
 /**
  * Created by Stone on 16/5/30.
  */
-public class RegPicListActivity extends Activity {
+public class RegPicListActivity extends BaseBackActivity {
 
     enum RequestCode {
         Button(R.id.txtUpload);
@@ -194,7 +197,6 @@ public class RegPicListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
         Window window = RegPicListActivity.this.getWindow();
         window.setFlags(flag, flag);
@@ -527,18 +529,19 @@ public class RegPicListActivity extends Activity {
                         isdbClick = false;
                         currentTag = Integer.parseInt(v.getTag().toString());
 
+
 //                        Intent intent = new Intent(RegPicListActivity.this, PhotoPickerActivity.class);
 //                        PhotoPickerIntent.setPhotoCount(intent, 1);
 //                        PhotoPickerIntent.setShowCamera(intent, true);
 //                        startActivityForResult(intent, REQUEST_CODE_ALL);
-//
+                        //PhotoPickerIntent.setPhotoCount(intent, 1);
+                        //PhotoPickerIntent.setShowCamera(intent, true);
+
                         Intent intent = new Intent(RegPicListActivity.this, CropImageUI.class);
                         intent.putExtra("path", v.getLocUrl());
                         intent.putExtra("width", v.getWidth() * 0.90);
                         intent.putExtra("currentPage", currentTag);
                         intent.putExtra("height", v.getHeight() * 0.90);
-                        //PhotoPickerIntent.setPhotoCount(intent, 1);
-                        //PhotoPickerIntent.setShowCamera(intent, true);
                         startActivityForResult(intent, REQUEST_CODE_CAT);
 
 
@@ -556,19 +559,6 @@ public class RegPicListActivity extends Activity {
                     long currentTime = System.currentTimeMillis();
                     if (currentTime - lastClickTime < 500) {
                         isdbClick = false;
-                        currentTag = Integer.parseInt(v.getTag().toString());
-
-                        UrlLoc.clear();
-                        for (DropImageView dropImageView : mertoItemViews) {
-                            bm = BitmapHelper.readBitMap(new File(dropImageView.getLocUrl()), false);
-                            bm = BitmapHelper.createScaledBitmap(bm, dropImageView.getWidth(), dropImageView.getHeight(), "CROP");
-                            String loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, dropImageView.getWidth(), dropImageView.getHeight()), Integer.parseInt(dropImageView.getTag().toString()));
-                            UrlLoc.add(loc);
-                        }
-                        Intent intent = new Intent(RegPicListActivity.this, RegPicActivity.class);
-                        intent.putExtra("images", (ArrayList<String>) UrlLoc);
-                        intent.putExtra("currentIndex", currentTag);
-                        startActivity(intent);
                     } else {
                         isdbClick = true;
                         Message message = new Message();
@@ -582,13 +572,9 @@ public class RegPicListActivity extends Activity {
                             String loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, dropImageView.getWidth(), dropImageView.getHeight()), Integer.parseInt(dropImageView.getTag().toString()));
                             UrlLoc.add(loc);
                         }
-                        Intent intent = new Intent(RegPicListActivity.this, RegPicActivity.class);
-                        intent.putExtra("images", (ArrayList<String>) UrlLoc);
-                        intent.putExtra("currentIndex", currentTag);
-                        startActivity(intent);
+
                     }
                     lastClickTime = System.currentTimeMillis();
-
                 }
 
             } catch (Exception ex) {
@@ -1237,6 +1223,10 @@ public class RegPicListActivity extends Activity {
         RequestUtils.sendPostRequest(Api.SET_ARTIST_CARD_INFO, paramsMap, new ResponseCallBack<String>() {
             @Override
             public void onSuccess(String data) {
+
+                for (DropImageView iv : mertoItemViews) {
+                    iv.setIsFinish(5);
+                }
                 resetOnMertoItemViewListener();
                 cp.dismiss();
                 txtSave.setVisibility(View.GONE);
@@ -1537,10 +1527,10 @@ public class RegPicListActivity extends Activity {
         @Override
         public boolean handleMessage(Message arg0) {
             if (arg0.what == 1 && isdbClick) {
-//                Intent intent = new Intent(RegPicListActivity.this, PhotoPickerActivity.class);
-//                PhotoPickerIntent.setPhotoCount(intent, 1);
-//                PhotoPickerIntent.setShowCamera(intent, true);
-//                startActivityForResult(intent, REQUEST_CODE);
+                Intent intent = new Intent(RegPicListActivity.this, RegPicActivity.class);
+                intent.putExtra("images", (ArrayList<String>) UrlLoc);
+                intent.putExtra("currentIndex", currentTag);
+                startActivity(intent);
             }
             return false;
         }

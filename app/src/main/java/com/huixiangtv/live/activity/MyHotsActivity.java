@@ -75,7 +75,7 @@ public class MyHotsActivity extends BaseBackActivity {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.labenHotRank));
 
-        adapter = new MyFansAdapter();
+        adapter = new MyFansAdapter(this);
         ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
         mListView = (ListView) this.findViewById(R.id.test_list_view);
         mListView.setAdapter(adapter);

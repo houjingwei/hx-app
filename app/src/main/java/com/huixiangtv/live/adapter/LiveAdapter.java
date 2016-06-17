@@ -78,8 +78,8 @@ public class LiveAdapter extends BaseAdapter {
         {
             holder = (ViewHolder)convertView.getTag();
         }
-        String city = live.getCity()==null?"":"."+live.getCity();
-        String title = live.getTitle()==null?"":"."+live.getTitle();
+        String city = live.getCity()==null || live.getCity().trim().length()==0?"":"."+live.getCity();
+        String title = live.getTitle()==null || live.getTitle().trim().length()==0?"":"."+live.getTitle();
         holder.tvTitle.setText(live.getNickName()+" "+city+title);
         holder.tvTime.setText(live.getTime());
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.rlRoot.getLayoutParams();
