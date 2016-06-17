@@ -603,17 +603,26 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
         final Map<String, String> params = new HashMap<String, String>();
 
         params.put("title", startLiveView.getEtTitle().getText().toString());
-        params.put("topic", startLiveView.getTvTheme().getText().toString());
+        if(StringUtil.isEmpty(startLiveView.getTvTheme().getText().toString())){
+            params.put("topic", "念念不忘 必有回响");
+        }else{
+            params.put("topic", startLiveView.getTvTheme().getText().toString());
+        }
+
+        Log.i("isLocal",isLocal+"");
+        Log.i("isLocal",params.toString());
         if(isLocal==1){
             String[] jwd = startLiveView.getJwd();
             params.put("lon", jwd[0]);
             params.put("lat", jwd[1]);
             params.put("address", jwd[2]);
+            Log.i("isLocal",jwd.toString());
         }else{
             params.put("lon", "");
             params.put("lat", "");
             params.put("address", "");
         }
+
         ObjectAnimator anim = ObjectAnimator.ofFloat(startLiveView, "alpha", 0f);
         anim.setDuration(1000);
         anim.addListener(new Animator.AnimatorListener() {
@@ -708,12 +717,14 @@ public class LiveActivity extends Activity implements View.OnClickListener ,Live
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        try{
+            UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        }catch(Exception e){}
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK && requestCode == 1) {
                     String topic = data.getStringExtra("topic");
-                    tvTheme.setText( topic);
+                    tvTheme.setText(topic);
                 }
                 break;
 

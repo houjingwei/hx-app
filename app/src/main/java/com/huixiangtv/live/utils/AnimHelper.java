@@ -368,7 +368,7 @@ public class AnimHelper {
         if(null!=App.giftMap){
             if(null!=App.giftMap.get(msg.getGid())){
                 ImageUtils.displayAvator(ivGift,App.giftMap.get(msg.getGid()).getIcon());
-                tvMsg.setText(msg.getNickName()+"打赏了"+App.giftMap.get(msg.getGid()).getName());
+                tvMsg.setText(msg.getContent());
 
             }
 
