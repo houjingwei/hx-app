@@ -12,6 +12,8 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.image.CropImageView;
 
+import java.io.File;
+
 /**
  * Created by Stone on 16/6/13.
  */

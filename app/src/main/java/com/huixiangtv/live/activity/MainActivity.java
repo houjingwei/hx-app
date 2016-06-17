@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initWindow();
         App.getContext().addActivity(this);
         initView();
-        //CheckVersion();
+        CheckVersion();
     }
 
     private void initWindow() {
@@ -193,6 +193,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
+
+
+    public void updateClose(){
+        finish();
+        App.getContext().finishAllActivity();
+        android.os.Process.killProcess(android.os.Process.myPid());
+
+    }
+
 
 
     public void hideTitle(boolean bool) {
@@ -352,11 +361,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     private void CheckVersion() {
         try {
-            int version = App.getVersionCode(MainActivity.this);
-            Toast.makeText(MainActivity.this,"当前版本信息："+version,Toast.LENGTH_LONG).show();
+            final String version = App.getVersionCode(MainActivity.this);
             Map<String, String> paramsMap = new HashMap<String, String>();
             paramsMap.put("osType", "1");
-            paramsMap.put("appVersion", version + "");
+            paramsMap.put("appVersion", version );
 
             RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
 
@@ -366,7 +374,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                         UpgradeLevel upgradeLevel = data;
 
-                        UpdateApp updateApp = new UpdateApp(MainActivity.this);
+                        UpdateApp updateApp = new UpdateApp(MainActivity.this,MainActivity.this);
                         if (updateApp
                                 .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
 
@@ -385,6 +393,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
     }
+
+
+
 
 
 }
