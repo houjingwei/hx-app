@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,21 +81,25 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private LinearLayout llone_viewpager;
     private PtrClassicFrameLayout ptrClassicFrameLayout;
 
+
+    @Nullable
     @Override
-    protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_tab_one, container, false);
         activity = (MainActivity) getActivity();
 
         activity.hideTitle(false);
         receiver = new LiveListBroadcast();
+        initLayout(mRootView);
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION);
         //动态注册BroadcastReceiver
         getActivity().registerReceiver(receiver, filter);
+        initData();
         return mRootView;
     }
 
-    @Override
+
     protected void initLayout(View view) {
         pageControl = (SwitchPageControlView) view.findViewById(R.id.pageControl);
         tvInfo = (TextView) view.findViewById(R.id.tvInfo);
@@ -172,7 +177,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         }, PlayUrl.class);
     }
 
-    @Override
     protected void initData() {
 
 

@@ -66,17 +66,7 @@ public abstract class LoadingFragment extends Fragment {
         }
     }
 
-    protected void requestData() {
-        initData();
-    }
 
-    protected void showLoading(String text) {
-        if(mTvLoading != null) {
-            mTvLoading.setText(text);
-            mTvLoading.setVisibility(View.VISIBLE);
-            mVLoadingContainer.setVisibility(View.VISIBLE);
-        }
-    }
 
     protected void hideLoading() {
         if(mTvLoading != null) {

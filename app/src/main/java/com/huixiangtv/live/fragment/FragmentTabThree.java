@@ -1,6 +1,8 @@
 package com.huixiangtv.live.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,24 +47,24 @@ public class FragmentTabThree extends RootFragment {
     TextView tvLoves;
     RelativeLayout llUserTop;
 
-
+    @Nullable
     @Override
-    protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_tab_three, container, false);
         activity = (MainActivity) getActivity();
         activity.hideTitle(true);
-        initView();
-        getUserStatus();
+
+        initLayout(mRootView);
+        initData();
         return mRootView;
     }
 
-    @Override
     protected void initLayout(View view) {
-
+        initView();
     }
 
-    @Override
     protected void initData() {
+        getUserStatus();
         ArtistCardInfoStatus();
     }
 
