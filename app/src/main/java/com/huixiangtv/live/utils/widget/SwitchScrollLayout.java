@@ -58,7 +58,7 @@ public class SwitchScrollLayout extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childLeft = 0;
         final int childCount = getChildCount();
-        System.out.println("childCount=" + childCount);
+
         for (int i = 0; i < childCount; i++) {
             final View childView = getChildAt(i);
             if (childView.getVisibility() != View.GONE) {
@@ -72,7 +72,7 @@ public class SwitchScrollLayout extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.e(TAG, "onMeasure");
+
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         final int width = MeasureSpec.getSize(widthMeasureSpec);

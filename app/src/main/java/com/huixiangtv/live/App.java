@@ -117,10 +117,10 @@ public class App extends MultiDexApplication {
         for (String str : new String[]{"gnustl_shared", "qupai-media-thirdparty", "qupai-media-jni"}) {
             System.loadLibrary(str);
         }
-        qupaiAuth();
+        qupaiAuth(null);
     }
 
-    public static void qupaiAuth() {
+    public static void qupaiAuth(final ApiCallback<String> callback) {
 
         AuthService service = AuthService.getInstance();
         service.setQupaiAuthListener(new QupaiAuthListener() {
@@ -132,6 +132,9 @@ public class App extends MultiDexApplication {
             @Override
             public void onAuthComplte(int responseCode, String responseMessage) {
                 Constant.accessToken = responseMessage;
+                if(null!=callback){
+                    callback.onSuccess("ok");
+                }
             }
         });
         service.startAuth(getContext(),Constant.APP_KEY, Constant.APP_SECRET,Constant.SPACE);

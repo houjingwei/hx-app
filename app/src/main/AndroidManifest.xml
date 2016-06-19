@@ -5,11 +5,17 @@
     android:versionCode="268"
     android:versionName="2.6.8">
 
-    <permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <!-- 录音 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -36,7 +42,9 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -45,6 +53,7 @@
     <uses-permission android:name="android.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -57,70 +66,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-
-
-
-
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="573d35e767e58eb762002e12" />
-
-        <!-- <service -->
-        <!-- android:name="com.sina.weibo.sdk.net.DownloadService" -->
-        <!-- android:exported="false" /> -->
-        <!-- QQ空间 -->
-        <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="tencent100424468" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <uses-library
-            android:name="com.google.android.maps"
-            android:required="false" />
-        <!-- QQ空间 -->
-
-
-        <!-- 新浪微博 -->
-        <activity
-            android:name=".WBShareActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
-            android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" >
-        </activity>
-        <service
-            android:name="com.sina.weibo.sdk.net.DownloadService"
-            android:exported="false">
-        </service>
-        <!-- 新浪微博 -->
 
         <activity
             android:name=".activity.SplashActivity"
@@ -138,9 +83,7 @@
         <activity
             android:name=".activity.BaseActivity"
             android:screenOrientation="portrait" />
-        <!-- <activity -->
-        <!-- android:name=".activity.RefreshAndLoadmoreActivity" -->
-        <!-- android:theme="@style/backStyle" /> -->
+
         <activity
             android:name=".activity.LoginOrRegActivity"
             android:screenOrientation="portrait"
@@ -161,6 +104,11 @@
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.LiveActivity"
+            android:hardwareAccelerated="true"
+            android:theme="@style/backStyle"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".activity.LiveRecordActivity"
             android:hardwareAccelerated="true"
             android:theme="@style/backStyle"
             android:windowSoftInputMode="adjustResize|stateHidden" />
@@ -198,7 +146,6 @@
             android:name=".activity.HelpActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-
         <activity
             android:name=".activity.H5Activity"
             android:screenOrientation="portrait"
@@ -231,23 +178,19 @@
             android:name=".activity.MylovesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-
         <activity
-            android:name="com.huixiangtv.live.ijk.activities.VideoActivity"
+            android:name=".ijk.activities.VideoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-
         <activity
             android:name=".activity.RegPicListActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
-            android:screenOrientation="landscape">
-
-        </activity>
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name=".activity.RegPicActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
-            android:screenOrientation="landscape"></activity>
-        <!-- 微信支付-->
+            android:screenOrientation="landscape" />
+        <!-- 微信支付 -->
         <!-- 微信支付 -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
@@ -259,29 +202,25 @@
         <activity
             android:name=".activity.PopularityActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"></activity>
-
+            android:theme="@style/backStyle" />
         <activity
             android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:screenOrientation="landscape"
             android:theme="@style/myTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
         <activity
             android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
         <activity
             android:name=".activity.CropImageUI"
             android:configChanges="screenSize|keyboardHidden|orientation"
-            android:screenOrientation="landscape"></activity>
-
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.WebActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"></activity>
+            android:theme="@style/backStyle" />
 
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
@@ -303,7 +242,7 @@
             </intent-filter>
         </receiver>
 
-
+        <activity android:name=".activity.LiveRecordFinishActivity"></activity>
     </application>
 
 </manifest>

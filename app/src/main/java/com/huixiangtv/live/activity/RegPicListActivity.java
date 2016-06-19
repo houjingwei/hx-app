@@ -58,6 +58,7 @@ import com.huixiangtv.live.utils.widget.DropImageView;
 import com.huixiangtv.live.utils.widget.MySeekBar;
 import com.tencent.upload.task.data.FileInfo;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import android.widget.FrameLayout.LayoutParams;
 
@@ -81,6 +82,7 @@ import java.util.Map;
 
 import me.iwf.photopicker.PhotoPickerActivity;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
+import simbest.com.sharelib.ShareModel;
 
 /**
  * Created by Stone on 16/5/30.
@@ -955,10 +957,17 @@ public class RegPicListActivity extends Activity {
         lp.alpha = 2.9f;
         window.setAttributes(lp);
 
+
+        final ShareModel model = new ShareModel();
+        UMImage image = new UMImage(activity, user.getPhoto());
+        model.setTitle(user.getNickName() + "的艺人卡");
+        model.setTargetUrl(Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString());
+        model.setImageMedia(image);
+        model.setContent(user.getNickName() + "的艺人卡");
         window.findViewById(R.id.rlqq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.QQ, user.getPhoto(), Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
+                CommonHelper.share(activity,model,SHARE_MEDIA.QQ,1,null);
                 dlg.dismiss();
             }
         });
@@ -967,7 +976,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlzone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.QZONE, user.getPhoto(), Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
+                CommonHelper.share(activity,model,SHARE_MEDIA.QZONE,1,null);
                 dlg.dismiss();
             }
         });
@@ -975,7 +984,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlwx).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN, user.getPhoto(), Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
+                CommonHelper.share(activity,model,SHARE_MEDIA.WEIXIN,1,null);
                 dlg.dismiss();
             }
         });
@@ -984,7 +993,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlpyq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN_FAVORITE, user.getPhoto(), Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
+                CommonHelper.share(activity,model,SHARE_MEDIA.WEIXIN_CIRCLE,1,null);
                 dlg.dismiss();
             }
         });
@@ -992,7 +1001,7 @@ public class RegPicListActivity extends Activity {
         window.findViewById(R.id.rlwb).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareSdk.startShare(activity, user.getNickName() + "的艺人卡", "", SHARE_MEDIA.SMS, Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString());
+                CommonHelper.share(activity,model,SHARE_MEDIA.SINA,1,null); ShareSdk.startShare(activity, user.getNickName() + "的艺人卡", "", SHARE_MEDIA.SMS, Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString());
                 dlg.dismiss();
             }
         });
