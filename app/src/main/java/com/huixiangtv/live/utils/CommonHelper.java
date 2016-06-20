@@ -24,6 +24,7 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.LoginWindow;
+import com.huixiangtv.live.pop.ShareTwoWindow;
 import com.huixiangtv.live.pop.ShareWindow;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.LoginCallBack;
@@ -86,13 +87,27 @@ public class CommonHelper {
      * @param atLocationId
      * @param listener
      */
-    public static void showSharePopWindow(Activity activity, int atLocationId, ShareWindow.SelectShareListener listener) {
-        pop = new ShareWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    public static void showSharePopWindow(Activity activity, int atLocationId, final ShareWindow.SelectShareListener listener) {
+        pop = new ShareTwoWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         pop.showAtLocation(activity.findViewById(atLocationId), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
         pop.update();
-        if (null != listener) {
-            ((ShareWindow)pop).setListener(listener);
-        }
+        ((ShareTwoWindow)pop).setListener(new ShareTwoWindow.SelectShareListener() {
+            @Override
+            public void select(SHARE_MEDIA platForm) {
+                super.select(platForm);
+                if(null!=listener){
+                    listener.select(platForm);
+                }
+            }
+
+            @Override
+            public void selectCopy() {
+                super.selectCopy();
+                if(null!=listener){
+                    listener.selectCopy();
+                }
+            }
+        });
     }
 
 
@@ -115,28 +130,6 @@ public class CommonHelper {
         }
 
     }
-
-
-
-    /**
-     * 弹出分享面板
-     *
-     * @param activity
-     * @param atLocationId
-     */
-    public static void showSharePopWindow(final Activity activity, int atLocationId, final String content, final String cover, final String targetUrl) {
-        pop = new ShareWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        pop.showAtLocation(activity.findViewById(atLocationId), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
-        pop.update();
-        ((ShareWindow)pop).setListener(new ShareWindow.SelectShareListener() {
-            @Override
-            public void select(SHARE_MEDIA platForm) {
-                super.select(platForm);
-
-            }
-        });
-    }
-
 
 
 
@@ -204,6 +197,10 @@ public class CommonHelper {
             }
         }).execute();
     }
+
+
+
+
 
 
 
@@ -473,6 +470,7 @@ public class CommonHelper {
         }
 
     }
+
 
 
 }

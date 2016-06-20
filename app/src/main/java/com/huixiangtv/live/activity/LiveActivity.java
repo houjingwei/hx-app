@@ -86,6 +86,9 @@ public class LiveActivity extends BaseBackActivity{
         playUrl = getIntent().getStringExtra("playUrl");
         lid = getIntent().getStringExtra("lid");
 
+
+        addLivingView();
+
         initPlayView();
     }
 
@@ -111,8 +114,8 @@ public class LiveActivity extends BaseBackActivity{
                 if(null!=data){
                     live = data;
                     if(data.getLiveStatus().equals("1")){
-                        living(data);
                         initPlayer();
+                        living(data);
                     }else if(data.getLiveStatus().equals("0")){
                         if(null==loadingDialog){
                             loadingDialog.dismiss();
@@ -154,7 +157,7 @@ public class LiveActivity extends BaseBackActivity{
 
     private void initPlayer() {
         playView = LayoutInflater.from(LiveActivity.this).inflate(R.layout.play_view, null, false);
-
+        flPlayView.addView(playView);
         mVideoView = (IjkVideoView) playView.findViewById(R.id.video_view);
         mVideoView.setActivity(LiveActivity.this);
         mVideoView.setRender(2);
@@ -208,9 +211,10 @@ public class LiveActivity extends BaseBackActivity{
                         break;
                     case IjkMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
                         //媒体视频开始渲染
+                        mVideoView.setAlpha(1.0f);
                         break;
                     case IjkMediaPlayer.MEDIA_INFO_BUFFERING_END:
-                        mVideoView.setAlpha(1f);
+
                         if(null!=loadingDialog){
                             loadingDialog.dismiss();
                         }
@@ -220,11 +224,10 @@ public class LiveActivity extends BaseBackActivity{
                 return false;
             }
         });
-
+        mVideoView.setAlpha(0.0f);
         mVideoView.start();
-        mVideoView.setAlpha(0f);
-        mVideoView.setBackgroundColor(R.color.mainColor);
-        flPlayView.addView(playView);
+
+
     }
 
 
@@ -243,63 +246,20 @@ public class LiveActivity extends BaseBackActivity{
 
 
 
-
-
-    private void living(Live data) {
+    private void addLivingView(){
         liveView = new LiveView(LiveActivity.this);
-        liveView.setActivity(LiveActivity.this);
-        liveView.setInfo(data);
-        liveView.sendIntoRoomMsg();
         flCover.addView(liveView);
-        liveView.loadLive();
-        liveView.shareWin();
 
 
-
-        ShareModel model = new ShareModel();
-        UMImage image = new UMImage(LiveActivity.this, live.getPhoto());
-        model.setTitle(live.getNickName()+live.getTitle());
-        model.setTargetUrl(Api.SHARE_URL+live.getLid());
-        model.setImageMedia(image);
-        model.setContent(live.getNickName()+live.getTitle());
-        if(sharePlat==1){
-            CommonHelper.share(LiveActivity.this,model,SHARE_MEDIA.SMS,0,null);
-        }else if(sharePlat==2){
-            CommonHelper.share(LiveActivity.this,model,SHARE_MEDIA.QQ,0,null);
-        }else if(sharePlat==3){
-            CommonHelper.share(LiveActivity.this,model,SHARE_MEDIA.QZONE,0,null);
-        }else if(sharePlat==4){
-            CommonHelper.share(LiveActivity.this,model,SHARE_MEDIA.WEIXIN,0,null);
-        }else if(sharePlat==5){
-            CommonHelper.share(LiveActivity.this,model,SHARE_MEDIA.WEIXIN_CIRCLE,0,null);
-        }else if(sharePlat==6){
-            CommonHelper.share(LiveActivity.this,model,SHARE_MEDIA.SINA,0,null);
-        }
     }
 
 
-    private UMShareListener umShareListener = new UMShareListener() {
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-            Log.d("plat","platform"+platform);
-            if(platform.name().equals("WEIXIN_FAVORITE")){
-                Toast.makeText(LiveActivity.this,platform + " 收藏成功啦",Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(LiveActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-            }
-        }
+    private void living(Live data) {
+        liveView.setInfo(data);
+        liveView.sendIntoRoomMsg();
+        liveView.loadLive();
 
-        @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(LiveActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(LiveActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
-        }
-    };
-
+    }
 
 
 

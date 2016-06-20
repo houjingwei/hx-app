@@ -113,7 +113,7 @@ public class GiftView extends RelativeLayout {
         giftList = App.giftList;
         giftViewCount = giftList.size()%5==0? giftList.size()/5: giftList.size()/5+1;
 
-        int[] img = new int[]{R.drawable.default_error, R.drawable.default_error, R.drawable.default_error,R.drawable.default_error, R.drawable.default_error};
+
         giftViews = new ArrayList<View>();
         for (int i = 0; i < giftViewCount; i++) {
             View view = LayoutInflater.from(activity).inflate(R.layout.gift_list_view, null);

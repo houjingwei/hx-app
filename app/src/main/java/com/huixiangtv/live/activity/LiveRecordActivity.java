@@ -560,7 +560,6 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
     private void living(Live data) {
         liveView = new LiveView(LiveRecordActivity.this);
-        liveView.setActivity(LiveRecordActivity.this);
         liveView.setInfo(data);
         flCover.addView(liveView);
         liveView.loadLive();

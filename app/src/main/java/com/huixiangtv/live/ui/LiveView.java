@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.ClipboardManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -143,11 +144,11 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     private int onLineNum = 0;
 
 
-    public LiveView(Context context) {
+    public LiveView(Activity context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.live_view, this);
         ct = context;
-
+        this.activity = context;
         initView();
 
 
@@ -224,9 +225,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 }
             }
         });
-
-
-
     }
 
 
@@ -892,9 +890,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void selectCopy() {
                 super.selectCopy();
+                ClipboardManager cm = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+                // 将文本内容放到系统剪贴板里。
+                cm.setText(Api.SHARE_URL+live.getLid());
                 CommonHelper.showTip(activity, "链接复制成功");
             }
         });
+
     }
 
     /**
@@ -1054,9 +1056,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         super(context, attrs);
     }
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
+
 
     public void removeMsgListener() {
         App.imClient.setOnReceiveMessageListener(null);
