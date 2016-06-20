@@ -75,7 +75,7 @@ public class MyFansAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        holder.tvRank.setText(position+1+"");
+        holder.tvRank.setText(position+4+"");
         holder.tvHots.setText(fans.getHots());
         holder.tvNickName.setText(fans.getNickName());
         ImageUtils.displayAvator(holder.ivPhoto,fans.getPhoto());

@@ -29,12 +29,14 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.adapter.LiveAdapter;
 import com.huixiangtv.live.adapter.LiveBannerAdapter;
+import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.BannerModel;
 import com.huixiangtv.live.model.ChatMessage;
 import com.huixiangtv.live.model.HistoryMsg;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.MsgExt;
 import com.huixiangtv.live.model.PlayUrl;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -56,6 +58,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private static boolean isLoad = false;
     private SwitchScrollLayout mSwitchScrollLayout;
     private DataLoading dataLoad;
+    private LinearLayout main;
     public SwitchPicHandler switchPicHandler;
     private static final float APP_PAGE_SIZE = 1.0f;
     private SwitchPageControlView pageControl;
@@ -107,7 +110,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         tvWeight = (TextView) view.findViewById(R.id.tvWeight);
         tvAddress = (TextView) view.findViewById(R.id.tvAddress);
         ptrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.test_list_view_frame);
-
+        main = (LinearLayout) view.findViewById(R.id.main);
         tvbName1 = (TextView) view.findViewById(R.id.tvbName1);
         tvContent1 = (TextView) view.findViewById(R.id.tvContent1);
         tvbName2 = (TextView) view.findViewById(R.id.tvbName2);
@@ -177,6 +180,17 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         }, PlayUrl.class);
     }
 
+    protected void setGuide(){
+
+        CommonUtil.setGuidImage(getActivity(), R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
+
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+        });
+    }
+
     protected void initData() {
 
 
@@ -239,6 +253,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             public void onSuccessList(List<Live> data) {
                 if (data != null && data.size() > 0) {
                     if (currPage == 1) {
+                        setGuide();
                         adapter.clear();
                         adapter.addList(data);
                     } else {

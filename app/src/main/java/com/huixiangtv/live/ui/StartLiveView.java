@@ -38,7 +38,6 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
     LinearLayout llLocal;
     TextView tvLocal;
     TextView tvStart;
-    TextView tvTt;
     ImageView ivCamera;
 
 
@@ -86,7 +85,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
         ivClose = (ImageView) findViewById(R.id.ivClose);
         ivCamera= (ImageView) findViewById(R.id.ivCamera);
         tvTheme = (TextView) findViewById(R.id.tvTheme);
-        tvTt = (TextView) findViewById(R.id.tvTt);
+
 
         rbPhone = (RadioButton) findViewById(R.id.rbPhone);
         rbwx = (RadioButton) findViewById(R.id.rbWx);
@@ -114,7 +113,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
         rbQzone.setOnClickListener(this);
         llLocal.setOnClickListener(this);
         tvStart.setOnClickListener(this);
-        tvTt.setOnClickListener(this);
+
 
     }
 

@@ -41,29 +41,23 @@ android:orientation="vertical">
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="50dp"
+    android:layout_marginTop="40dp"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:gravity="center">
 
-    <TextView
-        android:id="@+id/tvTt"
-        style="@style/white_bigest_x_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="填写个吸引人的标题吧~" />
+
 
     <EditText
         android:id="@+id/etTitle"
-        android:layout_below="@+id/tvTt"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:background="@null"
         android:gravity="center"
-        style="@style/white_bigger_style"
-        android:layout_marginTop="5dp"
-        android:layout_alignLeft="@+id/tvTt"
-        android:layout_alignRight="@+id/tvTt"/>
+        android:hint="填写个吸引人的标题吧~"
+        android:textColorHint="@color/white"
+        style="@style/white_bigest_x_style"
+        android:layout_marginTop="5dp"/>
     <View
         android:layout_width="wrap_content"
         android:layout_height="0.8dp"

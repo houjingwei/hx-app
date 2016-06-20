@@ -1,42 +1,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
-    android:background="@color/sysBg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/sysBg"
     android:orientation="vertical">
 
 
-    <RelativeLayout
-        android:id="@+id/rotRl"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/baseTitleHeight"
-        android:background="@color/colorPrimary">
+            <RelativeLayout
+                android:id="@+id/rotRl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/baseTitleHeight"
+                android:background="@color/colorPrimary">
 
-        <TextView
-            android:id="@+id/title"
-            style="@style/common_title_style"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="今日推荐" />
-
-
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/common_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="今日推荐" />
 
 
-    <com.chanven.lib.cptr.PtrClassicFrameLayout
-        xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/test_list_view_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        cube_ptr:ptr_duration_to_close="200"
-        cube_ptr:ptr_duration_to_close_header="700"
-        cube_ptr:ptr_keep_header_when_refresh="true"
-        cube_ptr:ptr_pull_to_fresh="false"
-        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-        cube_ptr:ptr_resistance="1.8" >
+            </RelativeLayout>
+
+
+            <com.chanven.lib.cptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/test_list_view_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                cube_ptr:ptr_duration_to_close="200"
+                cube_ptr:ptr_duration_to_close_header="700"
+                cube_ptr:ptr_keep_header_when_refresh="true"
+                cube_ptr:ptr_pull_to_fresh="false"
+                cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+                cube_ptr:ptr_resistance="1.8">
 
         <ListView
             android:id="@+id/test_list_view"
@@ -122,6 +121,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="12dp"
                         android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/tvLoveCount"
                             android:layout_width="wrap_content"
@@ -140,8 +140,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="170 Cm   45Kg   三围：84 － 70 － 89"
                     android:textColor="@color/white" />
 
