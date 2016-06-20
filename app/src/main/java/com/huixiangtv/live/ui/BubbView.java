@@ -160,7 +160,6 @@ public class BubbView {
         FrameLayout.LayoutParams giftLayout = new FrameLayout.LayoutParams(imageWidth,imageWidth);
         int marginLeft = baseX+randomWidth;
         int marginTop = baseY - baseViewMarginImageTop;
-        Log.i("gougoug",marginLeft+"***"+marginTop+"***"+baseX+"****"+baseY);
         giftLayout.setMargins(marginLeft, marginTop, 0, 0);
         flowerAnim.setLayoutParams(giftLayout);
         int resourceId = getResourceId();

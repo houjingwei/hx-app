@@ -101,7 +101,6 @@
                             style="@style/white_small_style" />
                     </LinearLayout>
                     <LinearLayout
-                        android:visibility="gone"
                         android:id="@+id/shareSina"
                         android:clickable="true"
                         android:layout_width="0dp"

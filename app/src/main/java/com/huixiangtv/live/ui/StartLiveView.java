@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.LiveActivity;
+import com.huixiangtv.live.activity.LiveRecordActivity;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.LocationTool;
 
@@ -126,12 +127,13 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
                 break;
             case R.id.ivClose:
                 hideKeyBoard();
-                onBackPressed();
+                activity.onBackPressed();
                 break;
             case R.id.ivCamera:
 
-                LiveActivity ac = (LiveActivity) activity;
-                ac.changeCamera();
+                if(activity instanceof LiveRecordActivity){
+                    ((LiveRecordActivity)activity).changeCamera();
+                }
                 break;
             case R.id.rbPhone:
                 hideKeyBoard();
@@ -158,15 +160,10 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
                 shareTo(6);
                 break;
             case R.id.llLocal:
-                LiveActivity a = (LiveActivity) activity;
-                if(local==1){
-                    tvLocal.setText(R.string.localClose);
-                    local = 0;
-                }else{
-                    tvLocal.setText(R.string.localOpen);
-                    local = 1;
+                if(activity instanceof LiveRecordActivity){
+                    ((LiveRecordActivity)activity).setIsLocal(local);
                 }
-                a.setIsLocal(local);
+
                 break;
 
 

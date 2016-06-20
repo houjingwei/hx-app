@@ -31,6 +31,7 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.LiveActivity;
+import com.huixiangtv.live.activity.LiveRecordActivity;
 import com.huixiangtv.live.adapter.LiveMsgAdapter;
 import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
 import com.huixiangtv.live.adapter.RecyclerviewListener;
@@ -62,6 +63,7 @@ import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,6 +75,7 @@ import java.util.Set;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Message;
 import io.rong.message.TextMessage;
+import simbest.com.sharelib.ShareModel;
 
 /**
  * Created by hjw on 16/5/17.
@@ -632,8 +635,11 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 sendLove();
                 break;
             case R.id.liveClose:
-                LiveActivity ac = (LiveActivity)activity;
-                ac.closeLiving();
+                if(activity instanceof LiveRecordActivity){
+                    ((LiveRecordActivity) activity).closeLiving();
+                }else{
+                    activity.onBackPressed();
+                }
                 break;
             case R.id.ivPhoto:
                 Map<String,String> params = new HashMap<String,String>();
@@ -853,15 +859,16 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void select(int flag) {
                 super.select(flag);
-                //1:切换像头 2：切图 3：美颜
-                if(flag==1){
-                    ((LiveActivity)activity).changeCamera();
-                }else if(flag==2){
-                    ((LiveActivity)activity).cutScreen();
-                }else if(flag==3){
-                    ((LiveActivity)activity).changeBeau();
+                if(activity instanceof LiveRecordActivity){
+                    //1:切换像头 2：切图 3：美颜
+                    if(flag==1){
+                        ((LiveRecordActivity)activity).changeCamera();
+                    }else if(flag==2){
+                        ((LiveRecordActivity)activity).cutScreen();
+                    }else if(flag==3){
+                        ((LiveRecordActivity)activity).changeBeau();
+                    }
                 }
-
             }
         });
     }
@@ -875,12 +882,19 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void select(SHARE_MEDIA platForm) {
                 super.select(platForm);
-                CommonHelper.share(activity, live.getNickName() + live.getTitle(), live.getTopic() + "正在回响直播，赶紧来捧场吧", platForm, live.getPhoto(), "http://119.29.94.122:8888/h5/index.html?uid=&lid=" + live.getLid(),0, new ApiCallback() {
+                ShareModel model = new ShareModel();
+                UMImage image = new UMImage(activity, live.getPhoto());
+                model.setTitle(live.getNickName()+live.getTitle());
+                model.setTargetUrl(Api.SHARE_URL+live.getLid());
+                model.setImageMedia(image);
+                model.setContent(live.getNickName()+live.getTitle());
+                CommonHelper.share(activity,model,platForm,0,new ApiCallback(){
                     @Override
                     public void onSuccess(Object data) {
 
                     }
                 });
+
             }
 
             @Override
@@ -1203,9 +1217,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
                         msgListView.post(new Runnable() {
                             public void run() {
-                                Log.i("myCloseclose","123");
-                                LiveActivity ac = (LiveActivity)activity;
-                                ac.setFinishLiving();
                                 showCloseInfo(msg);
 
                             }
@@ -1222,16 +1233,14 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
     private void showCloseInfo(LiveMsg msg) {
-
-        LivingFinishWindow selectPicWayWindow = new LivingFinishWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,msg,live);
-        selectPicWayWindow.showAtLocation(activity.findViewById(R.id.liveMain), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
-        selectPicWayWindow.update();
-        selectPicWayWindow.setListener(new LivingFinishWindow.CloseListener() {
-            @Override
-            public void select() {
-                activity.onBackPressed();
-            }
-        });
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("onLine",msg.getOnline());
+        map.put("addhot",msg.getAddhot());
+        map.put("love",msg.getLove());
+        map.put("liveTime",msg.getLiveTime());
+        map.put("photo",msg.getPhoto());
+        map.put("nickName",msg.getNickName());
+        ForwardUtils.target(activity,Constant.LIVERECORD_FINISH,map);
 
     }
 

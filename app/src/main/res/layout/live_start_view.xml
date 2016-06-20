@@ -169,7 +169,7 @@ android:orientation="vertical">
             android:gravity="center"
             android:orientation="vertical">
             <RadioButton
-                android:visibility="gone"
+
                 android:id="@+id/rbPhone"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -240,7 +240,7 @@ android:orientation="vertical">
             android:gravity="center"
             android:orientation="vertical">
             <RadioButton
-                android:visibility="gone"
+
                 android:id="@+id/rbSina"
                 android:layout_width="30dp"
                 android:layout_height="30dp"

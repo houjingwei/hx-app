@@ -58,6 +58,7 @@ import com.huixiangtv.live.utils.widget.DropImageView;
 import com.huixiangtv.live.utils.widget.MySeekBar;
 import com.tencent.upload.task.data.FileInfo;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import android.widget.FrameLayout.LayoutParams;
 
@@ -84,6 +85,7 @@ import java.util.Set;
 
 import me.iwf.photopicker.PhotoPickerActivity;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
+import simbest.com.sharelib.ShareModel;
 
 /**
  * Created by Stone on 16/5/30.
@@ -232,9 +234,7 @@ public class RegPicListActivity extends BaseBackActivity {
         ((DropImageView) imageView4).setOnDropImageViewListener(onMertoItemViewListener);
         ((DropImageView) imageView5).setOnDropImageViewListener(onMertoItemViewListener);
 
-        for (int i = 0; i < 5; i++)
-            addData("2");
-
+        initImageView("2");
 
         txtUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -941,10 +941,17 @@ public class RegPicListActivity extends BaseBackActivity {
         lp.alpha = 2.9f;
         window.setAttributes(lp);
 
+
+        final ShareModel model = new ShareModel();
+        UMImage image = new UMImage(activity, user.getPhoto());
+        model.setTitle(user.getNickName() + "的艺人卡");
+        model.setTargetUrl(Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString());
+        model.setImageMedia(image);
+        model.setContent(user.getNickName() + "的艺人卡");
         window.findViewById(R.id.rlqq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.QQ, user.getPhoto(), Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
+                CommonHelper.share(activity,model,SHARE_MEDIA.QQ,1,null);
                 dlg.dismiss();
             }
         });
@@ -953,7 +960,7 @@ public class RegPicListActivity extends BaseBackActivity {
         window.findViewById(R.id.rlzone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.QZONE, user.getPhoto(), Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
+                CommonHelper.share(activity,model,SHARE_MEDIA.QZONE,1,null);
                 dlg.dismiss();
             }
         });
@@ -961,7 +968,7 @@ public class RegPicListActivity extends BaseBackActivity {
         window.findViewById(R.id.rlwx).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN, user.getPhoto(), Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
+                CommonHelper.share(activity,model,SHARE_MEDIA.WEIXIN,1,null);
                 dlg.dismiss();
             }
         });
@@ -970,7 +977,7 @@ public class RegPicListActivity extends BaseBackActivity {
         window.findViewById(R.id.rlpyq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity, user.getNickName() + "的艺人卡", user.getNickName() + "的艺人卡", SHARE_MEDIA.WEIXIN_FAVORITE, user.getPhoto(), Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString(), 1, null);
+                CommonHelper.share(activity,model,SHARE_MEDIA.WEIXIN_CIRCLE,1,null);
                 dlg.dismiss();
             }
         });
@@ -978,7 +985,7 @@ public class RegPicListActivity extends BaseBackActivity {
         window.findViewById(R.id.rlwb).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareSdk.startShare(activity, user.getNickName() + "的艺人卡", "", SHARE_MEDIA.SMS, Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString());
+                CommonHelper.share(activity,model,SHARE_MEDIA.SINA,1,null);
                 dlg.dismiss();
             }
         });
@@ -1048,8 +1055,8 @@ public class RegPicListActivity extends BaseBackActivity {
                 public void onClick(View view) {
                     user.setNickName(App.getPreferencesValue("nickname"));
                     user.setUid(App.getPreferencesValue("uid"));
-                    user.setFans(App.getPreferencesValue("fans"));
-                    user.setHots(App.getPreferencesValue("hots"));
+                    user.setFansCount(App.getPreferencesValue("fans"));
+                    user.setHotValue(App.getPreferencesValue("hots"));
                     user.setHeight(ms_height.getProcess());
                     user.setBust(ms_bust.getProcess());
                     user.setHip(ms_hip.getProcess());
@@ -1127,16 +1134,13 @@ public class RegPicListActivity extends BaseBackActivity {
                             @Override
                             public void onSuccess(Object data) {
                                 if (data.equals("no")) {
-                                    for (int i = 0; i < 5; i++)
-                                        addData("0");
+                                    initImageView("0");
                                 } else {
                                     CommonUtil.setGuidImage(RegPicListActivity.this, R.id.r1, R.drawable.drop_pic, "first2", new ApiCallback() {
 
                                         @Override
                                         public void onSuccess(Object data) {
-                                            for (int i = 0; i < 5; i++)
-                                                addData("0");
-
+                                            initImageView("0");
                                         }
                                     });
                                 }
@@ -1154,6 +1158,11 @@ public class RegPicListActivity extends BaseBackActivity {
 
             }
         }, User.class);
+    }
+
+    private void initImageView(String key) {
+        for (int i = 0; i < 5; i++)
+            addData(key);
     }
 
     ColaProgress cp;
@@ -1219,6 +1228,7 @@ public class RegPicListActivity extends BaseBackActivity {
         paramsMap.put("Img3", user.getImg3());
         paramsMap.put("Img4", user.getImg4());
         paramsMap.put("Img5", user.getImg5());
+
 
         RequestUtils.sendPostRequest(Api.SET_ARTIST_CARD_INFO, paramsMap, new ResponseCallBack<String>() {
             @Override
@@ -1287,7 +1297,7 @@ public class RegPicListActivity extends BaseBackActivity {
                         ss1.add(data.getImg5());
                         //bind info the left
                         bindLeftInfo(data);
-
+                        App.saveBodyInfos(data);
 
                         //compare local pic
                         if (!compareWithLocalPic(data) || isExistsFile()) {
@@ -1338,8 +1348,7 @@ public class RegPicListActivity extends BaseBackActivity {
                             user.setDrawableImg5(bd5);
 
                             mertoBeans.clear();
-                            for (int i = 0; i < 5; i++)
-                                addData("1");
+                            initImageView("1");
                         }
 
                     } catch (Exception ex) {
@@ -1347,8 +1356,7 @@ public class RegPicListActivity extends BaseBackActivity {
                 } else {
                     user = new User();
                     mertoBeans.clear();
-                    for (int i = 0; i < 5; i++)
-                        addData("0");
+                    initImageView("0");
                 }
             }
 
@@ -1372,11 +1380,11 @@ public class RegPicListActivity extends BaseBackActivity {
     }
 
     private void bindLeftInfo(User user) {
-        txtFansi.setText(user.getFans() == null ? "0 :粉丝" : user.getFans() + " :粉丝");
+        txtFansi.setText(user.getFansCount() == null ? "0 :粉丝" : user.getFansCount() + " :粉丝");
         txtName.setText(user.getNickName() == null ? "" : user.getNickName());
-        txtWeight.setText(user.getWeight() == null ? "" : user.getWeight() + "kg");
-        txtHeight.setText(user.getHeight() == null ? "" : user.getHeight() + "CM");
-        txtSj.setText(user.getHots() == null ? "0 :身价" : user.getHots() + " :身价");
+        txtWeight.setText(user.getWeight() == null ? "" : user.getWeight() + " :kg");
+        txtHeight.setText(user.getHeight() == null ? "" : user.getHeight() + " :cm");
+        txtSj.setText(user.getHotValue() == null ? "0 :身价" : user.getHotValue() + " :身价");
         tvLid.setText(user.getUid() == null ? "回响号: 0" : "回响号: " + user.getUid());
         tvShareId.setText(user.getLoves() == null ? "0 :分享" : user.getLoves() + " :分享");
         String yw = user.getHip() + "-" + user.getWaist() + "-" + user.getBust();
@@ -1430,8 +1438,7 @@ public class RegPicListActivity extends BaseBackActivity {
                     user.setDrawableImg5(new BitmapDrawable((Bitmap) ss2.get(4)));
 
                     mertoBeans.clear();
-                    for (int i = 0; i < 5; i++)
-                        addData("1");
+                    initImageView("1");
                 } else {
                     new ProgressThreadPicAsyncTask().execute(ss1, ss2);
                 }

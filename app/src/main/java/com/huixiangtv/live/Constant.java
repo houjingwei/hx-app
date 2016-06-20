@@ -20,6 +20,7 @@ public class Constant {
     public static final String LIVE_TOPIC = BASE_PRE+"topic";
     public static final String SETINT = BASE_PRE+"set";
     public static final String LIVE = BASE_PRE+"live";
+    public static final String LIVERECORD_FINISH =  BASE_PRE+"liveRecordFinish";
     public static final String SEARCH = BASE_PRE +"search";
     public static final String REG_LIVE = BASE_PRE+"reg";
     public static final String REG_LIVE_NEXT = BASE_PRE+"next";

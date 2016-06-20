@@ -9,6 +9,8 @@ import com.huixiangtv.live.activity.AccountActivity;
 import com.huixiangtv.live.activity.AttentionMeActivity;
 import com.huixiangtv.live.activity.H5Activity;
 import com.huixiangtv.live.activity.LiveActivity;
+import com.huixiangtv.live.activity.LiveRecordActivity;
+import com.huixiangtv.live.activity.LiveRecordFinishActivity;
 import com.huixiangtv.live.activity.LoginOrRegActivity;
 import com.huixiangtv.live.activity.MyAttentionActivity;
 import com.huixiangtv.live.activity.MyHotsActivity;
@@ -71,8 +73,11 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, SettingActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.START_LIVE)){
-                Intent intent = new Intent(oriActivity, LiveActivity.class);
+                Intent intent = new Intent(oriActivity, LiveRecordActivity.class);
                 toIntent(oriActivity, params, intent);
+            }else if (url.startsWith(Constant.LIVERECORD_FINISH)){
+                Intent intent = new Intent(oriActivity, LiveRecordFinishActivity.class);
+                noAniToIntent(oriActivity, params, intent);
             }else if (url.startsWith(Constant.LIVE_TOPIC)){
                 Intent intent = new Intent(oriActivity, TopicActivity.class);
                 setIntentInfo(intent,params);
@@ -169,6 +174,18 @@ public class ForwardUtils {
         setIntentInfo(intent,params);
         oriActivity.startActivity(intent);
         oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+    }
+
+    /**
+     * 无动画跳转到对应的activity
+     * @param oriActivity
+     * @param params
+     * @param intent
+     */
+    private static void noAniToIntent(Activity oriActivity, Map<String, String> params, Intent intent) {
+        setIntentInfo(intent,params);
+        oriActivity.startActivity(intent);
+        oriActivity.finish();
     }
 
     private static void setIntentInfo(Intent intent, Map<String, String> paramsMap) {

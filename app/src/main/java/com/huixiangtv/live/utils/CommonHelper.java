@@ -42,6 +42,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import simbest.com.sharelib.IShareCallback;
+import simbest.com.sharelib.ShareModel;
+import simbest.com.sharelib.ShareUtils;
+
 /**
  * Created by hjw on 16/5/18.
  */
@@ -202,21 +206,12 @@ public class CommonHelper {
     }
 
 
-    /**
-     *
-     * @param activity
-     * @param title
-     * @param content
-     * @param platForm
-     * @param url
-     * @param tarUrl
-     * @param shareType 0:zhibo 1:yirenka
-     * @param back
-     */
-    public static void share(final Activity activity, String title, String content, SHARE_MEDIA platForm, String url, String tarUrl, final int shareType, final ApiCallback back) {
-        ShareSdk.startShare(activity, title, content, platForm, url, tarUrl,new UMShareListener() {
+
+    public static void share(final Activity activity, ShareModel model, final SHARE_MEDIA platform, final int shareType, final ApiCallback back) {
+        ShareUtils su = new ShareUtils(activity);
+        su.share(model, platform, new IShareCallback() {
             @Override
-            public void onResult(SHARE_MEDIA platform) {
+            public void onSuccess() {
                 if(null!=back){
                     back.onSuccess("ok");
                 }
@@ -224,18 +219,20 @@ public class CommonHelper {
             }
 
             @Override
-            public void onError(SHARE_MEDIA platform, Throwable t) {
-
+            public void onFaild() {
+                if(null!=back){
+                    back.onSuccess("ok");
+                }
                 shareAddLove(shareType,platform);
             }
 
             @Override
-            public void onCancel(SHARE_MEDIA platform) {
-
+            public void onCancel() {
                 shareAddLove(shareType,platform);
             }
         });
     }
+
 
 
     /**
@@ -476,4 +473,6 @@ public class CommonHelper {
         }
 
     }
+
+
 }

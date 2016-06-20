@@ -3,30 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rlpp">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/ivIcon"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
         android:scaleType="centerCrop"
+
         android:adjustViewBounds="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_centerInParent="true"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/iv_goto_live"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:adjustViewBounds="true"
             android:gravity="center"
             android:src="@drawable/live" />
 
     </LinearLayout>
 
-
+</RelativeLayout>
 </RelativeLayout>
