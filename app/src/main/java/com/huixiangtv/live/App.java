@@ -267,6 +267,8 @@ public class App extends MultiDexApplication {
             loginUser.setLives(loginHelper.getValue("lives", ""));
             loginUser.setLoves(loginHelper.getValue("loves", "0"));
             loginUser.setTags(loginHelper.getValue("tags",""));
+            loginUser.setSignature(loginHelper.getValue("signature"));
+
 
         }else{
             loginUser = null;
@@ -289,6 +291,7 @@ public class App extends MultiDexApplication {
         loginHelper.setValue("lives", user.getLives());
         loginHelper.setValue("loves", user.getLoves());
         loginHelper.setValue("tags", user.getTags());
+        loginHelper.setValue("signature", user.getSignature());
 
 
 

@@ -24,7 +24,7 @@ public class LiveOnlineUsersAdapter extends RecyclerView.Adapter<LiveOnlineUsers
     private List<User> datas = new ArrayList<User>();
 
     public LiveOnlineUsersAdapter(List<User> ls) {
-        if(null!=ls) {
+        if (null != ls) {
             this.datas = ls;
         }
     }
@@ -84,6 +84,9 @@ public class LiveOnlineUsersAdapter extends RecyclerView.Adapter<LiveOnlineUsers
         }
     }
 
+    public List<User> getDatas() {
+        return datas;
+    }
 
 
     public class StarViewHolder extends RecyclerView.ViewHolder{

@@ -26,10 +26,7 @@ import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.ui.LiveView;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
-import com.huixiangtv.live.utils.ShareSdk;
-import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
-import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -42,9 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
-import simbest.com.sharelib.IShareCallback;
 import simbest.com.sharelib.ShareModel;
-import simbest.com.sharelib.ShareUtils;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -79,11 +74,18 @@ public class LiveActivity extends BaseBackActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live);
         x.view().inject(this);
-        setStatusBar();
-        mShareAPI = UMShareAPI.get(this);
+//        if (MeizuSmartBarUtils.hasSmartBar()) {
+//            View decorView = getWindow().getDecorView();
+//            MeizuSmartBarUtils.hide(decorView);
+//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setTranslucentStatus(true);
+        }
+
 
         playUrl = getIntent().getStringExtra("playUrl");
         lid = getIntent().getStringExtra("lid");
+
         initPlayView();
     }
 
@@ -112,6 +114,9 @@ public class LiveActivity extends BaseBackActivity{
                         living(data);
                         initPlayer();
                     }else if(data.getLiveStatus().equals("0")){
+                        if(null==loadingDialog){
+                            loadingDialog.dismiss();
+                        }
                         CommonHelper.showTip(LiveActivity.this,"直播已结束");
                         new Handler().postDelayed(new Runnable() {
                             public void run() {
@@ -119,6 +124,9 @@ public class LiveActivity extends BaseBackActivity{
                             }
                         }, 1000);
                     }else if(data.getLiveStatus().equals("-1")){
+                        if(null==loadingDialog){
+                            loadingDialog.dismiss();
+                        }
                         CommonHelper.showTip(LiveActivity.this,"直播被禁止，不可观看");
                         new Handler().postDelayed(new Runnable() {
                             public void run() {
@@ -241,11 +249,10 @@ public class LiveActivity extends BaseBackActivity{
         liveView = new LiveView(LiveActivity.this);
         liveView.setActivity(LiveActivity.this);
         liveView.setInfo(data);
-        if (StringUtil.isNotEmpty(isPlay) && isPlay.equals("true")) {
-            liveView.isSendIntoRoomMsg(true);
-        }
+        liveView.sendIntoRoomMsg();
         flCover.addView(liveView);
         liveView.loadLive();
+        liveView.shareWin();
 
 
 

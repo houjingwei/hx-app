@@ -64,6 +64,8 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     TextView tvSex;
     @ViewInject(R.id.etNickName)
     EditText etNickName;
+    @ViewInject(R.id.etSignature)
+    EditText etSignature;
 
     @ViewInject(R.id.ivPhoto)
     ImageView ivPhoto;
@@ -96,6 +98,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             ImageUtils.displayAvator(ivPhoto, user.getPhoto());
         }
         etNickName.setText(user.getNickName());
+        etSignature.setText(user.getSignature());
         tvSex.setText(user.getSex().equals("1")?"男":"女");
         String userTags = null;
         if(tags!=null){
@@ -106,6 +109,15 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
 
         if(StringUtil.isNotEmpty(userTags)){
             initTags(userTags.split(","));
+            adapter.notifyDataChanged();
+            userTag();
+        }
+    }
+
+
+    private void setUserTags(String tags) {
+        if(StringUtil.isNotEmpty(tags)){
+            initTags(tags.split(","));
             adapter.notifyDataChanged();
             userTag();
         }
@@ -202,7 +214,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         params.put("photo",photo);
         params.put("nickName",etNickName.getText().toString());
         params.put("sex",tvSex.getText().toString().equals("女")?0+"":1+"");
-        params.put("signature", "");
+        params.put("signature", etSignature.getText().toString());
         params.put("tags", tagStr);
         RequestUtils.sendPostRequest(Api.SAVE_USER, params, new ResponseCallBack<User>() {
             @Override
@@ -326,11 +338,12 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
 
         if (resultCode == RESULT_OK && requestCode==108) {
             String userTags= arg2.getStringExtra("topic");
-            setUserInfo(userTags, 2);
+            setUserTags(userTags);
         }
 
 
     }
+
 
 
 

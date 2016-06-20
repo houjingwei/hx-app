@@ -2,15 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:id="@+id/rotRl"
-    android:layout_height="@dimen/baseTitleHeight"
+    android:layout_height="40dp"
     android:background="@color/colorPrimary">
     <ImageView
         android:id="@+id/back"
-        android:layout_width="@dimen/baseTitleHeight"
-        android:layout_height="@dimen/baseTitleHeight"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:paddingLeft="-10dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="10dp"
         android:src="@mipmap/icon_back"/>
     <TextView
         android:id="@+id/title"
@@ -24,7 +22,7 @@
     <TextView
         android:id="@+id/save"
         android:layout_width="60dp"
-        android:layout_height="@dimen/baseTitleHeight"
+        android:layout_height="40dp"
         android:gravity="center"
         android:layout_alignParentRight="true"
         android:text="保存"

@@ -11,16 +11,17 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,7 +31,6 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.activity.LiveRecordActivity;
 import com.huixiangtv.live.adapter.LiveMsgAdapter;
 import com.huixiangtv.live.adapter.LiveOnlineUsersAdapter;
@@ -46,7 +46,6 @@ import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.ShoutGift;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.CameraWindow;
-import com.huixiangtv.live.pop.LivingFinishWindow;
 import com.huixiangtv.live.pop.ShareWindow;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.ChatTokenCallBack;
@@ -87,6 +86,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
     FrameLayout flLive;
+    LinearLayout LlUser;
 
     protected RecyclerView mRecyclerView;
     LiveOnlineUsersAdapter mAdapter;
@@ -131,7 +131,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     private Live live;
 
     private ShoutGift shoutGift;
-    private boolean isSendIntoRoomMsg = false;
+
 
     BubbView bubbview = null;
 
@@ -155,6 +155,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     private void initView() {
 
+        LlUser = (LinearLayout) findViewById(R.id.LlUser);
         ivAddFen = (ImageView) findViewById(R.id.ivAddFen);
 
         ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
@@ -175,6 +176,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
         liveClose = (ImageView) findViewById(R.id.liveClose);
 
+        LlUser.setOnClickListener(this);
         ivAddFen.setOnClickListener(this);
         ivMsg.setOnClickListener(this);
         ivShare.setOnClickListener(this);
@@ -364,9 +366,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void onSuccess() {
                 App.imClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
-                if(isSendIntoRoomMsg){
-                    sendIntoRoomMsg();
-                }
             }
 
             @Override
@@ -379,7 +378,9 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     /**
      * 发送入场消息
      */
-    private void sendIntoRoomMsg() {
+    public boolean isVisitor = false;
+    public void sendIntoRoomMsg() {
+        isVisitor = true;
         Map<String, String> params = new HashMap<String, String>();
         params.put("chatroom", live.getChatroom());
         params.put("nickName", null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
@@ -517,14 +518,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     }
 
 
-    /**
-     * 是否发送进场消息
-     * @param bool
-     */
-    public void isSendIntoRoomMsg(boolean bool) {
-        this.isSendIntoRoomMsg = bool;
 
-    }
 
 
     @Override
@@ -584,7 +578,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 shareWin();
                 break;
             case R.id.ivCamera:
-                if(isSendIntoRoomMsg){
+                if(isVisitor){
                     ImageUtils.catImage(activity);
                 }else{
                     if (null == App.getLoginUser()) {
@@ -641,7 +635,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     activity.onBackPressed();
                 }
                 break;
-            case R.id.ivPhoto:
+            case R.id.LlUser:
                 Map<String,String> params = new HashMap<String,String>();
                 params.put("uid",live.getUid());
                 if (null != App.getLoginUser() && !live.getUid().equals(App.getLoginUser().getUid())) {
@@ -744,11 +738,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             etChatMsg.requestFocus();
             return;
         }
+        hideKeyBoard();
         if ("shouting_yes".equals(switchTrigger.getTag().toString())) {
-
             if (null == shoutGift) {
                 initShoutGift(new ApiCallback<ShoutGift>() {
-
                     @Override
                     public void onSuccess(ShoutGift data) {
                         sendShoutGift(data);
@@ -775,7 +768,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 @Override
                 public void onSuccess(String str) {
                     super.onSuccess(str);
-                    hideKeyBoard();
                     LiveMsg msg = new LiveMsg();
                     msg.setContent(etChatMsg.getText().toString());
                     msg.setPhoto(App.getLoginUser().getPhoto());
@@ -877,7 +869,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     /**
      * 分享面板
      */
-    private void shareWin() {
+    public void shareWin() {
         CommonHelper.showSharePopWindow(activity, R.id.liveMain, new ShareWindow.SelectShareListener() {
             @Override
             public void select(SHARE_MEDIA platForm) {
@@ -979,7 +971,16 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
     // 状态栏的高度
-    private int statusBarHeight = App.statuBarHeight;
+    private int statusBarHeight = 0;
+
+    private int myStautHeight() {
+        Rect rectangle= new Rect();
+        Window window= activity.getWindow();
+        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
+        int statusBarHeight= rectangle.top;
+        return statusBarHeight;
+    }
+
     // 软键盘的高度
     private int keyboardHeight = 0;
     // 软键盘的显示状态
@@ -1003,13 +1004,11 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             // 在显示软键盘时，heightDiff会变大，等于软键盘加状态栏的高度。
             // 所以heightDiff大于状态栏高度时表示软键盘出现了，
             // 这时可算出软键盘的高度，即heightDiff减去状态栏的高度
+            if(statusBarHeight==0) {
+                statusBarHeight = myStautHeight();
+            }
             if (keyboardHeight == 0 && heightDiff > statusBarHeight) {
-
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                    keyboardHeight = heightDiff - statusBarHeight;
-                } else {
-                    keyboardHeight = heightDiff;
-                }
+                keyboardHeight = heightDiff - statusBarHeight;
             }
 
             if (isShowKeyboard) {
@@ -1034,7 +1033,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         rlChatView.setVisibility(VISIBLE);
         ViewGroup.MarginLayoutParams margin = new ViewGroup.MarginLayoutParams(rlChatView.getLayoutParams());
         //左上右下
-        Log.i("rinima", App.screenHeight - keyboardHeight - WidgetUtil.dip2px(ct, 40) + "");
+        Log.i("rinima", App.screenHeight - keyboardHeight+ "");
         margin.setMargins(0, App.screenHeight - keyboardHeight - WidgetUtil.dip2px(ct, 40), 0, 0);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         rlChatView.setLayoutParams(layoutParams);
@@ -1152,15 +1151,14 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                             public void run() {
                                 msgAdapter.add(msg);
                                 msgListView.setSelection(msgAdapter.getCount()-1);
-
-
                                 User user = new User();
                                 user.setPhoto(msg.getPhoto());
                                 user.setNickName(msg.getNickName());
                                 mAdapter.addData(user);
                                 mRecyclerView.setAdapter(mAdapter);
-
                                 onLineNum++;
+
+
                             }
 
                         });
@@ -1238,7 +1236,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         map.put("addhot",msg.getAddhot());
         map.put("love",msg.getLove());
         map.put("liveTime",msg.getLiveTime());
-        map.put("photo",msg.getPhoto());
+        map.put("photo",live.getPhoto());
         map.put("nickName",msg.getNickName());
         ForwardUtils.target(activity,Constant.LIVERECORD_FINISH,map);
 

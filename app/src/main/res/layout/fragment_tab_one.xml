@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/rotRl"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/baseTitleHeight"
+        android:layout_height="40dp"
         android:background="@color/colorPrimary">
 
         <TextView

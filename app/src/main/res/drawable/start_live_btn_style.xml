@@ -4,10 +4,10 @@
     <stroke android:width="0.5dip" android:color="@color/mainColor"/>
 
     <!-- 指定圆角矩形的4个圆角的半径 -->
-    <corners android:topLeftRadius="30dp"
-        android:topRightRadius="30dp"
-        android:bottomLeftRadius="30dp"
-        android:bottomRightRadius="30dp"
+    <corners android:topLeftRadius="23dp"
+        android:topRightRadius="23dp"
+        android:bottomLeftRadius="23dp"
+        android:bottomRightRadius="23dp"
         />
 </shape>
 

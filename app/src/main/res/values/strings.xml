@@ -215,5 +215,6 @@
     <string name="attention_me">关注我的人</string>
     <string name="empty_des">暂无数据</string>
     <string name="bann_details">内容详情</string>
+    <string name="qianming">签名</string>
 
 </resources>
