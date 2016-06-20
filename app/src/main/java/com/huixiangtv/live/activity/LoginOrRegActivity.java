@@ -61,7 +61,6 @@ public class LoginOrRegActivity extends BaseBackActivity implements View.OnClick
     private void tl() {
         mTabLayout.setTabData(mTabEntities);
         mViewPager.setCurrentItem(0);
-
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -79,7 +78,6 @@ public class LoginOrRegActivity extends BaseBackActivity implements View.OnClick
 
             }
         });
-
 
 
         mTabLayout.setOnTabSelectListener(new OnTabSelectListener() {

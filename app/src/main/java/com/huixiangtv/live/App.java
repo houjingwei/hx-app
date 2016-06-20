@@ -261,8 +261,8 @@ public class App extends MultiDexApplication {
             }else{
                 loginUser.setCoins(loginHelper.getValue("coins", ""));
             }
-            loginUser.setHots(loginHelper.getValue("hots", ""));
-            loginUser.setFans(loginHelper.getValue("fans", ""));
+            loginUser.setHotValue(loginHelper.getValue("hots", ""));
+            loginUser.setFansCount(loginHelper.getValue("fans", ""));
             loginUser.setOrders(loginHelper.getValue("orders", ""));
             loginUser.setLives(loginHelper.getValue("lives", ""));
             loginUser.setLoves(loginHelper.getValue("loves", "0"));
@@ -283,8 +283,8 @@ public class App extends MultiDexApplication {
         loginHelper.setValue("photo", String.valueOf(user.getPhoto()));
         loginHelper.setValue("birthday", String.valueOf(user.getBirthday()));
         loginHelper.setValue("coins", String.valueOf(user.getCoins()));
-        loginHelper.setValue("hots", user.getHots());
-        loginHelper.setValue("fans", user.getFans());
+        loginHelper.setValue("hots", user.getHotValue());
+        loginHelper.setValue("fans", user.getFansCount());
         loginHelper.setValue("orders", user.getOrders());
         loginHelper.setValue("lives", user.getLives());
         loginHelper.setValue("loves", user.getLoves());
@@ -322,6 +322,21 @@ public class App extends MultiDexApplication {
         loginHelper.setValue("weight",user.getWeight());
 
     }
+
+
+    public static void saveBodyInfos(User user)
+    {
+        loginHelper.setValue("bust", user.getBust()); //胸围
+        loginHelper.setValue("hip",user.getHip());
+        loginHelper.setValue("waist",user.getWaist()); //腰部
+        loginHelper.setValue("height",user.getHeight());
+        loginHelper.setValue("weight",user.getWeight());
+        loginHelper.setValue("fans",user.getFansCount());
+        loginHelper.setValue("hots",user.getHotValue());
+
+    }
+
+
 
     public static void saveBodyPic(User user)
     {

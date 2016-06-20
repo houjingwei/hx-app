@@ -8,13 +8,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
@@ -28,12 +32,14 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.adapter.LiveAdapter;
 import com.huixiangtv.live.adapter.LiveBannerAdapter;
+import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.BannerModel;
 import com.huixiangtv.live.model.ChatMessage;
 import com.huixiangtv.live.model.HistoryMsg;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.MsgExt;
 import com.huixiangtv.live.model.PlayUrl;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -55,16 +61,18 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private static boolean isLoad = false;
     private SwitchScrollLayout mSwitchScrollLayout;
     private DataLoading dataLoad;
+    private LinearLayout main;
     public SwitchPicHandler switchPicHandler;
     private static final float APP_PAGE_SIZE = 1.0f;
     private SwitchPageControlView pageControl;
     private int currentViewPage = 1;
     private final int PAGE_SIZE = 5;
     private int currPage = 1;
+    private RelativeLayout rotRl;
     private ColaProgress cp = null;
     private TextView tvAddress;
     private BannerView bannerView;
-    private TextView tvInfo, tvLoveCount, tvWeight, tvbName1, tvContent1, tvbName2, tvContent2, tvbName3, tvContent3, tvbName4, tvContent4;
+    private TextView tvInfo, tvLoveCount, tvWeight, tvbName1, tvContent1, tvbName2, tvContent2, tvbName3, tvContent3, tvbName4, tvContent4, tvbName5, tvContent5;
     private List<BannerModel> guangGao = new ArrayList<BannerModel>();
     private View mRootView;
     MainActivity activity;
@@ -80,21 +88,27 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private LinearLayout llone_viewpager;
     private PtrClassicFrameLayout ptrClassicFrameLayout;
 
+
+    @Nullable
     @Override
-    protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_tab_one, container, false);
         activity = (MainActivity) getActivity();
-
+        int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        Window window = activity.getWindow();
+        //window.setFlags(flag, flag);
         activity.hideTitle(false);
         receiver = new LiveListBroadcast();
+        initLayout(mRootView);
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION);
         //动态注册BroadcastReceiver
         getActivity().registerReceiver(receiver, filter);
+        initData();
         return mRootView;
     }
 
-    @Override
+
     protected void initLayout(View view) {
         pageControl = (SwitchPageControlView) view.findViewById(R.id.pageControl);
         tvInfo = (TextView) view.findViewById(R.id.tvInfo);
@@ -102,7 +116,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         tvWeight = (TextView) view.findViewById(R.id.tvWeight);
         tvAddress = (TextView) view.findViewById(R.id.tvAddress);
         ptrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.test_list_view_frame);
-
+        main = (LinearLayout) view.findViewById(R.id.main);
         tvbName1 = (TextView) view.findViewById(R.id.tvbName1);
         tvContent1 = (TextView) view.findViewById(R.id.tvContent1);
         tvbName2 = (TextView) view.findViewById(R.id.tvbName2);
@@ -111,6 +125,8 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         tvContent3 = (TextView) view.findViewById(R.id.tvContent3);
         tvbName4 = (TextView) view.findViewById(R.id.tvbName4);
         tvContent4 = (TextView) view.findViewById(R.id.tvContent4);
+        tvbName5 = (TextView) view.findViewById(R.id.tvbName5);
+        tvContent5 = (TextView) view.findViewById(R.id.tvContent5);
         listview = (ListView) view.findViewById(R.id.test_list_view);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -129,13 +145,17 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) (App.screenWidth * 0.28));
         bannerView = (BannerView) bannView.findViewById(R.id.banner);
         bannerView.setLayoutParams(layoutParams);
-
+        rotRl = (RelativeLayout) view.findViewById(R.id.rotRl);
 
         llone_viewpager = (LinearLayout) view.findViewById(R.id.llone_viewpager);
         llone_viewpager.setVisibility(View.GONE);
         mSwitchScrollLayout = (SwitchScrollLayout) view.findViewById(R.id.ScrollLayoutTest);
         llInfo = (LinearLayout) view.findViewById(R.id.llInfo);
+
+        LinearLayout.LayoutParams layoutp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) (App.screenWidth * 0.28));
+        //llInfo.setLayoutParams(layoutp);
         flInfo = (FrameLayout) view.findViewById(R.id.flInfo);
+
     }
 
     private void loadUrlAndShow(final Live live) {
@@ -172,7 +192,17 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         }, PlayUrl.class);
     }
 
-    @Override
+    protected void setGuide(){
+
+        CommonUtil.setGuidImage(getActivity(), R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
+
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+        });
+    }
+
     protected void initData() {
 
 
@@ -235,6 +265,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             public void onSuccessList(List<Live> data) {
                 if (data != null && data.size() > 0) {
                     if (currPage == 1) {
+                        setGuide();
                         adapter.clear();
                         adapter.addList(data);
                     } else {
@@ -262,7 +293,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 ptrClassicFrameLayout.loadComplete(false);
-                CommonHelper.showTip(getActivity(), e.getMessage());
             }
         }, Live.class);
     }
@@ -327,10 +357,14 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                     ptrClassicFrameLayout.setVisibility(View.GONE);
                     llone_viewpager.setVisibility(View.VISIBLE);
                     activity.hideTitle(false);
+                    rotRl.setVisibility(View.GONE);
+
                 } else if (intent.getStringExtra("type").toString().equals("1")) {
                     llone_viewpager.setVisibility(View.GONE);
                     ptrClassicFrameLayout.setVisibility(View.VISIBLE);
                     activity.hideTitle(false);
+                    rotRl.setVisibility(View.VISIBLE);
+
                 }
             }
 
@@ -422,10 +456,13 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                             } else if (i == 3) {
                                 tvContent4.setText(message.getContent().toString());
                                 tvbName4.setText(ext.getNickName() + ": ");
+                            }else if (i == 4) {
+                                tvContent5.setText(message.getContent().toString());
+                                tvbName5.setText(ext.getNickName() + ": ");
                             }
                             i++;
                         }
-                        if (i == 4) break;
+                        if (i == 5) break;
                     }
 
                 } else {
@@ -449,6 +486,8 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         tvContent3.setText("");
         tvbName4.setText("");
         tvContent4.setText("");
+        tvbName5.setText("");
+        tvContent5.setText("");
     }
 
     class SwitchPicThread implements Runnable {

@@ -1,6 +1,7 @@
 package com.huixiangtv.live.fragment;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.huixiangtv.live.utils.CommonHelper;
@@ -10,36 +11,15 @@ import java.util.Calendar;
 /**
  * Created by Stone on 16/5/15.  先放着可能到时候扩展用到
  */
-public abstract  class RootFragment extends LoadingFragment implements View.OnClickListener {
+public abstract  class RootFragment extends Fragment implements View.OnClickListener {
 
 
-
-    public void finishFragment(){
-        if(getActivity() != null){
-            getActivity().finish();
-        }
-    }
-
-
-    protected void finishActivityAttached() {
-        Activity activity = getActivity();
-        if(activity != null) {
-            activity.finish();
-        }
-    }
-
-    public void requestDone() {
-        hideLoading();
-    }
 
 
     public void showToast(String text) {
-        CommonHelper.showTip(getActivity(),text);
+        CommonHelper.showTip(getActivity(), text);
     }
 
-    public void showToast(int resId) {
-        showToast(resId+"");
-    }
 
     /**
      * 事件处理

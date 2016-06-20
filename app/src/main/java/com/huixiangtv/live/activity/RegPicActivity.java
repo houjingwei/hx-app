@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,10 +48,11 @@ public class RegPicActivity extends BaseBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        Window window = RegPicActivity.this.getWindow();
+        window.setFlags(flag, flag);
         setContentView(R.layout.activity_regpic);
         x.view().inject(this);
-
-
         imgback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

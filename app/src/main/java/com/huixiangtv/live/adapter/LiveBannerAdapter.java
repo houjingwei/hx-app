@@ -12,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huixiangtv.live.Api;
+import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Live;
@@ -80,6 +83,8 @@ public class LiveBannerAdapter extends BaseAdapter {
                 loadUrlAndShow(activity,mList.get(position));
             }
         });
+        RelativeLayout.LayoutParams layoutp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) (App.screenHeight * 0.61));
+        ivIcon.setLayoutParams(layoutp);
         appItem.iv_goto_live.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

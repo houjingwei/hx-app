@@ -1,6 +1,7 @@
 package com.huixiangtv.live.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +19,10 @@ public class FragmentTabTwo extends RootFragment {
 	private TextView tvLoad;
 	MainActivity activity ;
 
+
+	@Nullable
 	@Override
-	protected void onNoDoubleClick(View view) {
-
-		switch (view.getId())
-		{
-			case R.id.load:
-				ForwardUtils.target(getActivity(),"huixiang://refresh",null);
-				break;
-		}
-	}
-
-	@Override
-	protected View getLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mRootView = inflater.inflate(R.layout.fragment_tab_two, container, false);
 
 		activity = (MainActivity)getActivity();
@@ -43,13 +34,16 @@ public class FragmentTabTwo extends RootFragment {
 	}
 
 	@Override
-	protected void initLayout(View view) {
+	protected void onNoDoubleClick(View view) {
 
+		switch (view.getId())
+		{
+			case R.id.load:
+				ForwardUtils.target(getActivity(),"huixiang://refresh",null);
+				break;
+		}
 	}
 
-	@Override
-	protected void initData() {
 
-	}
 
 }
