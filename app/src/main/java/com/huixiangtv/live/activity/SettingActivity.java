@@ -185,7 +185,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
                 if (null != cp) {
                     cp.dismiss();
                 }
-                Toast.makeText(SettingActivity.this, "Loading BindInfo is Failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(SettingActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }, AccountBindInfoModel.class);
 
@@ -263,7 +263,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
                 if (null != cp) {
                     cp.dismiss();
                 }
-                Toast.makeText(SettingActivity.this, "Bind is Failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(SettingActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }, String.class);
     }

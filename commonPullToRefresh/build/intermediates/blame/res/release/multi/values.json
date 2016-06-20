@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\build\\intermediates\\res\\merged\\release\\values\\values.xml",
+        "outputFile": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/release/values/values.xml",
         "map": [
             {
                 "to": {
@@ -11,13 +11,13 @@
                     "endOffset": 718
                 },
                 "from": {
-                    "file": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\values\\strings.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/values/strings.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
-                        "startOffset": 59,
+                        "startOffset": 56,
                         "endColumn": 60,
-                        "endOffset": 115
+                        "endOffset": 112
                     }
                 }
             },
@@ -30,13 +30,13 @@
                     "endOffset": 771
                 },
                 "from": {
-                    "file": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\values\\strings.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/values/strings.xml",
                     "position": {
                         "startLine": 13,
                         "startColumn": 4,
-                        "startOffset": 604,
+                        "startOffset": 591,
                         "endColumn": 57,
-                        "endOffset": 657
+                        "endOffset": 644
                     }
                 }
             },
@@ -49,13 +49,13 @@
                     "endOffset": 827
                 },
                 "from": {
-                    "file": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\values\\strings.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/values/strings.xml",
                     "position": {
                         "startLine": 10,
                         "startColumn": 4,
-                        "startOffset": 421,
+                        "startOffset": 411,
                         "endColumn": 60,
-                        "endOffset": 477
+                        "endOffset": 467
                     }
                 }
             },
@@ -68,13 +68,13 @@
                     "endOffset": 882
                 },
                 "from": {
-                    "file": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\values\\strings.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/values/strings.xml",
                     "position": {
                         "startLine": 12,
                         "startColumn": 4,
-                        "startOffset": 543,
+                        "startOffset": 531,
                         "endColumn": 59,
-                        "endOffset": 598
+                        "endOffset": 586
                     }
                 }
             },
@@ -87,13 +87,13 @@
                     "endOffset": 932
                 },
                 "from": {
-                    "file": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\values\\strings.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/values/strings.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
-                        "startOffset": 121,
+                        "startOffset": 117,
                         "endColumn": 49,
-                        "endOffset": 166
+                        "endOffset": 162
                     }
                 }
             },
@@ -106,13 +106,13 @@
                     "endOffset": 995
                 },
                 "from": {
-                    "file": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\values\\strings.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/values/strings.xml",
                     "position": {
                         "startLine": 5,
                         "startColumn": 4,
-                        "startOffset": 172,
+                        "startOffset": 167,
                         "endColumn": 62,
-                        "endOffset": 230
+                        "endOffset": 225
                     }
                 }
             },
@@ -125,13 +125,13 @@
                     "endOffset": 1055
                 },
                 "from": {
-                    "file": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\values\\strings.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/values/strings.xml",
                     "position": {
                         "startLine": 8,
                         "startColumn": 4,
-                        "startOffset": 354,
+                        "startOffset": 346,
                         "endColumn": 59,
-                        "endOffset": 409
+                        "endOffset": 401
                     }
                 }
             },
@@ -144,13 +144,13 @@
                     "endOffset": 1110
                 },
                 "from": {
-                    "file": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\values\\strings.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/values/strings.xml",
                     "position": {
                         "startLine": 7,
                         "startColumn": 4,
-                        "startOffset": 298,
+                        "startOffset": 291,
                         "endColumn": 54,
-                        "endOffset": 348
+                        "endOffset": 341
                     }
                 }
             },
@@ -163,13 +163,13 @@
                     "endOffset": 1171
                 },
                 "from": {
-                    "file": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\values\\strings.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/values/strings.xml",
                     "position": {
                         "startLine": 6,
                         "startColumn": 4,
-                        "startOffset": 236,
+                        "startOffset": 230,
                         "endColumn": 60,
-                        "endOffset": 292
+                        "endOffset": 286
                     }
                 }
             },
@@ -182,13 +182,13 @@
                     "endOffset": 1225
                 },
                 "from": {
-                    "file": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\values\\strings.xml",
+                    "file": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/values/strings.xml",
                     "position": {
                         "startLine": 11,
                         "startColumn": 4,
-                        "startOffset": 483,
+                        "startOffset": 472,
                         "endColumn": 58,
-                        "endOffset": 537
+                        "endOffset": 526
                     }
                 }
             }

@@ -1,18 +1,18 @@
 [
     {
-        "merged": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\build\\intermediates\\res\\merged\\debug\\layout\\custom_footer.xml",
-        "source": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\layout\\custom_footer.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/layout/custom_header.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/layout/custom_header.xml"
     },
     {
-        "merged": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\build\\intermediates\\res\\merged\\debug\\layout\\cube_ptr_classic_default_header.xml",
-        "source": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\layout\\cube_ptr_classic_default_header.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/layout/custom_footer.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/layout/custom_footer.xml"
     },
     {
-        "merged": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\build\\intermediates\\res\\merged\\debug\\layout\\custom_header.xml",
-        "source": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\layout\\custom_header.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/layout/loadmore_default_footer.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/layout/loadmore_default_footer.xml"
     },
     {
-        "merged": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\build\\intermediates\\res\\merged\\debug\\layout\\loadmore_default_footer.xml",
-        "source": "F:\\zijing\\huixiang_git\\huixiang-android\\commonPullToRefresh\\res\\layout\\loadmore_default_footer.xml"
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/layout/cube_ptr_classic_default_header.xml",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/layout/cube_ptr_classic_default_header.xml"
     }
 ]

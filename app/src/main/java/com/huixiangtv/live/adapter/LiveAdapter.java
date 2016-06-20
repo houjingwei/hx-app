@@ -73,13 +73,14 @@ public class LiveAdapter extends BaseAdapter {
             holder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
             holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
             holder.ivIcon = (ImageView) convertView.findViewById(R.id.ivIcon);
+            holder.tvLive = (TextView) convertView.findViewById(R.id.tvLive);
             convertView.setTag(holder);
         }else
         {
             holder = (ViewHolder)convertView.getTag();
         }
-        String city = live.getCity()==null?"":"."+live.getCity();
-        String title = live.getTitle()==null?"":"."+live.getTitle();
+        String city = live.getCity()==null || live.getCity().trim().length()==0?"":"."+live.getCity();
+        String title = live.getTitle()==null || live.getTitle().trim().length()==0?"":"."+live.getTitle();
         holder.tvTitle.setText(live.getNickName()+" "+city+title);
         holder.tvTime.setText(live.getTime());
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.rlRoot.getLayoutParams();
@@ -87,6 +88,8 @@ public class LiveAdapter extends BaseAdapter {
        // holder.rlRoot.setBackgroundDrawable(Color.W);
         holder.rlRoot.setLayoutParams(params);
         ImageUtils.display(holder.ivIcon, live.getImg2());
+
+        holder.tvLive.getBackground().setAlpha(112);
 
         return convertView;
     }
@@ -112,6 +115,7 @@ public class LiveAdapter extends BaseAdapter {
         public TextView tvTitle;
         public TextView tvTime;
         public ImageView ivIcon;
+        public TextView tvLive;
 
 
 

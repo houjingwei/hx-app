@@ -12,9 +12,27 @@ public class User implements Serializable {
     private String sex;//性别，0女，1男
     private String photo;//头像
     private String birthday;//生日
-    private String hots;//人气
+
+    public String getHotValue() {
+        return hotValue;
+    }
+
+    public void setHotValue(String hotsValue) {
+        this.hotValue = hotsValue;
+    }
+
+    private String hotValue;//人气
     private String loves;//爱心
-    private String fans;//粉丝数
+
+    public String getFansCount() {
+        return fansCount;
+    }
+
+    public void setFansCount(String fansCount) {
+        this.fansCount = fansCount;
+    }
+
+    private String fansCount;//粉丝数
     private String orders;
     private String lives;
     private String coins = "0";
@@ -22,6 +40,7 @@ public class User implements Serializable {
     private String tags;
     private String phoneNum;
     private String status;
+
 
 
     public String getBust() {
@@ -281,14 +300,6 @@ public class User implements Serializable {
         this.coins = coins;
     }
 
-    public String getHots() {
-        return hots;
-    }
-
-    public void setHots(String hots) {
-        this.hots = hots;
-    }
-
     public String getLoves() {
         return loves;
     }
@@ -297,13 +308,6 @@ public class User implements Serializable {
         this.loves = loves;
     }
 
-    public String getFans() {
-        return fans;
-    }
-
-    public void setFans(String fans) {
-        this.fans = fans;
-    }
 
     public String getOrders() {
         return orders;

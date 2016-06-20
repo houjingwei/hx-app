@@ -1,6 +1,7 @@
 package com.huixiangtv.live.activity;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -78,6 +79,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         App.getContext().addActivity(this);
         initView();
         CheckVersion();
+        //setGuidle();
     }
 
     private void initWindow() {
@@ -394,6 +396,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+
+
+    private void setGuidle()
+    {
+
+        final AlertDialog dlg = new AlertDialog.Builder(MainActivity.this, AlertDialog.THEME_HOLO_LIGHT).create();
+        dlg.show();
+        Window window = dlg.getWindow();
+        window.setContentView(R.layout.index_guide);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //lp.alpha = 2.9f;
+        //window.findViewById(R.id.fl_index).getBackground().setAlpha(100);
+        lp.width  =App.screenWidth;
+        lp.height = App.screenHeight;
+        window.setAttributes(lp);
+    }
 
 
 

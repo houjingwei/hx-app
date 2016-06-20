@@ -11,7 +11,6 @@
       <module fileurl="file://$PROJECT_DIR$/libraryrefresh/libraryrefresh.iml" filepath="$PROJECT_DIR$/libraryrefresh/libraryrefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/photopicker/photopicker.iml" filepath="$PROJECT_DIR$/photopicker/photopicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/sharelib/sharelib.iml" filepath="$PROJECT_DIR$/sharelib/sharelib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/social_sdk_library_project/social_sdk_library_project.iml" filepath="$PROJECT_DIR$/social_sdk_library_project/social_sdk_library_project.iml" />
     </modules>
   </component>
 </project>
