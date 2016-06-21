@@ -41,12 +41,14 @@ public class LiveBannerAdapter extends BaseAdapter {
         mContext = context;
         this.activity = activity;
         mList = new ArrayList<Live>();
-        int i = page * APP_PAGE_SIZE;
-        int iEnd = i + APP_PAGE_SIZE;
-        while ((i < list.size()) && (i < iEnd)) {
-            mList.add(list.get(i));
-            i++;
-        }
+//        int i = page * APP_PAGE_SIZE;
+//        int iEnd = i + APP_PAGE_SIZE;
+//        while ((i < list.size()) && (i < iEnd)) {
+//            mList.add(list.get(i));
+//            i++;
+//        }
+
+        mList= list;
     }
 
     public int getCount() {

@@ -24,6 +24,7 @@ import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.widget.SwitchPageControlView;
 import com.huixiangtv.live.utils.widget.SwitchScrollLayout;
+import com.huixiangtv.live.utils.widget.amin.RotateTransformer;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -79,6 +80,8 @@ public class RegPicActivity extends BaseBackActivity {
         } catch (Exception ex) {
 
         }
+
+        vp_photos.setPageTransformer(true,new RotateTransformer());
     }
 
 

@@ -3,7 +3,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sysBg"
+    android:background="@color/transparent"
     android:orientation="vertical">
 
 
@@ -60,21 +60,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent">
 
-                <com.huixiangtv.live.utils.widget.SwitchScrollLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/ScrollLayoutTest"
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vpager"
+                    android:persistentDrawingCache="animation"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:background="@color/sysBg"
-                    android:scrollbars="none"></com.huixiangtv.live.utils.widget.SwitchScrollLayout>
-
-                <com.huixiangtv.live.utils.widget.SwitchPageControlView
-                    android:id="@+id/pageControl"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/black80"
-                    android:gravity="center"
-                    android:visibility="gone"></com.huixiangtv.live.utils.widget.SwitchPageControlView>
+                    />
             </RelativeLayout>
 
             <LinearLayout
@@ -265,10 +256,7 @@
                         android:textColor="@color/white"
                         android:textSize="15sp" />
                 </LinearLayout>
-
             </LinearLayout>
-
-
         </FrameLayout>
     </LinearLayout>
 </LinearLayout>
