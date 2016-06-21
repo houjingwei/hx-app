@@ -73,7 +73,7 @@ public class GiftAdapter extends BaseAdapter {
 
             tvTitle.setText(gift.getName());
             tvCoin.setText(gift.getPrice()+"金币");
-            tvCoin.setTextColor(context.getResources().getColor(R.color.orange));
+            tvCoin.setTextColor(context.getResources().getColor(R.color.mainColor));
             icon.setTag(5);
 
 

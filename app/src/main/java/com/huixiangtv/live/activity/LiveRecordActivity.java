@@ -53,15 +53,12 @@ import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.LiveView;
 import com.huixiangtv.live.ui.StartLiveView;
-import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
 import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -70,7 +67,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
-import simbest.com.sharelib.ShareModel;
 
 
 public class LiveRecordActivity extends Activity implements View.OnClickListener ,LiveRecorderManager.OnStatusCallback{
@@ -564,29 +560,29 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
     private void living(Live data) {
         liveView = new LiveView(LiveRecordActivity.this);
-        liveView.setActivity(LiveRecordActivity.this);
         liveView.setInfo(data);
         flCover.addView(liveView);
         liveView.loadLive();
-        ShareModel model = new ShareModel();
-        UMImage image = new UMImage(LiveRecordActivity.this, live.getPhoto());
-        model.setTitle(live.getNickName()+live.getTitle());
-        model.setTargetUrl(Api.SHARE_URL+live.getLid());
-        model.setImageMedia(image);
-        model.setContent(live.getNickName()+live.getTitle());
-        if(sharePlat==1){
-            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.SMS,0,null);
-        }else if(sharePlat==2){
-            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.QQ,0,null);
-        }else if(sharePlat==3){
-            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.QZONE,0,null);
-        }else if(sharePlat==4){
-            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.WEIXIN,0,null);
-        }else if(sharePlat==5){
-            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.WEIXIN_CIRCLE,0,null);
-        }else if(sharePlat==6){
-            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.SINA,0,null);
-        }
+        liveView.shareWin();
+//        ShareModel model = new ShareModel();
+//        UMImage image = new UMImage(LiveRecordActivity.this, live.getPhoto());
+//        model.setTitle(live.getNickName()+live.getTitle());
+//        model.setTargetUrl(Api.SHARE_URL+live.getLid());
+//        model.setImageMedia(image);
+//        model.setContent(live.getNickName()+live.getTitle());
+//        if(sharePlat==1){
+//            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.SMS,0,null);
+//        }else if(sharePlat==2){
+//            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.QQ,0,null);
+//        }else if(sharePlat==3){
+//            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.QZONE,0,null);
+//        }else if(sharePlat==4){
+//            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.WEIXIN,0,null);
+//        }else if(sharePlat==5){
+//            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.WEIXIN_CIRCLE,0,null);
+//        }else if(sharePlat==6){
+//            CommonHelper.share(LiveRecordActivity.this,model,SHARE_MEDIA.SINA,0,null);
+//        }
     }
 
 
@@ -787,11 +783,27 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
 
     public void closeLiving() {
-        stopRecorder();
-        //人气，爱心，在线人数，播放时长
-        String[] closeInfo = liveView.getCloseInfo();
-        closeLiving(closeInfo);
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(LiveRecordActivity.this);
+        builder.setMessage("确定要退出直播吗?");
+        builder.setTitle("提示");
+        builder.setPositiveButton("退出",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        stopRecorder();
+                        //人气，爱心，在线人数，播放时长
+                        String[] closeInfo = liveView.getCloseInfo();
+                        closeLiving(closeInfo);
+                    }
+                });
+        builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
 
     }
 
@@ -807,7 +819,10 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            closeLiving();
+                            stopRecorder();
+                            //人气，爱心，在线人数，播放时长
+                            String[] closeInfo = liveView.getCloseInfo();
+                            closeLiving(closeInfo);
                         }
                     });
             builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {

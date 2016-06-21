@@ -118,13 +118,13 @@ android:orientation="vertical">
 
 
 <LinearLayout
-    android:gravity="bottom"
+    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginBottom="50dp">
+    android:orientation="vertical">
 
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp">
@@ -157,6 +157,7 @@ android:orientation="vertical">
     </RelativeLayout>
 
     <LinearLayout
+        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -253,14 +254,14 @@ android:orientation="vertical">
     </LinearLayout>
 
     <TextView
+
         android:id="@+id/tvStart"
         style="@style/white_bigger_style"
         android:layout_width="130dp"
-        android:layout_height="50dp"
+        android:layout_height="46dp"
         android:layout_below="@+id/ll_input"
         android:layout_margin="30dp"
         android:layout_gravity="center"
-        android:layout_marginTop="15dp"
         android:background="@drawable/start_live_btn_style"
         android:gravity="center"
         android:text="@string/startLive" />

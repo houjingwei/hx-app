@@ -66,7 +66,7 @@ public class MyLovesAdapter extends BaseAdapter {
             TextView tvLoveCount = (TextView) rowView.findViewById(R.id.tvLoveCount);
             tvTime.setText(love.getDateTime());
             tvTitle.setText(love.getSource());
-            tvLoveCount.setText("+"+love.getCount());
+            tvLoveCount.setText(love.getCount());
             tvContent.setText(love.getDesc());
         }
         return rowView;
