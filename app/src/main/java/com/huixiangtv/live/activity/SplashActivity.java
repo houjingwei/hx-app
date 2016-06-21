@@ -22,7 +22,7 @@ public class SplashActivity extends Activity{
 
         rlSplash = (ImageView) findViewById(R.id.rlSplash);
 
-        OneApmAgent.init(this.getApplicationContext()).setToken("B3747B7350941C879DB5765C388AA59D73").start();
+        OneApmAgent.init(this.getApplicationContext()).setToken("2E961902283DF7ACC50EE66AFA93699B27").start();
 
         new Handler().postDelayed(new Runnable(){
             public void run() {

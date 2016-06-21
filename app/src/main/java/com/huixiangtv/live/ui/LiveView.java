@@ -340,23 +340,49 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     private void checkRongyunConnectionAndJoinRoom() {
         int flag = App.imClient.getCurrentConnectionStatus().getValue();
-        if (flag == 0 || flag == 1) {
-            joinRoom();
-        } else {
-            App.imClient.logout();
-            final RongyunUtils utils = new RongyunUtils(App.getContext());
-            utils.chatToken(new ChatTokenCallBack() {
+        if(null!=App.getLoginUser()){
+            if (flag == 0 || flag == 1) {
+                joinRoom();
+            } else {
+                reJoinRoom();
+            }
+        }else{
+            reJoinRoom();
+        }
+
+    }
+
+
+
+    private void reJoinRoom() {
+        if(null!=live){
+            App.imClient.quitChatRoom(live.getChatroom(),new RongIMClient.OperationCallback(){
+
                 @Override
-                public void getTokenSuccess(String token) {
-                    utils.connect(token, new ChatTokenCallBack() {
-                        @Override
-                        public void getTokenSuccess(String token) {
-                            joinRoom();
-                        }
-                    });
+                public void onSuccess() {
+                    Log.i("rongyun","exit"+live.getChatroom()+"");
+                }
+
+                @Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
+
                 }
             });
         }
+        App.imClient.logout();
+        final RongyunUtils utils = new RongyunUtils(App.getContext());
+        utils.chatToken(new ChatTokenCallBack() {
+            @Override
+            public void getTokenSuccess(String token) {
+                utils.connect(token, new ChatTokenCallBack() {
+                    @Override
+                    public void getTokenSuccess(String token) {
+
+                        joinRoom();
+                    }
+                });
+            }
+        });
     }
 
     private void joinRoom() {
@@ -379,22 +405,25 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     public boolean isVisitor = false;
     public void sendIntoRoomMsg() {
         isVisitor = true;
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("chatroom", live.getChatroom());
-        params.put("nickName", null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
-        params.put("photo", null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
-        RequestUtils.sendPostRequest(Api.INTO_ROOM, params, new ResponseCallBack<String>() {
-            @Override
-            public void onSuccess(String str) {
-                super.onSuccess(str);
-            }
+        if(null!=App.getLoginUser()){
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("chatroom", live.getChatroom());
+            params.put("nickName",App.getLoginUser().getNickName());
+            params.put("photo", App.getLoginUser().getPhoto());
+            RequestUtils.sendPostRequest(Api.INTO_ROOM, params, new ResponseCallBack<String>() {
+                @Override
+                public void onSuccess(String str) {
+                    super.onSuccess(str);
+                }
 
 
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-            }
-        }, String.class);
+                @Override
+                public void onFailure(ServiceException e) {
+                    super.onFailure(e);
+                }
+            }, String.class);
+        }
+
     }
 
 
@@ -852,7 +881,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 if(activity instanceof LiveRecordActivity){
                     //1:切换像头 2：切图 3：美颜
                     if(flag==1){
-                        ((LiveRecordActivity)activity).changeCamera();
+                       ((LiveRecordActivity)activity).changeCamera();
                     }else if(flag==2){
                         ((LiveRecordActivity)activity).cutScreen();
                     }else if(flag==3){
@@ -1132,94 +1161,9 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 Log.i("myCloseclose",msg.getMsgType()+"");
                 msg.setContent(tm.getContent().toString());
                 if(null!=App.getLoginUser() && !msg.getUid().equals(App.getLoginUser().getUid())){
-                    if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
-
-                        msgListView.post(new Runnable() {
-
-                            public void run() {
-                                msgAdapter.add(msg);
-                                msgListView.setSelection(msgAdapter.getCount()-1);
-
-                            }
-
-                        });
-
-                    }else if(msg.getMsgType().equals(Constant.MSG_TYPE_ENTER)){
-
-                        msgListView.post(new Runnable() {
-
-                            public void run() {
-                                msgAdapter.add(msg);
-                                msgListView.setSelection(msgAdapter.getCount()-1);
-                                User user = new User();
-                                user.setPhoto(msg.getPhoto());
-                                user.setNickName(msg.getNickName());
-                                mAdapter.addData(user);
-                                mRecyclerView.setAdapter(mAdapter);
-                                onLineNum++;
-
-
-                            }
-
-                        });
-
-                    } else if(msg.getMsgType().equals(Constant.MSG_TYPE_BARRAGE)){
-
-                        msgListView.post(new Runnable() {
-                            public void run() {
-
-                                android.os.Message barrageMsg = new android.os.Message();
-                                barrageMsg.what=BARRAGE;
-                                barrageMsg.obj = msg;
-                                liveHandler.sendMessage(barrageMsg);
-
-                            }
-
-                        });
-
-                    }else if(msg.getMsgType().equals(Constant.MSG_TYPE_GIFT)){
-                        msgListView.post(new Runnable() {
-                            public void run() {
-                                if(StringUtil.isNotEmpty(msg.getAddhot())){
-                                    int old = Integer.parseInt(tvHot.getText().toString());
-                                    int addhot = Integer.parseInt(msg.getAddhot());
-                                    String loves = old+addhot+"";
-                                    tvHot.setText(loves);
-                                    startHot = startHot + addhot;
-                                    android.os.Message barrageMsg = new android.os.Message();
-                                    barrageMsg.what=GIFT_ANIM;
-                                    barrageMsg.obj = msg;
-                                    liveHandler.sendMessage(barrageMsg);
-                                }
-
-                            }
-
-                        });
-
-                    }else if(msg.getMsgType().equals(Constant.MSG_TYPE_LOVE)){
-                        msgListView.post(new Runnable() {
-                            public void run() {
-                                if(StringUtil.isNotEmpty(msg.getAddhot())){
-                                    int old = Integer.parseInt(tvLove.getText().toString());
-                                    int addhot = Integer.parseInt(msg.getCount());
-                                    String loves = old+addhot+"";
-                                    tvLove.setText(loves);
-
-                                    startLove = startLove + addhot;
-                                }
-
-                            }
-
-                        });
-
-                    }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
-                        msgListView.post(new Runnable() {
-                            public void run() {
-                                showCloseInfo(msg);
-
-                            }
-                        });
-                    }
+                    msgRecive(msg);
+                }else if(null==App.getLoginUser()){
+                    msgRecive(msg);
                 }
 
 
@@ -1228,6 +1172,96 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         }
     }
 
+    private void msgRecive(final LiveMsg msg) {
+        if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
+
+            msgListView.post(new Runnable() {
+
+                public void run() {
+                    msgAdapter.add(msg);
+                    msgListView.setSelection(msgAdapter.getCount()-1);
+
+                }
+
+            });
+
+        }else if(msg.getMsgType().equals(Constant.MSG_TYPE_ENTER)){
+
+            msgListView.post(new Runnable() {
+
+                public void run() {
+                    msgAdapter.add(msg);
+                    msgListView.setSelection(msgAdapter.getCount()-1);
+                    User user = new User();
+                    user.setPhoto(msg.getPhoto());
+                    user.setNickName(msg.getNickName());
+                    mAdapter.addData(user);
+                    mRecyclerView.setAdapter(mAdapter);
+                    onLineNum++;
+
+
+                }
+
+            });
+
+        } else if(msg.getMsgType().equals(Constant.MSG_TYPE_BARRAGE)){
+
+            msgListView.post(new Runnable() {
+                public void run() {
+
+                    android.os.Message barrageMsg = new android.os.Message();
+                    barrageMsg.what=BARRAGE;
+                    barrageMsg.obj = msg;
+                    liveHandler.sendMessage(barrageMsg);
+
+                }
+
+            });
+
+        }else if(msg.getMsgType().equals(Constant.MSG_TYPE_GIFT)){
+            msgListView.post(new Runnable() {
+                public void run() {
+                    if(StringUtil.isNotEmpty(msg.getAddhot())){
+                        int old = Integer.parseInt(tvHot.getText().toString());
+                        int addhot = Integer.parseInt(msg.getAddhot());
+                        String loves = old+addhot+"";
+                        tvHot.setText(loves);
+                        startHot = startHot + addhot;
+                        android.os.Message barrageMsg = new android.os.Message();
+                        barrageMsg.what=GIFT_ANIM;
+                        barrageMsg.obj = msg;
+                        liveHandler.sendMessage(barrageMsg);
+                    }
+
+                }
+
+            });
+
+        }else if(msg.getMsgType().equals(Constant.MSG_TYPE_LOVE)){
+            msgListView.post(new Runnable() {
+                public void run() {
+                    if(StringUtil.isNotEmpty(msg.getAddhot())){
+                        int old = Integer.parseInt(tvLove.getText().toString());
+                        int addhot = Integer.parseInt(msg.getCount());
+                        String loves = old+addhot+"";
+                        tvLove.setText(loves);
+
+                        startLove = startLove + addhot;
+                    }
+
+                }
+
+            });
+
+        }else if(msg.getMsgType().equals(Constant.LIVING_CLOSE)){
+            msgListView.post(new Runnable() {
+                public void run() {
+                    showCloseInfo(msg);
+
+                }
+            });
+        }
+    }
 
 
     private void showCloseInfo(LiveMsg msg) {

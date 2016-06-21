@@ -8,8 +8,6 @@ import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
-import com.huixiangtv.live.model.Rongyun;
-import com.huixiangtv.live.utils.JsonValidator;
 
 import org.xutils.common.Callback;
 import org.xutils.http.HttpMethod;
@@ -63,6 +61,7 @@ public class RequestUtils {
 
         RequestParams reParams = new RequestParams(url);
         reParams.setCharset("utf-8");
+        reParams.addBodyParameter("deviceId",App.deviceVersion+"");
         if(null!= App.getLoginUser() && (paramsMap==null || !paramsMap.containsKey("uid"))){
             reParams.addBodyParameter("uid", App.getLoginUser().getUid()+"");
             reParams.addBodyParameter("token",App.getLoginUser().getToken()+"");

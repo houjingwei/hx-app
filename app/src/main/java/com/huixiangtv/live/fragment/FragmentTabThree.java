@@ -3,6 +3,7 @@ package com.huixiangtv.live.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +16,12 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
-import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
-import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
@@ -31,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class FragmentTabThree extends RootFragment {
+public class FragmentTabThree extends Fragment implements View.OnClickListener{
 
 
     private View mRootView;
@@ -54,23 +53,20 @@ public class FragmentTabThree extends RootFragment {
         activity = (MainActivity) getActivity();
         activity.hideTitle(true);
 
-        initLayout(mRootView);
+        initView();
         initData();
         return mRootView;
     }
 
-    protected void initLayout(View view) {
-        initView();
-    }
+
 
     protected void initData() {
-        getUserStatus();
+        //getUserStatus();
         ArtistCardInfoStatus();
     }
 
 
     private void initView() {
-
         mRootView.findViewById(R.id.ivPhoto).setOnClickListener(this);
         mRootView.findViewById(R.id.llAccount).setOnClickListener(this);
         mRootView.findViewById(R.id.llLoves).setOnClickListener(this);
@@ -95,8 +91,9 @@ public class FragmentTabThree extends RootFragment {
 
     }
 
+
     @Override
-    protected void onNoDoubleClick(View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivPhoto:
                 if (null != App.getLoginUser()) {
@@ -175,8 +172,6 @@ public class FragmentTabThree extends RootFragment {
 
 
     public void onDelayLoad() {
-
-
         User user = App.getLoginUser();
         if (user != null) {
             tvUserName.setText(user.getNickName());
@@ -224,24 +219,6 @@ public class FragmentTabThree extends RootFragment {
 
                 }
             });
-
-
-//			tvAccount.setText(user.getCoins());
-//			tvLoves.setText(user.getLoves());
-//			Map<String, String> params = new HashMap<String, String>();
-//			RequestUtils.sendPostRequest(Api.USER_INFO, params, new ResponseCallBack<User>() {
-//				@Override
-//				public void onSuccess(User user) {
-//					super.onSuccess(user);
-//					App.saveLoginUser(user);
-//					resetUserInfo(user);
-//				}
-//
-//				@Override
-//				public void onFailure(ServiceException e) {
-//					super.onFailure(e);
-//				}
-//			}, User.class);
         } else {
             tvHot.setText("0");
             tvFans.setText("0");
@@ -255,35 +232,7 @@ public class FragmentTabThree extends RootFragment {
         }
     }
 
-    private void resetUserInfo(User user) {
-        tvUserName.setText(user.getNickName());
-        if (null != user.getPhoto() && user.getPhoto().length() > 0) {
-            ImageUtils.displayAvator(ivPhoto, user.getPhoto());
-            CommonHelper.viewSetBackageImag(user.getPhoto(), llUserTop);
-        }
 
-
-        CommonHelper.myFansCount(new ApiCallback<Other>() {
-            @Override
-            public void onSuccess(Other data) {
-                if (null != data) {
-                    tvFans.setText(data.getCollects());
-                    haveFans.setText(data.getHots());
-                }
-
-            }
-
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-
-            }
-        });
-
-
-        tvAccount.setText(user.getCoins());
-        tvLoves.setText(user.getLoves());
-    }
 
 
     @Override
@@ -326,27 +275,28 @@ public class FragmentTabThree extends RootFragment {
         try {
             String token = App.getPreferencesValue("token");
             String uid = App.getPreferencesValue("uid");
-
             Map<String, String> params = new HashMap<String, String>();
             params.put("uid", uid);
             params.put("token", token);
-
             RequestUtils.sendPostRequest(Api.USER_GETAUTHSTATUS, params, new ResponseCallBack<String>() {
                 @Override
                 public void onSuccess(String str) {
                     super.onSuccess(str);
-                    switch (str) {
-                        case "0":
-                            showToast("未认证");
+                    Log.i("xxxxxxxxxx",str);
+                    int flag = Integer.parseInt(str);
+                    switch (flag) {
+                        case 0:
+                            Log.i("xxxxxxxxxx","成为艺人");
+                            tvArtist.setText("成为艺人");
                             break;
-                        case "1":
-                            showToast("已认证");
+                        case 1:
+                            tvArtist.setText("我的艺人卡");
                             break;
-                        case "2":
-                            showToast("认证中");
+                        case 2:
+                            tvArtist.setText("艺人卡认证中");
                             break;
-                        case "-1":
-                            showToast("认证不通过");
+                        case -1:
+                            tvArtist.setText("艺人卡认证不通过");
                             break;
                     }
 

@@ -7,11 +7,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
@@ -184,7 +182,6 @@ public class LoginWindow extends BasePopupWindow implements OnClickListener {
 			@Override
 			public void onSuccess(User data) {
 				super.onSuccess(data);
-				Toast.makeText(context,"Successfully",Toast.LENGTH_LONG).show();
 				saveLoginInfo(data);
 				if (null != cp) {
 					cp.dismiss();

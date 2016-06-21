@@ -113,6 +113,8 @@ dependencies {
     compile 'com.tencent.bugly:crashreport:latest.release'
     compile project(':libraryrefresh')
     compile project(':sharelib')
+
+    compile 'com.andraskindler.parallaxviewpager:parallaxviewpager:0.3.1'
 }
 
 //镜像仓库

@@ -189,7 +189,6 @@ public final class ImageUtils {
 
             @Override
             public void onUploadSucceed(FileInfo fileInfo) {
-                Log.i("upfile","ok "+fileInfo.toString());
                 callBack.onSuccess(fileInfo);
             }
 

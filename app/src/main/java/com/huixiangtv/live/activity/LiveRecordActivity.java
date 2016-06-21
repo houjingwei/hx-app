@@ -194,14 +194,11 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         _Client.setCameraFacing(Camera.CameraInfo.CAMERA_FACING_FRONT);//设置摄像头为前置摄像头
         _Client.setContentSize(384, 640);//设置摄像头分辨率，这里建议与VideoStream设置同样尺寸，否则会产生黑边。VideoStream设置参考【视频流设置】
 
-        try{
-            //初始化美颜
-            beautyRender = BeautyRender.getInstance();
-            beautyRender.initRenderer(getAssets(),_Client);
-            beautyRender.switchBeauty(true);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+
+        //初始化美颜
+        beautyRender = BeautyRender.getInstance();
+        beautyRender.initRenderer(getAssets(),_Client);
+        beautyRender.switchBeauty(true);
 
 
         if(null!=recordView){
@@ -669,20 +666,22 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
     }
 
 
+
+
     /**
      * 切换相机
      */
     public void changeCamera() {
-        if (_Client != null && _Client.hasSession()) {
-            if (mIsRecording) {
-                mVideoStream.stopMediaCodec();
-            }
-            _Client.nextCamera();
-            if (mIsRecording) {
-                mVideoStream.setMirrored(_Client.isFrontCamera());
-                mVideoStream.startMediaCodec();
-            }
-        }
+//        if (_Client != null && _Client.hasSession()) {
+//            if (mIsRecording) {
+//                mVideoStream.stopMediaCodec();
+//            }
+//            _Client.nextCamera();
+//            if (mIsRecording) {
+//                mVideoStream.setMirrored(_Client.isFrontCamera());
+//                mVideoStream.startMediaCodec();
+//            }
+//        }
     }
 
     /**
@@ -898,7 +897,6 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("myTest","onDestroy");
         if (null != liveView) {
             liveView.removeGlobalListener();
             liveView.removeMsgListener();
