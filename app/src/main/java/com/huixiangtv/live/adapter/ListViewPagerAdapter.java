@@ -119,6 +119,9 @@ public class ListViewPagerAdapter extends PagerAdapter implements OnItemClickLis
                 }
             }
 
+            if(lcontant.contains(item))
+                break;
+
             lcontant.add(item);
             lcontants.add(item);
         }

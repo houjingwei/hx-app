@@ -52,6 +52,9 @@ import com.huixiangtv.live.utils.EnumUpdateTag;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.widget.BannerView;
 import com.huixiangtv.live.utils.widget.amin.DepthPageTransformer;
+import com.huixiangtv.live.utils.widget.parallax.Mode;
+import com.huixiangtv.live.utils.widget.parallax.ParallaxViewPager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +68,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private LinearLayout main;
     public SwitchPicHandler switchPicHandler;
     private int currentViewPage = 1;
-    private final int PAGE_SIZE = 2;
+    private final int PAGE_SIZE = 5;
     private int currPage = 1;
     private RelativeLayout rotRl;
     private ColaProgress cp = null;
@@ -86,7 +89,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private String ACTION = "com.android.broadcast.RECEIVER_ACTION";
     private LinearLayout llone_viewpager;
     private PtrClassicFrameLayout ptrClassicFrameLayout;
-    private ViewPager vpager;
+    private ParallaxViewPager vpager;
 
 
     @Nullable
@@ -156,8 +159,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         //llInfo.setLayoutParams(layoutp);
         flInfo = (FrameLayout) view.findViewById(R.id.flInfo);
 
-        vpager = (ViewPager) view.findViewById(R.id.vpager);
-
+        vpager = (ParallaxViewPager) view.findViewById(R.id.vpager);
 
     }
 
@@ -165,9 +167,9 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private ViewPager.OnPageChangeListener listeners = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageSelected(int currentIndex) {
-            if (currentIndex == listPager.lcontant.size() - 1) {
-                generatePageControl(listPager.lcontant.size(), currentIndex);
-            }
+//            if (currentIndex == listPager.lcontant.size() - 1) {
+//                generatePageControl(listPager.lcontant.size(), currentIndex);
+//            }
             Live live = listPager.lcontant.get(currentIndex).get(0);
             initViewInfo(live);
         }
@@ -178,8 +180,17 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
         @Override
         public void onPageScrollStateChanged(int arg0) {
+            if(arg0 == 1){
+                if (isLoad) {
+                    //起一个线程更新数据
+                    SwitchPicThread switchPicThread = new SwitchPicThread();
+                    new Thread(switchPicThread).start();
+                }
+
+            }
         }
     };
+
 
 
     private void loadUrlAndShow(final Live live) {
@@ -374,42 +385,15 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getStringExtra("type") != null) {
                 if (intent.getStringExtra("type").toString().equals("0")) {
-
-//                     int flag = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-                    Window window = activity.getWindow();
-//                    window.setFlags(flag, flag);
-
                     ptrClassicFrameLayout.setVisibility(View.GONE);
                     llone_viewpager.setVisibility(View.VISIBLE);
 //                    activity.hideTitle(false);
                     rotRl.setVisibility(View.GONE);
-//                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                                                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//                                                        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//                                             window.setStatusBarColor(getResources().getColor(R.color.transparent));
-//                                                    }
-
                 } else if (intent.getStringExtra("type").toString().equals("1")) {
-
-                      int flag = WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN;
-                    Window window = activity.getWindow();
-
-
-                     //设置根布局的内边距
-
-//                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//                      window.setFlags(flag, flag);
-                    //window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
                     llone_viewpager.setVisibility(View.GONE);
                     ptrClassicFrameLayout.setVisibility(View.VISIBLE);
 //                    activity.hideTitle(false);
                     rotRl.setVisibility(View.VISIBLE);
-
-
-
-
-
                 }
             }
 
@@ -443,23 +427,30 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                                 listPager = new ListViewPagerAdapter(getActivity(), getContext(), data, 1);
                                 vpager.setAdapter(listPager);
                                 vpager.setOnPageChangeListener(listeners);
-                                vpager.setPageTransformer(true, new DepthPageTransformer());
                             } else {
                                 listPager.list.clear();
                                 listPager.lcontant.clear();
                                 listPager.mListViewPager.clear();
                                 listPager = new ListViewPagerAdapter(getActivity(), getContext(), data, 1);
                                 vpager.setAdapter(listPager);
-                                vpager.setPageTransformer(true, new DepthPageTransformer());
                                 vpager.setOnPageChangeListener(listeners);
                             }
                         } else {
-                            listPager.ListViewPagerAdapterLoadMore(getContext(), data, 1);
-                            listPager.notifyDataSetChanged();
+                            if(vpager==null || listPager==null){
+                                listPager = new ListViewPagerAdapter(getActivity(), getContext(), data, 1);
+                                vpager.setAdapter(listPager);
+                                vpager.setOnPageChangeListener(listeners);
+                            }
+                            else {
+                                listPager.ListViewPagerAdapterLoadMore(getContext(), data, 1);
+                                listPager.notifyDataSetChanged();
+                            }
                         }
                         Live live = listPager.lcontant.get(0).get(0);
                         initViewInfo(live);
                         currentViewPage++;
+                        vpager.setMode(Mode.NONE);
+
                     }
                 } else {
 
