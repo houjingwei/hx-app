@@ -43,6 +43,7 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.config.Config;
 import com.huixiangtv.live.model.DropImageModel;
+import com.huixiangtv.live.model.Share;
 import com.huixiangtv.live.model.Upfeile;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.ApiCallback;
@@ -267,7 +268,12 @@ public class RegPicListActivity extends BaseBackActivity {
         txtShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 showShareAlert(RegPicListActivity.this, RegPicListActivity.this);
+
+
+
+
             }
         });
 
@@ -538,10 +544,16 @@ public class RegPicListActivity extends BaseBackActivity {
                         //PhotoPickerIntent.setShowCamera(intent, true);
 
                         Intent intent = new Intent(RegPicListActivity.this, CropImageUI.class);
-                        intent.putExtra("path", v.getLocUrl());
-                        intent.putExtra("width", v.getWidth() * 0.90);
-                        intent.putExtra("currentPage", currentTag);
-                        intent.putExtra("height", v.getHeight() * 0.90);
+                        intent.putExtra("currentTag", currentTag);
+                        if(currentTag!=0)
+                        {
+                            intent.putExtra("width", 267);//267  213
+                            intent.putExtra("height", 213);
+                        }
+                        else {
+                            intent.putExtra("width", v.getWidth());//267  213
+                            intent.putExtra("height", v.getHeight());
+                        }
                         startActivityForResult(intent, REQUEST_CODE_CAT);
 
 
@@ -565,13 +577,6 @@ public class RegPicListActivity extends BaseBackActivity {
                         message.what = 1;
                         message.arg1 = 10;
                         handlerTow.sendMessageDelayed(message, 500);
-                        UrlLoc.clear();
-                        for (DropImageView dropImageView : mertoItemViews) {
-                            bm = BitmapHelper.readBitMap(new File(dropImageView.getLocUrl()), false);
-                            bm = BitmapHelper.createScaledBitmap(bm, dropImageView.getWidth(), dropImageView.getHeight(), "CROP");
-                            String loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, dropImageView.getWidth(), dropImageView.getHeight()), Integer.parseInt(dropImageView.getTag().toString()));
-                            UrlLoc.add(loc);
-                        }
 
                     }
                     lastClickTime = System.currentTimeMillis();
@@ -931,7 +936,7 @@ public class RegPicListActivity extends BaseBackActivity {
      * @param context
      */
     public static void showShareAlert(final Activity activity, final Context context) {
-
+        final ShareModel model = new ShareModel();
         final AlertDialog dlg = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT).create();
         dlg.show();
         Window window = dlg.getWindow();
@@ -942,17 +947,13 @@ public class RegPicListActivity extends BaseBackActivity {
         window.setAttributes(lp);
 
 
-        final ShareModel model = new ShareModel();
-        UMImage image = new UMImage(activity, user.getPhoto());
-        model.setTitle(user.getNickName() + "的艺人卡");
-        model.setTargetUrl(Config.HOST + "h5/card.html?aid=" + user.getUid() + "&uid=" + App.getPreferencesValue("uid").toString());
-        model.setImageMedia(image);
-        model.setContent(user.getNickName() + "的艺人卡");
+
+
         window.findViewById(R.id.rlqq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity,model,SHARE_MEDIA.QQ,1,null);
-                dlg.dismiss();
+                shareInfotoDB(activity, model, context, SHARE_MEDIA.QQ, dlg);
+
             }
         });
 
@@ -960,33 +961,28 @@ public class RegPicListActivity extends BaseBackActivity {
         window.findViewById(R.id.rlzone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity,model,SHARE_MEDIA.QZONE,1,null);
-                dlg.dismiss();
+                shareInfotoDB(activity, model, context,SHARE_MEDIA.QZONE,dlg);
             }
         });
 
         window.findViewById(R.id.rlwx).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity,model,SHARE_MEDIA.WEIXIN,1,null);
-                dlg.dismiss();
+                shareInfotoDB(activity, model, context, SHARE_MEDIA.WEIXIN, dlg);
             }
         });
-
 
         window.findViewById(R.id.rlpyq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity,model,SHARE_MEDIA.WEIXIN_CIRCLE,1,null);
-                dlg.dismiss();
+                shareInfotoDB(activity, model, context, SHARE_MEDIA.WEIXIN_CIRCLE, dlg);
             }
         });
 
         window.findViewById(R.id.rlwb).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonHelper.share(activity,model,SHARE_MEDIA.SINA,1,null);
-                dlg.dismiss();
+                shareInfotoDB(activity, model, context, SHARE_MEDIA.SINA, dlg);
             }
         });
 
@@ -999,6 +995,43 @@ public class RegPicListActivity extends BaseBackActivity {
             }
         });
 
+    }
+
+    private static void shareInfotoDB(final Activity activity, final ShareModel model, final Context context, final SHARE_MEDIA platform,final AlertDialog dlg) {
+        CommonHelper.shareInfo(platform, "1", user.getUid(), new ApiCallback<Share>() {
+            @Override
+            public void onSuccess(Share share) {
+                if (null != share) {
+                    UMImage image = new UMImage(activity, share.getCover());
+                    model.setTitle(share.getTitle());
+                    model.setTargetUrl(share.getUrl());
+                    model.setImageMedia(image);
+                    model.setContent(user.getNickName() + "的艺人卡");
+
+                    if (platform.equals(SHARE_MEDIA.QZONE)) {
+
+                        CommonHelper.share(activity, model, SHARE_MEDIA.QZONE, 1, null);
+                    } else if (platform.equals(SHARE_MEDIA.QQ)) {
+                        CommonHelper.share(activity, model, SHARE_MEDIA.QQ, 1, null);
+
+                    } else if (platform.equals(SHARE_MEDIA.WEIXIN)) {
+                        CommonHelper.share(activity, model, SHARE_MEDIA.WEIXIN, 1, null);
+
+                    } else if (platform.equals(SHARE_MEDIA.WEIXIN_CIRCLE)) {
+
+                        CommonHelper.share(activity, model, SHARE_MEDIA.WEIXIN_CIRCLE, 1, null);
+
+                    } else if (platform.equals(SHARE_MEDIA.SINA)) {
+                        CommonHelper.share(activity, model, SHARE_MEDIA.SINA, 1, null);
+                    }
+                    if (dlg.isShowing())
+                        dlg.dismiss();
+
+                } else {
+                    Toast.makeText(context, "获取分享信息失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
@@ -1170,13 +1203,21 @@ public class RegPicListActivity extends BaseBackActivity {
     private void ArtistCardInfoSave() {
 
         cp = ColaProgress.show(RegPicListActivity.this, "正在保存...", true, false, null);
-
         ArrayList<String> imgurl = new ArrayList<String>();
+        String loc ="";
         try {
             for (DropImageView iv : mertoItemViews) {
-                bm = BitmapHelper.readBitMap(new File(iv.getLocUrl()), false);
-                bm = BitmapHelper.createScaledBitmap(bm, iv.getWidth(), iv.getHeight(), "CROP");
-                String loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, iv.getWidth(), iv.getHeight()), Integer.parseInt(iv.getTag().toString()));
+                bm = BitmapHelper.readBitMap(new File(iv.getLocUrl()), false); //267,213
+//                if(imgurl.size()==1)
+//                {
+                    bm = BitmapHelper.createScaledBitmap(bm, iv.getWidth(), iv.getHeight(), "CROP");
+                    loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, iv.getWidth(), iv.getHeight()), Integer.parseInt(iv.getTag().toString()));
+//                }
+//                else
+//                {
+//                    bm = BitmapHelper.createScaledBitmap(bm, 267,213, "CROP");
+//                    loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, 267,213), Integer.parseInt(iv.getTag().toString()));
+//                }
                 imgurl.add(loc);
             }
         } catch (Exception ex) {
@@ -1535,7 +1576,6 @@ public class RegPicListActivity extends BaseBackActivity {
         public boolean handleMessage(Message arg0) {
             if (arg0.what == 1 && isdbClick) {
                 Intent intent = new Intent(RegPicListActivity.this, RegPicActivity.class);
-                intent.putExtra("images", (ArrayList<String>) UrlLoc);
                 intent.putExtra("currentIndex", currentTag);
                 startActivity(intent);
             }

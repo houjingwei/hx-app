@@ -51,6 +51,7 @@ import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.EnumUpdateTag;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.widget.BannerView;
+import com.huixiangtv.live.utils.widget.FlyTxtView;
 import com.huixiangtv.live.utils.widget.amin.DepthPageTransformer;
 import com.huixiangtv.live.utils.widget.parallax.Mode;
 import com.huixiangtv.live.utils.widget.parallax.ParallaxViewPager;
@@ -59,6 +60,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 
 public class FragmentTabOne extends RootFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
@@ -74,7 +76,8 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     private ColaProgress cp = null;
     private TextView tvAddress;
     private BannerView bannerView;
-    private TextView tvInfo, tvLoveCount, tvWeight, tvbName1, tvContent1, tvbName2, tvContent2, tvbName3, tvContent3, tvbName4, tvContent4, tvbName5, tvContent5;
+    private FlyTxtView tvInfo;
+    private TextView tvLoveCount, tvWeight, tvbName1, tvContent1, tvbName2, tvContent2, tvbName3, tvContent3, tvbName4, tvContent4, tvbName5, tvContent5;
     private List<BannerModel> guangGao = new ArrayList<BannerModel>();
     private View mRootView;
     MainActivity activity;
@@ -114,8 +117,12 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
     protected void initLayout(View view) {
 //        pageControl = (SwitchPageControlView) view.findViewById(R.id.pageControl);
-        tvInfo = (TextView) view.findViewById(R.id.tvInfo);
+        tvInfo = (FlyTxtView) view.findViewById(R.id.tvInfo);
+        tvInfo.setTextSize(16);
+        tvInfo.startAnimation();
         tvLoveCount = (TextView) view.findViewById(R.id.tvLoveCount);
+        tvWeight = (TextView) view.findViewById(R.id.tvWeight);
+        tvWeight = (TextView) view.findViewById(R.id.tvWeight);
         tvWeight = (TextView) view.findViewById(R.id.tvWeight);
         tvAddress = (TextView) view.findViewById(R.id.tvAddress);
         ptrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.test_list_view_frame);
@@ -161,6 +168,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
         vpager = (ParallaxViewPager) view.findViewById(R.id.vpager);
 
+
     }
 
 
@@ -170,6 +178,8 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 //            if (currentIndex == listPager.lcontant.size() - 1) {
 //                generatePageControl(listPager.lcontant.size(), currentIndex);
 //            }
+            tvInfo.startAnimation();
+            tvInfo.setTextSize(16);
             Live live = listPager.lcontant.get(currentIndex).get(0);
             initViewInfo(live);
         }
@@ -296,9 +306,10 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<Live>() {
             @Override
             public void onSuccessList(List<Live> data) {
+
                 if (data != null && data.size() > 0) {
                     if (currPage == 1) {
-                        setGuide();
+                        //setGuide();
                         adapter.clear();
                         adapter.addList(data);
                     } else {
@@ -413,7 +424,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<Live>() {
             @Override
             public void onSuccessList(List<Live> data) {
-
                 isLoad = true;
                 if (data != null && data.size() > 0) {
 
@@ -425,8 +435,11 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                             if (null == listPager) {
 
                                 listPager = new ListViewPagerAdapter(getActivity(), getContext(), data, 1);
-                                vpager.setAdapter(listPager);
                                 vpager.setOnPageChangeListener(listeners);
+                                vpager.setAdapter(listPager);
+                                Live live = listPager.lcontant.get(0).get(0);
+                                initViewInfo(live);
+
                             } else {
                                 listPager.list.clear();
                                 listPager.lcontant.clear();
@@ -434,22 +447,25 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
                                 listPager = new ListViewPagerAdapter(getActivity(), getContext(), data, 1);
                                 vpager.setAdapter(listPager);
                                 vpager.setOnPageChangeListener(listeners);
+                                Live live = listPager.lcontant.get(0).get(0);
+                                initViewInfo(live);
                             }
                         } else {
                             if(vpager==null || listPager==null){
                                 listPager = new ListViewPagerAdapter(getActivity(), getContext(), data, 1);
                                 vpager.setAdapter(listPager);
                                 vpager.setOnPageChangeListener(listeners);
+                                Live live = listPager.lcontant.get(0).get(0);
+                                initViewInfo(live);
                             }
                             else {
                                 listPager.ListViewPagerAdapterLoadMore(getContext(), data, 1);
                                 listPager.notifyDataSetChanged();
                             }
                         }
-                        Live live = listPager.lcontant.get(0).get(0);
-                        initViewInfo(live);
+
                         currentViewPage++;
-                        vpager.setMode(Mode.NONE);
+
 
                     }
                 } else {
@@ -575,7 +591,8 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
     private void initViewInfo(Live live) {
         //CommonHelper.viewSetBackageImag(live.getPhoto(),llInfo);
-        tvInfo.setText(live.getNickName());
+        tvInfo.setTexts(live.getNickName());
+
         tvLoveCount.setText(live.getLoveCount());
         String hei = live.getHeight() == null ? "165 cm  " : live.getHeight() + "cm  ";
         String wei = live.getWeight() == null ? "4 5 kg  " : live.getWeight() + "kg  ";

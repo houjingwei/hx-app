@@ -79,14 +79,25 @@ public class MySeekBar extends LinearLayout{
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress,
                                       boolean fromUser) {
-            tvHeightVal.setText("" + (progress*changeVal)+unit);
-            processValInner =  (progress*changeVal);
+            if(isChange) {
+                tvHeightVal.setText("" + (progress * changeVal) + unit);
+                processValInner = (progress * changeVal);
+
+            }
+            else
+            {
+                tvHeightVal.setText("" + (processValInner ) + unit);
+                isChange = true;
+            }
 
         }
     };
 
+    static boolean isChange = true;
     public void SetProcess(int processVal)
     {
+        isChange = false;
+        processValInner = processVal;
         seekBar.setProgress(processVal);
     }
 

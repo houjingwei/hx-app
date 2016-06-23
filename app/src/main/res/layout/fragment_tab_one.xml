@@ -1,5 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:pv="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -61,12 +61,11 @@
                 android:layout_height="match_parent">
 
                 <com.huixiangtv.live.utils.widget.parallax.ParallaxViewPager
-                    xmlns:pv="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/vpager"
                     pv:interpolator="@anim/decelerate_interpolator"
                     pv:mode="right_overlay"
                     pv:outset="62%"
-                    pv:shadow_width="30dp"
+                    pv:shadow_width="0dp"
                     android:persistentDrawingCache="animation"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
@@ -89,21 +88,29 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="12dp"
                         android:orientation="horizontal">
 
-                        <TextView
+
+                        <com.huixiangtv.live.utils.widget.FlyTxtView
                             android:id="@+id/tvInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:singleLine="true"
-                            android:text="李若"
-                            android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:layout_width="100dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="5dp"
+                            />
+                        <!--<TextView-->
+                            <!--android:id="@+id/tvInfo"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginLeft="10dp"-->
+                            <!--android:singleLine="true"-->
+                            <!--android:text="李若"-->
+                            <!--android:textColor="@color/white"-->
+                            <!--android:textSize="18sp" />-->
 
                         <TextView
                             android:id="@+id/tvAddress"
+                            android:layout_marginTop="1dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"

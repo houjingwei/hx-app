@@ -6,8 +6,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -200,11 +203,28 @@ public class BitmapHelper {
         return dst;
     }
 
+
+
+    public static Bitmap readBitMap(File file) {
+
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+
+        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+
+        opt.inPurgeable = true;
+
+        opt.inInputShareable = true;
+
+        return BitmapFactory.decodeFile(file.getAbsolutePath(), opt);
+
+    }
+
+
     public static Bitmap readBitMap(File file,boolean isSS) {
 
         BitmapFactory.Options opt = new BitmapFactory.Options();
         if(isSS)
-        opt.inSampleSize = 2;
+            opt.inSampleSize = 2;
 
         opt.inPreferredConfig = Bitmap.Config.RGB_565;
 
@@ -214,7 +234,66 @@ public class BitmapHelper {
 
 
         return BitmapFactory.decodeFile(file.getAbsolutePath(), opt);
+//        BitmapFactory.Options opt = new BitmapFactory.Options();
+//       // if(isSS)
+//        opt.inDither=false;
+//        opt.inPurgeable=true;
+//        opt.inTempStorage=new byte[12 * 1024];
+//
+//        //opt.inJustDecodeBounds = true;
+//        //BitmapFactory.decodeFile(file.getAbsolutePath(), opt);
+//
+//        //opt.inSampleSize = computeSampleSize(opt, -1, 128*128);
+//        //opt.inPreferredConfig = Bitmap.Config.RGB_565;
+//        //opt.inJustDecodeBounds = false;
+////        opt.inPurgeable = true;
+////
+////        opt.inInputShareable = true;
+//
+//
+//
+//        FileInputStream fs=null;
+//        try {
+//            fs = new FileInputStream(file);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        Bitmap bmp = null;
+//        if(fs != null)
+//            try {
+//                bmp = BitmapFactory.decodeFileDescriptor(fs.getFD(), null, opt);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }finally{
+//                if(fs!=null) {
+//                    try {
+//                        fs.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//        return bmp;
+//       // return BitmapFactory.decodeFile(file.getAbsolutePath(), opt);
 
+    }
+
+    public static Bitmap zoomImg(Bitmap bm) {
+        // 获得图片的宽高
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        // 计算缩放比例
+        float scaleWidth = ((float) App.screenWidth) / width;
+        float scaleHeight = ((float) App.screenHeight) / height;
+        // float scaleHeight = (((float)height/newHeight)*height)/newHeight;
+        // 取得想要缩放的matrix参数
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        // 得到新的图片 www.2cto.com
+        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
+                true);
+        return newbm;
     }
 
 
@@ -236,6 +315,23 @@ public class BitmapHelper {
         }
     }
 
+//
+//    public static Bitmap readBitMap(File file,boolean isSS) {
+//
+//        BitmapFactory.Options opt = new BitmapFactory.Options();
+//        if(isSS)
+//            opt.inSampleSize = 2;
+//
+//        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+//
+//        opt.inPurgeable = true;
+//
+//        opt.inInputShareable = true;
+//
+//
+//        return BitmapFactory.decodeFile(file.getAbsolutePath(), opt);
+//
+//    }
 
     public static Bitmap resizeBitmap(Bitmap bitmap, int maxWidth, int maxHeight) {
 
@@ -275,7 +371,7 @@ public class BitmapHelper {
     public static Bitmap createScaledBitmap(Bitmap unscaledBitmap, int dstWidth, int dstHeight, String scalingLogic) {
         Rect srcRect = calculateSrcRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
         Rect dstRect = calculateDstRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
-        Bitmap scaledBitmap = Bitmap.createBitmap(dstRect.width(), dstRect.height(), Bitmap.Config.ARGB_8888);
+        Bitmap scaledBitmap = Bitmap.createBitmap(dstRect.width(), dstRect.height(), Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(scaledBitmap);
         canvas.drawBitmap(unscaledBitmap, srcRect, dstRect, new Paint(Paint.FILTER_BITMAP_FLAG));return scaledBitmap;
     }
@@ -328,6 +424,80 @@ public class BitmapHelper {
             inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
         }
         return inSampleSize;
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+
+
+
+        Bitmap bitmap = Bitmap.createBitmap(
+
+                drawable.getIntrinsicWidth(),
+
+                drawable.getIntrinsicHeight(),
+
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+
+                        : Bitmap.Config.RGB_565);
+
+        Canvas canvas = new Canvas(bitmap);
+
+        //canvas.setBitmap(bitmap);
+
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+
+        drawable.draw(canvas);
+
+        return bitmap;
+
+    }
+
+    public static Bitmap ReadBitmapById(Context context, int drawableId,int screenWidth, int screenHight)
+    {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        options.inInputShareable = true;
+        options.inPurgeable = true;
+        InputStream stream = context.getResources().openRawResource(drawableId);
+        Bitmap bitmap = BitmapFactory.decodeStream(stream, null, options);
+        return getBitmap(bitmap, screenWidth, screenHight);
+    }
+
+
+    public static Bitmap getBitmap(Bitmap bitmap, int screenWidth,
+                                   int screenHight) {
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+        Matrix matrix = new Matrix();
+        float scale = (float) screenWidth / w;
+        float scale2 = (float) screenHight / h;
+
+        // scale = scale < scale2 ? scale : scale2;
+
+        // 保证图片不变形.
+        matrix.postScale(scale, scale);
+        // w,h是原图的属性.
+        return Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
+    }
+
+
+
+    public static int computeSampleSize(BitmapFactory.Options options,
+                                        int minSideLength, int maxNumOfPixels) {
+        int initialSize = computeInitialSampleSize(options, minSideLength,
+                maxNumOfPixels);
+
+        int roundedSize;
+        if (initialSize <= 8) {
+            roundedSize = 1;
+            while (roundedSize < initialSize) {
+                roundedSize <<= 1;
+            }
+        } else {
+            roundedSize = (initialSize + 7) / 8 * 8;
+        }
+
+        return roundedSize;
     }
 
 

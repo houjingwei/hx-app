@@ -21,7 +21,13 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
+import com.huixiangtv.live.App;
+import com.huixiangtv.live.R;
+import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.Other;
+import com.huixiangtv.live.model.Share;
+import com.huixiangtv.live.model.Upfeile;
+import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.LoginWindow;
 import com.huixiangtv.live.pop.ShareTwoWindow;
@@ -31,6 +37,7 @@ import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.ColaProgressTip;
 import com.huixiangtv.live.ui.EmptyView;
 import com.umeng.socialize.UMShareListener;
@@ -209,23 +216,23 @@ public class CommonHelper {
         su.share(model, platform, new IShareCallback() {
             @Override
             public void onSuccess() {
-                if(null!=back){
+                if (null != back) {
                     back.onSuccess("ok");
                 }
-                shareAddLove(shareType,platform);
+                shareAddLove(shareType, platform);
             }
 
             @Override
             public void onFaild() {
-                if(null!=back){
+                if (null != back) {
                     back.onSuccess("ok");
                 }
-                shareAddLove(shareType,platform);
+                shareAddLove(shareType, platform);
             }
 
             @Override
             public void onCancel() {
-                shareAddLove(shareType,platform);
+                shareAddLove(shareType, platform);
             }
         });
     }
@@ -471,6 +478,54 @@ public class CommonHelper {
 
     }
 
+
+    /**
+     *
+     * @param platform  1:QQ  2:SINA 3:朋友圈 4:webChat 5:QQZONE
+     * @param type  0直播  1 艺人卡
+     * @param bid   业务ID 直播ID & 艺人卡ID
+     * @param apiCallback
+     */
+    public static void shareInfo(SHARE_MEDIA platform,String type,String bid,final ApiCallback<Share> apiCallback)
+    {
+
+
+        String flag = "";
+        if(platform==SHARE_MEDIA.QQ){
+            flag="1";
+        }else if(platform==SHARE_MEDIA.SINA){
+            flag="2";
+        }else if(platform==SHARE_MEDIA.WEIXIN_CIRCLE){
+            flag="3";
+        }else if(platform==SHARE_MEDIA.WEIXIN){
+            flag="4";
+        }else if(platform==SHARE_MEDIA.QZONE){
+            flag="5";
+        }
+
+
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("platform",flag);
+        paramsMap.put("type",type);
+        paramsMap.put("bid",bid);
+
+        //待用
+        //paramsMap.put("tip1",tip1);
+        //paramsMap.put("tip2",tip2);
+
+        RequestUtils.sendPostRequest(Api.SHARE_INFO, paramsMap, new ResponseCallBack<Share>() {
+            @Override
+            public void onSuccess(Share data) {
+                    apiCallback.onSuccess(data);
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                apiCallback.onSuccess(null);
+            }
+        }, Share.class);
+    }
 
 
 }
