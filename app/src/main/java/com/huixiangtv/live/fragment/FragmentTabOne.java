@@ -237,16 +237,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         }, PlayUrl.class);
     }
 
-    protected void setGuide() {
 
-        CommonUtil.setGuidImage(getActivity(), R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
-
-            @Override
-            public void onSuccess(Object data) {
-
-            }
-        });
-    }
 
     protected void initData() {
 
@@ -309,7 +300,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
                 if (data != null && data.size() > 0) {
                     if (currPage == 1) {
-                        //setGuide();
+
                         adapter.clear();
                         adapter.addList(data);
                     } else {

@@ -26,10 +26,12 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.fragment.FragmentTabOne;
 import com.huixiangtv.live.fragment.FragmentTabThree;
 import com.huixiangtv.live.fragment.FragmentTabTwo;
 import com.huixiangtv.live.model.UpgradeLevel;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
@@ -442,29 +444,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 editor.putBoolean(key, false);
                 editor.commit();
                 dlg.dismiss();
+                setGuide();
             }
         });
 
     }
 
+    protected void setGuide() {
 
-//    private void setMask() {
-//
-//                 SharedPreferences sharedPreferences = this.getSharedPreferences(
-//                                 "Setting", Context.MODE_PRIVATE);
-//                 boolean isread =  sharedPreferences.getBoolean("read_share", false);
-//                 if(!isread){
-//                         // 调整顶部背景图片的大小，适应不同分辨率的屏幕
-//                         DisplayMetrics dm = new DisplayMetrics();
-//                         getWindowManager().getDefaultDisplay().getMetrics(dm);
-//                         int width = dm.widthPixels;
-//                         int height = (int) ((float) width / 48 *31);
-//                         imageView_mask.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-//                         linearLayout_mask.setVisibility(View.VISIBLE);
-//                     }else{
-//                         linearLayout_mask.setVisibility(View.GONE);
-//                     }
-//             }
-//
+        CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
+
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+        });
+    }
 
 }
