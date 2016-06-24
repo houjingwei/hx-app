@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
+import com.huixiangtv.live.activity.SplashActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -76,11 +77,14 @@ public class VProgressDialog extends Dialog {
 
                 if(status.equals("1")){
                      dimiss1();
-                    ((MainActivity)activity).updateClose();
+                    ((SplashActivity)activity).updateClose();
+                    ((SplashActivity)activity).gotoMainActivity();
+
                 }
                 else
                 {
                     dimiss1();
+                    ((SplashActivity)activity).gotoMainActivity();
                 }
             }
         });
