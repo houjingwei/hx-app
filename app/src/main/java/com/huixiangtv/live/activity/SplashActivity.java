@@ -86,7 +86,7 @@ public class SplashActivity extends Activity{
                     }
                 }
 
-                
+
                 @Override
                 public void onFailure(ServiceException e) {
                     super.onFailure(e);
