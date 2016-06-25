@@ -7,7 +7,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 
+import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.image.CropImageView;
@@ -22,27 +24,25 @@ public class CropImageUI extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        Window window = CropImageUI.this.getWindow();
+        window.setFlags(flag, flag);
         int width_int = 300;
+        int currentTag = 0;
         int height_int = 300;
         try {
-            width_int = getIntent().getIntExtra("width",300);
-            height_int = getIntent().getIntExtra("height",300);
+            width_int = getIntent().getIntExtra("width", 300);
+            height_int = getIntent().getIntExtra("height", 300);
+            currentTag = getIntent().getIntExtra("currentTag",0);
+
+        } catch (Exception ex) {
 
         }
-        catch (Exception ex)
-        {
-
-        }
-
-        String path = getIntent().getStringExtra("path");
-        cropImage1(path,width_int,height_int);
+        cropImage1(currentTag, width_int, height_int);
     }
 
-    private void cropImage1(final String filePath,final int width,final int height) {
-        BitmapDrawable bd = new BitmapDrawable(BitmapHelper.copressImage(filePath));
-
-
+    private void cropImage1(int currentTag, final int width, final int height) {
+        BitmapDrawable bd = showLocalPic(currentTag);
         setContentView(R.layout.fragment_cropimage);
         final CropImageView mCropImage = (CropImageView) findViewById(R.id.cropImg);
         mCropImage.setDrawable(bd, width, height);
@@ -51,10 +51,10 @@ public class CropImageUI extends Activity {
 
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable(){
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Intent mIntent=new Intent();
+                        Intent mIntent = new Intent();
                         Bundle b = new Bundle();
                         b.putParcelable("data", mCropImage.getCropImage());
                         mIntent.putExtra("bundle", b);
@@ -64,6 +64,33 @@ public class CropImageUI extends Activity {
                 }).start();
             }
         });
+    }
+
+
+    private BitmapDrawable showLocalPic(int currentTag) {
+
+        Bitmap bm = null;
+        try {
+
+            if (currentTag == 0) {
+                bm = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc1")), false);
+            } else if (currentTag == 1) {
+                bm = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc2")), false);
+            } else if (currentTag == 2) {
+                bm = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc3")), false);
+            } else if (currentTag == 3) {
+                bm = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc4")), false);
+            } else if (currentTag == 4) {
+                bm = BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc5")), false);
+            }
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+        return new BitmapDrawable(bm);
+
+
     }
 
 

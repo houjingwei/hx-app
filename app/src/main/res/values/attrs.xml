@@ -14,6 +14,11 @@
         <attr name="changeVal" format="reference|integer"/>
     </declare-styleable>
 
+
+    <declare-styleable name="ScalableImageView">
+        <attr name="icon_src" format="reference"/>
+    </declare-styleable>
+
     <declare-styleable name="SignListLinearLayout">
         <attr name="txtTitle" format="reference|string"/>
         <attr name="valImage" format="reference|color"/>

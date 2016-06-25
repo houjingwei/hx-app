@@ -131,5 +131,6 @@ public class Api {
     public static final String SHARE_URL = "http://119.29.94.122:8888/h5/index.html?uid=&lid=";
 
 
+    public static final String SHARE_INFO = BASE_URL+"/share/getShareInfo";
 
 }
