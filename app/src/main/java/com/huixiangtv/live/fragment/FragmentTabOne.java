@@ -10,6 +10,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -33,8 +37,10 @@ import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.adapter.LiveAdapter;
 import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.BannerModel;
+import com.huixiangtv.live.model.ChatMessage;
 import com.huixiangtv.live.model.HistoryMsg;
 import com.huixiangtv.live.model.Live;
+import com.huixiangtv.live.model.MsgExt;
 import com.huixiangtv.live.model.PlayUrl;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
@@ -81,6 +87,7 @@ public class FragmentTabOne extends Fragment {
     private static final int BIG_UPDATE = -10;
     LinearLayout llTop;
     FrameLayout flBottom;
+    LinearLayout llLiveBottom;
     private ViewPager mViewPager;
     private List<Live> liveList = new ArrayList<>();
     private List<LinearLayout> pagerViews = new ArrayList<LinearLayout>();
@@ -98,6 +105,7 @@ public class FragmentTabOne extends Fragment {
 
     ImageView bg2;
     ImageView bg3;
+    LinearLayout llMsg;
 
 
     private String newImage;
@@ -150,14 +158,14 @@ public class FragmentTabOne extends Fragment {
 
         //大图
         llTop = (LinearLayout) mRootView.findViewById(R.id.llTop);
-
-
-
         flBottom = (FrameLayout) mRootView.findViewById(R.id.flBottom);
+        llLiveBottom = (LinearLayout) mRootView.findViewById(R.id.llLiveBottom);
         FrameLayout.LayoutParams llParams = (FrameLayout.LayoutParams)flBottom.getLayoutParams();
         llParams.height = (int) (App.screenHeight*0.32);
         llParams.width = App.screenWidth;
         flBottom.setLayoutParams(llParams);
+
+        llMsg = (LinearLayout)mRootView.findViewById(R.id.llMsg);
 
         bg2 = (ImageView) mRootView.findViewById(R.id.iv2);
         bg3 = (ImageView) mRootView.findViewById(R.id.iv3);
@@ -484,13 +492,7 @@ public class FragmentTabOne extends Fragment {
 
     }
 
-    /**
-     * 设置底部的信息
-     * @param live
-     */
-    private void bottomInfo(Live live) {
-        Log.i("liveInfo",live.getNickName());
-    }
+
 
     List<Integer> offsetList = new ArrayList<Integer>();
     List<Integer> oldIndexList = new ArrayList<Integer>();
@@ -713,14 +715,58 @@ public class FragmentTabOne extends Fragment {
     }
 
 
-    private void loadMsg(String lid) {
+
+    /**
+     * 设置底部的信息
+     * @param live
+     */
+    private void bottomInfo(Live live) {
+
+        llMsg.removeAllViews();
+        TextView tvName = (TextView) mRootView.findViewById(R.id.tvName);
+        TextView tvAddress = (TextView) mRootView.findViewById(R.id.tvAddress);
+        TextView tvLove = (TextView) mRootView.findViewById(R.id.tvLove);
+        TextView tvSw = (TextView) mRootView.findViewById(R.id.tvSw);
+        tvName.setText(live.getNickName());
+        tvAddress.setText(live.getCity());
+        tvLove.setText(live.getLoveCount());
+
+
+        String hei = live.getHeight() == null ? "165 cm  " : live.getHeight() + "cm  ";
+        String wei = live.getWeight() == null ? "4 5 kg  " : live.getWeight() + "kg  ";
+        String bwh = live.getBwh() == null ? "    " : "三围:  " + live.getBwh();
+        tvSw.setText(hei+wei+bwh);
+
+        loadMsg(live);
+    }
+
+    private void loadMsg(Live live) {
         Map<String, String> params = new HashMap<String, String>();
-        params.put("chatroom", lid);
+        params.put("chatroom", live.getUid());
         RequestUtils.sendPostRequest(Api.HISTORY_MSG, params, new ResponseCallBack<HistoryMsg>() {
             @Override
             public void onSuccess(HistoryMsg data) {
                 super.onSuccess(data);
-
+                if(null!=data){
+                    int i = 0;
+                    for (ChatMessage msg:data.getLastMsg()){
+                        MsgExt ext = msg.getExt();
+                        LinearLayout ll = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.live_bottom_info_msg_item, null, false);
+                        TextView tvMsg = (TextView) ll.findViewById(R.id.tvMsg);
+                        String s = ext.getNickName()+": "+msg.getContent();
+                        if(s.length()>30){
+                            s = s.substring(0,30)+"...";
+                        }
+                        SpannableString ss = new SpannableString(s);
+                        ss.setSpan(new ForegroundColorSpan(getActivity().getResources().getColor(R.color.yellow)), 0, ext.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        tvMsg.setText(ss);
+                        llMsg.addView(ll);
+                        i++;
+                        if(i==5){
+                            break;
+                        }
+                    }
+                }
             }
 
             @Override
