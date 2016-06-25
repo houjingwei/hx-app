@@ -41,7 +41,7 @@ public class RegPicActivity extends BaseBackActivity {
     @ViewInject(R.id.vp_photos)
     ViewPager vp_photos;
     private ImageView[] mImageViews;
-    ArrayList<String> mDatas;
+    ArrayList<Bitmap> mDatas;
 
     @ViewInject(R.id.img_back)
     ImageView imgback;
@@ -61,20 +61,29 @@ public class RegPicActivity extends BaseBackActivity {
             }
         });
         try {
-            mDatas = (ArrayList<String>) getIntent().getSerializableExtra("images");
+            mDatas = new ArrayList<>();
+
+            mDatas.add(BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc1"))));
+
+            mDatas.add(BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc2"))));
+
+            mDatas.add(BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc3"))));
+
+            mDatas.add(BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc4"))));
+
+            mDatas.add(BitmapHelper.readBitMap(new File(App.getPreferencesValue("imgloc5"))));
+
             int currentIndex = getIntent().getIntExtra("currentIndex", 0);
             mImageViews = new ImageView[5];
             Bitmap bm;
             ImageView imageView;
             for (int i = 0; i < mDatas.size(); i++) {
-                bm = BitmapHelper.copressImage(mDatas.get(i));
+                bm = mDatas.get(i);
                 imageView = new ImageView(this);
                 mImageViews[i] = imageView;
                 imageView.setImageBitmap(bm);
             }
-
             photoAdapter = new PhotoAdapter(this, mImageViews);
-
             vp_photos.setAdapter(photoAdapter);
             vp_photos.setCurrentItem(currentIndex);
         } catch (Exception ex) {

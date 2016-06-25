@@ -27,6 +27,7 @@ import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.CommonHelper;
 
 import java.util.Calendar;
@@ -161,7 +162,6 @@ public class CommonUtil {
             editor.commit();
         }
 
-        //判断是否首次登陆
         if (!preferences.getBoolean(key, true)) {
             apiCallback.onSuccess("no");
             return;
@@ -177,7 +177,7 @@ public class CommonUtil {
             guideImage.setLayoutParams(params);
 
             guideImage.setScaleType(ImageView.ScaleType.FIT_XY);
-            guideImage.setImageResource(imageId);
+            guideImage.setImageBitmap(BitmapHelper.zoomImg(BitmapHelper.readBitMap(act, imageId)));
             guideImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fl_index"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_marginBottom="20dp"
+    android:layout_height="match_parent"
+   >
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingBottom="15dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/index_hand_guide" />
-
-</RelativeLayout>
+        <ImageView
+            android:scaleType="fitXY"
+            android:id="@+id/iv_hand_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        <ImageView
+            android:id="@+id/iv_hand"
+            android:layout_width="wrap_content"
+            android:src="@drawable/hand_pic"
+            android:layout_marginBottom="150dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="81dp"
+            android:layout_height="wrap_content" />
+</FrameLayout>

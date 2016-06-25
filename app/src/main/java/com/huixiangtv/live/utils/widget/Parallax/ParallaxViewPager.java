@@ -65,7 +65,7 @@ public class ParallaxViewPager extends ViewPager {
         if (a.hasValue(R.styleable.ParallaxViewPager_left_shadow)) {
             mLeftShadow = a.getDrawable(R.styleable.ParallaxViewPager_left_shadow);
         }
-        mShadowWidth = a.getDimensionPixelSize(R.styleable.ParallaxViewPager_shadow_width, (int) dp2px(20, getContext()));
+        mShadowWidth = a.getDimensionPixelSize(R.styleable.ParallaxViewPager_shadow_width, (int) dp2px(0, getContext()));
         TypedValue tv = a.peekValue(
                 R.styleable.ParallaxViewPager_outset);
         if (tv != null) {

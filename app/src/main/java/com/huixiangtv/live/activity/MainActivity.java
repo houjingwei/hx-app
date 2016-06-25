@@ -2,16 +2,23 @@ package com.huixiangtv.live.activity;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -19,15 +26,18 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.fragment.FragmentTabOne;
 import com.huixiangtv.live.fragment.FragmentTabThree;
 import com.huixiangtv.live.fragment.FragmentTabTwo;
 import com.huixiangtv.live.model.UpgradeLevel;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.UpdateApp;
+import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.TokenChecker;
@@ -78,8 +88,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initWindow();
         App.getContext().addActivity(this);
         initView();
-        CheckVersion();
-        //setGuidle();
+        setGuidle();
     }
 
     private void initWindow() {
@@ -401,19 +410,55 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void setGuidle()
     {
 
+        SharedPreferences preferences = getSharedPreferences("indexsp", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+        final String key = getClass().getName() + "_firstLogin";
+        if (!preferences.contains(key)) {
+            editor.putBoolean(key, true);
+            editor.commit();
+        }
+
+        if (!preferences.getBoolean(key, true)) {
+            return;
+        }
+
         final AlertDialog dlg = new AlertDialog.Builder(MainActivity.this, AlertDialog.THEME_HOLO_LIGHT).create();
         dlg.show();
         Window window = dlg.getWindow();
         window.setContentView(R.layout.index_guide);
         WindowManager.LayoutParams lp = window.getAttributes();
-        //lp.alpha = 2.9f;
-        //window.findViewById(R.id.fl_index).getBackground().setAlpha(100);
         lp.width  =App.screenWidth;
-        lp.height = App.screenHeight;
+        lp.height = (int) (App.screenHeight);
         window.setAttributes(lp);
+        TranslateAnimation mAnimation = new TranslateAnimation(0,0,0,150);
+        mAnimation.setRepeatCount(Animation.INFINITE);
+        mAnimation.setDuration(1500);
+        mAnimation.setFillAfter(true);
+        window.findViewById(R.id.iv_hand).setAnimation(mAnimation);
+        ImageView iv_hand_title = (ImageView) window.findViewById(R.id.iv_hand_title);
+        iv_hand_title.setImageBitmap(BitmapHelper.zoomImg(BitmapHelper.readBitMap(MainActivity.this, R.drawable.index_hand_guide)));
+
+        window.findViewById(R.id.fl_index).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putBoolean(key, false);
+                editor.commit();
+                dlg.dismiss();
+                setGuide();
+            }
+        });
+
     }
 
+    protected void setGuide() {
 
+        CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
 
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+        });
+    }
 
 }
