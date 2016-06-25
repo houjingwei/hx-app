@@ -1276,7 +1276,6 @@ public class RegPicListActivity extends BaseBackActivity {
             }
         }
 
-        if(pics.size()>0) {
             Map<String, String> paramsMap = new HashMap<>();
 
             App.saveBodyPic(user);
@@ -1308,11 +1307,7 @@ public class RegPicListActivity extends BaseBackActivity {
                 }
             }, String.class);
 
-        }
-        else
-        {
-            saveSuccessfully();
-        }
+
 
     }
 

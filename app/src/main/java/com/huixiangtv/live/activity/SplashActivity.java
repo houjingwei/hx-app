@@ -39,6 +39,9 @@ public class SplashActivity extends Activity{
     }
 
 
+    /**
+     * 跳转到主页面
+     */
     public void gotoMainActivity()
     {
 
@@ -53,6 +56,9 @@ public class SplashActivity extends Activity{
 
     }
 
+    /**
+     * 退出应用程序
+     */
     public void updateClose(){
         finish();
         App.getContext().finishAllActivity();

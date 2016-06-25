@@ -92,24 +92,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initWindow() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//           setTranslucentStatus(true);
-//        }
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.colorPrimary);
-    }
-
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
     }
 
 
@@ -206,14 +191,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-    public void updateClose(){
-        finish();
-        App.getContext().finishAllActivity();
-        android.os.Process.killProcess(android.os.Process.myPid());
-
-    }
-
-
 
     public void hideTitle(boolean bool) {
         Window window = getWindow();
@@ -300,13 +277,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             isSwitch = true;
             changeIcon(false);
         }
-//        if (System.currentTimeMillis() - lastTipTimeMills > 300) {
-//            lastTipTimeMills = System.currentTimeMillis();
-//
-//        } else {
-//
-//
-//        }
+
     }
 
     private void changeIcon(boolean bool) {
@@ -360,53 +331,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-//        //阻止activity保存fragment的状态
-//        //super.onSaveInstanceState(outState, outPersistentState);
-//    }
-
 
     /**
-     * 检查新版本
+     * 设置新引导页
      */
-    private void CheckVersion() {
-        try {
-            final String version = App.getVersionCode(MainActivity.this);
-            Map<String, String> paramsMap = new HashMap<String, String>();
-            paramsMap.put("osType", "1");
-            paramsMap.put("appVersion", version );
-
-            RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
-
-                public void onSuccess(UpgradeLevel data) {
-
-                    if (data != null) {
-
-                        UpgradeLevel upgradeLevel = data;
-
-                        UpdateApp updateApp = new UpdateApp(MainActivity.this,MainActivity.this);
-                        if (updateApp
-                                .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
-
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(ServiceException e) {
-                    super.onFailure(e);
-                    Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
-                }
-            }, UpgradeLevel.class);
-        } catch (Exception ex) {
-            Toast.makeText(MainActivity.this,"更新异常",Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-
-
     private void setGuidle()
     {
 
@@ -444,15 +372,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 editor.putBoolean(key, false);
                 editor.commit();
                 dlg.dismiss();
-                setGuide();
+                setGuideNextLeft();
             }
         });
 
     }
 
-    protected void setGuide() {
+    protected void setGuideNextLeft() {
 
         CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
+
+            @Override
+            public void onSuccess(Object data) {
+                setGuideNextUp();
+            }
+        });
+    }
+
+
+    protected void setGuideNextUp() {
+
+        CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_hand_clear, "guide2", new ApiCallback() {
 
             @Override
             public void onSuccess(Object data) {

@@ -31,8 +31,8 @@ public class CropImageUI extends Activity {
         int currentTag = 0;
         int height_int = 300;
         try {
-            width_int = getIntent().getIntExtra("width", 300);
-            height_int = getIntent().getIntExtra("height", 300);
+            width_int = getIntent().getIntExtra("width", App.screenWidth);
+            height_int = getIntent().getIntExtra("height", App.screenHeight);
             currentTag = getIntent().getIntExtra("currentTag",0);
 
         } catch (Exception ex) {
