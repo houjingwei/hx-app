@@ -68,10 +68,10 @@
         tools:replace="android:icon">
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -88,7 +88,6 @@
         <activity
             android:name=".activity.BaseActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.LoginOrRegActivity"
             android:screenOrientation="portrait"
@@ -190,7 +189,7 @@
         <activity
             android:name=".activity.RegPicListActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.RegPicActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
@@ -203,7 +202,6 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <!-- 微信支付 -->
-
 
         <activity
             android:name="me.iwf.photopicker.PhotoPickerActivity"
@@ -244,7 +242,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.LiveRecordFinishActivity"></activity>
+        <activity android:name=".activity.LiveRecordFinishActivity" />
+        <activity android:name=".activity.BigStyleActivity"></activity>
     </application>
 
 </manifest>

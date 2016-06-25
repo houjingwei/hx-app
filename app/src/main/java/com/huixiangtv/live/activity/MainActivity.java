@@ -1,6 +1,5 @@
 package com.huixiangtv.live.activity;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -30,7 +29,6 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.UpdateApp;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
-import com.huixiangtv.live.utils.TokenChecker;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.xutils.view.annotation.ViewInject;
@@ -83,25 +81,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initWindow() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//           setTranslucentStatus(true);
-//        }
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.colorPrimary);
+        hideTitle();
     }
 
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
-    }
+
 
 
     /**
@@ -153,12 +139,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void addSelection(int index) {
         if (index == 0) {
-            hideTitle(false);
             iv1.setImageResource(R.mipmap.tab1_pressed);
             iv3.setImageResource(R.mipmap.tab3);
-
         } else if (index == 1) {
-            hideTitle(true);
             iv1.setImageResource(R.mipmap.tab1);
             iv3.setImageResource(R.mipmap.tab3_pressed);
         }
@@ -180,8 +163,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-
-
     private long lastTipTimeMills = 0l;
 
     @Override
@@ -197,7 +178,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-    public void updateClose(){
+    public void updateClose() {
         finish();
         App.getContext().finishAllActivity();
         android.os.Process.killProcess(android.os.Process.myPid());
@@ -205,36 +186,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-
-    public void hideTitle(boolean bool) {
+    public void hideTitle() {
         Window window = getWindow();
-        if(bool){
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                window.setStatusBarColor(getResources().getColor(R.color.mainColor));
-            }
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }else{
-
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
-            }
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(getResources().getColor(R.color.mainColor));
         }
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tab1:
-                onDBClick();
+                tabOneClick();
                 break;
             case R.id.tab2:
-                if(null!=App.getLoginUser()){
+                if (null != App.getLoginUser()) {
                     startLive();
-                }else{
+                } else {
                     CommonHelper.showLoginPopWindow(MainActivity.this, R.id.main, new LoginCallBack() {
                         @Override
                         public void loginSuccess() {
@@ -246,9 +216,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 isSwitch = true;
                 break;
             case R.id.iv2:
-                if(null!=App.getLoginUser()){
+                if (null != App.getLoginUser()) {
                     startLive();
-                }else{
+                } else {
                     CommonHelper.showLoginPopWindow(MainActivity.this, R.id.main, new LoginCallBack() {
                         @Override
                         public void loginSuccess() {
@@ -259,13 +229,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 isSwitch = true;
                 break;
             case R.id.tab3:
-                if(null!=App.getLoginUser()) {
+                if (null != App.getLoginUser()) {
                     setTabSelection(1);
 
-                }
-                else
-                {
-                    ForwardUtils.target(MainActivity.this, Constant.LOGIN,null);
+                } else {
+                    ForwardUtils.target(MainActivity.this, Constant.LOGIN, null);
                 }
 
                 isSwitch = true;
@@ -277,9 +245,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private static boolean isSwitch = false;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void onDBClick() {
 
+    private void tabOneClick() {
         if (isSwitch) {
             setTabSelection(0);
             sendToOneFragment("1");
@@ -291,19 +258,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             isSwitch = true;
             changeIcon(false);
         }
-//        if (System.currentTimeMillis() - lastTipTimeMills > 300) {
-//            lastTipTimeMills = System.currentTimeMillis();
-//
-//        } else {
-//
-//
-//        }
+
     }
 
     private void changeIcon(boolean bool) {
-        if(bool){
+        if (bool) {
             iv1.setImageResource(R.mipmap.tab1_pressed);
-        }else{
+        } else {
             iv1.setImageResource(R.mipmap.tab1_big);
         }
 
@@ -324,7 +285,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
             lastClickTime = currentTime;
             Map<String, String> params = new HashMap<>();
-            params.put("isRecord","true");
+            params.put("isRecord", "true");
             ForwardUtils.target(MainActivity.this, Constant.START_LIVE, params);
         }
 
@@ -351,12 +312,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-//        //阻止activity保存fragment的状态
-//        //super.onSaveInstanceState(outState, outPersistentState);
-//    }
-
 
     /**
      * 检查新版本
@@ -366,7 +321,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             final String version = App.getVersionCode(MainActivity.this);
             Map<String, String> paramsMap = new HashMap<String, String>();
             paramsMap.put("osType", "1");
-            paramsMap.put("appVersion", version );
+            paramsMap.put("appVersion", version);
 
             RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
 
@@ -376,7 +331,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                         UpgradeLevel upgradeLevel = data;
 
-                        UpdateApp updateApp = new UpdateApp(MainActivity.this,MainActivity.this);
+                        UpdateApp updateApp = new UpdateApp(MainActivity.this, MainActivity.this);
                         if (updateApp
                                 .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
 
@@ -391,15 +346,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
             }, UpgradeLevel.class);
         } catch (Exception ex) {
-            Toast.makeText(MainActivity.this,"更新异常",Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "更新异常", Toast.LENGTH_LONG).show();
         }
 
     }
 
 
-
-    private void setGuidle()
-    {
+    private void setGuidle() {
 
         final AlertDialog dlg = new AlertDialog.Builder(MainActivity.this, AlertDialog.THEME_HOLO_LIGHT).create();
         dlg.show();
@@ -408,12 +361,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         WindowManager.LayoutParams lp = window.getAttributes();
         //lp.alpha = 2.9f;
         //window.findViewById(R.id.fl_index).getBackground().setAlpha(100);
-        lp.width  =App.screenWidth;
+        lp.width = App.screenWidth;
         lp.height = App.screenHeight;
         window.setAttributes(lp);
     }
-
-
 
 
 }

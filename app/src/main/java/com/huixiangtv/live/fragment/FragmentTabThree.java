@@ -1,5 +1,6 @@
 package com.huixiangtv.live.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.BigStyleActivity;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.User;
@@ -51,8 +53,6 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_tab_three, container, false);
         activity = (MainActivity) getActivity();
-        activity.hideTitle(true);
-
         initView();
         initData();
         return mRootView;
@@ -136,11 +136,14 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
                 ForwardUtils.target(getActivity(), Constant.FEEDBACK, null);
                 break;
             case R.id.llTitle:
-                if (null != App.getLoginUser()) {
-                    ForwardUtils.target(getActivity(), Constant.PIC_LIST, null);
-                } else {
-                    ForwardUtils.target(getActivity(), Constant.LOGIN, null);
-                }
+//                if (null != App.getLoginUser()) {
+//                    ForwardUtils.target(getActivity(), Constant.PIC_LIST, null);
+//                } else {
+//                    ForwardUtils.target(getActivity(), Constant.LOGIN, null);
+//                }
+
+                Intent in = new Intent(getActivity(),BigStyleActivity.class);
+                getActivity().startActivity(in);
                 break;
             case R.id.llMyfans:
                 if (null != App.getLoginUser()) {

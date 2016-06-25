@@ -4,25 +4,22 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -33,63 +30,81 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
-import com.huixiangtv.live.adapter.ListViewPagerAdapter;
 import com.huixiangtv.live.adapter.LiveAdapter;
 import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.BannerModel;
-import com.huixiangtv.live.model.ChatMessage;
 import com.huixiangtv.live.model.HistoryMsg;
 import com.huixiangtv.live.model.Live;
-import com.huixiangtv.live.model.MsgExt;
 import com.huixiangtv.live.model.PlayUrl;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
-import com.huixiangtv.live.ui.ColaProgress;
+import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.utils.CommonHelper;
-import com.huixiangtv.live.utils.EnumUpdateTag;
+import com.huixiangtv.live.utils.DepthPageTransformer;
 import com.huixiangtv.live.utils.ForwardUtils;
+import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.BannerView;
-import com.huixiangtv.live.utils.widget.amin.DepthPageTransformer;
-import com.huixiangtv.live.utils.widget.parallax.Mode;
-import com.huixiangtv.live.utils.widget.parallax.ParallaxViewPager;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class FragmentTabOne extends RootFragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class FragmentTabOne extends Fragment {
 
-    private ListViewPagerAdapter listPager;
-    private static boolean isLoad = false;
+
     private LinearLayout main;
-    public SwitchPicHandler switchPicHandler;
-    private int currentViewPage = 1;
-    private final int PAGE_SIZE = 5;
-    private int currPage = 1;
-    private RelativeLayout rotRl;
-    private ColaProgress cp = null;
-    private TextView tvAddress;
+    private int page = 1;
+    private final int pageSize = 5;
     private BannerView bannerView;
-    private TextView tvInfo, tvLoveCount, tvWeight, tvbName1, tvContent1, tvbName2, tvContent2, tvbName3, tvContent3, tvbName4, tvContent4, tvbName5, tvContent5;
     private List<BannerModel> guangGao = new ArrayList<BannerModel>();
     private View mRootView;
     MainActivity activity;
-    private LinearLayout ll_search;
-    private LiveAdapter adapter;
-    private LinearLayout llInfo;
-    private ScrollView sv;
-    private static List<Live> viewpageModelList = new ArrayList<Live>();
-    private ListView listview;
-    private LiveListBroadcast receiver;
-    private FrameLayout flInfo;
-    private String ACTION = "com.android.broadcast.RECEIVER_ACTION";
-    private LinearLayout llone_viewpager;
+
+
     private PtrClassicFrameLayout ptrClassicFrameLayout;
-    private ParallaxViewPager vpager;
+    private ListView listview;
+    private LiveAdapter adapter;
+
+    private LiveListBroadcast receiver;
+
+    private String ACTION = "com.android.broadcast.RECEIVER_ACTION";
+
+
+    private int bigPage = 1;
+
+
+    private static final int BIG_UPDATE = -10;
+    LinearLayout llTop;
+    FrameLayout flBottom;
+    private ViewPager mViewPager;
+    private List<Live> liveList = new ArrayList<>();
+    private List<LinearLayout> pagerViews = new ArrayList<LinearLayout>();
+    private PagerAdapter pageAdapter;
+
+
+    private boolean left = false;
+    private boolean right = false;
+    boolean knowBg2 = false;
+    private boolean isChange = false;
+    private int oldIndex = 0;
+    private int lastValue = -1;
+    private int currIndex = 0;
+
+
+    ImageView bg2;
+    ImageView bg3;
+
+
+    private String newImage;
+
+
+    CenterLoadingView loadingDialog = null;
+    private boolean hasLoadBig = false;
 
 
     @Nullable
@@ -97,103 +112,65 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_tab_one, container, false);
         activity = (MainActivity) getActivity();
-//        int flag = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-//        Window window = activity.getWindow();
-//        window.setFlags(flag, flag);
-//        activity.hideTitle(false);
         receiver = new LiveListBroadcast();
-        initLayout(mRootView);
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION);
         //动态注册BroadcastReceiver
         getActivity().registerReceiver(receiver, filter);
+
+
+        initLayout();
         initData();
+        setGuide();
+
+
         return mRootView;
     }
 
 
-    protected void initLayout(View view) {
-//        pageControl = (SwitchPageControlView) view.findViewById(R.id.pageControl);
-        tvInfo = (TextView) view.findViewById(R.id.tvInfo);
-        tvLoveCount = (TextView) view.findViewById(R.id.tvLoveCount);
-        tvWeight = (TextView) view.findViewById(R.id.tvWeight);
-        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
-        ptrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.test_list_view_frame);
-        main = (LinearLayout) view.findViewById(R.id.main);
-        tvbName1 = (TextView) view.findViewById(R.id.tvbName1);
-        tvContent1 = (TextView) view.findViewById(R.id.tvContent1);
-        tvbName2 = (TextView) view.findViewById(R.id.tvbName2);
-        tvContent2 = (TextView) view.findViewById(R.id.tvContent2);
-        tvbName3 = (TextView) view.findViewById(R.id.tvbName3);
-        tvContent3 = (TextView) view.findViewById(R.id.tvContent3);
-        tvbName4 = (TextView) view.findViewById(R.id.tvbName4);
-        tvContent4 = (TextView) view.findViewById(R.id.tvContent4);
-        tvbName5 = (TextView) view.findViewById(R.id.tvbName5);
-        tvContent5 = (TextView) view.findViewById(R.id.tvContent5);
-        listview = (ListView) view.findViewById(R.id.test_list_view);
+    protected void initLayout() {
+        ptrClassicFrameLayout = (PtrClassicFrameLayout) mRootView.findViewById(R.id.test_list_view_frame);
+        main = (LinearLayout) mRootView.findViewById(R.id.main);
+        listview = (ListView) mRootView.findViewById(R.id.test_list_view);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Live live = (Live) adapter.getItem((position - 1));
-                loadUrlAndShow(live);
+                toPlayActivity(live);
             }
         });
 
-        adapter = new LiveAdapter(getActivity());
-        listview.setAdapter(adapter);
-
-        //add head to listview
+        //添加banner并设置banner高度
         View bannView = LayoutInflater.from(getActivity()).inflate(R.layout.live_banner, null, false);
         listview.addHeaderView(bannView);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) (App.screenWidth * 0.28));
         bannerView = (BannerView) bannView.findViewById(R.id.banner);
         bannerView.setLayoutParams(layoutParams);
-        rotRl = (RelativeLayout) view.findViewById(R.id.rotRl);
 
-        llone_viewpager = (LinearLayout) view.findViewById(R.id.llone_viewpager);
-        llone_viewpager.setVisibility(View.GONE);
-//        mSwitchScrollLayout = (SwitchScrollLayout) view.findViewById(R.id.ScrollLayoutTest);
-        llInfo = (LinearLayout) view.findViewById(R.id.llInfo);
 
-        LinearLayout.LayoutParams layoutp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) (App.screenWidth * 0.28));
-        //llInfo.setLayoutParams(layoutp);
-        flInfo = (FrameLayout) view.findViewById(R.id.flInfo);
+        //大图
+        llTop = (LinearLayout) mRootView.findViewById(R.id.llTop);
 
-        vpager = (ParallaxViewPager) view.findViewById(R.id.vpager);
+
+
+        flBottom = (FrameLayout) mRootView.findViewById(R.id.flBottom);
+        FrameLayout.LayoutParams llParams = (FrameLayout.LayoutParams)flBottom.getLayoutParams();
+        llParams.height = (int) (App.screenHeight*0.32);
+        llParams.width = App.screenWidth;
+        flBottom.setLayoutParams(llParams);
+
+        bg2 = (ImageView) mRootView.findViewById(R.id.iv2);
+        bg3 = (ImageView) mRootView.findViewById(R.id.iv3);
 
     }
 
 
-    private ViewPager.OnPageChangeListener listeners = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageSelected(int currentIndex) {
-//            if (currentIndex == listPager.lcontant.size() - 1) {
-//                generatePageControl(listPager.lcontant.size(), currentIndex);
-//            }
-            Live live = listPager.lcontant.get(currentIndex).get(0);
-            initViewInfo(live);
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-            if(arg0 == 1){
-                if (isLoad) {
-                    //起一个线程更新数据
-                    SwitchPicThread switchPicThread = new SwitchPicThread();
-                    new Thread(switchPicThread).start();
-                }
-
-            }
-        }
-    };
-
-
-
-    private void loadUrlAndShow(final Live live) {
+    /**
+     * 查询播放信息，并跳转到播放页
+     *
+     * @param live
+     */
+    private void toPlayActivity(final Live live) {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("lid", live.getLid());
         RequestUtils.sendPostRequest(Api.PLAY_URL, params, new ResponseCallBack<PlayUrl>() {
@@ -228,7 +205,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     }
 
     protected void setGuide() {
-
         CommonUtil.setGuidImage(getActivity(), R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
 
             @Override
@@ -239,16 +215,16 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     }
 
     protected void initData() {
-
-
-        initAdapter(EnumUpdateTag.UPDATE);
+        getBanner();
+        adapter = new LiveAdapter(getActivity());
+        listview.setAdapter(adapter);
 
         ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                currPage = 1;
-                initAdapter(EnumUpdateTag.UPDATE);
+                page = 1;
+                loadData();
             }
         });
 
@@ -256,16 +232,14 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
             @Override
             public void loadMore() {
-                currPage++;
-                initAdapter(EnumUpdateTag.MORE);
+                page++;
+                loadData();
             }
 
         });
-        getBanner();
-        switchPicHandler = new SwitchPicHandler(getContext(), 1);
-        //起一个线程更新数据
-        SwitchPicThread switchPicThread = new SwitchPicThread();
-        new Thread(switchPicThread).start();
+
+        loadData();
+
 
 
     }
@@ -283,13 +257,13 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     }
 
     /**
-     * loading and init list
+     * 加载列表数据
      */
-    private void initAdapter(final EnumUpdateTag enumUpdateTag) {
+    private void loadData() {
 
         Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("page", currPage + "");
-        paramsMap.put("pageSize", PAGE_SIZE + "");
+        paramsMap.put("page", page + "");
+        paramsMap.put("pageSize", pageSize + "");
         paramsMap.put("cNo", "TJ");
 
 
@@ -297,26 +271,16 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             @Override
             public void onSuccessList(List<Live> data) {
                 if (data != null && data.size() > 0) {
-                    if (currPage == 1) {
-                        setGuide();
+                    if (page == 1) {
                         adapter.clear();
                         adapter.addList(data);
                     } else {
                         adapter.addList(data);
                     }
-                    if (enumUpdateTag == EnumUpdateTag.UPDATE) {
-                        if (isLoad) {
-                            currentViewPage = 1;
-                            //起一个线程更新数据
-                            SwitchPicThread switchPicThread = new SwitchPicThread();
-                            new Thread(switchPicThread).start();
-                        }
-                    }
+
                 } else {
-                    if (currPage == 1) {
+                    if (page == 1) {
                         CommonHelper.noData("暂无人气贡献记录哦", listview, getActivity());
-                    } else {
-                        //ptrClassicFrameLayout.setLoadMoreEnable(false);
                     }
                 }
                 ptrClassicFrameLayout.loadComplete(true);
@@ -330,29 +294,6 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         }, Live.class);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        return false;
-    }
-
-
-    @Override
-    protected void onNoDoubleClick(View view) {
-
-    }
-
-
-    /**
-     * Open Search
-     */
-    private void startSearch() {
-        ForwardUtils.target(getActivity(), Constant.SEARCH, null);
-    }
 
     private void getBanner() {
         Map<String, String> paramsMap = new HashMap<String, String>();
@@ -380,20 +321,21 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
 
 
     private class LiveListBroadcast extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getStringExtra("type") != null) {
                 if (intent.getStringExtra("type").toString().equals("0")) {
                     ptrClassicFrameLayout.setVisibility(View.GONE);
-                    llone_viewpager.setVisibility(View.VISIBLE);
-//                    activity.hideTitle(false);
-                    rotRl.setVisibility(View.GONE);
+                    mRootView.findViewById(R.id.rotRl).setVisibility(View.GONE);
+                    if(!hasLoadBig) {
+                        loadBigViewData();
+                    }
+
                 } else if (intent.getStringExtra("type").toString().equals("1")) {
-                    llone_viewpager.setVisibility(View.GONE);
+                    mRootView.findViewById(R.id.rotRl).setVisibility(View.VISIBLE);
                     ptrClassicFrameLayout.setVisibility(View.VISIBLE);
-//                    activity.hideTitle(false);
-                    rotRl.setVisibility(View.VISIBLE);
+
+
                 }
             }
 
@@ -403,65 +345,371 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
     /**
      * load  more data
      */
-    private void loadMore() {
+    private void loadBigViewData() {
         //put params
+        if (null == loadingDialog) {
+            loadingDialog = new CenterLoadingView(getActivity());
+        }
+        loadingDialog.setCancelable(true);
+        loadingDialog.setTitle("正在连接");
+        loadingDialog.show();
         Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("page", currentViewPage + "");
-        paramsMap.put("pageSize", PAGE_SIZE + "");
+        paramsMap.put("page", bigPage + "");
+        paramsMap.put("pageSize", pageSize + "");
         paramsMap.put("cNo", "TJ");
 
         RequestUtils.sendPostRequest(Api.LIVE_LIST, paramsMap, new ResponseCallBack<Live>() {
             @Override
             public void onSuccessList(List<Live> data) {
-
-                isLoad = true;
                 if (data != null && data.size() > 0) {
-
-                    Long totalCount = Long.parseLong(data.size() + "");
-                    if (0 == totalCount) {
-                        CommonHelper.showTip(getActivity(), "已经没有更多内容了");
-                    } else {
-                        if (currentViewPage == 1) {
-                            if (null == listPager) {
-
-                                listPager = new ListViewPagerAdapter(getActivity(), getContext(), data, 1);
-                                vpager.setAdapter(listPager);
-                                vpager.setOnPageChangeListener(listeners);
-                            } else {
-                                listPager.list.clear();
-                                listPager.lcontant.clear();
-                                listPager.mListViewPager.clear();
-                                listPager = new ListViewPagerAdapter(getActivity(), getContext(), data, 1);
-                                vpager.setAdapter(listPager);
-                                vpager.setOnPageChangeListener(listeners);
-                            }
-                        } else {
-                            if(vpager==null || listPager==null){
-                                listPager = new ListViewPagerAdapter(getActivity(), getContext(), data, 1);
-                                vpager.setAdapter(listPager);
-                                vpager.setOnPageChangeListener(listeners);
-                            }
-                            else {
-                                listPager.ListViewPagerAdapterLoadMore(getContext(), data, 1);
-                                listPager.notifyDataSetChanged();
-                            }
-                        }
-                        Live live = listPager.lcontant.get(0).get(0);
-                        initViewInfo(live);
-                        currentViewPage++;
-                        vpager.setMode(Mode.NONE);
-
+                    resetPageviewParams();
+                    if(null!=pageAdapter){
+                        liveList.clear();
+                        pageAdapter = null;
+                        mViewPager = null;
+                        llTop.removeAllViews();
                     }
-                } else {
+                    liveList = data;
+
+                    android.os.Message msg = new android.os.Message();
+                    msg.what = BIG_UPDATE;
+                    msg.obj = msg;
+                    myHandle.sendMessage(msg);
+                }else{
+                    bigPage--;
+                    if (null != loadingDialog) {
+                        loadingDialog.dismiss();
+                    }
 
                 }
+
             }
 
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
+
             }
         }, Live.class);
+    }
+
+
+    private Handler myHandle = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message message) {
+            super.handleMessage(message);
+            switch (message.what) {
+                case BIG_UPDATE:
+                    hasLoadBig = true;
+                    initPagerViewData();
+                    break;
+
+            }
+        }
+    };
+
+    private void initPagerViewData() {
+
+        mViewPager = new ViewPager(getActivity());
+        llTop.addView(mViewPager);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mViewPager.getLayoutParams();
+        params.height = App.screenHeight;
+        params.width = App.screenWidth;
+        mViewPager.setLayoutParams(params);
+
+        final DepthPageTransformer mPageTransformer = new DepthPageTransformer();
+        mViewPager.setPageTransformer(true, mPageTransformer);
+
+        pageAdapter = new myAdapter();
+        mViewPager.setAdapter(pageAdapter);
+        mViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent ev) {
+                int flag = ev.getAction();
+                switch (flag) {
+                    case MotionEvent.ACTION_DOWN:
+                        oldIndex = mViewPager.getCurrentItem();
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+
+                        break;
+                }
+                return false;
+            }
+        });
+
+        mViewPager.addOnPageChangeListener(changeListener);
+        initPagerData();
+    }
+
+    private void initPagerData() {
+
+
+        String bg3ImagePath = "";
+        if(null!=liveList && liveList.size()>0){
+            bg3ImagePath = liveList.get(0).getBlur();
+            bottomInfo(liveList.get(0));
+        }
+        bg2.setAlpha(0.0f);
+        bg3.setAlpha(0.5f);
+        ImageUtils.display(bg3, bg3ImagePath);
+        if(null!=liveList && liveList.size()>0){
+            for (int i=0;i<liveList.size();i++){
+                Live live = liveList.get(i);
+                LinearLayout view = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.view_pager_content_view, null, false);
+                LinearLayout lLayout = (LinearLayout) view.findViewById(R.id.llRoot);
+                ImageView imageView = new ImageView(getActivity());
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                String img = live.getImg1();
+                Log.i("myImagePath",img);
+                ImageUtils.display(imageView,img);
+                lLayout.addView(imageView);
+                LinearLayout.LayoutParams imageParams = (LinearLayout.LayoutParams)imageView.getLayoutParams();
+                imageParams.height = (int) (App.screenHeight*0.68);
+                imageParams.width = App.screenWidth;
+                imageView.setLayoutParams(imageParams);
+
+                pagerViews.add(view);
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+
+
+
+        if (null != loadingDialog) {
+            loadingDialog.dismiss();
+        }
+
+    }
+
+    /**
+     * 设置底部的信息
+     * @param live
+     */
+    private void bottomInfo(Live live) {
+        Log.i("liveInfo",live.getNickName());
+    }
+
+    List<Integer> offsetList = new ArrayList<Integer>();
+    List<Integer> oldIndexList = new ArrayList<Integer>();
+    ViewPager.OnPageChangeListener changeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            Log.i("offset", positionOffsetPixels + "***" + position);
+
+            offsetList.add(positionOffsetPixels);
+            oldIndexList.add(position);
+            if (offsetList.size() > 2) {
+                int num1 = offsetList.get(0);
+                int num2 = offsetList.get(1);
+
+                if (isChange) {
+                    if (knowBg2) {
+                        if (num1 > num2) {
+                            twoToLeftAlpha(positionOffset / 2);
+                        } else if (num1 < num2) {
+                            twoToRightAlpha(positionOffset / 2);
+                        }
+                    }
+                } else {
+                    if (knowBg2) {
+
+                        if (num1 > num2) {
+
+                            oneToLeftAlpha(positionOffset / 2);
+                        } else if (num1 < num2) {
+
+                            oneToRightAlpha(positionOffset / 2);
+                        }
+                    }
+                }
+
+            }
+
+
+            if (offsetList.size() > 3) {
+                if (!knowBg2) {
+                    knowBg2 = true;
+                    if (offsetList.get(offsetList.size() - 2) > offsetList.get(offsetList.size() - 3)) {
+                        //向右
+                        if(oldIndex<liveList.size()-1){
+                            newImage = liveList.get(oldIndex+1).getBlur();
+                        }else{
+                            newImage = liveList.get(liveList.size()-1).getBlur();
+                        }
+
+                    } else if (offsetList.get(offsetList.size() - 2) < offsetList.get(offsetList.size() - 3)) {
+                        //向左
+                        if(oldIndex>0){
+                            newImage = liveList.get(oldIndex-1).getBlur();
+                        }else{
+                            newImage = liveList.get(0).getBlur();
+                        }
+                    }
+                    if (isChange) {
+                        ImageUtils.display(bg3, newImage);
+                    } else {
+
+                        ImageUtils.display(bg2, newImage);
+                    }
+
+                }
+
+                lastValue = offsetList.get(offsetList.size() - 2);
+            } else {
+                lastValue = -1;
+            }
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            currIndex = position;
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+            if (state == 0) {
+                knowBg2 = false;
+                if (offsetList.size() > 3) {
+                    if (offsetList.get(offsetList.size() - 2) > offsetList.get(offsetList.size() - 3)) {
+                        right = true;
+                        left = false;
+                    } else if (offsetList.get(offsetList.size() - 2) < offsetList.get(offsetList.size() - 3)) {
+                        right = false;
+                        left = true;
+                    } else if (currIndex == pageAdapter.getCount() - 1 && offsetList.get(offsetList.size() - 2) == 0) {
+                        left = false;
+                        right = true;
+                    } else if (currIndex == 0 && offsetList.get(offsetList.size() - 2) == 0) {
+                        left = true;
+                        right = false;
+                    }
+                    lastValue = offsetList.get(offsetList.size() - 2);
+                } else {
+                    lastValue = -1;
+                }
+                if (lastValue == 0 && currIndex == pageAdapter.getCount() - 1 && right) {
+                    toLoadNext();
+                } else if (lastValue == 0 && currIndex == 0 && left) {
+                    toRefresh();
+                }
+                offsetList.clear();
+
+                if (oldIndex != currIndex) {
+                    isChange = !isChange;
+                    bottomInfo(liveList.get(currIndex));
+                } else {
+                    if (isChange) {
+                        bg2.setAlpha(0.5f);
+                        bg3.setAlpha(0.0f);
+                    } else {
+                        bg2.setAlpha(0.0f);
+                        bg3.setAlpha(0.5f);
+                    }
+                }
+
+            }
+        }
+    };
+
+    private void toRefresh() {
+        bigPage=1;
+        loadBigViewData();
+    }
+
+    private void toLoadNext() {
+        bigPage ++;
+        loadBigViewData();
+    }
+
+    private void resetPageviewParams(){
+        pagerViews.clear();
+        left = false;
+        right = false;
+        knowBg2 = false;
+        isChange = false;
+        oldIndex = 0;
+        lastValue = -1;
+        currIndex = 0;
+    }
+
+
+    private void oneToRightAlpha(float positionOffset) {
+        if (positionOffset != 0.0) {
+            float ff = formartAlpha(positionOffset);
+            bg2.setAlpha(ff);
+            bg3.setAlpha(0.5f - ff);
+        }
+    }
+
+    private void twoToRightAlpha(float positionOffset) {
+        if (positionOffset != 0.0) {
+            float ff = formartAlpha(positionOffset);
+            Log.i("bg2 alpha 减至 ", (0.5f - ff) + "***");
+            bg2.setAlpha(0.5f - ff);
+            bg3.setAlpha(ff);
+        }
+    }
+
+    private void oneToLeftAlpha(float positionOffset) {
+        if (positionOffset != 0.0) {
+            float ff = formartAlpha(positionOffset);
+            bg2.setAlpha(0.5f - ff);
+            bg3.setAlpha(ff);
+        }
+
+    }
+
+
+    private void twoToLeftAlpha(float positionOffset) {
+        if (positionOffset != 0.0) {
+            float ff = formartAlpha(positionOffset);
+            bg2.setAlpha(ff);
+            bg3.setAlpha(0.5f - ff);
+        }
+
+    }
+
+    private float formartAlpha(float positionOffset) {
+        DecimalFormat decimalFormat = new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+        String p = decimalFormat.format(positionOffset);//format 返回的是字符串
+        return Float.parseFloat(p);
+    }
+
+
+    public class myAdapter extends PagerAdapter {
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            container.addView(pagerViews.get(position));
+            return pagerViews.get(position);
+        }
+
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object obj) {
+
+            ((ViewPager) container).removeView((LinearLayout) obj);
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public int getCount() {
+            return liveList.size();
+        }
     }
 
 
@@ -472,38 +720,7 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
             @Override
             public void onSuccess(HistoryMsg data) {
                 super.onSuccess(data);
-                resetTextView();
-                if (null != data.getLastMsg() && data.getLastMsg().size() > 0) {
-                    int i = 0;
-                    for (ChatMessage message : data.getLastMsg()) {
 
-                        MsgExt ext = message.getExt();
-                        if (null != ext) {
-                            if (i == 0) {
-                                tvContent1.setText(message.getContent().toString());
-                                tvbName1.setText(ext.getNickName() + ": ");
-                            } else if (i == 1) {
-                                tvContent2.setText(message.getContent().toString());
-                                String name = ext.getNickName().toString() + ": ";
-                                tvbName2.setText(name);
-                            } else if (i == 2) {
-                                tvContent3.setText(message.getContent().toString());
-                                tvbName3.setText(ext.getNickName() + ": ");
-                            } else if (i == 3) {
-                                tvContent4.setText(message.getContent().toString());
-                                tvbName4.setText(ext.getNickName() + ": ");
-                            } else if (i == 4) {
-                                tvContent5.setText(message.getContent().toString());
-                                tvbName5.setText(ext.getNickName() + ": ");
-                            }
-                            i++;
-                        }
-                        if (i == 5) break;
-                    }
-
-                } else {
-                    resetTextView();
-                }
             }
 
             @Override
@@ -513,86 +730,5 @@ public class FragmentTabOne extends RootFragment implements AdapterView.OnItemCl
         }, HistoryMsg.class);
     }
 
-    private void resetTextView() {
-        tvbName1.setText("");
-        tvContent1.setText("");
-        tvbName2.setText("");
-        tvContent2.setText("");
-        tvbName3.setText("");
-        tvContent3.setText("");
-        tvbName4.setText("");
-        tvContent4.setText("");
-        tvbName5.setText("");
-        tvContent5.setText("");
-    }
-
-    class SwitchPicThread implements Runnable {
-        public void run() {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            String msglist = "1";
-            Message msg = new Message();
-            Bundle b = new Bundle();
-            b.putString("rmsg", msglist);
-            msg.setData(b);
-            FragmentTabOne.this.switchPicHandler.sendMessage(msg);
-        }
-    }
-
-
-    class SwitchPicHandler extends Handler {
-        public SwitchPicHandler(Context conn, int a) {
-        }
-
-        public SwitchPicHandler(Looper L) {
-            super(L);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            Bundle b = msg.getData();
-            String rmsg = b.getString("rmsg");
-            if ("1".equals(rmsg)) {
-                // do nothing
-                loadMore();
-            }
-        }
-    }
-
-    private void generatePageControl(int count, int currentIndex) {
-        if ((count - 1) == currentIndex) {
-            if (isLoad) {
-                isLoad = false;
-                SwitchPicThread m = new SwitchPicThread();
-                new Thread(m).start();
-            }
-        }
-    }
-
-    private void initViewInfo(Live live) {
-        //CommonHelper.viewSetBackageImag(live.getPhoto(),llInfo);
-        tvInfo.setText(live.getNickName());
-        tvLoveCount.setText(live.getLoveCount());
-        String hei = live.getHeight() == null ? "165 cm  " : live.getHeight() + "cm  ";
-        String wei = live.getWeight() == null ? "4 5 kg  " : live.getWeight() + "kg  ";
-        String bwh = live.getBwh() == null ? "    " : "三围:  " + live.getBwh();
-        tvWeight.setText(hei + wei + bwh);
-        tvAddress.setText(live.getCity() == null ? "" : live.getCity());
-        loadMsg(live.getLid());
-    }
-
-    public AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
-
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            ForwardUtils.target(getActivity(), Constant.START_LIVE, null);
-        }
-
-    };
-
-
 }
+
