@@ -1,5 +1,6 @@
 package com.huixiangtv.live.activity;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
@@ -7,11 +8,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -53,6 +57,7 @@ import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.LiveView;
 import com.huixiangtv.live.ui.StartLiveView;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
@@ -97,6 +102,10 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
     CenterLoadingView loadingDialog;
 
+
+    private static final int REQUEST_CODE_ASK_CAMERA = -200;
+    private static final int REQUEST_CODE_ASK_RECORD = -201;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,12 +118,47 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
         }
-        addRecordView();
+
+
+        if (Build.VERSION.SDK_INT >= 23) {
+
+
+
+            int checkCallPhonePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+            Log.i("version","checkCallPhonePermission:"+checkCallPhonePermission);
+            Log.i("version","PackageManager.PERMISSION_GRANTED:"+ PackageManager.PERMISSION_GRANTED);
+            if(checkCallPhonePermission != PackageManager.PERMISSION_GRANTED){
+                Log.i("version","gogogo123");
+                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},REQUEST_CODE_ASK_CAMERA);
+                Log.i("version","gogogo456");
+                return;
+            }else{
+                addRecordView();
+            }
+        } else {
+            addRecordView();
+        }
 
     }
 
 
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.i("version","gogogo123"+requestCode);
+        if (requestCode == REQUEST_CODE_ASK_CAMERA)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                addRecordView();
+            } else{
+                CommonHelper.showTip(LiveRecordActivity.this,"未允许方位相机");
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+    }
 
     @TargetApi(19)
     private void setTranslucentStatus(boolean on) {

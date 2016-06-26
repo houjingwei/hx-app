@@ -47,6 +47,8 @@ import java.util.Map;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
+    private static final int REQUEST_CODE_ASK_CAMERA = -200;
+    private static final int REQUEST_CODE_ASK_RECORD = -201;
     private final String TAG = "MainActivity";
 
     @ViewInject(R.id.tab1)
@@ -256,8 +258,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private static boolean isSwitch = false;
 
+
+    private static boolean isSwitch = false;
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void onDBClick() {
 
