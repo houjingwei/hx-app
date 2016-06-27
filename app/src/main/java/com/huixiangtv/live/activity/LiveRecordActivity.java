@@ -117,6 +117,11 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
         addRecordView();
 
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                initStartView();
+            }
+        }, 1000);
 
     }
 
@@ -238,7 +243,6 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         public void onSessionAttach(CameraClient client) {
             //成功开启预览
             _Client.autoFocus(0.5f, 0.5f, _SurfaceControl);
-            initStartView();
         }
 
         @Override
@@ -445,6 +449,25 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
     };
 
 
+    private final int CHANGE_CAMERA = 100;
+    private final int CHANGE_MEIYAN = 101;
+    private Handler liveViewHandle = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message message) {
+            super.handleMessage(message);
+            switch (message.what) {
+                case CHANGE_CAMERA:
+                    changeCamera();
+                    break;
+                case CHANGE_MEIYAN:
+                    changeBeau();
+                    break;
+
+            }
+        }
+    };
+
+
 
 
 
@@ -521,6 +544,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
                 if (null != startLiveView) {
                     startRecord = 2;
                     flCover.removeView(startLiveView);
+                    startLiveView = null;
                 }
                 showLive(params);
             }
@@ -574,6 +598,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         liveView = new LiveView(LiveRecordActivity.this);
         liveView.setInfo(data);
         flCover.addView(liveView);
+        liveView.setHandle(liveViewHandle);
         liveView.loadLive();
         liveView.shareWin();
 //        ShareModel model = new ShareModel();
@@ -687,9 +712,6 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
      * 切换相机
      */
     public void changeCamera() {
-        if(null!=startLiveView){
-            startLiveView.getLlRoot().setBackgroundColor(getResources().getColor(R.color.trans));
-        }
         if (_Client != null && _Client.hasSession()) {
             if (mIsRecording) {
                 mVideoStream.stopMediaCodec();

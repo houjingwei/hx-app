@@ -84,6 +84,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     Context ct;
     Activity activity;
+    Handler handler;
 
 
     FrameLayout flLive;
@@ -873,6 +874,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     /**
      * 相机面板
      */
+    private final int CHANGE_CAMERA = 100;
+    private final int CHANGE_MEIYAN = 101;
     private void showCameraWin() {
         CommonHelper.showCameraPopWindow(activity, R.id.liveMain, new CameraWindow.SelectListener() {
             @Override
@@ -881,11 +884,17 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 if(activity instanceof LiveRecordActivity){
                     //1:切换像头 2：切图 3：美颜
                     if(flag==1){
-                       ((LiveRecordActivity)activity).changeCamera();
+                        android.os.Message msg = new android.os.Message();
+                        msg.what = CHANGE_CAMERA;
+                        msg.obj = msg;
+                        handler.sendMessage(msg);
                     }else if(flag==2){
                         ((LiveRecordActivity)activity).cutScreen();
                     }else if(flag==3){
-                        ((LiveRecordActivity)activity).changeBeau();
+                        android.os.Message msg = new android.os.Message();
+                        msg.what = CHANGE_MEIYAN;
+                        msg.obj = msg;
+                        handler.sendMessage(msg);
                     }
                 }
             }
@@ -1151,6 +1160,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     //礼物接收
     private final int GIFT_ANIM = 13;
     private final int GIFT_FINISH =14;
+
+    public void setHandle(Handler handle) {
+        this.handler = handle;
+    }
 
     private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
         @Override
