@@ -1,6 +1,5 @@
 package com.huixiangtv.live.activity;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
@@ -8,14 +7,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -57,7 +53,6 @@ import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.LiveView;
 import com.huixiangtv.live.ui.StartLiveView;
-import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
@@ -122,6 +117,12 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
         addRecordView();
 
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                initStartView();
+            }
+        }, 1000);
+
     }
 
 
@@ -148,6 +149,12 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         startLiveView = new StartLiveView(this);
         startLiveView.setActivity(this);
         flCover.addView(startLiveView);
+        startLiveView.findViewById(R.id.ivCamera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeCamera();
+            }
+        });
         tvTheme = startLiveView.getTvTheme();
         tvStart = startLiveView.getTvStart();
         tvTheme.setOnClickListener(this);
@@ -236,7 +243,6 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         public void onSessionAttach(CameraClient client) {
             //成功开启预览
             _Client.autoFocus(0.5f, 0.5f, _SurfaceControl);
-            initStartView();
         }
 
         @Override
@@ -443,6 +449,25 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
     };
 
 
+    private final int CHANGE_CAMERA = 100;
+    private final int CHANGE_MEIYAN = 101;
+    private Handler liveViewHandle = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message message) {
+            super.handleMessage(message);
+            switch (message.what) {
+                case CHANGE_CAMERA:
+                    changeCamera();
+                    break;
+                case CHANGE_MEIYAN:
+                    changeBeau();
+                    break;
+
+            }
+        }
+    };
+
+
 
 
 
@@ -519,6 +544,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
                 if (null != startLiveView) {
                     startRecord = 2;
                     flCover.removeView(startLiveView);
+                    startLiveView = null;
                 }
                 showLive(params);
             }
@@ -572,6 +598,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         liveView = new LiveView(LiveRecordActivity.this);
         liveView.setInfo(data);
         flCover.addView(liveView);
+        liveView.setHandle(liveViewHandle);
         liveView.loadLive();
         liveView.shareWin();
 //        ShareModel model = new ShareModel();
@@ -685,16 +712,16 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
      * 切换相机
      */
     public void changeCamera() {
-//        if (_Client != null && _Client.hasSession()) {
-//            if (mIsRecording) {
-//                mVideoStream.stopMediaCodec();
-//            }
-//            _Client.nextCamera();
-//            if (mIsRecording) {
-//                mVideoStream.setMirrored(_Client.isFrontCamera());
-//                mVideoStream.startMediaCodec();
-//            }
-//        }
+        if (_Client != null && _Client.hasSession()) {
+            if (mIsRecording) {
+                mVideoStream.stopMediaCodec();
+            }
+            _Client.nextCamera();
+            if (mIsRecording) {
+                mVideoStream.setMirrored(_Client.isFrontCamera());
+                mVideoStream.startMediaCodec();
+            }
+        }
     }
 
     /**
@@ -732,9 +759,9 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         Map<String, String> params = new HashMap<String, String>();
         params.put("lid", live.getLid());
         params.put("online", closeInfo[2]);
-        params.put("hots", closeInfo[0]);
+        params.put("hots", ""+(Integer.parseInt(closeInfo[0])+addHotByMe));
         params.put("liveTime", closeInfo[3]);
-        params.put("loves", closeInfo[1]);
+        params.put("loves", ""+(Integer.parseInt(closeInfo[1])+addLoveByMe));
 
         params.put("type", "0");
         params.put("chatroom", live.getChatroom());
@@ -744,8 +771,8 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
         final LiveMsg msg = new LiveMsg();
         msg.setOnline(closeInfo[2]);
-        msg.setAddhot(closeInfo[0]);
-        msg.setLove(closeInfo[1]);
+        msg.setAddhot(""+(Integer.parseInt(closeInfo[0])+addHotByMe));
+        msg.setLove(""+(Integer.parseInt(closeInfo[1])+addLoveByMe));
         msg.setLiveTime(closeInfo[3]);
         msg.setPhoto(null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
         msg.setNickName(null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
@@ -923,5 +950,12 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
     }
 
 
-
+    private int addHotByMe = 0;
+    public void updateHotsByMeSend(String hots) {
+        addHotByMe= addHotByMe+Integer.parseInt(hots);
+    }
+    private int addLoveByMe = 0;
+    public void updateLovesByMeSend(String loves) {
+        addLoveByMe = addLoveByMe+Integer.parseInt(loves);
+    }
 }

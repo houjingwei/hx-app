@@ -11,7 +11,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.activity.LiveRecordActivity;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.LocationTool;
@@ -118,6 +117,10 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
 
     }
 
+    public LinearLayout getLlRoot(){
+        return llRoot;
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -128,12 +131,6 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
             case R.id.ivClose:
                 hideKeyBoard();
                 activity.onBackPressed();
-                break;
-            case R.id.ivCamera:
-
-                if(activity instanceof LiveRecordActivity){
-                    ((LiveRecordActivity)activity).changeCamera();
-                }
                 break;
             case R.id.rbPhone:
                 hideKeyBoard();

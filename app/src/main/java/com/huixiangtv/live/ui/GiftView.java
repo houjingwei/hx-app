@@ -7,7 +7,6 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.LiveRecordActivity;
 import com.huixiangtv.live.adapter.GiftAdapter;
 import com.huixiangtv.live.message.MessageBase;
 import com.huixiangtv.live.model.Gift;
@@ -233,8 +232,9 @@ public class GiftView extends RelativeLayout {
                 int addhot = Integer.parseInt(data.getHots());
                 String loves = old+addhot+"";
                 tvHot.setText(loves);
-
-
+                if(activity instanceof LiveRecordActivity){
+                    ((LiveRecordActivity)activity).updateHotsByMeSend(data.getHots());
+                }
             }
 
             @Override
