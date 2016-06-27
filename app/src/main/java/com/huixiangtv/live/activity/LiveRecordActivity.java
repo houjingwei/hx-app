@@ -103,8 +103,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
     CenterLoadingView loadingDialog;
 
 
-    private static final int REQUEST_CODE_ASK_CAMERA = -200;
-    private static final int REQUEST_CODE_ASK_RECORD = -201;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,45 +119,15 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         }
 
 
-        if (Build.VERSION.SDK_INT >= 23) {
 
-
-
-            int checkCallPhonePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-            Log.i("version","checkCallPhonePermission:"+checkCallPhonePermission);
-            Log.i("version","PackageManager.PERMISSION_GRANTED:"+ PackageManager.PERMISSION_GRANTED);
-            if(checkCallPhonePermission != PackageManager.PERMISSION_GRANTED){
-                Log.i("version","gogogo123");
-                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},REQUEST_CODE_ASK_CAMERA);
-                Log.i("version","gogogo456");
-                return;
-            }else{
-                addRecordView();
-            }
-        } else {
-            addRecordView();
-        }
+        addRecordView();
 
     }
 
 
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        Log.i("version","gogogo123"+requestCode);
-        if (requestCode == REQUEST_CODE_ASK_CAMERA)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                addRecordView();
-            } else{
-                CommonHelper.showTip(LiveRecordActivity.this,"未允许方位相机");
-            }
-            return;
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-    }
 
     @TargetApi(19)
     private void setTranslucentStatus(boolean on) {

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <com.huixiangtv.live.utils.widget.BannerView
         android:id="@+id/banner"
         android:focusable="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/sysBg"
-        android:paddingBottom="5dp" />
+        android:layout_height="wrap_content"/>
 </LinearLayout>

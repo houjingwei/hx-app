@@ -1,13 +1,17 @@
 package com.huixiangtv.live.activity;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -47,8 +51,8 @@ import java.util.Map;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    private static final int REQUEST_CODE_ASK_CAMERA = -200;
-    private static final int REQUEST_CODE_ASK_RECORD = -201;
+    private static final int REQUEST_CODE_ASK_CAMERA = 100;
+    private static final int REQUEST_CODE_ASK_RECORD = 101;
     private final String TAG = "MainActivity";
 
     @ViewInject(R.id.tab1)
@@ -230,7 +234,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.iv2:
                 if(null!=App.getLoginUser()){
-                    startLive();
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        int checkCallCameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+                        int checkCallAudioPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+                        if(checkCallCameraPermission != PackageManager.PERMISSION_GRANTED || checkCallAudioPermission!= PackageManager.PERMISSION_GRANTED){
+                            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO},REQUEST_CODE_ASK_CAMERA);
+                            return;
+                        }else{
+                            startLive();
+                        }
+                    } else {
+                        startLive();
+                    }
                 }else{
                     CommonHelper.showLoginPopWindow(MainActivity.this, R.id.main, new LoginCallBack() {
                         @Override
@@ -259,6 +274,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.i("version","gogogo123"+requestCode);
+        if (requestCode == REQUEST_CODE_ASK_CAMERA)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                startLive();
+            } else{
+                CommonHelper.showTip(MainActivity.this,"未允许方位相机");
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+    }
 
     private static boolean isSwitch = false;
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

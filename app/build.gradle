@@ -114,6 +114,8 @@ dependencies {
     compile project(':libraryrefresh')
     compile project(':sharelib')
 
+    compile 'com.github.k0shk0sh:PermissionHelper:1.0.9'
+
 
 }
 
