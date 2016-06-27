@@ -112,6 +112,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         iv2.setOnClickListener(this);
         initFragment();
 
+
+
     }
 
     private void initFragment() {

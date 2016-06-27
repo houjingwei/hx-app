@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/liveMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/live_bg">
+
+    <FrameLayout
+        android:id="@+id/flPlayView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/flCover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvXt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/mainColor"
+            android:gravity="center"
+            android:text="切换摄像头"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/tvMy"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/orange"
+            android:gravity="center"
+            android:text="切换美颜"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</FrameLayout>

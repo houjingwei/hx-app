@@ -1,6 +1,5 @@
 package com.huixiangtv.live.activity;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
@@ -8,14 +7,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -57,7 +53,6 @@ import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.LiveView;
 import com.huixiangtv.live.ui.StartLiveView;
-import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
@@ -122,6 +117,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
         addRecordView();
 
+
     }
 
 
@@ -148,6 +144,12 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         startLiveView = new StartLiveView(this);
         startLiveView.setActivity(this);
         flCover.addView(startLiveView);
+        startLiveView.findViewById(R.id.ivCamera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeCamera();
+            }
+        });
         tvTheme = startLiveView.getTvTheme();
         tvStart = startLiveView.getTvStart();
         tvTheme.setOnClickListener(this);
@@ -685,16 +687,19 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
      * 切换相机
      */
     public void changeCamera() {
-//        if (_Client != null && _Client.hasSession()) {
-//            if (mIsRecording) {
-//                mVideoStream.stopMediaCodec();
-//            }
-//            _Client.nextCamera();
-//            if (mIsRecording) {
-//                mVideoStream.setMirrored(_Client.isFrontCamera());
-//                mVideoStream.startMediaCodec();
-//            }
-//        }
+        if(null!=startLiveView){
+            startLiveView.getLlRoot().setBackgroundColor(getResources().getColor(R.color.trans));
+        }
+        if (_Client != null && _Client.hasSession()) {
+            if (mIsRecording) {
+                mVideoStream.stopMediaCodec();
+            }
+            _Client.nextCamera();
+            if (mIsRecording) {
+                mVideoStream.setMirrored(_Client.isFrontCamera());
+                mVideoStream.startMediaCodec();
+            }
+        }
     }
 
     /**
