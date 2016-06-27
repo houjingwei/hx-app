@@ -44,6 +44,7 @@ import com.huixiangtv.live.model.LiveMsg;
 import com.huixiangtv.live.model.LoveGift;
 import com.huixiangtv.live.model.MsgExt;
 import com.huixiangtv.live.model.Other;
+import com.huixiangtv.live.model.Share;
 import com.huixiangtv.live.model.ShoutGift;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.CameraWindow;
@@ -486,6 +487,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         loadOnlineUser();
     }
 
+    Map<String,User> userMap = new HashMap<>();
     private void loadOnlineUser() {
         Map<String, String> params = new HashMap<String, String>();
         params.put("chatroom", live.getChatroom());
@@ -495,10 +497,9 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 super.onSuccessList(data);
                 if (null != data && data.size()>0) {
                     List<User> list = removalUser(data);
-
+                    rootUserMap(list);
                     mAdapter.addData(list);
                     mRecyclerView.setAdapter(mAdapter);
-
                     onLineNum = data.size();
                 }
 
@@ -515,6 +516,12 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 super.onFailure(e);
             }
         }, User.class);
+    }
+
+    private void rootUserMap(List<User> list) {
+        for (User user : list) {
+            userMap.put(user.getUid(),user);
+        }
     }
 
     /**
@@ -741,9 +748,12 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 super.onSuccess(gift);
                 if(StringUtil.isNotEmpty(gift.getLoves())){
                     int old = Integer.parseInt(tvLove.getText().toString());
-                    int count = Integer.parseInt(gift.getLoves());
-                    String loves = old+count+"";
+
+                    String loves = ""+(old+1);
                     tvLove.setText(loves);
+                    if(activity instanceof LiveRecordActivity){
+                        ((LiveRecordActivity)activity).updateLovesByMeSend("1");
+                    }
                 }
             }
 
@@ -910,18 +920,26 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             @Override
             public void select(SHARE_MEDIA platForm) {
                 super.select(platForm);
-                ShareModel model = new ShareModel();
-                UMImage image = new UMImage(activity, live.getPhoto());
-                model.setTitle(live.getNickName()+live.getTitle());
-                model.setTargetUrl(Api.SHARE_URL+live.getLid());
-                model.setImageMedia(image);
-                model.setContent(live.getNickName()+live.getTitle());
-                CommonHelper.share(activity,model,platForm,0,new ApiCallback(){
+                if(platForm.equals(SHARE_MEDIA.SMS)){
+                    platForm = SHARE_MEDIA.WEIXIN;
+                }
+                final SHARE_MEDIA pt = platForm;
+                CommonHelper.shareInfo(platForm,"0", live.getLid(), new ApiCallback<Share>() {
                     @Override
-                    public void onSuccess(Object data) {
+                    public void onSuccess(Share data) {
+
+                        android.os.Message msg = new android.os.Message();
+                        data.setPlatForm(pt);
+                        msg.what=SHARE;
+                        msg.obj = data;
+                        liveHandler.sendMessage(msg);
 
                     }
                 });
+
+
+
+
 
             }
 
@@ -1161,6 +1179,9 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     private final int GIFT_ANIM = 13;
     private final int GIFT_FINISH =14;
 
+
+    private final int SHARE = 18;
+
     public void setHandle(Handler handle) {
         this.handler = handle;
     }
@@ -1205,12 +1226,25 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 public void run() {
                     msgAdapter.add(msg);
                     msgListView.setSelection(msgAdapter.getCount()-1);
-                    User user = new User();
-                    user.setPhoto(msg.getPhoto());
-                    user.setNickName(msg.getNickName());
-                    mAdapter.addData(user);
-                    mRecyclerView.setAdapter(mAdapter);
-                    onLineNum++;
+                    if(null!=userMap && userMap.size()>0){
+                        User user = userMap.get(msg.getUid());
+                        if(null==userMap.get(msg.getUid())){
+                            user = new User();
+                            user.setPhoto(msg.getPhoto());
+                            user.setNickName(msg.getNickName());
+                            mAdapter.addData(user);
+                            mRecyclerView.setAdapter(mAdapter);
+                            onLineNum++;
+                        }
+                    }else{
+                        User user = new User();
+                        user.setPhoto(msg.getPhoto());
+                        user.setNickName(msg.getNickName());
+                        mAdapter.addData(user);
+                        mRecyclerView.setAdapter(mAdapter);
+                        onLineNum++;
+                    }
+
 
 
                 }
@@ -1371,6 +1405,31 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     }else{
                         firstGiftAnimRun=0;
                     }
+                    break;
+                case SHARE:
+                    Share data = (Share) message.obj;
+                    ShareModel model = new ShareModel();
+                    UMImage image;
+                    if(StringUtil.isNotEmpty(data.getCover())){
+                        image = new UMImage(activity, data.getCover());
+                    }else{
+                        image = new UMImage(activity, live.getPhoto());
+                    }
+                    model.setTitle(data.getTitle());
+                    model.setTargetUrl(data.getUrl());
+                    model.setImageMedia(image);
+                    if(StringUtil.isNotEmpty(data.getDec())){
+                        model.setContent(data.getDec());
+                    }else{
+                        model.setContent(" ");
+                    }
+
+                    CommonHelper.share(activity,model,data.getPlatForm(),0,new ApiCallback(){
+                        @Override
+                        public void onSuccess(Object data) {
+
+                        }
+                    });
                     break;
                 default:
                     break;

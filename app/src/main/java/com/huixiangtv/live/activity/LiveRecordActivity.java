@@ -759,9 +759,9 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         Map<String, String> params = new HashMap<String, String>();
         params.put("lid", live.getLid());
         params.put("online", closeInfo[2]);
-        params.put("hots", closeInfo[0]);
+        params.put("hots", ""+(Integer.parseInt(closeInfo[0])+addHotByMe));
         params.put("liveTime", closeInfo[3]);
-        params.put("loves", closeInfo[1]);
+        params.put("loves", ""+(Integer.parseInt(closeInfo[1])+addLoveByMe));
 
         params.put("type", "0");
         params.put("chatroom", live.getChatroom());
@@ -771,8 +771,8 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
         final LiveMsg msg = new LiveMsg();
         msg.setOnline(closeInfo[2]);
-        msg.setAddhot(closeInfo[0]);
-        msg.setLove(closeInfo[1]);
+        msg.setAddhot(""+(Integer.parseInt(closeInfo[0])+addHotByMe));
+        msg.setLove(""+(Integer.parseInt(closeInfo[1])+addLoveByMe));
         msg.setLiveTime(closeInfo[3]);
         msg.setPhoto(null!=App.getLoginUser()?App.getLoginUser().getPhoto():"");
         msg.setNickName(null!=App.getLoginUser()?App.getLoginUser().getNickName():"");
@@ -950,5 +950,12 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
     }
 
 
-
+    private int addHotByMe = 0;
+    public void updateHotsByMeSend(String hots) {
+        addHotByMe= addHotByMe+Integer.parseInt(hots);
+    }
+    private int addLoveByMe = 0;
+    public void updateLovesByMeSend(String loves) {
+        addLoveByMe = addLoveByMe+Integer.parseInt(loves);
+    }
 }

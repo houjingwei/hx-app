@@ -216,5 +216,8 @@
     <string name="empty_des">暂无数据</string>
     <string name="bann_details">内容详情</string>
     <string name="qianming">签名</string>
+    <string name="userCard">形象卡</string>
+    <string name="userAuth">认证</string>
+    <string name="feedBack">反馈</string>
 
 </resources>
