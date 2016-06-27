@@ -673,12 +673,17 @@ public class RegPicListActivity extends BaseBackActivity {
             mertoBeans = new ArrayList<DropImageModel>(startBeans);
             if (mertoBeans.size() <= 5) {
                 DropImageModel mertoBean = new DropImageModel(mertoBeans.get(tag));
-                mertoBean.setIconId(mertoItemViews.get(moveTag).getIcon());
+                //mertoBean.setIconId(mertoItemViews.get(tag).getIcon());
 
                 mertoBean.setIsFinish(55);
 
 
-                mertoBeans.get(moveTag).setIconId(mertoBean.getIconId());
+               // mertoBeans.get(moveTag).setIconId(mertoBean.getIconId());
+
+
+//                mertoBeans.get(moveTag).setIconId(mertoBean.getIconId());
+
+
                 mertoBeans.set(tag, mertoBeans.get(moveTag));
                 mertoBeans.set(moveTag, mertoBean);
 

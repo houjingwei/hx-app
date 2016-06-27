@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
@@ -28,9 +27,6 @@ import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -39,7 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
-import simbest.com.sharelib.ShareModel;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -53,6 +48,8 @@ public class LiveActivity extends BaseBackActivity{
     FrameLayout flCover;
     @ViewInject(R.id.flPlayView)
     FrameLayout flPlayView;
+    @ViewInject(R.id.liveMain)
+    FrameLayout liveMain;
 
 
 
@@ -74,10 +71,10 @@ public class LiveActivity extends BaseBackActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live);
         x.view().inject(this);
-//        if (MeizuSmartBarUtils.hasSmartBar()) {
-//            View decorView = getWindow().getDecorView();
-//            MeizuSmartBarUtils.hide(decorView);
-//        }
+        if (MeizuSmartBarUtils.hasSmartBar()) {
+            View decorView = getWindow().getDecorView();
+            MeizuSmartBarUtils.hide(decorView);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
         }

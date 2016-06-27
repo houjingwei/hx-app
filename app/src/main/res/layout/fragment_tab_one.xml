@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent"
+
     android:orientation="vertical">
 
 
@@ -11,10 +12,10 @@
         android:id="@+id/rotRl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
         android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
         android:gravity="center_horizontal"
-        android:background="@color/colorPrimary">
+        android:paddingTop="20dp">
 
         <TextView
             android:id="@+id/title"
@@ -51,135 +52,130 @@
     <!--大图模式-->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/llTop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/llTop">
+            android:orientation="vertical">
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivPlay"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/live" />
+
         <FrameLayout
             android:id="@+id/flBottom"
-            android:layout_gravity="bottom"
-            android:layout_below="@+id/llTop"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llTop"
+            android:layout_gravity="bottom">
+
             <LinearLayout
                 android:id="@+id/bg1"
-                android:orientation="vertical"
-                android:background="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                >
+                android:background="@color/black"
+                android:orientation="vertical">
 
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/iv2"
-                android:scaleType="fitXY"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
 
 
             <ImageView
                 android:id="@+id/iv3"
-                android:scaleType="fitXY"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/llLiveBottom">
-                <LinearLayout
-                    android:id="@+id/llLiveInfo"
+                android:scaleType="fitXY" />
+
+            <LinearLayout
+                android:id="@+id/llLiveBottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content">
 
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <RelativeLayout
-                        android:paddingTop="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-
-                            <TextView
-                                android:id="@+id/tvName"
-                                android:layout_width="100dp"
-                                android:layout_height="20dp"
-                                android:text="liyan"
-                                style="@style/white_bigger_style" />
-
-
-                            <TextView
-                                android:id="@+id/tvAddress"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="1dp"
-                                android:text="beijing"
-                                android:textColor="@color/white" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tvLove"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="5dp"
-                                android:src="@drawable/love_val"
-                                android:text="123"
-                                android:textColor="@color/white" />
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/love_val"/>
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/tvSw"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginTop="5dp"
-                        android:text="170 Cm   45Kg   三围：84 － 70 － 89"
-                        android:textColor="@color/white" />
+                        android:orientation="horizontal">
 
 
-                    <ScrollView
-                        android:id="@+id/myScrollView"
-                        android:layout_marginTop="20dp"
-                        android:layout_width="match_parent"
-                        android:minHeight="100dp"
-                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/tvName"
+                            style="@style/white_bigger_style"
+                            android:layout_width="100dp"
+                            android:layout_height="20dp"
+                            android:text="liyan" />
 
-                        <LinearLayout
-                            android:id="@+id/llMsg"
+
+                        <TextView
+                            android:id="@+id/tvAddress"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="1dp"
+                            android:text="beijing"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvLove"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/love_val"
+                            android:text="123"
+                            android:textColor="@color/white" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/love_val" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvSw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="10dp"
+                    android:text="170 Cm   45Kg   三围：84 － 70 － 89"
+                    android:textColor="@color/white" />
 
 
-                        </LinearLayout>
-                    </ScrollView>
+                <LinearLayout
+                    android:id="@+id/llMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:minHeight="100dp"
+                    android:orientation="vertical">
+
+
                 </LinearLayout>
             </LinearLayout>
 

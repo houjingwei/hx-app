@@ -54,6 +54,7 @@ import com.huixiangtv.live.utils.DepthPageTransformer;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.BannerView;
+import com.huixiangtv.live.utils.widget.WidgetUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -88,6 +89,7 @@ public class FragmentTabOne extends Fragment {
 
     private static final int BIG_UPDATE = -10;
     LinearLayout llTop;
+    ImageView ivPlay;
     FrameLayout flBottom;
     LinearLayout llLiveBottom;
     private ViewPager mViewPager;
@@ -159,6 +161,17 @@ public class FragmentTabOne extends Fragment {
 
         //大图
         llTop = (LinearLayout) mRootView.findViewById(R.id.llTop);
+        ivPlay = (ImageView) mRootView.findViewById(R.id.ivPlay);
+        playBtnLayout();
+        //点击播放按钮
+        ivPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toPlay();
+            }
+        });
+
+
         flBottom = (FrameLayout) mRootView.findViewById(R.id.flBottom);
         llLiveBottom = (LinearLayout) mRootView.findViewById(R.id.llLiveBottom);
         FrameLayout.LayoutParams llParams = (FrameLayout.LayoutParams) flBottom.getLayoutParams();
@@ -171,6 +184,26 @@ public class FragmentTabOne extends Fragment {
         bg2 = (ImageView) mRootView.findViewById(R.id.iv2);
         bg3 = (ImageView) mRootView.findViewById(R.id.iv3);
 
+    }
+
+    private void toPlay() {
+        if(null!=liveList && liveList.size()>0){
+            Live live = liveList.get(currIndex);
+            toPlayActivity(live);
+        }
+    }
+
+    /**
+     * 设置播放按钮的位置
+     */
+    private void playBtnLayout() {
+        int topHeigth = (int) (App.screenHeight*0.68);
+        int ivPlayX = (int) ((App.screenWidth- WidgetUtil.dip2px(getActivity(),50))*0.5);
+        int ivPlayY = (int)((topHeigth-WidgetUtil.dip2px(getActivity(),50))*0.5);
+        FrameLayout.LayoutParams marginParams=new FrameLayout.LayoutParams(ivPlay.getLayoutParams());
+        marginParams.leftMargin = ivPlayX;
+        marginParams.topMargin = ivPlayY;
+        ivPlay.setLayoutParams(marginParams);
     }
 
 
@@ -324,16 +357,15 @@ public class FragmentTabOne extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getStringExtra("type") != null) {
                 if (intent.getStringExtra("type").toString().equals("0")) {
-                    ptrClassicFrameLayout.setVisibility(View.GONE);
-                    mRootView.findViewById(R.id.rotRl).setVisibility(View.GONE);
-                    if (!hasLoadBig) {
-                        loadBigViewData();
-                    }
+                        ptrClassicFrameLayout.setVisibility(View.GONE);
+                        mRootView.findViewById(R.id.rotRl).setVisibility(View.GONE);
+                        if (!hasLoadBig) {
+                            loadBigViewData();
+                        }
 
-                } else if (intent.getStringExtra("type").toString().equals("1")) {
-                    mRootView.findViewById(R.id.rotRl).setVisibility(View.VISIBLE);
-                    ptrClassicFrameLayout.setVisibility(View.VISIBLE);
-
+                    } else if (intent.getStringExtra("type").toString().equals("1")) {
+                        mRootView.findViewById(R.id.rotRl).setVisibility(View.VISIBLE);
+                        ptrClassicFrameLayout.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -484,14 +516,13 @@ public class FragmentTabOne extends Fragment {
 
 
     List<Integer> offsetList = new ArrayList<Integer>();
-    List<Integer> oldIndexList = new ArrayList<Integer>();
     ViewPager.OnPageChangeListener changeListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             Log.i("offset", positionOffsetPixels + "***" + position);
 
             offsetList.add(positionOffsetPixels);
-            oldIndexList.add(position);
+
             if (offsetList.size() > 2) {
                 int num1 = offsetList.get(0);
                 int num2 = offsetList.get(1);
@@ -500,19 +531,20 @@ public class FragmentTabOne extends Fragment {
                     if (knowBg2) {
                         if (num1 > num2) {
                             twoToLeftAlpha(positionOffset / 2);
+                            ivPlayAlpha(positionOffset, 1);
                         } else if (num1 < num2) {
                             twoToRightAlpha(positionOffset / 2);
+                            ivPlayAlpha(positionOffset, 2);
                         }
                     }
                 } else {
                     if (knowBg2) {
-
                         if (num1 > num2) {
-
                             oneToLeftAlpha(positionOffset / 2);
+                            ivPlayAlpha(positionOffset, 1);
                         } else if (num1 < num2) {
-
                             oneToRightAlpha(positionOffset / 2);
+                            ivPlayAlpha(positionOffset, 2);
                         }
                     }
                 }
@@ -606,6 +638,32 @@ public class FragmentTabOne extends Fragment {
             }
         }
     };
+
+
+    /**
+     * 根据偏移量改变播放按钮的透明度
+     * @param offset
+     * @param offset
+     */
+    private void ivPlayAlpha(float offset, int flag) {
+        float def = offset*2;
+        if(flag==1){
+            //向左，降低
+            if(def<1){
+                ivPlay.setAlpha(1-def);
+            }else{
+                ivPlay.setAlpha(def-1);
+            }
+        }else if(flag==2){
+            //向右，升高
+            if(def>1){
+                ivPlay.setAlpha(def-1);
+            }else{
+                ivPlay.setAlpha(1-def);
+            }
+        }
+
+    }
 
     private void toRefresh() {
         bigPage = 1;
@@ -743,8 +801,8 @@ public class FragmentTabOne extends Fragment {
                         LinearLayout ll = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.live_bottom_info_msg_item, null, false);
                         TextView tvMsg = (TextView) ll.findViewById(R.id.tvMsg);
                         String s = ext.getNickName() + ": " + msg.getContent();
-                        if (s.length() > 30) {
-                            s = s.substring(0, 30) + "...";
+                        if (s.length() > 25) {
+                            s = s.substring(0, 25) + "...";
                         }
                         SpannableString ss = new SpannableString(s);
                         ss.setSpan(new ForegroundColorSpan(getActivity().getResources().getColor(R.color.yellow)), 0, ext.getNickName().length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -764,8 +822,6 @@ public class FragmentTabOne extends Fragment {
             }
         }, HistoryMsg.class);
     }
-
-
 
 }
 

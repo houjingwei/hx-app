@@ -23,7 +23,6 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.PreferencesHelper;
 import com.huixiangtv.live.utils.RongyunUtils;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -79,11 +78,9 @@ public class App extends MultiDexApplication {
         sContext = this;
         x.Ext.init(this);
         x.Ext.setDebug(false); // 是否输出debug日志, 开启debug会影响性能.
-        CrashReport.initCrashReport(this, "900034558", true);
         PlatformConfig.setSinaWeibo("1912474872", "5ba10f129f1e5cdf37abd2c41bb7fd06");
         PlatformConfig.setWeixin("wxd42ecbf70403ea6e", "74e3218222aab649f12a0f7511957413");
         PlatformConfig.setQQZone("1105349203", "zMoNzPEO7NBREbdy");
-//      PlatformConfig.setSinaWeibo("3833863944", "dfea615e3114cf87412da53b2d3df173"); //自己的
         loginHelper = new PreferencesHelper(sContext, Constant.LOGIN_INFO);
         mShareAPI = UMShareAPI.get(this);
         //窗口管理器
@@ -96,6 +93,7 @@ public class App extends MultiDexApplication {
         //加载免费礼物数据
         //loadFreeGiftList(null);
         model=android.os.Build.MODEL; // 手机型号
+
         deviceVersion=android.os.Build.VERSION.RELEASE; // android系统版本号
         if(null!=App.getLoginUser()){
             loadMyCoin();
@@ -299,6 +297,11 @@ public class App extends MultiDexApplication {
 
 
 
+    }
+
+
+    public static void saveIndexStyle(String indexStyle){
+        loginHelper.setValue("indexStyle", indexStyle);
     }
 
 

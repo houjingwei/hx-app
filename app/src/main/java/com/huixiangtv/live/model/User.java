@@ -42,6 +42,16 @@ public class User implements Serializable {
     private String phoneNum;
     private String status;
 
+    public String getIndexStyle() {
+        return indexStyle;
+    }
+
+    public void setIndexStyle(String indexStyle) {
+        this.indexStyle = indexStyle;
+    }
+
+    private String indexStyle;
+
 
 
 

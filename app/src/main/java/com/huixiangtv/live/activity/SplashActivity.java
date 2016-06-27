@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.model.Getglobalconfig;
 import com.huixiangtv.live.model.UpgradeLevel;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
@@ -36,7 +37,7 @@ public class SplashActivity extends Activity{
 
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this, WelcomActivity.class);
                 SplashActivity.this.startActivity(intent);
                 SplashActivity.this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 SplashActivity.this.finish();

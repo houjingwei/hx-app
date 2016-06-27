@@ -1,5 +1,6 @@
 package com.huixiangtv.live.activity;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
@@ -13,8 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -45,7 +46,6 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Beauty.BeautyRender;
 import com.huixiangtv.live.Constant;
-import com.huixiangtv.live.Manifest;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.LiveMsg;
@@ -57,6 +57,7 @@ import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.LiveView;
 import com.huixiangtv.live.ui.StartLiveView;
+import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.MeizuSmartBarUtils;
@@ -101,6 +102,9 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
     CenterLoadingView loadingDialog;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,9 +117,14 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
         }
+
+
+
         addRecordView();
 
     }
+
+
 
 
 
@@ -163,18 +172,6 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
     private void addRecordView() {
         recordView = LayoutInflater.from(LiveRecordActivity.this).inflate(R.layout.record_view, null, false);
         flPlayView.addView(recordView);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
-            // Permission is already available, start camera preview
-//            Snackbar.make(mLayout,
-//                    "Camera permission is available. Starting preview.",
-//                    Snackbar.LENGTH_SHORT).show();
-           // startCamera();
-        } else {
-            // Permission is missing and must be requested.
-            //requestCameraPermission();
-        }
 
 
         _CameraSurface = (SurfaceView) recordView.findViewById(R.id.camera_surface);
@@ -841,11 +838,11 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
                         }
                     });
             builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
             builder.create().show();
         }else if(showFinishWindow){
 
