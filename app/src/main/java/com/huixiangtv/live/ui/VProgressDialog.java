@@ -15,9 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.activity.SplashActivity;
+import com.huixiangtv.live.common.CommonUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,6 +28,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Stone on 16/5/23.
@@ -77,14 +81,14 @@ public class VProgressDialog extends Dialog {
 
                 if(status.equals("1")){
                      dimiss1();
-                    ((SplashActivity)activity).updateClose();
-                    ((SplashActivity)activity).gotoMainActivity();
+                    ((MainActivity)activity).updateClose();
+                    App.setUpdateInDate(context, App.sdf.format(new Date()));
 
                 }
                 else
                 {
+                    App.setUpdateInDate(context, App.sdf.format(new Date()));
                     dimiss1();
-                    ((SplashActivity)activity).gotoMainActivity();
                 }
             }
         });

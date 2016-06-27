@@ -2,15 +2,13 @@ package com.huixiangtv.live.activity;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -18,7 +16,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -30,6 +27,7 @@ import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.fragment.FragmentTabOne;
 import com.huixiangtv.live.fragment.FragmentTabThree;
 import com.huixiangtv.live.fragment.FragmentTabTwo;
+import com.huixiangtv.live.model.Getglobalconfig;
 import com.huixiangtv.live.model.UpgradeLevel;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.LoginCallBack;
@@ -40,7 +38,6 @@ import com.huixiangtv.live.ui.UpdateApp;
 import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
-import com.huixiangtv.live.utils.TokenChecker;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.xutils.view.annotation.ViewInject;
@@ -86,9 +83,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         x.view().inject(this);
         initWindow();
+        hideTitle();
         App.getContext().addActivity(this);
         initView();
         setGuidle();
+        CheckVersion();
+        getGlobalConfig();
     }
 
     private void initWindow() {
@@ -147,12 +147,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void addSelection(int index) {
         if (index == 0) {
-            hideTitle(false);
             iv1.setImageResource(R.mipmap.tab1_pressed);
             iv3.setImageResource(R.mipmap.tab3);
 
         } else if (index == 1) {
-            hideTitle(true);
+
             iv1.setImageResource(R.mipmap.tab1);
             iv3.setImageResource(R.mipmap.tab3_pressed);
         }
@@ -192,23 +191,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
 
-    public void hideTitle(boolean bool) {
+    public void hideTitle() {
         Window window = getWindow();
-        if(bool){
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                window.setStatusBarColor(getResources().getColor(R.color.mainColor));
-            }
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }else{
-
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
-            }
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(getResources().getColor(R.color.mainColor));
         }
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
     }
 
     @Override
@@ -379,7 +369,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     protected void setGuideNextLeft() {
-
         CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
 
             @Override
@@ -391,7 +380,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     protected void setGuideNextUp() {
-
         CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_hand_clear, "guide2", new ApiCallback() {
 
             @Override
@@ -399,6 +387,86 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             }
         });
+    }
+
+    /**
+     * 退出应用程序
+     */
+    public void updateClose(){
+        finish();
+        App.getContext().finishAllActivity();
+        android.os.Process.killProcess(android.os.Process.myPid());
+
+    }
+
+    /**
+     * 检查新版本
+     */
+    private void CheckVersion() {
+        try {
+            final String version = App.getVersionCode(MainActivity.this);
+            Map<String, String> paramsMap = new HashMap<String, String>();
+            paramsMap.put("osType", "1");
+            paramsMap.put("appVersion", version );
+
+            RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
+
+                public void onSuccess(UpgradeLevel data) {
+
+                    if (data != null) {
+
+                        UpgradeLevel upgradeLevel = data;
+
+                        UpdateApp updateApp = new UpdateApp(MainActivity.this);
+                        if (updateApp
+                                .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(ServiceException e) {
+                    super.onFailure(e);
+                    Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
+                }
+            }, UpgradeLevel.class);
+        } catch (Exception ex) {
+            Toast.makeText(MainActivity.this,"更新异常",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private static String indexStyle = "0";
+
+    private void getGlobalConfig() {
+
+        try {
+            final String version = App.getVersionCode(MainActivity.this);
+            Map<String, String> paramsMap = new HashMap<String, String>();
+            paramsMap.put("version", version);
+            RequestUtils.sendPostRequest(Api.GETGLOBALCONFIG, paramsMap, new ResponseCallBack<Getglobalconfig>() {
+
+                public void onSuccess(Getglobalconfig data) {
+
+                    if (data != null) {
+                        indexStyle = data.getIndexStyle();
+                        if(indexStyle.equals("1"))
+                        {
+                            isSwitch = true;
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(ServiceException e) {
+                    super.onFailure(e);
+                    Toast.makeText(MainActivity.this, "当有网络不可用，加载信息失败", Toast.LENGTH_LONG).show();
+                }
+            }, Getglobalconfig.class);
+        } catch (Exception ex) {
+            Toast.makeText(MainActivity.this, "加载异常", Toast.LENGTH_LONG).show();
+        }
     }
 
 }

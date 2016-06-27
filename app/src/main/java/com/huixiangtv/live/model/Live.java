@@ -27,6 +27,7 @@ public class Live {
     private String chatroom;
     private String time;
     private String city;
+    private String blur;
 
     public String getImg1() {
         return img1;
@@ -215,5 +216,13 @@ public class Live {
 
     public void setLiveStatus(String liveStatus) {
         this.liveStatus = liveStatus;
+    }
+
+    public String getBlur() {
+        return blur;
+    }
+
+    public void setBlur(String blur) {
+        this.blur = blur;
     }
 }

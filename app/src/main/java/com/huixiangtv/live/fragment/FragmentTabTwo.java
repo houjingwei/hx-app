@@ -26,8 +26,6 @@ public class FragmentTabTwo extends RootFragment {
 		mRootView = inflater.inflate(R.layout.fragment_tab_two, container, false);
 
 		activity = (MainActivity)getActivity();
-
-		activity.hideTitle(false);
 		tvLoad = (TextView) mRootView.findViewById(R.id.load);
 		tvLoad.setOnClickListener(this);
 		return mRootView;

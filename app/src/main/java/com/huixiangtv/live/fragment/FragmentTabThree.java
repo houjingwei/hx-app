@@ -51,8 +51,6 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_tab_three, container, false);
         activity = (MainActivity) getActivity();
-        activity.hideTitle(true);
-
         initView();
         initData();
         return mRootView;
@@ -141,6 +139,7 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
                 } else {
                     ForwardUtils.target(getActivity(), Constant.LOGIN, null);
                 }
+
                 break;
             case R.id.llMyfans:
                 if (null != App.getLoginUser()) {

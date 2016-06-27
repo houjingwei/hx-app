@@ -7,11 +7,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -42,6 +45,7 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Beauty.BeautyRender;
 import com.huixiangtv.live.Constant;
+import com.huixiangtv.live.Manifest;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.LiveMsg;
@@ -159,6 +163,18 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
     private void addRecordView() {
         recordView = LayoutInflater.from(LiveRecordActivity.this).inflate(R.layout.record_view, null, false);
         flPlayView.addView(recordView);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            // Permission is already available, start camera preview
+//            Snackbar.make(mLayout,
+//                    "Camera permission is available. Starting preview.",
+//                    Snackbar.LENGTH_SHORT).show();
+           // startCamera();
+        } else {
+            // Permission is missing and must be requested.
+            //requestCameraPermission();
+        }
 
 
         _CameraSurface = (SurfaceView) recordView.findViewById(R.id.camera_surface);

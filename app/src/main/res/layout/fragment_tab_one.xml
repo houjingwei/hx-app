@@ -1,5 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:pv="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,35 +7,38 @@
     android:orientation="vertical">
 
 
-            <RelativeLayout
-                android:id="@+id/rotRl"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/baseTitleHeight"
-                android:background="@color/colorPrimary">
+    <LinearLayout
+        android:id="@+id/rotRl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:layout_gravity="bottom"
+        android:gravity="center_horizontal"
+        android:background="@color/colorPrimary">
 
-                <TextView
-                    android:id="@+id/title"
-                    style="@style/common_title_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:text="今日推荐" />
+        <TextView
+            android:id="@+id/title"
+            style="@style/common_title_style"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="今日推荐" />
 
 
-            </RelativeLayout>
+    </LinearLayout>
 
 
-            <com.chanven.lib.cptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/test_list_view_frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                cube_ptr:ptr_duration_to_close="200"
-                cube_ptr:ptr_duration_to_close_header="700"
-                cube_ptr:ptr_keep_header_when_refresh="true"
-                cube_ptr:ptr_pull_to_fresh="false"
-                cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-                cube_ptr:ptr_resistance="1.8">
+    <com.chanven.lib.cptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/test_list_view_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        cube_ptr:ptr_duration_to_close="200"
+        cube_ptr:ptr_duration_to_close_header="700"
+        cube_ptr:ptr_keep_header_when_refresh="true"
+        cube_ptr:ptr_pull_to_fresh="false"
+        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        cube_ptr:ptr_resistance="1.8">
 
         <ListView
             android:id="@+id/test_list_view"
@@ -43,232 +46,145 @@
             android:layout_height="match_parent"
             android:dividerHeight="0dp" />
     </com.chanven.lib.cptr.PtrClassicFrameLayout>
-    <LinearLayout
-        android:id="@+id/llone_viewpager"
+
+
+    <!--大图模式-->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        >
 
-        <FrameLayout
-            android:id="@+id/flInfo"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/llTop">
 
-            <RelativeLayout
-                android:id="@+id/myView"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent">
-
-                <com.huixiangtv.live.utils.widget.parallax.ParallaxViewPager
-                    android:id="@+id/vpager"
-                    pv:interpolator="@anim/decelerate_interpolator"
-                    pv:mode="right_overlay"
-                    pv:outset="62%"
-                    pv:shadow_width="0dp"
-                    android:persistentDrawingCache="animation"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    />
-            </RelativeLayout>
-
+        </LinearLayout>
+        <FrameLayout
+            android:id="@+id/flBottom"
+            android:layout_gravity="bottom"
+            android:layout_below="@+id/llTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <LinearLayout
-                android:id="@+id/llInfo"
+                android:id="@+id/bg1"
+                android:orientation="vertical"
+                android:background="@color/black"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_height="match_parent"
+                >
 
-                android:background="@color/normal_color"
-                android:orientation="vertical">
+            </LinearLayout>
 
-                <RelativeLayout
+            <ImageView
+                android:id="@+id/iv2"
+                android:scaleType="fitXY"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+            <ImageView
+                android:id="@+id/iv3"
+                android:scaleType="fitXY"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/llLiveBottom">
+                <LinearLayout
+                    android:id="@+id/llLiveInfo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
+                    <RelativeLayout
+                        android:paddingTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        <com.huixiangtv.live.utils.widget.FlyTxtView
-                            android:id="@+id/tvInfo"
-                            android:layout_width="100dp"
-                            android:layout_height="20dp"
-                            android:layout_marginLeft="5dp"
-                            />
-                        <!--<TextView-->
-                            <!--android:id="@+id/tvInfo"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_marginLeft="10dp"-->
-                            <!--android:singleLine="true"-->
-                            <!--android:text="李若"-->
-                            <!--android:textColor="@color/white"-->
-                            <!--android:textSize="18sp" />-->
-
-                        <TextView
-                            android:id="@+id/tvAddress"
-                            android:layout_marginTop="1dp"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:text=""
-                            android:textColor="@color/white" />
-                    </LinearLayout>
+                            android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tvLoveCount"
+                            <TextView
+                                android:id="@+id/tvName"
+                                android:layout_width="100dp"
+                                android:layout_height="20dp"
+                                android:text="liyan"
+                                style="@style/white_bigger_style" />
+
+
+                            <TextView
+                                android:id="@+id/tvAddress"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="1dp"
+                                android:text="beijing"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:drawablePadding="8dp"
-                            android:drawableRight="@drawable/love_val"
-                            android:src="@drawable/love_val"
-                            android:textColor="@color/white" />
-                    </LinearLayout>
-                </RelativeLayout>
+                            android:layout_alignParentRight="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tvWeight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:text="170 Cm   45Kg   三围：84 － 70 － 89"
-                    android:textColor="@color/white" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/tvLove"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:src="@drawable/love_val"
+                                android:text="123"
+                                android:textColor="@color/white" />
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/love_val"/>
+                        </LinearLayout>
+                    </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/tvbName1"
+                        android:id="@+id/tvSw"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:text="李永波："
-                        android:textColor="#CBBE40"
-                        android:textSize="15sp" />
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="5dp"
+                        android:text="170 Cm   45Kg   三围：84 － 70 － 89"
+                        android:textColor="@color/white" />
 
-                    <TextView
-                        android:id="@+id/tvContent1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="这个没有你的冬天，比以前冷哦。"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal">
+                    <ScrollView
+                        android:id="@+id/myScrollView"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:minHeight="100dp"
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/tvbName2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:text="刘思佳："
-                        android:textColor="#CBBE40"
-                        android:textSize="15sp" />
+                        <LinearLayout
+                            android:id="@+id/llMsg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tvContent2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="黑白萌萌的头像就是我。"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvbName3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:text="繁星点点："
-                        android:textColor="#CBBE40"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/tvContent3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="充满阳光的午后，听小美女唱歌,真的是一种享受，好幸福哦！"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvbName4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:text="张悦："
-                        android:textColor="#CBBE40"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/tvContent4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="北方人，有精月彩唱歌跳舞才华。"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginBottom="6dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvbName5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:text="张悦："
-                        android:textColor="#CBBE40"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/tvContent5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="北方人，有精月彩唱歌跳舞才华。"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
+                        </LinearLayout>
+                    </ScrollView>
                 </LinearLayout>
             </LinearLayout>
+
+
         </FrameLayout>
-    </LinearLayout>
+    </FrameLayout>
+
 </LinearLayout>
