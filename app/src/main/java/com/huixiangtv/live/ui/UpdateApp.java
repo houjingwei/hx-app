@@ -99,6 +99,7 @@ public class UpdateApp {
 
                 if(status.equals("1"))
                 {
+                    App.setUpdateInDate(activity, null);
                     new VProgressDialog(activity, mContext, apkUrl, uplog, status).show();
                 }
                 else {
