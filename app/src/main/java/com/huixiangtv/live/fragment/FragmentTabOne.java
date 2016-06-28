@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -38,6 +39,7 @@ import com.huixiangtv.live.adapter.LiveAdapter;
 import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.BannerModel;
 import com.huixiangtv.live.model.ChatMessage;
+import com.huixiangtv.live.model.Getglobalconfig;
 import com.huixiangtv.live.model.HistoryMsg;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.MsgExt;
@@ -131,7 +133,6 @@ public class FragmentTabOne extends Fragment {
 
         initLayout();
         initData();
-        setGuide();
 
 
         return mRootView;
@@ -173,12 +174,12 @@ public class FragmentTabOne extends Fragment {
 
         flBottom = (FrameLayout) mRootView.findViewById(R.id.flBottom);
         llLiveBottom = (LinearLayout) mRootView.findViewById(R.id.llLiveBottom);
-        FrameLayout.LayoutParams llParams = (FrameLayout.LayoutParams)flBottom.getLayoutParams();
-        llParams.height = (int) (App.screenHeight*0.32);
+        FrameLayout.LayoutParams llParams = (FrameLayout.LayoutParams) flBottom.getLayoutParams();
+        llParams.height = (int) (App.screenHeight * 0.32);
         llParams.width = App.screenWidth;
         flBottom.setLayoutParams(llParams);
 
-        llMsg = (LinearLayout)mRootView.findViewById(R.id.llMsg);
+        llMsg = (LinearLayout) mRootView.findViewById(R.id.llMsg);
 
         bg2 = (ImageView) mRootView.findViewById(R.id.iv2);
         bg3 = (ImageView) mRootView.findViewById(R.id.iv3);
@@ -245,15 +246,6 @@ public class FragmentTabOne extends Fragment {
         }, PlayUrl.class);
     }
 
-    protected void setGuide() {
-        CommonUtil.setGuidImage(getActivity(), R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
-
-            @Override
-            public void onSuccess(Object data) {
-
-            }
-        });
-    }
 
     protected void initData() {
         getBanner();
@@ -280,7 +272,6 @@ public class FragmentTabOne extends Fragment {
         });
 
         loadData();
-
 
 
     }
@@ -321,7 +312,7 @@ public class FragmentTabOne extends Fragment {
 
                 } else {
                     if (page == 1) {
-                        CommonHelper.noData("暂无人气贡献记录哦", listview, getActivity());
+                        CommonHelper.noData("暂无直播记录哦", listview, getActivity());
                     }
                 }
                 ptrClassicFrameLayout.loadComplete(true);
@@ -366,16 +357,15 @@ public class FragmentTabOne extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getStringExtra("type") != null) {
                 if (intent.getStringExtra("type").toString().equals("0")) {
-                    ptrClassicFrameLayout.setVisibility(View.GONE);
-                    mRootView.findViewById(R.id.rotRl).setVisibility(View.GONE);
-                    if(!hasLoadBig) {
-                        loadBigViewData();
-                    }
+                        ptrClassicFrameLayout.setVisibility(View.GONE);
+                        mRootView.findViewById(R.id.rotRl).setVisibility(View.GONE);
+                        if (!hasLoadBig) {
+                            loadBigViewData();
+                        }
 
-                } else if (intent.getStringExtra("type").toString().equals("1")) {
-                    mRootView.findViewById(R.id.rotRl).setVisibility(View.VISIBLE);
-                    ptrClassicFrameLayout.setVisibility(View.VISIBLE);
-
+                    } else if (intent.getStringExtra("type").toString().equals("1")) {
+                        mRootView.findViewById(R.id.rotRl).setVisibility(View.VISIBLE);
+                        ptrClassicFrameLayout.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -404,7 +394,7 @@ public class FragmentTabOne extends Fragment {
             public void onSuccessList(List<Live> data) {
                 if (data != null && data.size() > 0) {
                     resetPageviewParams();
-                    if(null!=pageAdapter){
+                    if (null != pageAdapter) {
                         liveList.clear();
                         pageAdapter = null;
                         mViewPager = null;
@@ -416,7 +406,7 @@ public class FragmentTabOne extends Fragment {
                     msg.what = BIG_UPDATE;
                     msg.obj = msg;
                     myHandle.sendMessage(msg);
-                }else{
+                } else {
                     bigPage--;
                     if (null != loadingDialog) {
                         loadingDialog.dismiss();
@@ -453,7 +443,7 @@ public class FragmentTabOne extends Fragment {
 
         mViewPager = new ViewPager(getActivity());
         llTop.addView(mViewPager);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mViewPager.getLayoutParams();
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mViewPager.getLayoutParams();
         params.height = App.screenHeight;
         params.width = App.screenWidth;
         mViewPager.setLayoutParams(params);
@@ -488,26 +478,26 @@ public class FragmentTabOne extends Fragment {
 
 
         String bg3ImagePath = "";
-        if(null!=liveList && liveList.size()>0){
+        if (null != liveList && liveList.size() > 0) {
             bg3ImagePath = liveList.get(0).getBlur();
             bottomInfo(liveList.get(0));
         }
         bg2.setAlpha(0.0f);
         bg3.setAlpha(0.5f);
         ImageUtils.display(bg3, bg3ImagePath);
-        if(null!=liveList && liveList.size()>0){
-            for (int i=0;i<liveList.size();i++){
+        if (null != liveList && liveList.size() > 0) {
+            for (int i = 0; i < liveList.size(); i++) {
                 Live live = liveList.get(i);
                 LinearLayout view = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.view_pager_content_view, null, false);
                 LinearLayout lLayout = (LinearLayout) view.findViewById(R.id.llRoot);
                 ImageView imageView = new ImageView(getActivity());
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 String img = live.getImg1();
-                Log.i("myImagePath",img);
-                ImageUtils.display(imageView,img);
+                Log.i("myImagePath", img);
+                ImageUtils.display(imageView, img);
                 lLayout.addView(imageView);
-                LinearLayout.LayoutParams imageParams = (LinearLayout.LayoutParams)imageView.getLayoutParams();
-                imageParams.height = (int) (App.screenHeight*0.68);
+                LinearLayout.LayoutParams imageParams = (LinearLayout.LayoutParams) imageView.getLayoutParams();
+                imageParams.height = (int) (App.screenHeight * 0.68);
                 imageParams.width = App.screenWidth;
                 imageView.setLayoutParams(imageParams);
 
@@ -518,13 +508,11 @@ public class FragmentTabOne extends Fragment {
         adapter.notifyDataSetChanged();
 
 
-
         if (null != loadingDialog) {
             loadingDialog.dismiss();
         }
 
     }
-
 
 
     List<Integer> offsetList = new ArrayList<Integer>();
@@ -543,20 +531,20 @@ public class FragmentTabOne extends Fragment {
                     if (knowBg2) {
                         if (num1 > num2) {
                             twoToLeftAlpha(positionOffset / 2);
-                            ivPlayAlpha(positionOffset,1);
+                            ivPlayAlpha(positionOffset, 1);
                         } else if (num1 < num2) {
                             twoToRightAlpha(positionOffset / 2);
-                            ivPlayAlpha(positionOffset,2);
+                            ivPlayAlpha(positionOffset, 2);
                         }
                     }
                 } else {
                     if (knowBg2) {
                         if (num1 > num2) {
                             oneToLeftAlpha(positionOffset / 2);
-                            ivPlayAlpha(positionOffset,1);
+                            ivPlayAlpha(positionOffset, 1);
                         } else if (num1 < num2) {
                             oneToRightAlpha(positionOffset / 2);
-                            ivPlayAlpha(positionOffset,2);
+                            ivPlayAlpha(positionOffset, 2);
                         }
                     }
                 }
@@ -569,17 +557,17 @@ public class FragmentTabOne extends Fragment {
                     knowBg2 = true;
                     if (offsetList.get(offsetList.size() - 2) > offsetList.get(offsetList.size() - 3)) {
                         //向右
-                        if(oldIndex<liveList.size()-1){
-                            newImage = liveList.get(oldIndex+1).getBlur();
-                        }else{
-                            newImage = liveList.get(liveList.size()-1).getBlur();
+                        if (oldIndex < liveList.size() - 1) {
+                            newImage = liveList.get(oldIndex + 1).getBlur();
+                        } else {
+                            newImage = liveList.get(liveList.size() - 1).getBlur();
                         }
 
                     } else if (offsetList.get(offsetList.size() - 2) < offsetList.get(offsetList.size() - 3)) {
                         //向左
-                        if(oldIndex>0){
-                            newImage = liveList.get(oldIndex-1).getBlur();
-                        }else{
+                        if (oldIndex > 0) {
+                            newImage = liveList.get(oldIndex - 1).getBlur();
+                        } else {
                             newImage = liveList.get(0).getBlur();
                         }
                     }
@@ -678,16 +666,16 @@ public class FragmentTabOne extends Fragment {
     }
 
     private void toRefresh() {
-        bigPage=1;
+        bigPage = 1;
         loadBigViewData();
     }
 
     private void toLoadNext() {
-        bigPage ++;
+        bigPage++;
         loadBigViewData();
     }
 
-    private void resetPageviewParams(){
+    private void resetPageviewParams() {
         pagerViews.clear();
         left = false;
         right = false;
@@ -774,9 +762,9 @@ public class FragmentTabOne extends Fragment {
     }
 
 
-
     /**
      * 设置底部的信息
+     *
      * @param live
      */
     private void bottomInfo(Live live) {
@@ -794,7 +782,7 @@ public class FragmentTabOne extends Fragment {
         String hei = live.getHeight() == null ? "165 cm  " : live.getHeight() + "cm  ";
         String wei = live.getWeight() == null ? "4 5 kg  " : live.getWeight() + "kg  ";
         String bwh = live.getBwh() == null ? "    " : "三围:  " + live.getBwh();
-        tvSw.setText(hei+wei+bwh);
+        tvSw.setText(hei + wei + bwh);
 
         loadMsg(live);
     }
@@ -806,22 +794,22 @@ public class FragmentTabOne extends Fragment {
             @Override
             public void onSuccess(HistoryMsg data) {
                 super.onSuccess(data);
-                if(null!=data){
+                if (null != data) {
                     int i = 0;
-                    for (ChatMessage msg:data.getLastMsg()){
+                    for (ChatMessage msg : data.getLastMsg()) {
                         MsgExt ext = msg.getExt();
                         LinearLayout ll = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.live_bottom_info_msg_item, null, false);
                         TextView tvMsg = (TextView) ll.findViewById(R.id.tvMsg);
-                        String s = ext.getNickName()+": "+msg.getContent();
-                        if(s.length()>25){
-                            s = s.substring(0,25)+"...";
+                        String s = ext.getNickName() + ": " + msg.getContent();
+                        if (s.length() > 25) {
+                            s = s.substring(0, 25) + "...";
                         }
                         SpannableString ss = new SpannableString(s);
-                        ss.setSpan(new ForegroundColorSpan(getActivity().getResources().getColor(R.color.yellow)), 0, ext.getNickName().length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        ss.setSpan(new ForegroundColorSpan(getActivity().getResources().getColor(R.color.yellow)), 0, ext.getNickName().length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         tvMsg.setText(ss);
                         llMsg.addView(ll);
                         i++;
-                        if(i==5){
+                        if (i == 5) {
                             break;
                         }
                     }

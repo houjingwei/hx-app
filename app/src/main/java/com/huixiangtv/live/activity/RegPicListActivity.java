@@ -273,8 +273,6 @@ public class RegPicListActivity extends BaseBackActivity {
                 showShareAlert(RegPicListActivity.this, RegPicListActivity.this);
 
 
-
-
             }
         });
 
@@ -546,12 +544,10 @@ public class RegPicListActivity extends BaseBackActivity {
 
                         Intent intent = new Intent(RegPicListActivity.this, CropImageUI.class);
                         intent.putExtra("currentTag", currentTag);
-                        if(currentTag!=0)
-                        {
+                        if (currentTag != 0) {
                             intent.putExtra("width", 267);//267  213
                             intent.putExtra("height", 213);
-                        }
-                        else {
+                        } else {
                             intent.putExtra("width", v.getWidth());//267  213
                             intent.putExtra("height", v.getHeight());
                         }
@@ -677,9 +673,22 @@ public class RegPicListActivity extends BaseBackActivity {
             mertoBeans = new ArrayList<DropImageModel>(startBeans);
             if (mertoBeans.size() <= 5) {
                 DropImageModel mertoBean = new DropImageModel(mertoBeans.get(tag));
+                //mertoBean.setIconId(mertoItemViews.get(tag).getIcon());
+
                 mertoBean.setIsFinish(55);
+
+
+               // mertoBeans.get(moveTag).setIconId(mertoBean.getIconId());
+
+
+//                mertoBeans.get(moveTag).setIconId(mertoBean.getIconId());
+
+
                 mertoBeans.set(tag, mertoBeans.get(moveTag));
                 mertoBeans.set(moveTag, mertoBean);
+
+
+
             } else {
                 DropImageModel mertoBean = new DropImageModel(mertoBeans.get(tag - 1));
                 mertoBean.setIsFinish(55);
@@ -948,8 +957,6 @@ public class RegPicListActivity extends BaseBackActivity {
         window.setAttributes(lp);
 
 
-
-
         window.findViewById(R.id.rlqq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -962,7 +969,7 @@ public class RegPicListActivity extends BaseBackActivity {
         window.findViewById(R.id.rlzone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shareInfotoDB(activity, model, context,SHARE_MEDIA.QZONE,dlg);
+                shareInfotoDB(activity, model, context, SHARE_MEDIA.QZONE, dlg);
             }
         });
 
@@ -998,7 +1005,7 @@ public class RegPicListActivity extends BaseBackActivity {
 
     }
 
-    private static void shareInfotoDB(final Activity activity, final ShareModel model, final Context context, final SHARE_MEDIA platform,final AlertDialog dlg) {
+    private static void shareInfotoDB(final Activity activity, final ShareModel model, final Context context, final SHARE_MEDIA platform, final AlertDialog dlg) {
         CommonHelper.shareInfo(platform, "1", user.getUid(), new ApiCallback<Share>() {
             @Override
             public void onSuccess(Share share) {
@@ -1208,10 +1215,10 @@ public class RegPicListActivity extends BaseBackActivity {
         ArrayList<String> imgurl = new ArrayList<String>();
         ArrayList<String> imgUpTag = new ArrayList<String>();
         ArrayList<String> imgUp = new ArrayList<String>();
-        String loc ="";
+        String loc = "";
         try {
             for (DropImageView iv : mertoItemViews) {
-                if(iv.getIsFinish() ==15) {
+                if (iv.getIsFinish() == 15) {
                     bm = BitmapHelper.readBitMap(new File(iv.getLocUrl()), false); //267,213
                     bm = BitmapHelper.createScaledBitmap(bm, iv.getWidth(), iv.getHeight(), "CROP");
                     loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, iv.getWidth(), iv.getHeight()), Integer.parseInt(iv.getTag().toString()));
@@ -1219,24 +1226,24 @@ public class RegPicListActivity extends BaseBackActivity {
                     imgUpTag.add(iv.getTag().toString());
 
                 }
-                if(iv.getIsFinish() == 55)
-                {
+                if (iv.getIsFinish() == 55)
                     isUploadAll = true;
 
-                }
+                bm = BitmapHelper.readBitMap(new File(iv.getLocUrl()), false); //267,213
+                bm = BitmapHelper.createScaledBitmap(bm, iv.getWidth(), iv.getHeight(), "CROP");
+                loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, iv.getWidth(), iv.getHeight()), Integer.parseInt(iv.getTag().toString()));
                 imgurl.add(loc);
             }
         } catch (Exception ex) {
 
         }
-        App.saveBodyLocPic(user);
+
         final List<String> pics = new ArrayList<String>();
 
-        if(isUploadAll)
-        {
+        if (isUploadAll) {
+            resetImgLoc(imgurl);
             upEveryPhoto(imgurl.get(0), imgurl, pics, imgUpTag);
-        }
-        else {
+        } else {
 
             for (int index = 0; index < imgUp.size(); index++) {
                 if (imgUpTag.get(index).equals("0")) {
@@ -1257,12 +1264,30 @@ public class RegPicListActivity extends BaseBackActivity {
                 upEveryPhoto(imgUp.get(0), imgUp, pics, imgUpTag);
             }
         }
+        App.saveBodyLocPic(user);
     }
 
-    private void sendDB(final List<String> pics,final List<String> imgUpTag) {
+    private void resetImgLoc(ArrayList<String> imgurl) {
 
-        for(int index = 0 ; index<pics.size(); index++)
-        {
+        user.setImgLoc1(imgurl.get(0));
+
+        user.setImgLoc2(imgurl.get(1));
+
+        user.setImgLoc3(imgurl.get(2));
+
+        user.setImgLoc4(imgurl.get(3));
+
+        user.setImgLoc5(imgurl.get(4));
+    }
+
+    private void sendDB(final List<String> pics, final List<String> imgUpTag) {
+
+        for (int index = 0; index < pics.size(); index++) {
+            if(imgUpTag.size()==0)
+            {
+                break;
+            }
+
             if (imgUpTag.get(index).equals("0")) {
                 user.setImg1(pics.get(index));
             } else if (imgUpTag.get(index).equals("1")) {
@@ -1276,43 +1301,37 @@ public class RegPicListActivity extends BaseBackActivity {
             }
         }
 
-        if(pics.size()>0) {
-            Map<String, String> paramsMap = new HashMap<>();
+        Map<String, String> paramsMap = new HashMap<>();
 
-            App.saveBodyPic(user);
-            paramsMap.put("bust", user.getBust());
-            paramsMap.put("waist", user.getWaist());
-            paramsMap.put("hip", user.getHip());
-            paramsMap.put("height", user.getHeight());
-            paramsMap.put("weight", user.getWeight());
-            paramsMap.put("Img1", user.getImg1());
-            paramsMap.put("Img2", user.getImg2());
-            paramsMap.put("Img3", user.getImg3());
-            paramsMap.put("Img4", user.getImg4());
-            paramsMap.put("Img5", user.getImg5());
+        App.saveBodyPic(user);
+        paramsMap.put("bust", user.getBust());
+        paramsMap.put("waist", user.getWaist());
+        paramsMap.put("hip", user.getHip());
+        paramsMap.put("height", user.getHeight());
+        paramsMap.put("weight", user.getWeight());
+        paramsMap.put("Img1", user.getImg1());
+        paramsMap.put("Img2", user.getImg2());
+        paramsMap.put("Img3", user.getImg3());
+        paramsMap.put("Img4", user.getImg4());
+        paramsMap.put("Img5", user.getImg5());
 
 
-            RequestUtils.sendPostRequest(Api.SET_ARTIST_CARD_INFO, paramsMap, new ResponseCallBack<String>() {
-                @Override
-                public void onSuccess(String data) {
+        RequestUtils.sendPostRequest(Api.SET_ARTIST_CARD_INFO, paramsMap, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccess(String data) {
 
-                    for (DropImageView iv : mertoItemViews) {
-                        iv.setIsFinish(5);
-                    }
-                    saveSuccessfully();
+                for (DropImageView iv : mertoItemViews) {
+                    iv.setIsFinish(5);
                 }
+                saveSuccessfully();
+            }
 
-                @Override
-                public void onFailure(ServiceException e) {
-                    super.onFailure(e);
-                }
-            }, String.class);
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, String.class);
 
-        }
-        else
-        {
-            saveSuccessfully();
-        }
 
     }
 
@@ -1338,15 +1357,16 @@ public class RegPicListActivity extends BaseBackActivity {
                     public void onSuccess(FileInfo file) {
                         pics.add(file.url);
                         if (pics.size() == imgurl.size()) {
-                            sendDB(pics,imgUpTag);
+                            sendDB(pics, imgUpTag);
                         } else {
-                            upEveryPhoto(imgurl.get(pics.size()), imgurl, pics,imgUpTag);
+                            upEveryPhoto(imgurl.get(pics.size()), imgurl, pics, imgUpTag);
                         }
                     }
                 });
             }
         });
     }
+
     //get artist card info
     private void ArtistCardInfo() {
         String token = null == App.getLoginUser() ? "" : App.getLoginUser().getToken();
@@ -1444,8 +1464,7 @@ public class RegPicListActivity extends BaseBackActivity {
 
         if (!new File(App.getPreferencesValue("imgloc1")).exists() || !new File(App.getPreferencesValue("imgloc2")).exists() || !new File(App.getPreferencesValue("imgloc3")).exists() && !new File(App.getPreferencesValue("imgloc4")).exists() || !new File(App.getPreferencesValue("imgloc5")).exists()) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

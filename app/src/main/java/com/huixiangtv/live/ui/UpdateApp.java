@@ -11,11 +11,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
 
 import java.io.File;
@@ -25,6 +27,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.util.Date;
 
 
 /**
@@ -47,9 +51,9 @@ public class UpdateApp {
     private int progress;
     private boolean interceptFlag = false;
 
-    public UpdateApp(Activity activity,Context context) {
-        this.mContext = context;
-        this.activity = activity;
+    public UpdateApp(Object object) {
+        this.mContext = (Context) object;
+        this.activity = (Activity) object;
     }
 
     public boolean judgeVersion(String tab, String url,
@@ -59,21 +63,18 @@ public class UpdateApp {
         this.uplog = uplog;
         if (tab.equals("-1")) {// -1.选择更新;1,强制更新
             showDownloadDialog("-1");
-           // showNoticeLayoutDialog();
+            // showNoticeLayoutDialog();
             return true;
         } else if (tab.equals("1")) {
             showDownloadDialog("1");
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
 
-    private void showNoticeLayoutDialog()
-    {
+    private void showNoticeLayoutDialog() {
 
         final AlertDialog dlg = new AlertDialog.Builder(mContext).create();
         dlg.show();
@@ -93,7 +94,26 @@ public class UpdateApp {
 
 
     protected void showDownloadDialog(String status) {
-        new VProgressDialog(activity,mContext, apkUrl, uplog, status).show();
+        try {
+            if(null!= App.getPreferencesValue("update")) {
+
+                if(status.equals("1"))
+                {
+                    new VProgressDialog(activity, mContext, apkUrl, uplog, status).show();
+                }
+                else {
+                    int day = App.daysBetween(App.sdf.format(new Date()), App.getPreferencesValue("update"));
+                    if (day == 5) {
+                        new VProgressDialog(activity, mContext, apkUrl, uplog, status).show();
+                    }
+                }
+            }
+            else {
+                new VProgressDialog(activity, mContext, apkUrl, uplog, status).show();
+            }
+        } catch (Exception ex) {
+
+        }
     }
 
     private Runnable mdownApkRunnable = new Runnable() {
@@ -170,5 +190,5 @@ public class UpdateApp {
         mContext.startActivity(i);
     }
 
-    
+
 }

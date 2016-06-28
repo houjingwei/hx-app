@@ -30,6 +30,7 @@ import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.fragment.FragmentTabOne;
 import com.huixiangtv.live.fragment.FragmentTabThree;
 import com.huixiangtv.live.fragment.FragmentTabTwo;
+import com.huixiangtv.live.model.Getglobalconfig;
 import com.huixiangtv.live.model.UpgradeLevel;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.LoginCallBack;
@@ -79,6 +80,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     FragmentTransaction trx = null;
+    private boolean bigImage;
 
 
     @Override
@@ -91,6 +93,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         App.getContext().addActivity(this);
         initView();
         setGuidle();
+        CheckVersion();
+        isBigImage();
     }
 
     private void initWindow() {
@@ -98,7 +102,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.colorPrimary);
     }
-
 
 
     /**
@@ -195,14 +198,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-    public void updateClose(){
-        finish();
-        App.getContext().finishAllActivity();
-        android.os.Process.killProcess(android.os.Process.myPid());
-
-    }
-
-
 
     public void hideTitle() {
         Window window = getWindow();
@@ -296,7 +291,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static boolean isSwitch = false;
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void onDBClick() {
-
         if (isSwitch) {
             setTabSelection(0);
             sendToOneFragment("1");
@@ -308,13 +302,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             isSwitch = true;
             changeIcon(false);
         }
-//        if (System.currentTimeMillis() - lastTipTimeMills > 300) {
-//            lastTipTimeMills = System.currentTimeMillis();
-//
-//        } else {
-//
-//
-//        }
+
     }
 
     private void changeIcon(boolean bool) {
@@ -368,53 +356,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-//        //阻止activity保存fragment的状态
-//        //super.onSaveInstanceState(outState, outPersistentState);
-//    }
-
 
     /**
-     * 检查新版本
+     * 设置新引导页
      */
-    private void CheckVersion() {
-        try {
-            final String version = App.getVersionCode(MainActivity.this);
-            Map<String, String> paramsMap = new HashMap<String, String>();
-            paramsMap.put("osType", "1");
-            paramsMap.put("appVersion", version );
-
-            RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
-
-                public void onSuccess(UpgradeLevel data) {
-
-                    if (data != null) {
-
-                        UpgradeLevel upgradeLevel = data;
-
-                        UpdateApp updateApp = new UpdateApp(MainActivity.this,MainActivity.this);
-                        if (updateApp
-                                .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
-
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(ServiceException e) {
-                    super.onFailure(e);
-                    Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
-                }
-            }, UpgradeLevel.class);
-        } catch (Exception ex) {
-            Toast.makeText(MainActivity.this,"更新异常",Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-
-
     private void setGuidle()
     {
 
@@ -452,15 +397,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 editor.putBoolean(key, false);
                 editor.commit();
                 dlg.dismiss();
-                setGuide();
+                setGuideNextLeft();
             }
         });
 
     }
 
-    protected void setGuide() {
-
+    protected void setGuideNextLeft() {
         CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
+
+            @Override
+            public void onSuccess(Object data) {
+                setGuideNextUp();
+            }
+        });
+    }
+
+
+    protected void setGuideNextUp() {
+        CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_hand_clear, "guide2", new ApiCallback() {
 
             @Override
             public void onSuccess(Object data) {
@@ -468,5 +423,64 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         });
     }
+
+    /**
+     * 退出应用程序
+     */
+    public void updateClose(){
+        finish();
+        App.getContext().finishAllActivity();
+        android.os.Process.killProcess(android.os.Process.myPid());
+
+    }
+
+    /**
+     * 检查新版本
+     */
+    private void CheckVersion() {
+        try {
+            final String version = App.getVersionCode(MainActivity.this);
+            Map<String, String> paramsMap = new HashMap<String, String>();
+            paramsMap.put("osType", "1");
+            paramsMap.put("appVersion", version );
+
+            RequestUtils.sendPostRequest(Api.UPGRADE_LEVEL, paramsMap, new ResponseCallBack<UpgradeLevel>() {
+
+                public void onSuccess(UpgradeLevel data) {
+
+                    if (data != null) {
+
+                        UpgradeLevel upgradeLevel = data;
+
+                        UpdateApp updateApp = new UpdateApp(MainActivity.this);
+                        if (updateApp
+                                .judgeVersion(upgradeLevel.alert, upgradeLevel.appUrl, upgradeLevel.desc)) {
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(ServiceException e) {
+                    super.onFailure(e);
+                    Toast.makeText(getBaseContext(), "当有网络不可用，检查更新失败", Toast.LENGTH_LONG).show();
+                }
+            }, UpgradeLevel.class);
+        } catch (Exception ex) {
+            Toast.makeText(MainActivity.this,"更新异常",Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    public boolean isBigImage() {
+        if(null != App.getPreferencesValue("indexStyle") && App.getPreferencesValue("indexStyle").equals("1"))
+        {
+            isSwitch = true;
+        }
+        return isSwitch;
+    }
+
+
 
 }

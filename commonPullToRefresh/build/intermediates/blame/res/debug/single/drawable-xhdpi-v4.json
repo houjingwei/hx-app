@@ -12,6 +12,18 @@
         "source": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f10.png"
     },
     {
+<<<<<<< HEAD
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f29.png",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f29.png"
+    },
+    {
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f5.png",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f5.png"
+    },
+    {
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f12.png",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f12.png"
+=======
         "merged": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f5.png",
         "source": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f5.png"
     },
@@ -22,6 +34,7 @@
     {
         "merged": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f3.png",
         "source": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f3.png"
+>>>>>>> 3fe0c61ff9b0adba044372781923ddfe6153a1aa
     },
     {
         "merged": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f28.png",
@@ -72,6 +85,18 @@
         "source": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f7.png"
     },
     {
+<<<<<<< HEAD
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f9.png",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f9.png"
+    },
+    {
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f28.png",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f28.png"
+    },
+    {
+        "merged": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f3.png",
+        "source": "/Users/apple/Desktop/huixiang-new/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f3.png"
+=======
         "merged": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f23.png",
         "source": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f23.png"
     },
@@ -82,6 +107,7 @@
     {
         "merged": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f18.png",
         "source": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/res/drawable-xhdpi/f18.png"
+>>>>>>> 3fe0c61ff9b0adba044372781923ddfe6153a1aa
     },
     {
         "merged": "/Users/hjw/Documents/zijing/hx_git/huixiang-android/commonPullToRefresh/build/intermediates/res/merged/debug/drawable-xhdpi-v4/f26.png",

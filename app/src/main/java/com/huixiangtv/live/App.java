@@ -29,7 +29,10 @@ import com.umeng.socialize.UMShareAPI;
 import org.xutils.x;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -46,7 +49,7 @@ public class App extends MultiDexApplication {
     private static final String ACTION_NAME = "RONGYUN_MSG";
     private static App sContext;
     public static UMShareAPI mShareAPI ;
-
+    public static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
     //设备版本
     public static String deviceVersion;
     //设备型号
@@ -297,6 +300,11 @@ public class App extends MultiDexApplication {
     }
 
 
+    public static void saveIndexStyle(String indexStyle){
+        loginHelper.setValue("indexStyle", indexStyle);
+    }
+
+
     public static void upUserTag(String tags) {
         loginHelper.setValue("tags", tags);
     }
@@ -368,10 +376,23 @@ public class App extends MultiDexApplication {
     }
 
 
-    public static void setUpdateInDate(Context context, Date date) {
-        long time = date.getTime();
-        loginHelper.setLongValue("time", time);
+    public static void setUpdateInDate(Context context, String date) {
+        loginHelper.setValue("update", date);
     }
+
+
+    public static int daysBetween(String smdate,String bdate) throws ParseException{
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(sdf.parse(smdate));
+        long time1 = cal.getTimeInMillis();
+        cal.setTime(sdf.parse(bdate));
+        long time2 = cal.getTimeInMillis();
+        long between_days=(time2-time1)/(1000*3600*24);
+
+        return Integer.parseInt(String.valueOf(between_days));
+    }
+
 
 
     /**
@@ -392,6 +413,11 @@ public class App extends MultiDexApplication {
     public static  String getPreferencesValue(String key)
     {
         return loginHelper.getValue(key);
+    }
+
+    public static  long getPreferencesLong(String key)
+    {
+        return loginHelper.getLongValue(key,0);
     }
 
 

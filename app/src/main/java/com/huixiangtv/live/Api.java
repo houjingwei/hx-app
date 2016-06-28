@@ -133,4 +133,7 @@ public class Api {
 
     public static final String SHARE_INFO = BASE_URL+"/share/getShareInfo";
 
+    public static final String GETGLOBALCONFIG =  BASE_URL+"/config/getGlobalConfig";
+
+
 }

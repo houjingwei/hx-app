@@ -865,11 +865,11 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
                         }
                     });
             builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
             builder.create().show();
         }else if(showFinishWindow){
 

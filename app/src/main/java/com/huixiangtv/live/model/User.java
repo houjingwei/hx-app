@@ -1,6 +1,7 @@
 package com.huixiangtv.live.model;
 
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import java.io.Serializable;
@@ -40,6 +41,18 @@ public class User implements Serializable {
     private String tags;
     private String phoneNum;
     private String status;
+
+    public String getIndexStyle() {
+        return indexStyle;
+    }
+
+    public void setIndexStyle(String indexStyle) {
+        this.indexStyle = indexStyle;
+    }
+
+    private String indexStyle;
+
+
 
 
 
@@ -235,6 +248,56 @@ public class User implements Serializable {
     private Drawable drawableImg4;
     private Drawable drawableImg5;
 
+
+    private Bitmap bitmapImg1;
+
+    public Bitmap getBitmapImg1() {
+        return bitmapImg1;
+    }
+
+    public void setBitmapImg1(Bitmap bitmapImg1) {
+        this.bitmapImg1 = bitmapImg1;
+    }
+
+    public Bitmap getBitmapImg2() {
+        return bitmapImg2;
+    }
+
+    public void setBitmapImg2(Bitmap bitmapImg2) {
+        this.bitmapImg2 = bitmapImg2;
+    }
+
+    public Bitmap getBitmapImg3() {
+        return bitmapImg3;
+    }
+
+    public void setBitmapImg3(Bitmap bitmapImg3) {
+        this.bitmapImg3 = bitmapImg3;
+    }
+
+    public Bitmap getBitmapImg4() {
+        return bitmapImg4;
+    }
+
+    public void setBitmapImg4(Bitmap bitmapImg4) {
+        this.bitmapImg4 = bitmapImg4;
+    }
+
+    public Bitmap getBitmapImg5() {
+        return bitmapImg5;
+    }
+
+    public void setBitmapImg5(Bitmap bitmapImg5) {
+        this.bitmapImg5 = bitmapImg5;
+    }
+
+    private Bitmap bitmapImg2;
+
+    private Bitmap bitmapImg3;
+
+    private Bitmap bitmapImg4;
+
+    private Bitmap bitmapImg5;
 
 
 

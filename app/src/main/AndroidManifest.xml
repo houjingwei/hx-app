@@ -211,6 +211,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
 
+        <activity android:name=".activity.WelcomActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            ></activity>
+
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="4z3hlwrv39zlt" />
