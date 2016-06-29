@@ -1,8 +1,6 @@
 package com.huixiangtv.live.activity;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -20,18 +18,15 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.ForwardUtils;
-import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.utils.OauthHelper;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class SettingActivity extends BaseBackActivity implements View.OnClickListener {
 
@@ -132,7 +127,6 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.tvLoginOut:
                 App.clearLoginUser();
-                onBackPressed();
                 ForwardUtils.target(SettingActivity.this, Constant.LOGIN, null);
                 break;
             case R.id.rlHelp:

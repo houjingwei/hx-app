@@ -1,6 +1,7 @@
 package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,19 +10,18 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.chanven.lib.cptr.PtrClassicFrameLayout;
-import com.chanven.lib.cptr.PtrDefaultHandler;
-import com.chanven.lib.cptr.PtrFrameLayout;
-import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.adapter.MyFansAdapter;
+import com.huixiangtv.live.adapter.MyAttentionAdapter;
 import com.huixiangtv.live.model.Fans;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
+import com.huixiangtv.live.ui.HuixiangLoadingLayout;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
@@ -37,15 +37,12 @@ public class MyHotsActivity extends BaseBackActivity {
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 
-    @ViewInject(R.id.tv_list_empty)
-    TextView tv_list_empty;
 
-    PtrClassicFrameLayout ptrClassicFrameLayout;
-    ListView mListView;
+    private PullToRefreshListView refreshView;
 
 
     int page = 1;
-    MyFansAdapter adapter;
+    MyAttentionAdapter adapter;
 
     LinearLayout ll1;
     LinearLayout ll2;
@@ -75,12 +72,15 @@ public class MyHotsActivity extends BaseBackActivity {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.labenHotRank));
 
-        adapter = new MyFansAdapter(MyHotsActivity.this);
-        ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
-        mListView = (ListView) this.findViewById(R.id.test_list_view);
-        mListView.setAdapter(adapter);
+        adapter = new MyAttentionAdapter(MyHotsActivity.this);
+        adapter = new MyAttentionAdapter(this);
+        refreshView = (PullToRefreshListView) findViewById(R.id.refreshView);
+        refreshView.setMode(PullToRefreshBase.Mode.BOTH);
+        refreshView.setHeaderLayout(new HuixiangLoadingLayout(this));
+        refreshView.setFooterLayout(new HuixiangLoadingLayout(this));
+        refreshView.setAdapter(adapter);
         view = LayoutInflater.from(MyHotsActivity.this).inflate(R.layout.my_hot_header, null, false);
-        mListView.addHeaderView(view);
+        refreshView.getRefreshableView().addHeaderView(view);
 
 
         ll1 = (LinearLayout) view.findViewById(R.id.ll1);
@@ -97,23 +97,29 @@ public class MyHotsActivity extends BaseBackActivity {
         tvHot3 = (TextView) view.findViewById(R.id.tvHot3);
 
         loadData();
-        ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
-
+        refreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                page = 1;
-                loadData();
-            }
-        });
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page = 1;
+                        loadData();
 
-        ptrClassicFrameLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                    }
+                }, 1000);
 
-            @Override
-            public void loadMore() {
-                page++;
-                loadData();
             }
 
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page++;
+                        loadData();
+                    }
+                }, 1000);
+
+            }
         });
 
     }
@@ -141,12 +147,12 @@ public class MyHotsActivity extends BaseBackActivity {
                     }
                 }else{
                     if (page == 1) {
-                        mListView.removeHeaderView(view);
-                        CommonHelper.noData("暂无人气贡献记录哦",mListView,MyHotsActivity.this);
+                        refreshView.getRefreshableView().removeHeaderView(view);
+                        CommonHelper.noData("暂无人气贡献记录哦",refreshView.getRefreshableView(),MyHotsActivity.this,1);
                     }
                 }
 
-                ptrClassicFrameLayout.loadComplete(true);
+                refreshView.onRefreshComplete();
 
 
             }
@@ -155,7 +161,7 @@ public class MyHotsActivity extends BaseBackActivity {
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 CommonHelper.showTip(MyHotsActivity.this, e.getMessage());
-                ptrClassicFrameLayout.loadComplete(false);
+                refreshView.onRefreshComplete();
             }
         }, Fans.class);
 

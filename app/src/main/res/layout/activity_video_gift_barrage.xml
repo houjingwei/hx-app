@@ -7,16 +7,17 @@
     android:background="@drawable/gift_send_barrage_style">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.github.siyamed.shapeimageview.CircularImageView
         android:id="@+id/senderIcon"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="3dp"
-        android:clickable="false"
         android:src="@drawable/default_head"
-        app:civ_border_color="@color/white"
-        />
+        android:layout_marginLeft="3dp"
+        android:layout_centerVertical="true"
+        app:siBorderWidth="2dp"
+        app:siBorderColor="@color/white"/>
+
+
 
     <TextView
         android:id="@+id/giftBarrageMsg"

@@ -38,6 +38,7 @@ public class ShareUtils {
         this.shareCallback = shareCallback;
         new ShareAction(c).setPlatform(media)
                 .withTitle(model.getTitle())
+                .withTargetUrl(model.getTargetUrl())
                 .withText(model.getContent())
                 .withMedia(model.getImageMedia())
                 .setCallback(umShareListener).share();

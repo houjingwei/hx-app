@@ -177,6 +177,8 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
     private BeautyRender beautyRender;
 
     private void addRecordView() {
+
+
         recordView = LayoutInflater.from(LiveRecordActivity.this).inflate(R.layout.record_view, null, false);
         flPlayView.addView(recordView);
 
@@ -577,9 +579,6 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
                 live =data;
                 outhAndStartPush();
                 living(data);
-                ObjectAnimator animIn = ObjectAnimator.ofFloat(startLiveView, "alpha", 1f);
-                animIn.setDuration(500);
-                animIn.start();
             }
 
             @Override
@@ -679,21 +678,23 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
 
     private void startRecorder(String pushUrl,String playUrl) {
-        if (mLiveRecorder != null) {
-            return;
+        try{
+            if (mLiveRecorder != null) {
+                return;
+            }
+            initLiveRecord(pushUrl);
+            //ip_address这里修改为可以直接ip推流.就近原则。建议使用httpDNS得到最优ip.直接推流.不用即直接传null
+            mLiveRecorder.start(this,null);
+            mIsRecording = true;
+            Log.i(TAG, "************** Starting live stream! **************");
+        }catch(Exception e){
+            Log.i("huixiangLive_Error",e.getMessage());
         }
-
-
-        initLiveRecord();
-        //ip_address这里修改为可以直接ip推流.就近原则。建议使用httpDNS得到最优ip.直接推流.不用即直接传null
-        mLiveRecorder.start(this,null);
-        mIsRecording = true;
-        Log.i(TAG, "************** Starting live stream! **************");
     }
 
-    private void initLiveRecord() {
+    private void initLiveRecord(String pushUrl) {
         mLiveRecorder = new LiveRecorderManager();
-        mLiveRecorder.init(live.getPushUrl(), "flv");//flv为推流文件格式，目前仅支持flv
+        mLiveRecorder.init(pushUrl, "flv");//flv为推流文件格式，目前仅支持flv
         mLiveRecorder.setNetworkThreshHold(90);//设置网络最大buffer阈值.可不设，默认为90
         mVideoStream = mLiveRecorder.addVideoStream();
         mVideoStream.init(384, 640, 400000, 20, 3);//参数分别为：宽、高、码率、帧数、帧数间隔；宽384为推荐设置，可解决部分手机不支持16倍数的问题

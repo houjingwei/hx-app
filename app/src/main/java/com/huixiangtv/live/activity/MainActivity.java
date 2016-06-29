@@ -27,10 +27,9 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.common.CommonUtil;
+import com.huixiangtv.live.fragment.FragmentTabFour;
 import com.huixiangtv.live.fragment.FragmentTabOne;
-import com.huixiangtv.live.fragment.FragmentTabThree;
 import com.huixiangtv.live.fragment.FragmentTabTwo;
-import com.huixiangtv.live.model.Getglobalconfig;
 import com.huixiangtv.live.model.UpgradeLevel;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.LoginCallBack;
@@ -76,7 +75,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     FragmentTabOne fragmentOne;
     FragmentTabTwo fragmentTwo;
-    FragmentTabThree fragmentThree;
+    FragmentTabFour fragmentThree;
 
 
     FragmentTransaction trx = null;
@@ -122,7 +121,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void initFragment() {
         fragmentOne = new FragmentTabOne();
         fragmentTwo = new FragmentTabTwo();
-        fragmentThree = new FragmentTabThree();
+        fragmentThree = new FragmentTabFour();
 
         // 把第一个tab设为选中状态
         setTabSelection(0);
@@ -341,21 +340,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         sendBroadcast(intent);
     }
 
-    @Override
-    public void onAttachFragment(Fragment fragment) {
-        // TODO Auto-generated method stub
-        super.onAttachFragment(fragment);
-
-
-        Log.d(TAG, "onAttachFragment");
-
-        if (fragmentOne == null && fragment instanceof FragmentTabOne) {
-            fragmentOne = (FragmentTabOne) fragment;
-        } else if (fragmentThree == null && fragment instanceof FragmentTabThree) {
-            fragmentThree = (FragmentTabThree) fragment;
-        }
-    }
-
 
     /**
      * 设置新引导页
@@ -481,6 +465,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         return isSwitch;
     }
 
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        if (fragmentOne == null && fragmentOne instanceof FragmentTabOne) {
+            fragmentOne = (FragmentTabOne)fragment;
+        }else if (fragmentThree == null && fragmentThree instanceof FragmentTabFour) {
+            fragmentThree = (FragmentTabFour) fragment;
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //super.onSaveInstanceState(outState);
+    }
 
 
 }

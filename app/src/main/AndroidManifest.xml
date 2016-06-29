@@ -97,12 +97,12 @@
             android:theme="@style/backStyle" />
         <activity
             android:name=".activity.LiveActivity"
-            android:hardwareAccelerated="true"
+
             android:theme="@style/backStyle"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activity.LiveRecordActivity"
-            android:hardwareAccelerated="true"
+
             android:theme="@style/backStyle"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/flLive"
     android:clickable="true"
     android:layout_width="match_parent"
@@ -33,13 +34,17 @@
                     android:orientation="horizontal"
                     android:background="@drawable/live_user_bg">
 
-                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+
+                    <com.github.siyamed.shapeimageview.CircularImageView
                         android:id="@+id/ivPhoto"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:layout_centerVertical="true"
                         android:src="@drawable/default_head"
-                        app:civ_border_color="@color/white" />
+                        android:layout_centerVertical="true"
+                        app:siBorderWidth="0dp"
+                        app:siBorderColor="@color/white"/>
+
+
 
                     <LinearLayout
                         android:paddingRight="10dp"
@@ -270,7 +275,7 @@
     <RelativeLayout
         android:id="@+id/rlChatView"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:layout_gravity="bottom"
         android:visibility="gone"
         android:background="@color/white"
@@ -278,7 +283,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:background="@color/white">
 
             <View

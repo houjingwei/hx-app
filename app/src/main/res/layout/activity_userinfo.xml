@@ -42,15 +42,17 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/labelHeadPhoto" />
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                <com.github.siyamed.shapeimageview.CircularImageView
+                    android:id="@+id/ivPhoto"
                     android:layout_width="66dp"
                     android:layout_height="66dp"
-                    android:id="@+id/ivPhoto"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:src="@drawable/default_head"
-                    app:civ_border_color="@color/white"
-                    app:civ_border_width="2dp" />
+                    android:layout_alignParentRight="true"
+                    app:siRadius="2dp"
+                    app:siBorderWidth="2dp"
+                    app:siBorderColor="@color/white"/>
+
+
             </RelativeLayout>
 
 

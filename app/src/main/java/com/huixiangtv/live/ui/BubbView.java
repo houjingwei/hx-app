@@ -5,7 +5,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -122,7 +121,7 @@ public class BubbView {
         //将前面的动画集合到一起~
         animSet = new AnimatorSet();
         animSet.play(animator4).with(animator3).with(animator2).with(animator1).with(animator5);
-        animSet.setDuration(2500l);
+        animSet.setDuration(1500l);
         animSet.start();
         animSet.addListener(new Animator.AnimatorListener() {
             @Override
@@ -180,7 +179,7 @@ public class BubbView {
         animator2 = ObjectAnimator.ofFloat(view, "scaleX",0.9f,1.2f);
         animator5 = ObjectAnimator.ofFloat(view, "scaleY",0.9f,1.2f);
         setAnimator4(view);
-        animator3 = ObjectAnimator.ofFloat(view, "translationY", 0f, -500f);
+        animator3 = ObjectAnimator.ofFloat(view, "translationY", 0f, -700f);
     }
 
     private void setAnimator4(View view) {

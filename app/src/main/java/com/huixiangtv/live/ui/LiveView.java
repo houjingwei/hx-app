@@ -220,10 +220,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 int x = locations[0];
                 if (x > 0) {
                     if(bubbview==null){
+                        Log.i("errorMsg","123");
                         bubbview = new BubbView(activity, ivLove, flLive, false);
+                        bubbview.bubble();
+                        ivLove.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     }
-                    bubbview.bubble();
-                    ivLove.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+
                 }
             }
         });
@@ -1092,7 +1095,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         ViewGroup.MarginLayoutParams margin = new ViewGroup.MarginLayoutParams(rlChatView.getLayoutParams());
         //左上右下
         Log.i("rinima", App.screenHeight - keyboardHeight+ "");
-        margin.setMargins(0, App.screenHeight - keyboardHeight - WidgetUtil.dip2px(ct, 40), 0, 0);
+        int topY = App.screenHeight - keyboardHeight - WidgetUtil.dip2px(ct, 45);
+        margin.setMargins(0, topY, 0, 0);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         rlChatView.setLayoutParams(layoutParams);
         etChatMsg.requestFocus();
@@ -1408,6 +1412,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     break;
                 case SHARE:
                     Share data = (Share) message.obj;
+
                     ShareModel model = new ShareModel();
                     UMImage image;
                     if(StringUtil.isNotEmpty(data.getCover())){

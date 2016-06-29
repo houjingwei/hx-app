@@ -25,7 +25,7 @@ public class EmptyView extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.empty_data, this);
         RelativeLayout rlRoot = (RelativeLayout) findViewById(R.id.rlRoot);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)rlRoot.getLayoutParams();
-        params.height = App.screenHeight - WidgetUtil.dip2px(ct,50)-App.statuBarHeight;
+        params.height = App.screenHeight - WidgetUtil.dip2px(ct,40)-App.statuBarHeight;
         params.width =  ViewGroup.LayoutParams.MATCH_PARENT;
         rlRoot.setLayoutParams(params);
         tvMsg = (TextView)findViewById(R.id.tvMsg);

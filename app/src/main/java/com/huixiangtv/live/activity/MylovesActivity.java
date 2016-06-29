@@ -1,15 +1,14 @@
 package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.chanven.lib.cptr.PtrClassicFrameLayout;
-import com.chanven.lib.cptr.PtrDefaultHandler;
-import com.chanven.lib.cptr.PtrFrameLayout;
-import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
@@ -19,6 +18,7 @@ import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CommonTitle;
+import com.huixiangtv.live.ui.HuixiangLoadingLayout;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.StringUtil;
 
@@ -33,8 +33,7 @@ public class MylovesActivity extends BaseBackActivity {
 
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
-    PtrClassicFrameLayout ptrClassicFrameLayout;
-    ListView mListView;
+    private PullToRefreshListView refreshView;
 
     int page = 1;
     MyLovesAdapter adapter;
@@ -53,11 +52,13 @@ public class MylovesActivity extends BaseBackActivity {
         commonTitle.setTitleText(getResources().getString(R.string.myLoves));
 
         adapter = new MyLovesAdapter(this);
-        ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
-        mListView = (ListView) this.findViewById(R.id.test_list_view);
-        mListView.setAdapter(adapter);
+        refreshView = (PullToRefreshListView) findViewById(R.id.refreshView);
+        refreshView.setMode(PullToRefreshBase.Mode.BOTH);
+        refreshView.setHeaderLayout(new HuixiangLoadingLayout(this));
+        refreshView.setFooterLayout(new HuixiangLoadingLayout(this));
+        refreshView.setAdapter(adapter);
         View view = LayoutInflater.from(MylovesActivity.this).inflate(R.layout.activity_myloves_head, null, false);
-        mListView.addHeaderView(view);
+        refreshView.getRefreshableView().addHeaderView(view);
 
         TextView tvMyLoves = (TextView) view.findViewById(R.id.tvMyLoves);
         if(null!=App.getLoginUser()) {
@@ -67,23 +68,28 @@ public class MylovesActivity extends BaseBackActivity {
         }
 
         loadData();
-        ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
-
+        refreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                page = 1;
-                loadData();
-            }
-        });
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page = 1;
+                        loadData();
+                    }
+                }, 1000);
 
-        ptrClassicFrameLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-
-            @Override
-            public void loadMore() {
-                page++;
-                loadData();
             }
 
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page++;
+                        loadData();
+                    }
+                }, 1000);
+
+            }
         });
 
     }
@@ -102,7 +108,7 @@ public class MylovesActivity extends BaseBackActivity {
                     }
                     adapter.addList(data);
                 }
-                ptrClassicFrameLayout.loadComplete(true);
+                refreshView.onRefreshComplete();
 
             }
 
@@ -110,7 +116,7 @@ public class MylovesActivity extends BaseBackActivity {
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
                 CommonHelper.showTip(MylovesActivity.this, e.getMessage());
-                ptrClassicFrameLayout.loadComplete(false);
+                refreshView.onRefreshComplete();
             }
         }, Love.class);
     }

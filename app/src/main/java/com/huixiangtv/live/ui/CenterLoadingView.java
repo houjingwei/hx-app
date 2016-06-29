@@ -38,7 +38,7 @@ public class CenterLoadingView  extends Dialog {
     }
 
     private void initAnim() {
-        ivImage.setImageResource(com.chanven.lib.cptr.R.drawable.animation);
+        ivImage.setImageResource(R.drawable.animation);
         animationDrawable = (AnimationDrawable) ivImage.getDrawable();
     }
 

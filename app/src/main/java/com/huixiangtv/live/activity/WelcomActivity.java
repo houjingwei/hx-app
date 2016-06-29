@@ -2,7 +2,6 @@ package com.huixiangtv.live.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -19,6 +18,7 @@ import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.image.ImageUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -94,9 +94,10 @@ public class WelcomActivity extends Activity{
                         }
                         else
                         {
-                            finish();
+
                             Intent intent = new Intent(WelcomActivity.this, MainActivity.class);
                             WelcomActivity.this.startActivity(intent);
+                            finish();
                         }
                     }
                 }
@@ -105,6 +106,7 @@ public class WelcomActivity extends Activity{
                 public void onFailure(ServiceException e) {
                     super.onFailure(e);
                     Toast.makeText(WelcomActivity.this, "当有网络不可用，加载信息失败", Toast.LENGTH_LONG).show();
+
                 }
             }, Getglobalconfig.class);
         } catch (Exception ex) {

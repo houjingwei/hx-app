@@ -144,4 +144,11 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+    }
 }

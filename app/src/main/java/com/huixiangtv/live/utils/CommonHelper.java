@@ -21,13 +21,8 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
-import com.huixiangtv.live.App;
-import com.huixiangtv.live.R;
-import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.Share;
-import com.huixiangtv.live.model.Upfeile;
-import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.LoginWindow;
 import com.huixiangtv.live.pop.ShareTwoWindow;
@@ -37,10 +32,8 @@ import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
-import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.ColaProgressTip;
 import com.huixiangtv.live.ui.EmptyView;
-import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.io.File;
@@ -466,12 +459,12 @@ public class CommonHelper {
 
 
 
-    public static void noData(String msg, ListView mListView, Activity activity) {
+    public static void noData(String msg, ListView mListView, Activity activity,int num) {
         Log.i("noData","noData"+mListView.getHeaderViewsCount());
         if(null!=mListView){
             EmptyView view = new EmptyView(activity);
             view.setMsg(msg);
-            if(mListView.getHeaderViewsCount()==0) {
+            if(mListView.getHeaderViewsCount()==num) {
                 mListView.addHeaderView(view);
             }
         }

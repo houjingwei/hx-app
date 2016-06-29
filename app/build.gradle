@@ -8,8 +8,8 @@ android {
         applicationId "com.huixiangtv.live"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.2.1"
+        versionCode 4
+        versionName "1.2.4"
         multiDexEnabled true
     }
     signingConfigs {
@@ -46,14 +46,7 @@ android {
         preDexLibraries = false
     }
 
-    splits {
-        abi {
-            enable true
-            reset()
-            include 'armeabi-v7a'
-            universalApk false
-        }
-    }
+
 
     productFlavors {
         //all32 { minSdkVersion 14 }
@@ -83,7 +76,7 @@ dependencies {
     //滑动返回
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
     //圆形头像
-    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.2@aar'
     compile files('libs/httpmime-4.1.3.jar')
     compile 'com.zhy:flowlayout-lib:1.0.3'
@@ -108,15 +101,11 @@ dependencies {
     compile project(':ijkplayer-exo')
     compile 'com.google.guava:guava:18.0'
     compile project(':QupaiLiveSDK-release1.0.1')
-    compile project(':commonPullToRefresh')
+
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.tencent.bugly:crashreport:latest.release'
-    compile project(':libraryrefresh')
     compile project(':sharelib')
-
-    compile 'com.github.k0shk0sh:PermissionHelper:1.0.9'
-
-
+    compile project(':pulltorefresh')
 }
 
 //镜像仓库

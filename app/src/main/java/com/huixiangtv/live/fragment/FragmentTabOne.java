@@ -24,31 +24,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.chanven.lib.cptr.PtrClassicFrameLayout;
-import com.chanven.lib.cptr.PtrDefaultHandler;
-import com.chanven.lib.cptr.PtrFrameLayout;
-import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.adapter.LiveAdapter;
-import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.BannerModel;
 import com.huixiangtv.live.model.ChatMessage;
-import com.huixiangtv.live.model.Getglobalconfig;
 import com.huixiangtv.live.model.HistoryMsg;
 import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.MsgExt;
 import com.huixiangtv.live.model.PlayUrl;
-import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CenterLoadingView;
+import com.huixiangtv.live.ui.HuixiangLoadingLayout;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.DepthPageTransformer;
 import com.huixiangtv.live.utils.ForwardUtils;
@@ -75,8 +70,7 @@ public class FragmentTabOne extends Fragment {
     MainActivity activity;
 
 
-    private PtrClassicFrameLayout ptrClassicFrameLayout;
-    private ListView listview;
+    private PullToRefreshListView refreshView;
     private LiveAdapter adapter;
 
     private LiveListBroadcast receiver;
@@ -140,24 +134,28 @@ public class FragmentTabOne extends Fragment {
 
 
     protected void initLayout() {
-        ptrClassicFrameLayout = (PtrClassicFrameLayout) mRootView.findViewById(R.id.test_list_view_frame);
+        refreshView = (PullToRefreshListView) mRootView.findViewById(R.id.refreshView);
+        refreshView.setMode(PullToRefreshBase.Mode.BOTH);
+        refreshView.setHeaderLayout(new HuixiangLoadingLayout(getActivity()));
+        // 使用第二底部加载布局,要先禁止掉包含（Mode.PULL_FROM_END）的模式
+        // 如修改（Mode.BOTH为Mode.PULL_FROM_START）
+        // 修改（Mode.PULL_FROM_END 为Mode.DISABLE）
+        refreshView.setFooterLayout(new HuixiangLoadingLayout(getActivity()));
         main = (LinearLayout) mRootView.findViewById(R.id.main);
-        listview = (ListView) mRootView.findViewById(R.id.test_list_view);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        refreshView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Live live = (Live) adapter.getItem((position - 1));
+                Live live = (Live) adapter.getItem((position - 2));
                 toPlayActivity(live);
             }
         });
 
         //添加banner并设置banner高度
         View bannView = LayoutInflater.from(getActivity()).inflate(R.layout.live_banner, null, false);
-        listview.addHeaderView(bannView);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) (App.screenWidth * 0.28));
         bannerView = (BannerView) bannView.findViewById(R.id.banner);
         bannerView.setLayoutParams(layoutParams);
-
+        refreshView.getRefreshableView().addHeaderView(bannView);
 
         //大图
         llTop = (LinearLayout) mRootView.findViewById(R.id.llTop);
@@ -250,26 +248,31 @@ public class FragmentTabOne extends Fragment {
     protected void initData() {
         getBanner();
         adapter = new LiveAdapter(getActivity());
-        listview.setAdapter(adapter);
+        refreshView.setAdapter(adapter);
+        refreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page=1;
+                        loadData();
+                    }
+                }, 1000);
 
-        ptrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
+            }
 
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                page = 1;
-                loadData();
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        page++;
+                        loadData();
+                    }
+                }, 1000);
+
             }
         });
 
-        ptrClassicFrameLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-
-            @Override
-            public void loadMore() {
-                page++;
-                loadData();
-            }
-
-        });
 
         loadData();
 
@@ -312,16 +315,16 @@ public class FragmentTabOne extends Fragment {
 
                 } else {
                     if (page == 1) {
-                        CommonHelper.noData("暂无直播记录哦", listview, getActivity());
+                        CommonHelper.noData("暂无直播", refreshView.getRefreshableView(), getActivity(),2);
                     }
                 }
-                ptrClassicFrameLayout.loadComplete(true);
+                refreshView.onRefreshComplete();
             }
 
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
-                ptrClassicFrameLayout.loadComplete(false);
+                refreshView.onRefreshComplete();
             }
         }, Live.class);
     }
@@ -357,7 +360,7 @@ public class FragmentTabOne extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getStringExtra("type") != null) {
                 if (intent.getStringExtra("type").toString().equals("0")) {
-                        ptrClassicFrameLayout.setVisibility(View.GONE);
+                        refreshView.setVisibility(View.GONE);
                         mRootView.findViewById(R.id.rotRl).setVisibility(View.GONE);
                         if (!hasLoadBig) {
                             loadBigViewData();
@@ -365,7 +368,7 @@ public class FragmentTabOne extends Fragment {
 
                     } else if (intent.getStringExtra("type").toString().equals("1")) {
                         mRootView.findViewById(R.id.rotRl).setVisibility(View.VISIBLE);
-                        ptrClassicFrameLayout.setVisibility(View.VISIBLE);
+                        refreshView.setVisibility(View.VISIBLE);
 
                 }
             }
