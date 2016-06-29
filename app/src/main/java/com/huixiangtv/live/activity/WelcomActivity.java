@@ -2,8 +2,10 @@ package com.huixiangtv.live.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,7 +20,6 @@ import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.image.ImageUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,13 @@ public class WelcomActivity extends Activity{
         setContentView(R.layout.activity_welcome);
         tv_oncie = (TextView) findViewById(R.id.tv_oncie);
         imUrl = (ImageView) findViewById(R.id.ivUrl);
-        getGlobalConfig();
+        //getGlobalConfig();
+         String type =  getIntent().getStringExtra("type");
+        if(null!=type && type.trim().length()>0)
+        {
+
+        }
+
     }
 
 
@@ -95,9 +102,8 @@ public class WelcomActivity extends Activity{
                         else
                         {
 
-                            Intent intent = new Intent(WelcomActivity.this, MainActivity.class);
-                            WelcomActivity.this.startActivity(intent);
-                            finish();
+                            gotoMain();
+
                         }
                     }
                 }
@@ -105,8 +111,7 @@ public class WelcomActivity extends Activity{
                 @Override
                 public void onFailure(ServiceException e) {
                     super.onFailure(e);
-                    Toast.makeText(WelcomActivity.this, "当有网络不可用，加载信息失败", Toast.LENGTH_LONG).show();
-
+                    gotoMain();
                 }
             }, Getglobalconfig.class);
         } catch (Exception ex) {
@@ -114,6 +119,18 @@ public class WelcomActivity extends Activity{
         }
     }
 
+
+    private void gotoMain(){
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                Intent intent = new Intent(WelcomActivity.this, MainActivity.class);
+                WelcomActivity.this.startActivity(intent);
+                WelcomActivity.this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                WelcomActivity.this.finish();
+            }
+        }, 2000);
+    }
 
 
 }
