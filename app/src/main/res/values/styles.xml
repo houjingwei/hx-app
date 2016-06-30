@@ -310,6 +310,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="black_bold_super_big_style">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/normal_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
 
     <!--标题栏字体样式-->

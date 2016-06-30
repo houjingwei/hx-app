@@ -219,5 +219,6 @@
     <string name="userCard">形象卡</string>
     <string name="userAuth">认证</string>
     <string name="feedBack">反馈</string>
+    <string name="my_circle">相册</string>
 
 </resources>

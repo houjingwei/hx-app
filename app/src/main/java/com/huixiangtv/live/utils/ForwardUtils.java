@@ -13,9 +13,11 @@ import com.huixiangtv.live.activity.LiveRecordActivity;
 import com.huixiangtv.live.activity.LiveRecordFinishActivity;
 import com.huixiangtv.live.activity.LoginOrRegActivity;
 import com.huixiangtv.live.activity.MyAttentionActivity;
+import com.huixiangtv.live.activity.MyCircleActivity;
 import com.huixiangtv.live.activity.MyHotsActivity;
 import com.huixiangtv.live.activity.MylovesActivity;
 import com.huixiangtv.live.activity.PhoneBindActivity;
+import com.huixiangtv.live.activity.PushDynamicActivity;
 import com.huixiangtv.live.activity.RegLiveActivity;
 import com.huixiangtv.live.activity.RegLiveMainActivity;
 import com.huixiangtv.live.activity.RegLiveNextActivity;
@@ -49,83 +51,87 @@ public class ForwardUtils {
             if(url.startsWith("http:")){
                 Intent intent = new Intent(oriActivity, H5Activity.class);
                 toH5Intent(oriActivity, url, intent);
-            }else if (url.startsWith(Constant.ACCOUNT)) {
+            }else if (url.equals(Constant.ACCOUNT)) {
                 Intent intent = new Intent(oriActivity, AccountActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.ACCOUNT)) {
+            }else if (url.equals(Constant.ACCOUNT)) {
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.USERINFO)) {
+            }else if (url.equals(Constant.USERINFO)) {
                 Intent intent = new Intent(oriActivity, UserinfoActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.USERTAG)) {
+            }else if (url.equals(Constant.USERTAG)) {
                 Intent intent = new Intent(oriActivity, UserTagActivity.class);
                 setIntentInfo(intent,params);
                 oriActivity.startActivityForResult(intent, 108);
                 oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
-            }else if (url.startsWith(Constant.ACCOUNT)){
+            }else if (url.equals(Constant.ACCOUNT)){
                 Intent intent = new Intent(oriActivity, AccountActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.LOGIN)){
+            }else if (url.equals(Constant.LOGIN)){
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.SETINT)){
+            }else if (url.equals(Constant.SETINT)){
                 Intent intent = new Intent(oriActivity, SettingActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.START_LIVE)){
+            }else if (url.equals(Constant.START_LIVE)){
                 Intent intent = new Intent(oriActivity, LiveRecordActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.LIVERECORD_FINISH)){
+            }else if (url.equals(Constant.LIVERECORD_FINISH)){
                 Intent intent = new Intent(oriActivity, LiveRecordFinishActivity.class);
                 noAniToIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.LIVE_TOPIC)){
+            }else if (url.equals(Constant.LIVE_TOPIC)){
                 Intent intent = new Intent(oriActivity, TopicActivity.class);
                 setIntentInfo(intent,params);
                 oriActivity.startActivityForResult(intent, 1);
                 oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
-            }else if (url.startsWith(Constant.LIVE)){
+            }else if (url.equals(Constant.LIVE)){
                 Intent intent = new Intent(oriActivity, LiveActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.SEARCH)){
+            }else if (url.equals(Constant.SEARCH)){
                 Intent intent = new Intent(oriActivity, SearchActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.REG_LIVE)){
+            }else if (url.equals(Constant.REG_LIVE)){
                 Intent intent = new Intent(oriActivity, RegLiveActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.REG_LIVE_NEXT)){
+            }else if (url.equals(Constant.REG_LIVE_NEXT)){
                 Intent intent = new Intent(oriActivity, RegLiveNextActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.REG_LIVE_DES)){
+            }else if (url.equals(Constant.REG_LIVE_DES)){
                 Intent intent = new Intent(oriActivity, RegLiveSuccessActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.REG_LIVE_MAIN)){
+            }else if (url.equals(Constant.REG_LIVE_MAIN)){
                 Intent intent = new Intent(oriActivity, RegLiveMainActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.startsWith(Constant.FANS)){
+            }else if (url.equals(Constant.FANS)){
                 Intent intent = new Intent(oriActivity, MyAttentionActivity.class);
                 toIntent(oriActivity,params,intent);
-            }else if (url.startsWith(Constant.PHONE_BIND)){
+            }else if (url.equals(Constant.PHONE_BIND)){
                 Intent intent = new Intent(oriActivity, PhoneBindActivity.class);
                 toIntent(oriActivity,params,intent);
-            }else if (url.startsWith(Constant.MY_FANS)){
+            }else if (url.equals(Constant.MY_FANS)){
                 Intent intent = new Intent(oriActivity, AttentionMeActivity.class);
                 toIntent(oriActivity,params,intent);
-            }else if (url.startsWith(Constant.FANED_ME)){
+            }else if (url.equals(Constant.FANED_ME)){
                 Intent intent = new Intent(oriActivity, MyAttentionActivity.class);
                 toIntent(oriActivity,params,intent);
-            }else if (url.startsWith(Constant.MY_LOVES)){
+            }else if (url.equals(Constant.MY_LOVES)){
                 Intent intent = new Intent(oriActivity, MylovesActivity.class);
                 toIntent(oriActivity,params,intent);
-            }else if (url.startsWith(Constant.PIC_LIST)){
+            }else if (url.equals(Constant.PIC_LIST)){
                 Intent intent = new Intent(oriActivity, RegPicListActivity.class);
                 toIntent(oriActivity,params,intent);
-            }else if (url.startsWith(Constant.MY_HOTS)){
+            }else if (url.equals(Constant.MY_HOTS)){
                 Intent intent = new Intent(oriActivity, MyHotsActivity.class);
                 toIntent(oriActivity,params,intent);
-            }
-
-            else if (url.startsWith(Constant.BINNER_URL)){
+            }else if (url.equals(Constant.BINNER_URL)){
                 Intent intent = new Intent(oriActivity, WebActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.equals(Constant.OWN_CIRCLE)){
+                Intent intent = new Intent(oriActivity, MyCircleActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.equals(Constant.PUSH_DYNAMIC)){
+                Intent intent = new Intent(oriActivity, PushDynamicActivity.class);
                 toIntent(oriActivity,params,intent);
             }
 

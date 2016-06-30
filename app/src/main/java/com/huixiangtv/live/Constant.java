@@ -46,7 +46,8 @@ public class Constant {
 
     public static final String POPULARITY = BASE_PRE+"popularity";
     public static final String MY_HOTS = BASE_PRE+"hots";
-
+    public static final String OWN_CIRCLE = BASE_PRE+"own_circle";
+    public static final String PUSH_DYNAMIC = BASE_PRE+"push_dynamic";
 
 
     public static String MY_LOVES = BASE_PRE+"my_loves";

@@ -82,6 +82,7 @@ public class BubbView {
         return flowerAnim;
     }
 
+
     private void initOneAnimator(View view) {
         animator1 = ObjectAnimator.ofFloat(view, "alpha",0.3f);
         animator2 = ObjectAnimator.ofFloat(view, "scaleX",0.9f,1.2f);
