@@ -47,6 +47,14 @@ android {
     }
 
 
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a'
+            universalApk false
+        }
+    }
 
     productFlavors {
         //all32 { minSdkVersion 14 }

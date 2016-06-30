@@ -37,6 +37,7 @@
     <string name="live">直播</string>
     <string name="love">爱心</string>
     <string name="set">设置</string>
+    <string name="coupon">优惠码</string>
     <string name="response">意见反馈</string>
     <string name="moneyBag">钱包</string>
     <string name="balance">账户余额:</string>
@@ -220,5 +221,17 @@
     <string name="userAuth">认证</string>
     <string name="feedBack">反馈</string>
     <string name="my_circle">相册</string>
+    <string name="ip_coupon">输入优惠码</string>
+    <string name="ip_get">立即领取</string>
+    <string name="coupon_des">优惠说明:</string>
+    <string name="coupon_des1">爱心用于在回响直播平台消费，为喜欢艺人送爱心，兑换回响币。</string>
+    <string name="coupon_des2">领取爱心，玩转回响直播，为你喜欢的主播加油！</string>
+    <string name="coupon_title_s">邀请朋友获得优惠</string>
+    <string name="coupon_title">优惠</string>
+    <string name="love_des">已存入至爱心账户</string>
+    <string name="my_know">我知道了</string>
+    <string name="see_record_love">查看爱心记录</string>
+
+
 
 </resources>

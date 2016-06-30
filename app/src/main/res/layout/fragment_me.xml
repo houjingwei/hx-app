@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:background="@color/sysBg"
     android:layout_height="match_parent"
+    android:background="@color/sysBg"
     android:orientation="vertical">
+
     <ScrollView
         android:id="@+id/faxian_content"
         android:layout_width="match_parent"
@@ -31,21 +32,21 @@
                     android:id="@+id/ivPhoto"
                     android:layout_width="66dp"
                     android:layout_height="66dp"
-                    android:src="@drawable/default_head"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    app:siBorderWidth="2dp"
-                    app:siBorderColor="@color/white"/>
+                    android:src="@drawable/default_head"
+                    app:siBorderColor="@color/white"
+                    app:siBorderWidth="2dp" />
 
                 <LinearLayout
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/ivPhoto"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
-                    >
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
+
                     <TextView
                         android:id="@+id/tvNickName"
                         style="@style/black_bigger_style"
@@ -54,11 +55,13 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
                         android:text="刘亦菲" />
+
                     <LinearLayout
-                        android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/tvFans"
                             style="@style/gray_normal_style"
@@ -67,6 +70,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="10dp"
                             android:text="0" />
+
                         <TextView
                             style="@style/gray_normal_style"
                             android:layout_width="wrap_content"
@@ -74,6 +78,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="3dp"
                             android:text="粉丝" />
+
                         <TextView
                             android:id="@+id/tvHots"
                             style="@style/gray_normal_style"
@@ -82,6 +87,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="20dp"
                             android:text="0" />
+
                         <TextView
                             style="@style/gray_normal_style"
                             android:layout_width="wrap_content"
@@ -93,6 +99,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
@@ -102,16 +109,14 @@
             </RelativeLayout>
 
 
-
             <RelativeLayout
                 android:id="@+id/rlAccount"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/listview"
                 android:paddingLeft="8dp"
-                android:paddingRight="5dp"
-                >
+                android:paddingRight="5dp">
 
                 <ImageView
                     android:id="@+id/ivAccount"
@@ -124,11 +129,11 @@
                     style="@style/black_normal_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/ivAccount"
-                    android:text="@string/account" />
+                    android:text="@string/account"
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="16dp"
@@ -137,20 +142,21 @@
                     android:layout_centerVertical="true"
                     android:src="@mipmap/icon_go" />
             </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:id="@+id/rlLove"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/listview"
                     android:paddingLeft="8dp"
-                    android:paddingRight="5dp"
-                    >
+                    android:paddingRight="5dp">
 
                     <ImageView
                         android:id="@+id/ivLove"
@@ -163,11 +169,11 @@
                         style="@style/black_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@id/ivLove"
-                        android:text="@string/love" />
+                        android:text="@string/love"
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="16dp"
@@ -180,15 +186,54 @@
                 <View
                     style="@style/split_line"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="45dp"/>
+                    android:layout_marginLeft="45dp" />
+
+
+                <RelativeLayout
+                    android:id="@+id/rlCoupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/listview"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="5dp">
+
+                    <ImageView
+                        android:id="@+id/ivCoupon"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/v2_coupon" />
+
+                    <TextView
+                        style="@style/black_normal_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/ivCoupon"
+                        android:text="@string/coupon"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/icon_go" />
+                </RelativeLayout>
+
+                <View
+                    style="@style/split_line"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="45dp" />
+
                 <RelativeLayout
                     android:id="@+id/rlCard"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/listview"
                     android:paddingLeft="8dp"
-                    android:paddingRight="5dp"
-                    >
+                    android:paddingRight="5dp">
 
                     <ImageView
                         android:id="@+id/ivCard"
@@ -201,11 +246,11 @@
                         style="@style/black_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@id/ivCard"
-                        android:text="@string/userCard" />
+                        android:text="@string/userCard"
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="16dp"
@@ -220,7 +265,7 @@
                 <View
                     style="@style/split_line"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="45dp"/>
+                    android:layout_marginLeft="45dp" />
 
                 <RelativeLayout
                     android:id="@+id/rlAuth"
@@ -257,20 +302,21 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:id="@+id/rlSetting"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/listview"
                     android:paddingLeft="8dp"
-                    android:paddingRight="5dp"
-                    >
+                    android:paddingRight="5dp">
 
                     <ImageView
                         android:id="@+id/ivSetting"
@@ -283,11 +329,11 @@
                         style="@style/black_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@id/ivSetting"
-                        android:text="@string/set" />
+                        android:text="@string/set"
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="16dp"
@@ -300,15 +346,15 @@
                 <View
                     style="@style/split_line"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="45dp"/>
+                    android:layout_marginLeft="45dp" />
+
                 <RelativeLayout
                     android:id="@+id/rlFeedBack"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/listview"
                     android:paddingLeft="8dp"
-                    android:paddingRight="5dp"
-                    >
+                    android:paddingRight="5dp">
 
                     <ImageView
                         android:id="@+id/ivFeedBack"
@@ -321,11 +367,11 @@
                         style="@style/black_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@id/ivFeedBack"
-                        android:text="@string/feedBack" />
+                        android:text="@string/feedBack"
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="16dp"
@@ -338,7 +384,6 @@
                 </RelativeLayout>
 
             </LinearLayout>
-
 
 
         </LinearLayout>
