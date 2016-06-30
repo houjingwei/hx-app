@@ -56,6 +56,7 @@
                         android:id="@+id/ll_per_info"
                         android:layout_width="wrap_content"
                         android:layout_height="60dp"
+                        android:visibility="gone"
                         android:layout_gravity="bottom|left"
                         android:background="@color/black80"
                         android:clickable="true"

@@ -11,10 +11,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,9 +106,38 @@ public class RegLiveMainActivity extends BaseBackActivity {
         pictureHelper = new PictureHelper(this);
         pictureHelper.setOnSelectPicListener(selectPictureListener);
         pictureHelper.needCropPicture(false);//不需要对图片进行裁剪。
-
+        setListener();
     }
 
+    private void setListener(){
+
+        phone.addTextChangedListener(new EditChangedListener());
+    }
+
+    private class EditChangedListener implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if(s.toString().trim().length()==0)
+            {
+                hqyzm.setEnabled(false);
+                hqyzm.setBackgroundResource(R.drawable.button_radius_no);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+            hqyzm.setEnabled(true);
+            hqyzm.setBackgroundResource(R.drawable.button_radius);
+
+        }
+    };
 
     private void upHeadPhoto() {
         SelectPicWayWindow selectPicWayWindow = new SelectPicWayWindow(RegLiveMainActivity.this, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -223,21 +255,27 @@ public class RegLiveMainActivity extends BaseBackActivity {
 
 
     public static void popupLoginNotice(final Activity activity, final Context context) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context).setTitle("").setMessage(R.string.request_auth)
-                .setPositiveButton("去设置艺人卡", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                        ForwardUtils.target(activity, Constant.PIC_LIST,null);
+        final AlertDialog dlg = new AlertDialog.Builder(context).create();
+        dlg.show();
+        Window window = dlg.getWindow();
+        window.setContentView(R.layout.card_alert);
+        window.findViewById(R.id.tvGoSetting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ForwardUtils.target(activity, Constant.PIC_LIST, null);
+            }
+        });
+        window.findViewById(R.id.tvCLose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dlg.dismiss();
+            }
+        });
 
-                    }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                }).create();
 
-        alertDialog.show();
+
+
     }
 
 }

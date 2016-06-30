@@ -223,6 +223,9 @@
             android:configChanges="screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".activity.CouponActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle"></activity>
 
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
