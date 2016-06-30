@@ -17,10 +17,6 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
-import com.lzy.imagepicker.ImagePicker;
-import com.lzy.imagepicker.bean.ImageItem;
-import com.lzy.imagepicker.loader.GlideImageLoader;
-import com.lzy.imagepicker.ui.ImageGridActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +39,12 @@ public class PushDynamicActivity extends AppCompatActivity implements View.OnCli
 
         initView();
 
-        ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new GlideImageLoader());   //设置图片加载器
-        imagePicker.setShowCamera(true);  //显示拍照按钮
-        imagePicker.setCrop(false);        //允许裁剪（单选才有效）
-        imagePicker.setSaveRectangle(true); //是否按矩形区域保存
-        imagePicker.setSelectLimit(9);    //选中数量限制
+        initImagePicker();//最好放到 Application oncreate执行
+        
+    }
+
+    private void initImagePicker() {
+
     }
 
     private void initView() {
@@ -97,8 +93,7 @@ public class PushDynamicActivity extends AppCompatActivity implements View.OnCli
     public static final int REQUEST_CODE_SELECT = 100;
     private void choisePhoto() {
         Log.i("choise","photo");
-        Intent intent = new Intent(this, ImageGridActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_SELECT);
+
     }
 
 
@@ -106,14 +101,7 @@ public class PushDynamicActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
-            //添加图片返回
-            if (data != null && requestCode == REQUEST_CODE_SELECT) {
-                ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                selImageList.addAll(images);
 
-            }
-        }
     }
 
 

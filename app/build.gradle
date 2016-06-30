@@ -107,7 +107,7 @@ dependencies {
     compile project(':sharelib')
     compile project(':pulltorefresh')
 
-    compile 'com.lzy.widget:imagepicker:0.2.6'
+
 }
 
 //镜像仓库
