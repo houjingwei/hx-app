@@ -258,6 +258,7 @@ public class RegPicListActivity extends BaseBackActivity {
         ll_per_info.getBackground().setAlpha(150);
 
 
+
         ll_per_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -480,8 +481,10 @@ public class RegPicListActivity extends BaseBackActivity {
                 dropImageModel.setIsFinish(0);
             }
 
-            if (cp != null && cp.isShowing())
+            if (cp != null && cp.isShowing()) {
+                ll_per_info.setVisibility(View.VISIBLE);
                 cp.dismiss();
+            }
         } else {
             return;
         }
@@ -1169,6 +1172,8 @@ public class RegPicListActivity extends BaseBackActivity {
                         ll_per_info.setTag("1");
                         if (cp != null && cp.isShowing())
                             cp.dismiss();
+
+                        ll_per_info.setVisibility(View.VISIBLE);
                         mertoBeans.clear();
                         CommonUtil.setGuidImage(RegPicListActivity.this, R.id.r1, R.drawable.click_pic, "first1", new ApiCallback() {
 

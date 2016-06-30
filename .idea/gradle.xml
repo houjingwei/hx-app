@@ -19,6 +19,8 @@
             <option value="$PROJECT_DIR$/wximagepicker" />
           </set>
         </option>
+<<<<<<< HEAD
+=======
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -32,6 +34,7 @@
             <option value="$PROJECT_DIR$/wximagepicker" />
           </set>
         </option>
+>>>>>>> b1ea0dc1d9e7abc10ec8546909ff70296105190b
       </GradleProjectSettings>
     </option>
   </component>

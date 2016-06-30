@@ -9,7 +9,9 @@
       <module fileurl="file://$PROJECT_DIR$/ijkplayer-java/ijkplayer-java.iml" filepath="$PROJECT_DIR$/ijkplayer-java/ijkplayer-java.iml" />
       <module fileurl="file://$PROJECT_DIR$/photopicker/photopicker.iml" filepath="$PROJECT_DIR$/photopicker/photopicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/pulltorefresh/pulltorefresh.iml" filepath="$PROJECT_DIR$/pulltorefresh/pulltorefresh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pulltorefresh/pulltorefresh.iml" filepath="$PROJECT_DIR$/pulltorefresh/pulltorefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/sharelib/sharelib.iml" filepath="$PROJECT_DIR$/sharelib/sharelib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wximagepicker/wximagepicker.iml" filepath="$PROJECT_DIR$/wximagepicker/wximagepicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/wximagepicker/wximagepicker.iml" filepath="$PROJECT_DIR$/wximagepicker/wximagepicker.iml" />
     </modules>
   </component>

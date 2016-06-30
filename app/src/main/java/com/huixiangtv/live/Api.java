@@ -135,5 +135,7 @@ public class Api {
 
     public static final String GETGLOBALCONFIG =  BASE_URL+"/config/getGlobalConfig";
 
+    public static final String SHAREBINDSHARECODE = BASE_URL+"/share/bindShareCode";
+
 
 }

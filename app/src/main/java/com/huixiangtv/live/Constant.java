@@ -49,6 +49,7 @@ public class Constant {
     public static final String OWN_CIRCLE = BASE_PRE+"own_circle";
     public static final String PUSH_DYNAMIC = BASE_PRE+"push_dynamic";
 
+    public static final String COUPON =BASE_PRE+"coupon";
 
     public static String MY_LOVES = BASE_PRE+"my_loves";
 

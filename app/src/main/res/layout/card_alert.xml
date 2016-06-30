@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:background="@drawable/edittext_bg_nor"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="认证成功"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:text="设置形象卡后，才能被推荐，吸引更多粉丝关注"
+                android:textSize="14sp" />
+
+
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e2e2e2"></View>
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:id="@+id/tvCLose"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/blue"
+
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="取消" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_marginTop="5dp"
+                android:layout_height="30dp"
+                android:background="#e2e2e2"></View>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textColor="@color/blue"
+                android:id="@+id/tvGoSetting"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="立即设置" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

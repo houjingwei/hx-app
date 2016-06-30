@@ -90,7 +90,7 @@ public class RegPicActivity extends BaseBackActivity {
 
         }
 
-        vp_photos.setPageTransformer(true,new RotateTransformer());
+        //vp_photos.setPageTransformer(true,new RotateTransformer());
     }
 
 
