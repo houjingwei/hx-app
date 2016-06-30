@@ -1,4 +1,4 @@
-include ':app', ':photopicker', ':ijkplayer-java', ':ijkplayer-exo', ':PhotoPicker', ':QupaiLiveSDK-release1.0.1', ':sharelib', ':pulltorefresh', ':wximagepicker'
+include ':app', ':ijkplayer-java', ':ijkplayer-exo', ':QupaiLiveSDK-release1.0.1', ':sharelib', ':pulltorefresh', ':PhotoPicker'
 
 
 
