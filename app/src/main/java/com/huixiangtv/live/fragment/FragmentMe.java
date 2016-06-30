@@ -42,7 +42,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
     }
 
     private void initData() {
-        ArtistCardInfoStatus();
+        //ArtistCardInfoStatus();
         User user = App.getLoginUser();
         if (user != null) {
             tvNickName.setText(user.getNickName());
