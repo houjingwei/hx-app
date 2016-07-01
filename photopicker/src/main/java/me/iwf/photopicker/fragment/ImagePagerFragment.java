@@ -118,7 +118,6 @@ public class ImagePagerFragment extends Fragment {
     }
 
     mPagerAdapter = new PhotoPagerAdapter(Glide.with(this), paths);
-
   }
 
 
@@ -302,6 +301,8 @@ public class ImagePagerFragment extends Fragment {
     paths.clear();
     paths = null;
 
-    mViewPager.setAdapter(null);
+    if (mViewPager != null) {
+      mViewPager.setAdapter(null);
+    }
   }
 }

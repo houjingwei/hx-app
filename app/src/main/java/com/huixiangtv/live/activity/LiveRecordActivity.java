@@ -390,7 +390,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
             case LiveStreamStatus.CONNECTION_ERROR_INVALIDARGUMENT:
             case LiveStreamStatus.CONNECTION_ERROR_NETWORKUNREACHABLE:
                 if (mIsRecording) {
-                    mLiveRecorder.reconnect(null);
+                    mLiveRecorder.reconnect();
                 } else {
                     mLiveRecorder.release();
                     mLiveRecorder = null;
@@ -409,7 +409,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
                 break;
             default:
                 if (mIsRecording) {
-                    mLiveRecorder.reconnect(null);
+                    mLiveRecorder.reconnect();
                 } else {
                     stopRecorder();
                     mLiveRecorder.release();
@@ -684,7 +684,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
             }
             initLiveRecord(pushUrl);
             //ip_address这里修改为可以直接ip推流.就近原则。建议使用httpDNS得到最优ip.直接推流.不用即直接传null
-            mLiveRecorder.start(this,null);
+            mLiveRecorder.start(this);
             mIsRecording = true;
             Log.i(TAG, "************** Starting live stream! **************");
         }catch(Exception e){

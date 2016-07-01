@@ -16,16 +16,17 @@ import android.view.View;
 import java.util.List;
 import me.iwf.photopicker.fragment.ImagePagerFragment;
 
+import static me.iwf.photopicker.PhotoPicker.KEY_SELECTED_PHOTOS;
+import static me.iwf.photopicker.PhotoPreview.EXTRA_CURRENT_ITEM;
+import static me.iwf.photopicker.PhotoPreview.EXTRA_PHOTOS;
+import static me.iwf.photopicker.PhotoPreview.EXTRA_SHOW_DELETE;
+
 /**
  * Created by donglua on 15/6/24.
  */
 public class PhotoPagerActivity extends AppCompatActivity {
 
   private ImagePagerFragment pagerFragment;
-
-  public final static String EXTRA_CURRENT_ITEM = "current_item";
-  public final static String EXTRA_PHOTOS = "photos";
-  public final static String EXTRA_SHOW_DELETE = "show_delete";
 
   private ActionBar actionBar;
   private boolean showDelete;
@@ -37,7 +38,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
 
     int currentItem = getIntent().getIntExtra(EXTRA_CURRENT_ITEM, 0);
     List<String> paths = getIntent().getStringArrayListExtra(EXTRA_PHOTOS);
-    showDelete = getIntent().getBooleanExtra(EXTRA_SHOW_DELETE,true);
+    showDelete = getIntent().getBooleanExtra(EXTRA_SHOW_DELETE, true);
 
     pagerFragment =
         (ImagePagerFragment) getSupportFragmentManager().findFragmentById(R.id.photoPagerFragment);
@@ -55,7 +56,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
         actionBar.setElevation(25);
       }
     }
-
 
 
     pagerFragment.getViewPager().addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -77,7 +77,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
   @Override public void onBackPressed() {
 
     Intent intent = new Intent();
-    intent.putExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS, pagerFragment.getPaths());
+    intent.putExtra(KEY_SELECTED_PHOTOS, pagerFragment.getPaths());
     setResult(RESULT_OK, intent);
     finish();
 
@@ -109,8 +109,9 @@ public class PhotoPagerActivity extends AppCompatActivity {
             .setPositiveButton(R.string.__picker_yes, new DialogInterface.OnClickListener() {
               @Override public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-                setResult(RESULT_OK);
-                finish();
+                pagerFragment.getPaths().remove(index);
+                pagerFragment.getViewPager().getAdapter().notifyDataSetChanged();
+                onBackPressed();
               }
             })
             .setNegativeButton(R.string.__picker_cancel, new DialogInterface.OnClickListener() {

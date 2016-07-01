@@ -9,30 +9,32 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import me.iwf.photopicker.entity.Photo;
 import me.iwf.photopicker.event.OnItemCheckListener;
 import me.iwf.photopicker.fragment.ImagePagerFragment;
 import me.iwf.photopicker.fragment.PhotoPickerFragment;
 
 import static android.widget.Toast.LENGTH_LONG;
+import static me.iwf.photopicker.PhotoPicker.DEFAULT_COLUMN_NUMBER;
+import static me.iwf.photopicker.PhotoPicker.DEFAULT_MAX_COUNT;
+import static me.iwf.photopicker.PhotoPicker.EXTRA_GRID_COLUMN;
+import static me.iwf.photopicker.PhotoPicker.EXTRA_MAX_COUNT;
+import static me.iwf.photopicker.PhotoPicker.EXTRA_ORIGINAL_PHOTOS;
+import static me.iwf.photopicker.PhotoPicker.EXTRA_PREVIEW_ENABLED;
+import static me.iwf.photopicker.PhotoPicker.EXTRA_SHOW_CAMERA;
+import static me.iwf.photopicker.PhotoPicker.EXTRA_SHOW_GIF;
+import static me.iwf.photopicker.PhotoPicker.KEY_SELECTED_PHOTOS;
 
 public class PhotoPickerActivity extends AppCompatActivity {
 
   private PhotoPickerFragment pickerFragment;
   private ImagePagerFragment imagePagerFragment;
-
-  public final static String EXTRA_MAX_COUNT     = "MAX_COUNT";
-  public final static String EXTRA_SHOW_CAMERA   = "SHOW_CAMERA";
-  public final static String EXTRA_SHOW_GIF      = "SHOW_GIF";
-  public final static String KEY_SELECTED_PHOTOS = "SELECTED_PHOTOS";
-  public final static String EXTRA_GRID_COLUMN   = "column";
-
   private MenuItem menuDoneItem;
 
-  public final static int DEFAULT_MAX_COUNT = 9;
-  public final static int DEFAULT_COLUMN_NUMBER = 3;
 
   private int maxCount = DEFAULT_MAX_COUNT;
 
@@ -41,13 +43,16 @@ public class PhotoPickerActivity extends AppCompatActivity {
 
   private boolean showGif = false;
   private int columnNumber = DEFAULT_COLUMN_NUMBER;
+  private ArrayList<String> originalPhotos = null;
 
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    boolean showCamera = getIntent().getBooleanExtra(EXTRA_SHOW_CAMERA, true);
-    boolean showGif    = getIntent().getBooleanExtra(EXTRA_SHOW_GIF, false);
+    boolean showCamera      = getIntent().getBooleanExtra(EXTRA_SHOW_CAMERA, true);
+    boolean showGif         = getIntent().getBooleanExtra(EXTRA_SHOW_GIF, false);
+    boolean previewEnabled  = getIntent().getBooleanExtra(EXTRA_PREVIEW_ENABLED, true);
+
     setShowGif(showGif);
 
     setContentView(R.layout.__picker_activity_photo_picker);
@@ -66,13 +71,18 @@ public class PhotoPickerActivity extends AppCompatActivity {
 
     maxCount = getIntent().getIntExtra(EXTRA_MAX_COUNT, DEFAULT_MAX_COUNT);
     columnNumber = getIntent().getIntExtra(EXTRA_GRID_COLUMN, DEFAULT_COLUMN_NUMBER);
+    originalPhotos = getIntent().getStringArrayListExtra(EXTRA_ORIGINAL_PHOTOS);
 
-    pickerFragment = PhotoPickerFragment.newInstance(showCamera, showGif, columnNumber, maxCount);
-    getSupportFragmentManager()
-        .beginTransaction()
-        .replace(R.id.container, pickerFragment)
-        .commit();
-    getSupportFragmentManager().executePendingTransactions();
+    pickerFragment = (PhotoPickerFragment) getSupportFragmentManager().findFragmentByTag("tag");
+    if (pickerFragment == null) {
+      pickerFragment = PhotoPickerFragment
+          .newInstance(showCamera, showGif, previewEnabled, columnNumber, maxCount, originalPhotos);
+      getSupportFragmentManager()
+          .beginTransaction()
+          .replace(R.id.container, pickerFragment, "tag")
+          .commit();
+      getSupportFragmentManager().executePendingTransactions();
+    }
 
     pickerFragment.getPhotoGridAdapter().setOnItemCheckListener(new OnItemCheckListener() {
       @Override public boolean OnItemCheck(int position, Photo photo, final boolean isCheck, int selectedItemCount) {
@@ -135,7 +145,13 @@ public class PhotoPickerActivity extends AppCompatActivity {
     if (!menuIsInflated) {
       getMenuInflater().inflate(R.menu.__picker_menu_picker, menu);
       menuDoneItem = menu.findItem(R.id.done);
-      menuDoneItem.setEnabled(false);
+      if (originalPhotos != null && originalPhotos.size() > 0) {
+        menuDoneItem.setEnabled(true);
+        menuDoneItem.setTitle(
+                getString(R.string.__picker_done_with_count, originalPhotos.size(), maxCount));
+      } else {
+        menuDoneItem.setEnabled(false);
+      }
       menuIsInflated = true;
       return true;
     }
