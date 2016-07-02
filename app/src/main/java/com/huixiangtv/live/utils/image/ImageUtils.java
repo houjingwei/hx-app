@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.model.Upfeile;
+import com.huixiangtv.live.model.Upfile;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
@@ -38,8 +38,10 @@ import com.tencent.upload.Const;
 import com.tencent.upload.UploadManager;
 import com.tencent.upload.task.ITask;
 import com.tencent.upload.task.IUploadTaskListener;
+import com.tencent.upload.task.VideoAttr;
 import com.tencent.upload.task.data.FileInfo;
 import com.tencent.upload.task.impl.PhotoUploadTask;
+import com.tencent.upload.task.impl.VideoUploadTask;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -132,6 +134,8 @@ public final class ImageUtils {
     }
 
 
+
+
     public static class SimpleProgressListener implements ImageLoadingListener, ImageLoadingProgressListener {
 
         @Override
@@ -162,11 +166,11 @@ public final class ImageUtils {
 
 
 
-    public static void upFileInfo(Map<String,String> params ,final ApiCallback<Upfeile> apiCallback) {
+    public static void upFileInfo(Map<String,String> params ,final ApiCallback<Upfile> apiCallback) {
 
-        RequestUtils.sendPostRequest(Api.UPLOAD_FILE_INFO, params, new ResponseCallBack<Upfeile>() {
+        RequestUtils.sendPostRequest(Api.UPLOAD_FILE_INFO, params, new ResponseCallBack<Upfile>() {
             @Override
-            public void onSuccess(Upfeile data) {
+            public void onSuccess(Upfile data) {
                 super.onSuccess(data);
                 if (null != data) {
                     apiCallback.onSuccess(data);
@@ -177,12 +181,32 @@ public final class ImageUtils {
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
             }
-        }, Upfeile.class);
+        }, Upfile.class);
 //        ImageUtils.display(ivPhoto,picUri);
     }
 
 
-    public static void upFile(Activity activity,Upfeile data, String picUri,final ApiCallback callBack) {
+
+    public static void upVideoInfo(Map<String,String> params ,final ApiCallback<Upfile> apiCallback) {
+        RequestUtils.sendPostRequest(Api.UPLOAD_VIDEO_INFO, params, new ResponseCallBack<Upfile>() {
+            @Override
+            public void onSuccess(Upfile data) {
+                super.onSuccess(data);
+                if (null != data) {
+                    apiCallback.onSuccess(data);
+                }
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, Upfile.class);
+//        ImageUtils.display(ivPhoto,picUri);
+    }
+
+
+    public static void upFile(Activity activity, Upfile data, String picUri, final ApiCallback callBack) {
 
         UploadManager fileUploadMgr = new UploadManager(activity,data.getAppId(), Const.FileType.Photo,data.getPersistenceId());
         PhotoUploadTask task = new PhotoUploadTask(picUri,new IUploadTaskListener() {
@@ -214,6 +238,42 @@ public final class ImageUtils {
         task.setAuth(data.getSig());
         fileUploadMgr.upload(task);
 
+    }
+
+
+
+    public static void upVideo(Activity activity, Upfile data, String videoPath, final ApiCallback<FileInfo> callBack) {
+        UploadManager fileUploadMgr = new UploadManager(activity,data.getAppId(), Const.FileType.Video,data.getPersistenceId());
+
+        VideoAttr videoAttr = new VideoAttr(); videoAttr.isCheck = false;
+        videoAttr.title = "";
+        videoAttr.desc = "";
+        videoAttr.coverUrl = ""; // 视频封面地址
+        VideoUploadTask videoTask = new VideoUploadTask(data.getBucket(), videoPath,data.getFileName(), "", videoAttr,new IUploadTaskListener(){
+
+
+            @Override
+            public void onUploadSucceed(FileInfo fileInfo) {
+                callBack.onSuccess(fileInfo);
+            }
+
+            @Override
+            public void onUploadFailed(int i, String s) {
+
+            }
+
+            @Override
+            public void onUploadProgress(long l, long l1) {
+
+            }
+
+            @Override
+            public void onUploadStateChange(ITask.TaskState taskState) {
+
+            }
+        });
+        videoTask.setAuth(data.getSig());
+        fileUploadMgr.upload(videoTask);
     }
 
 

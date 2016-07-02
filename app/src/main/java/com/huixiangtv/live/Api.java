@@ -52,7 +52,11 @@ public class Api {
 
     //获取验证码
     public static final String MSG_CODE = BASE_URL+"auth/getVerifCode";
+
+
     public static final String UPLOAD_FILE_INFO = BASE_URL+"resource/getImageUploadInfo";
+
+    public static final String UPLOAD_VIDEO_INFO = BASE_URL+"resource/getVideoUploadInfo";
 
     //喊话
     public static final String GIFT_PAYMENT = BASE_URL+"pay/shoutGiftPayment";
@@ -69,6 +73,8 @@ public class Api {
     public static final String ATTENTIOIN_STATUS = BASE_URL+"fans/isFollowed";
     //分享加爱心
     public static final String ADD_LOVE = BASE_URL+"promote/isShared";
+    //发布动态
+    public static final String CREATE_DYNAMIC = BASE_URL+"dynamic/createDynamic";
 
 
     //我关注的人

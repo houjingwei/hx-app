@@ -3,7 +3,7 @@ package com.huixiangtv.live.model;
 /**
  * Created by hjw on 2016/5/25.
  */
-public class Upfeile {
+public class Upfile {
 
     private String bucket;
     private String sig;
