@@ -35,7 +35,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
+        android:paddingBottom="5dp"
         android:background="@color/white">
 
         <EditText
@@ -44,9 +44,8 @@
             android:gravity="top"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:textScaleX="0.2"
             android:lineSpacingMultiplier="1.2"
-            style="@style/gray02_normal_style"
+            style="@style/gray_normal_style"
             android:hint="给大家一起分享什么…"
             android:textColorHint="@color/gray"
             android:background="@null"/>
@@ -54,7 +53,7 @@
             android:id="@+id/llContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
 
         </LinearLayout>

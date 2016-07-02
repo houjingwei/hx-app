@@ -41,3 +41,59 @@
 -dontwarn com.google.auto.factory.processor.**
 
 -dontwarn com.google.common.cache.** -dontwarn com.google.common.primitives.** -dontwarn com.duanqu.qupai.orch.android.** -dontwarn com.duanqu.qupai.utils.** -dontwarn com.google.common.** -keep class com.duanqu.** -keepclassmembers class com.duanqu.** { *; }
+
+-dontobfuscate
+-keep class com.duanqu.qupai.jni.Releasable
+-keep class com.duanqu.qupai.jni.ANativeObject
+-dontwarn com.google.common.primitives.**
+-dontwarn com.google.common.cache.**
+-dontwarn com.google.auto.common.**
+-dontwarn com.google.auto.factory.processor.**
+-dontwarn com.fasterxml.jackson.**
+-dontwarn net.jcip.annotations.**
+-dontwarn javax.annotation.**
+-dontwarn org.apache.http.client.utils.URIUtils
+-keep class javax.annotation.** { *; }
+
+-keep class * extends com.duanqu.qupai.jni.ANativeObject
+-keep @com.duanqu.qupai.jni.AccessedByNative class *
+-keep class com.duanqu.qupai.bean.DIYOverlaySubmit
+-keep public interface com.duanqu.qupai.android.app.QupaiServiceImpl$QupaiService {*;}
+-keep class com.duanqu.qupai.android.app.QupaiServiceImpl
+
+-keep class com.duanqu.qupai.BeautySkinning
+-keep class com.duanqu.qupai.render.BeautyRenderer
+-keep public interface com.duanqu.qupai.render.BeautyRenderer$Renderer {*;}
+-keepclassmembers @com.duanqu.qupai.jni.AccessedByNative class * {
+    *;
+}
+-keepclassmembers class * {
+    @com.duanqu.qupai.jni.AccessedByNative *;
+}
+-keepclassmembers class * {
+    @com.duanqu.qupai.jni.CalledByNative *;
+}
+
+-keepclasseswithmembers class * {
+    native <methods>;
+}
+
+-keepclassmembers class * {
+    native <methods>;
+}
+-keepclassmembers class com.duanqu.qupai.** {
+    *;
+}
+
+-keep class com.duanqu.qupai.recorder.EditorCreateInfo$VideoSessionClientImpl {
+    *;
+}
+-keep class com.duanqu.qupai.recorder.EditorCreateInfo$SessionClientFctoryImpl {
+    *;
+}
+-keep class com.duanqu.qupai.recorder.EditorCreateInfo{
+    *;
+}
+
+-keepattributes Signature
+-keepnames class com.fasterxml.jackson.** { *; }

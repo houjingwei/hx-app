@@ -9,8 +9,10 @@
 
     <com.github.siyamed.shapeimageview.CircularImageView
         android:id="@+id/ivPhoto"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:src="@drawable/default_head"
-        android:layout_marginLeft="2dp"/>
+        android:layout_marginLeft="2dp"
+        app:siBorderWidth="1dp"
+        app:siBorderColor="@color/trans"/>
 </RelativeLayout>

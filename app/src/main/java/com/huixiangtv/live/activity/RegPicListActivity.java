@@ -15,8 +15,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler.Callback;
 import android.os.Handler;
+import android.os.Handler.Callback;
 import android.os.Message;
 import android.os.Vibrator;
 import android.provider.MediaStore;
@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,7 +45,7 @@ import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.config.Config;
 import com.huixiangtv.live.model.DropImageModel;
 import com.huixiangtv.live.model.Share;
-import com.huixiangtv.live.model.Upfeile;
+import com.huixiangtv.live.model.Upfile;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
@@ -53,7 +54,6 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.utils.BitmapHelper;
 import com.huixiangtv.live.utils.CommonHelper;
-import com.huixiangtv.live.utils.ShareSdk;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.DropImageView;
 import com.huixiangtv.live.utils.widget.MySeekBar;
@@ -61,9 +61,6 @@ import com.tencent.upload.task.data.FileInfo;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 
-import android.widget.FrameLayout.LayoutParams;
-
-import org.w3c.dom.Text;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -71,7 +68,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -79,12 +75,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPickerActivity;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
 import simbest.com.sharelib.ShareModel;
@@ -780,7 +774,7 @@ public class RegPicListActivity extends BaseBackActivity {
             List<String> photos = null;
             BitmapDrawable bd;
             if (data != null && requestCode != REQUEST_CODE_CAT) {
-                photos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
             }
 //            if (requestCode == REQUEST_CODE_ALL) {
 //                File file = new File(photos.get((0)));
@@ -1354,9 +1348,9 @@ public class RegPicListActivity extends BaseBackActivity {
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("type", "1");
-        ImageUtils.upFileInfo(params, new ApiCallback<Upfeile>() {
+        ImageUtils.upFileInfo(params, new ApiCallback<Upfile>() {
             @Override
-            public void onSuccess(Upfeile data) {
+            public void onSuccess(Upfile data) {
                 ImageUtils.upFile(RegPicListActivity.this, data, path, new ApiCallback<FileInfo>() {
                     @Override
                     public void onSuccess(FileInfo file) {
@@ -1467,11 +1461,7 @@ public class RegPicListActivity extends BaseBackActivity {
 
     private boolean isExistsFile() {
 
-        if (!new File(App.getPreferencesValue("imgloc1")).exists() || !new File(App.getPreferencesValue("imgloc2")).exists() || !new File(App.getPreferencesValue("imgloc3")).exists() && !new File(App.getPreferencesValue("imgloc4")).exists() || !new File(App.getPreferencesValue("imgloc5")).exists()) {
-            return true;
-        } else {
-            return false;
-        }
+        return !new File(App.getPreferencesValue("imgloc1")).exists() || !new File(App.getPreferencesValue("imgloc2")).exists() || !new File(App.getPreferencesValue("imgloc3")).exists() && !new File(App.getPreferencesValue("imgloc4")).exists() || !new File(App.getPreferencesValue("imgloc5")).exists();
     }
 
     private void bindLeftInfo(User user) {

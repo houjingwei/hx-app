@@ -496,4 +496,5 @@
     </style>
 
 
+    <dimen name="__picker_iwf_actionBarSize">45dp</dimen>
 </resources>

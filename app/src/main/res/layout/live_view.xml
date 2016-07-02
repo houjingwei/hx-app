@@ -41,7 +41,7 @@
                         android:layout_height="32dp"
                         android:src="@drawable/default_head"
                         android:layout_centerVertical="true"
-                        app:siBorderWidth="0dp"
+                        app:siBorderWidth="1dp"
                         app:siBorderColor="@color/white"/>
 
 
