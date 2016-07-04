@@ -153,6 +153,24 @@ public class Api {
 
     public static final String DYNAMIC_OWNDYNAMIC = BASE_URL +"/dynamic/ownDynamic";
 
+    /**
+     * 点赞列表
+     */
+    public static final String DYNAMIC_GETPRAISES = BASE_URL +"/dynamic/getPraises";
+
+    /**
+     * 点赞
+     */
+    public static final String DYNAMIC_ADDPRAISE = BASE_URL +"/dynamic/addPraise";
+
+
+    /**
+     * 点赞取消
+     */
+    public static final String DYNAMIC_REMOVEPRAISE = BASE_URL +"/dynamic/removePraise";
+
+
+
 
 
 }

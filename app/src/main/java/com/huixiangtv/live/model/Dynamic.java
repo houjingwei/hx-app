@@ -20,9 +20,15 @@ public class Dynamic {
     private String lon;
     private String lat;
     private String address;
+    private boolean isZan;
 
+    public boolean isZan() {
+        return isZan;
+    }
 
-
+    public void setIsZan(boolean isZan) {
+        this.isZan = isZan;
+    }
 
     private List<DynamicImage> images = new ArrayList<>();
     private List<DynamicComment> comments= new ArrayList<>();

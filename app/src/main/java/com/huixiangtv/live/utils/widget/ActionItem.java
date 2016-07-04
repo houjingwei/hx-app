@@ -12,6 +12,8 @@ public class ActionItem {
     // 定义文本对象
     public CharSequence mTitle;
 
+    public CharSequence dynamicId;
+
     public ActionItem(Drawable drawable, CharSequence title) {
         this.mDrawable = drawable;
         this.mTitle = title;
@@ -29,6 +31,12 @@ public class ActionItem {
 
     public ActionItem(Context context, CharSequence title, int drawableId) {
         this.mTitle = title;
+        this.mDrawable = context.getResources().getDrawable(drawableId);
+    }
+
+    public ActionItem(Context context, CharSequence title,CharSequence dynamicId, int drawableId) {
+        this.mTitle = title;
+        this.dynamicId = dynamicId;
         this.mDrawable = context.getResources().getDrawable(drawableId);
     }
 

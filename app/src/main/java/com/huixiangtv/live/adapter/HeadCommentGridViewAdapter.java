@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.model.Dynamic;
 import com.huixiangtv.live.model.DynamicpPraise;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
@@ -73,4 +74,18 @@ public class HeadCommentGridViewAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+
+    public void clear() {
+        list.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addList(List<DynamicpPraise> ls) {
+        if (ls != null) {
+            list.addAll(ls);
+        }
+        notifyDataSetChanged();
+    }
+
 }

@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.DynamicImage;
-import com.huixiangtv.live.model.Images;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.List;
@@ -67,6 +67,11 @@ public class GridViewFriendAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+
+        //LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewHolder.mImageView.getLayoutParams();
+
+
         ImageUtils.display(viewHolder.mImageView,images.get(arg0).getBig());
 
         return convertView;

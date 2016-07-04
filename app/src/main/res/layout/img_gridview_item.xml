@@ -1,7 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/iv_gridview_img"
-    android:layout_width="match_parent"
-    android:scaleType="fitXY"
+<com.huixiangtv.live.utils.widget.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/ic_logo" />
+    android:orientation="vertical">
+
+    <com.huixiangtv.live.utils.image.RoundImageView
+        android:id="@+id/iv_gridview_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/default_head"
+        android:scaleType="fitXY"
+        zhy:borderRadius="2dp"
+        zhy:type="round" />
+
+</com.huixiangtv.live.utils.widget.SquareLayout>

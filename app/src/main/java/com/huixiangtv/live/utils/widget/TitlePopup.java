@@ -167,4 +167,9 @@ public class TitlePopup extends PopupWindow {
     public static interface OnItemOnClickListener {
         public void onItemClick(ActionItem item, int position);
     }
+
+    public void setComment(String comment_value)
+    {
+        comment.setText(comment_value);
+    }
 }
