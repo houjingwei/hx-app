@@ -75,6 +75,9 @@ public class Api {
     public static final String ADD_LOVE = BASE_URL+"promote/isShared";
     //发布动态
     public static final String CREATE_DYNAMIC = BASE_URL+"dynamic/createDynamic";
+    //我的动态列表
+    public static final String MY_DYNAMIC =  BASE_URL+"dynamic/ownDynamic";
+    public static final String DELETE_DYNAMIC = BASE_URL+"dynamic/removeDynamic";
 
 
     //我关注的人

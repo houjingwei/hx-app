@@ -3,6 +3,7 @@ package com.huixiangtv.live.utils.image;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
@@ -43,9 +44,15 @@ import com.tencent.upload.task.data.FileInfo;
 import com.tencent.upload.task.impl.PhotoUploadTask;
 import com.tencent.upload.task.impl.VideoUploadTask;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Map;
+
+import id.zelory.compressor.Compressor;
 
 /**
  * 使用UniversalImageLoader加载大量高清图片.带有缓存.可以快速重复显示图片.
@@ -208,8 +215,17 @@ public final class ImageUtils {
 
     public static void upFile(Activity activity, Upfile data, String picUri, final ApiCallback callBack) {
 
+
+
+
+
+
+
+
+        String path = compressPath(activity,picUri);
+
         UploadManager fileUploadMgr = new UploadManager(activity,data.getAppId(), Const.FileType.Photo,data.getPersistenceId());
-        PhotoUploadTask task = new PhotoUploadTask(picUri,new IUploadTaskListener() {
+        PhotoUploadTask task = new PhotoUploadTask(path,new IUploadTaskListener() {
 
             @Override
             public void onUploadSucceed(FileInfo fileInfo) {
@@ -242,6 +258,28 @@ public final class ImageUtils {
 
 
 
+
+
+    private static String compressPath(Activity activity,String picUri) {
+
+        File file = new File(picUri);
+        Log.i("dynamicType",file.length()+"");
+
+        File  compressedImage = new Compressor.Builder(activity)
+                .setMaxWidth(1024)
+//                .setMaxHeight(800)
+                .setQuality(60)
+                .setCompressFormat(Bitmap.CompressFormat.JPEG)
+                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath())
+                .build()
+                .compressToFile(new File(picUri));
+
+        Log.i("dynamicType",compressedImage.length()+"");
+        //定义一个file，为压缩后的图片
+        return compressedImage.getAbsolutePath();
+    }
+
+
     public static void upVideo(Activity activity, Upfile data, String videoPath, final ApiCallback<FileInfo> callBack) {
         UploadManager fileUploadMgr = new UploadManager(activity,data.getAppId(), Const.FileType.Video,data.getPersistenceId());
 
@@ -272,6 +310,7 @@ public final class ImageUtils {
 
             }
         });
+        videoTask.setBucket(data.getBucket());
         videoTask.setAuth(data.getSig());
         fileUploadMgr.upload(videoTask);
     }

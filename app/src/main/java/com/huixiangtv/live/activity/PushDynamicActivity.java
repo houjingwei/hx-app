@@ -42,6 +42,7 @@ import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 import com.tencent.upload.task.data.FileInfo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -224,15 +225,31 @@ public class PushDynamicActivity extends BaseActivity {
         }else if(type==1){
             //图片
             Log.i("dynamicType","图片");
+            if(TextUtils.isEmpty(etShareContent.getText().toString())){
+                CommonHelper.showTip(PushDynamicActivity.this, "动态内容为空");
+                etShareContent.requestFocus();
+                return;
+            }
             pushImage();
         }else if(type==2){
             //视频
             Log.i("dynamicType","视频");
+            if(TextUtils.isEmpty(etShareContent.getText().toString())){
+                CommonHelper.showTip(PushDynamicActivity.this, "动态内容为空");
+                etShareContent.requestFocus();
+                return;
+            }
             pushVideo();
         }
     }
 
     private void pushVideo() {
+        if(null==loadingDialog){
+            loadingDialog = new CenterLoadingView(PushDynamicActivity.this);
+        }
+        loadingDialog.setCancelable(true);
+        loadingDialog.setTitle("发布中");
+        loadingDialog.show();
         //获取网络图片地址
         Map<String, String> upParams = new HashMap<String, String>();
         upParams.put("type", "1");
@@ -325,27 +342,34 @@ public class PushDynamicActivity extends BaseActivity {
         loadingDialog.setTitle("发布中");
         loadingDialog.show();
         //获取网络图片地址
+        imgPaths.clear();
+        upImages();
+    }
+
+    final List<String> imgPaths = new ArrayList<>();
+    int i = 0;
+    private void upImages() {
+        Log.i("dynamicType","upImage");
         Map<String, String> upParams = new HashMap<String, String>();
         upParams.put("type", "1");
-        final List<String> imgPaths = new ArrayList<>();
+
         ImageUtils.upFileInfo(upParams, new ApiCallback<Upfile>() {
             @Override
             public void onSuccess(Upfile data) {
-                int i= 0;
-                for (String imgPath : photos) {
-                    i++;
-                    final int tempI = i;
-                    ImageUtils.upFile(PushDynamicActivity.this, data, imgPath, new ApiCallback<FileInfo>() {
-                        @Override
-                        public void onSuccess(FileInfo file) {
-                            Log.i("dynamicType",file.url);
-                            imgPaths.add(file.url+",");
-                            if(tempI==photos.size()){
-                                doPushImage(imgPaths);
-                            }
+                ImageUtils.upFile(PushDynamicActivity.this, data, photos.get(i), new ApiCallback<FileInfo>() {
+                    @Override
+                    public void onSuccess(FileInfo file) {
+                        Log.i("dynamicType",file.url);
+                        imgPaths.add(file.url);
+                        if(i==(photos.size()-1)){
+                            doPushImage(imgPaths);
+                        }else{
+                            upImages();
+                            i++;
                         }
-                    });
-                }
+
+                    }
+                });
             }
         });
     }
@@ -354,7 +378,8 @@ public class PushDynamicActivity extends BaseActivity {
      * 处理图片上传
      * @param imgPaths
      */
-    private void doPushImage(List<String> imgPaths) {
+    private void doPushImage(final List<String> imgPaths) {
+        Log.i("myImgPath",imgPaths.toString());
         Map<String,String> params = new HashMap<>();
         params.put("type",type+"");
         params.put("content",etShareContent.getText().toString());
@@ -364,6 +389,13 @@ public class PushDynamicActivity extends BaseActivity {
             @Override
             public void onSuccess(String data) {
                 super.onSuccess(data);
+                for (String path : imgPaths) {
+                    File f = new File(path);
+                    if(f.exists()){
+                        Log.i("myImgPath","删除"+path);
+                        f.delete();
+                    }
+                }
                 if(null!=loadingDialog){
                     loadingDialog.dismiss();
                 }
@@ -763,5 +795,7 @@ public class PushDynamicActivity extends BaseActivity {
 
         }
     }
+
+
 
 }
