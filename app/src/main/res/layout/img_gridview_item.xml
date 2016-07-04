@@ -1,13 +1,16 @@
 <com.huixiangtv.live.utils.widget.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:orientation="vertical" >
-<ImageView
-    android:src="@drawable/ic_logo"
-    android:id="@+id/iv_gridview_img"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scaleType="fitXY"
-    >
-</ImageView>
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.huixiangtv.live.utils.image.RoundImageView
+        android:id="@+id/iv_gridview_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/default_head"
+        android:scaleType="fitXY"
+        zhy:borderRadius="2dp"
+        zhy:type="round" />
+
 </com.huixiangtv.live.utils.widget.SquareLayout>
