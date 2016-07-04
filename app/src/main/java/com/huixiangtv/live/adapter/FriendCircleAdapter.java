@@ -159,6 +159,9 @@ public class FriendCircleAdapter extends BaseAdapter {
 
             int size = dynamic.getImages().size();
             if (size==1){
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewHolder.mImgGridView.getLayoutParams();
+                layoutParams.height = (int) (App.screenHeight *0.75);
+                viewHolder.mImgGridView.setLayoutParams(layoutParams);
                 viewHolder.mImgGridView.setNumColumns(1);
             }
             else if (size==2){
@@ -204,18 +207,18 @@ public class FriendCircleAdapter extends BaseAdapter {
         final TitlePopup titlePopup = new TitlePopup(context, CommonHelper.dip2px(context, 165), CommonHelper.dip2px(
                 context, 40));
         titlePopup
-                .addAction(new ActionItem(context, "评论", dynamic.getDynamicId(), R.drawable.point_zan));
+                .addAction(new ActionItem(context, "评论", dynamic.getDynamicId(), R.mipmap.v2_dynamic_zan));
         if(!dynamic.isZan())
         {
             titlePopup.setComment("赞");
             titlePopup.addAction(new ActionItem(context, "赞", dynamic.getDynamicId(),
-                    R.drawable.point_comm));
+                    R.mipmap.v2_dynamic_comm));
         }
         else
         {
             titlePopup.setComment("取消");
             titlePopup.addAction(new ActionItem(context, "取消", dynamic.getDynamicId(),
-                    R.drawable.point_comm));
+                    R.mipmap.v2_dynamic_comm));
         }
 
 
