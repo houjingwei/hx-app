@@ -15,15 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huixiangtv.live.Api;
-import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.activity.MyCircleActivity;
-import com.huixiangtv.live.activity.PushDynamicActivity;
-import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.Dynamic;
 import com.huixiangtv.live.model.DynamicImage;
-import com.huixiangtv.live.model.Fans;
-import com.huixiangtv.live.model.Love;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -32,7 +26,6 @@ import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,6 +83,7 @@ public class MyCircleAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.my_circle_item, parent, false);
             holder.llRootView = (LinearLayout) convertView.findViewById(R.id.llRootView);
+
             holder.tvDate = (TextView) convertView.findViewById(R.id.tvDate);
             holder.tvMonth = (TextView) convertView.findViewById(R.id.tvMonth);
             holder.tvDay = (TextView) convertView.findViewById(R.id.tvDay);
@@ -114,6 +108,9 @@ public class MyCircleAdapter extends BaseAdapter {
             holder.fourImg3 = (ImageView) convertView.findViewById(R.id.fourImg3);
             holder.fourImg4 = (ImageView) convertView.findViewById(R.id.fourImg4);
 
+            holder.rlVideo = (RelativeLayout) convertView.findViewById(R.id.rlVideo);
+            holder.ivVideo = (ImageView) convertView.findViewById(R.id.ivVideo);
+
 
 
 
@@ -128,13 +125,21 @@ public class MyCircleAdapter extends BaseAdapter {
         holder.tvDay.setText(dn.getDay());
         holder.tvContent.setText(dn.getContent());
         Log.i("qnmlgb",dn.getLastDate()+">>>>"+dn.getMonth());
-        if(dn.getImages().size()==0){
+        if(dn.getType().equals("0")){
             holder.tvImgCount.setVisibility(View.GONE);
+            holder.rlVideo.setVisibility(View.GONE);
             hideImages(holder);
-        }else{
+        }else if(dn.getType().equals("1")){
+            holder.rlVideo.setVisibility(View.GONE);
             holder.tvImgCount.setText("共"+dn.getImages().size()+"张");
             setImages(holder,dn.getImages());
+        }else if(dn.getType().equals("2")){
+            holder.rlVideo.setVisibility(View.VISIBLE);
+            holder.tvImgCount.setVisibility(View.GONE);
+            ImageUtils.display(holder.threeImg1,dn.getVideoCover());
+            hideImages(holder);
         }
+
 
         holder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +151,7 @@ public class MyCircleAdapter extends BaseAdapter {
 
         if(dn.getMarginTop()){
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.llRootView.getLayoutParams();
-            params.topMargin = WidgetUtil.dip2px(activity,15);
+            params.topMargin = WidgetUtil.dip2px(activity,25);
             holder.llRootView.setLayoutParams(params);
         }
 
@@ -168,7 +173,7 @@ public class MyCircleAdapter extends BaseAdapter {
                 }
                 voList.remove(position);
                 notifyDataSetChanged();
-                CommonHelper.showTip(activity,"动态发布成功");
+                CommonHelper.showTip(activity,"动态删除成功");
 
 
             }
@@ -255,6 +260,9 @@ public class MyCircleAdapter extends BaseAdapter {
     {
         LinearLayout llRootView;
 
+        RelativeLayout rlVideo;
+        ImageView ivVideo;
+
         TextView tvDate ;
         TextView tvMonth ;
         TextView tvDay;
@@ -280,31 +288,5 @@ public class MyCircleAdapter extends BaseAdapter {
         ImageView fourImg4;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

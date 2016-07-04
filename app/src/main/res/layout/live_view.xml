@@ -35,14 +35,13 @@
                     android:background="@drawable/live_user_bg">
 
 
-                    <com.github.siyamed.shapeimageview.CircularImageView
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/ivPhoto"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:src="@drawable/default_head"
                         android:layout_centerVertical="true"
-                        app:siBorderWidth="1dp"
-                        app:siBorderColor="@color/white"/>
+                        android:src="@drawable/default_head"
+                        app:civ_border_color="@color/white" />
 
 
 

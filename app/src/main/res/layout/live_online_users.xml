@@ -7,12 +7,11 @@
     android:layout_height="wrap_content">
 
 
-    <com.github.siyamed.shapeimageview.CircularImageView
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivPhoto"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerVertical="true"
         android:src="@drawable/default_head"
-        android:layout_marginLeft="2dp"
-        app:siBorderWidth="1dp"
-        app:siBorderColor="@color/trans"/>
+        app:civ_border_color="@color/white" />
 </RelativeLayout>

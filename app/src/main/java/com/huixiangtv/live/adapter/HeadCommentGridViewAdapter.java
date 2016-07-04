@@ -9,8 +9,6 @@ import android.widget.ImageView;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.DynamicpPraise;
-import com.huixiangtv.live.model.Images;
-import com.huixiangtv.live.model.Praise;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.ArrayList;
@@ -52,7 +50,7 @@ public class HeadCommentGridViewAdapter extends BaseAdapter {
 
     public class ViewHolder {
 
-        private com.github.siyamed.shapeimageview.CircularImageView mImageView;
+        private ImageView mImageView;
 
     }
 
@@ -63,8 +61,7 @@ public class HeadCommentGridViewAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.praise_gridview_item, null);
             viewHolder = new ViewHolder();
-            viewHolder.mImageView = (com.github.siyamed.shapeimageview.CircularImageView) convertView
-                    .findViewById(R.id.iv_foot_img);
+            viewHolder.mImageView = (ImageView) convertView.findViewById(R.id.iv_foot_img);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

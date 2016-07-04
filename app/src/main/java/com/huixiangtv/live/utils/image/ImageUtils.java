@@ -3,7 +3,6 @@ package com.huixiangtv.live.utils.image;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
@@ -44,11 +43,7 @@ import com.tencent.upload.task.data.FileInfo;
 import com.tencent.upload.task.impl.PhotoUploadTask;
 import com.tencent.upload.task.impl.VideoUploadTask;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Map;
 
@@ -274,7 +269,7 @@ public final class ImageUtils {
                 .build()
                 .compressToFile(new File(picUri));
 
-        Log.i("dynamicType",compressedImage.length()+"");
+        Log.i("dynamicType",compressedImage.getAbsolutePath()+"*****");
         //定义一个file，为压缩后的图片
         return compressedImage.getAbsolutePath();
     }

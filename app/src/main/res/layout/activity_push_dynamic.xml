@@ -83,6 +83,15 @@
                 android:gravity="center_vertical"
                 android:text="所在位置"/>
 
+            <TextView
+                android:id="@+id/tvLocal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/gray02_normal_style"
+                android:layout_marginLeft="3dp"
+                android:gravity="center_vertical"/>
+
+
         </LinearLayout>
 
         <RelativeLayout
