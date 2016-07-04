@@ -76,4 +76,19 @@
         <attr name="left_shadow" format="reference" />
         <attr name="right_shadow" format="reference" />
     </declare-styleable>
+
+
+    <!--自定义MLImageView的属性-->
+    <declare-styleable name="MLImageView">
+        <attr name="press_alpha" format="integer" />
+        <attr name="press_color" format="color" />
+        <attr name="radius" format="dimension"/>
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color"/>
+        <attr name="shape_type" format="enum">
+            <enum name="round" value="0"/>
+            <enum name="rectangle" value="1" />
+        </attr>
+    </declare-styleable>
+
 </resources>
