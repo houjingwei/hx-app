@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<com.huixiangtv.live.ui.MLImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:melove="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@+id/tvDate"
+    android:src="@drawable/default_head"
+    melove:radius="2dp"
+    android:scaleType="centerCrop"
+    melove:border_color="@color/white"
+    melove:border_width="1dp"
+    melove:shape_type="rectangle" />

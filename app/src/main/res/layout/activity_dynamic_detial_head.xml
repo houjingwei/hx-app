@@ -16,7 +16,7 @@
             android:layout_margin="10dp"
             android:layout_toRightOf="@+id/tvDate"
             android:scaleType="centerCrop"
-            android:src="@mipmap/icon_add_camera"
+            android:src="@drawable/default_head"
             melove:radius="2dp"
             melove:shape_type="rectangle" />
 
@@ -33,19 +33,16 @@
                 android:id="@+id/tvName"
                 style="@style/black_bigger_style"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="汲维" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tvContent"
                 style="@style/gray_normal_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="狗对熊说嫁给我吧，你会幸福的。" />
+                android:layout_marginTop="5dp" />
 
             <LinearLayout
-
                 android:id="@+id/llImgRoot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,8 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="14分钟前" />
+                    android:layout_centerVertical="true" />
 
                 <ImageView
                     android:layout_width="wrap_content"
