@@ -2,26 +2,26 @@
 <resources>
 
     <declare-styleable name="LinearLayoutForListView">
-        <attr name="mydivider" format="color"/>
-        <attr name="mydividerHeight" format="dimension"/>
+        <attr name="mydivider" format="color" />
+        <attr name="mydividerHeight" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="MySeekBar">
-        <attr name="textName" format="reference|string"/>
-        <attr name="unit" format="reference|string"/>
-        <attr name="textHight" format="reference|string"/>
-        <attr name="processVal" format="reference|integer"/>
-        <attr name="changeVal" format="reference|integer"/>
+        <attr name="textName" format="reference|string" />
+        <attr name="unit" format="reference|string" />
+        <attr name="textHight" format="reference|string" />
+        <attr name="processVal" format="reference|integer" />
+        <attr name="changeVal" format="reference|integer" />
     </declare-styleable>
 
 
     <declare-styleable name="ScalableImageView">
-        <attr name="icon_src" format="reference"/>
+        <attr name="icon_src" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="SignListLinearLayout">
-        <attr name="txtTitle" format="reference|string"/>
-        <attr name="valImage" format="reference|color"/>
+        <attr name="txtTitle" format="reference|string" />
+        <attr name="valImage" format="reference|color" />
     </declare-styleable>
 
 
@@ -53,7 +53,7 @@
         <attr name="textDraSize" format="dimension" />
         <attr name="textDraColor" format="color" />
         <attr name="textDra" format="string" />
-        <attr name="is_zoom" format="boolean"/>
+        <attr name="is_zoom" format="boolean" />
         <attr name="iconDra" format="reference" />
     </declare-styleable>
 
@@ -86,6 +86,20 @@
     <declare-styleable name="RoundImageView">
         <attr name="borderRadius" />
         <attr name="type" />
+    </declare-styleable>
+
+
+    <!--自定义MLImageView的属性-->
+    <declare-styleable name="MLImageView">
+        <attr name="press_alpha" format="integer" />
+        <attr name="press_color" format="color" />
+        <attr name="radius" format="dimension" />
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="shape_type" format="enum">
+            <enum name="round" value="0" />
+            <enum name="rectangle" value="1" />
+        </attr>
     </declare-styleable>
 
 </resources>
