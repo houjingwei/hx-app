@@ -23,6 +23,8 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.PreferencesHelper;
 import com.huixiangtv.live.utils.RongyunUtils;
+import com.tencent.upload.task.impl.PhotoUploadTask;
+import com.tencent.upload.task.impl.VideoUploadTask;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -69,6 +71,8 @@ public class App extends MultiDexApplication {
     public static String userCoin = "0";
 
     private String chatToken = "";
+
+
 
 
 

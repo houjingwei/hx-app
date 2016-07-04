@@ -1,7 +1,4 @@
 package com.huixiangtv.live.model;
-
-import android.media.Image;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,20 +6,68 @@ import java.util.List;
  * Created by Stone on 16/7/1.
  */
 public class Dynamic {
-
     private String uid;
-    private String dynamicld;
+    private String dynamicId;
     private String nickName;
     private String photo;
-    private long praiseCount;
-    private long commentCount;
+    private String praiseCount;
+    private String commentCount;
     private String date;
     private String content;
-    private List<Images> image;
     private String videoCover;
     private String videoURL;
-    private List<Cm> comments;
     private String type;
+    private String lon;
+    private String lat;
+    private String address;
+
+
+
+
+    private List<DynamicImage> images = new ArrayList<>();
+    private List<DynamicComment> comments= new ArrayList<>();
+    private List<DynamicpPraise> praises= new ArrayList<>();
+
+
+
+
+    //用于计算的属性
+    private String lastDate = "";
+    private String month = "";
+    private String day = "";
+    private boolean marginTop = false;
+
+    public String getLastDate() {
+        return lastDate;
+    }
+
+    public void setLastDate(String lastDate) {
+        this.lastDate = lastDate;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public boolean getMarginTop() {
+        return marginTop;
+    }
+
+    public void setMarginTop(boolean marginTop) {
+        this.marginTop = marginTop;
+    }
 
     public String getUid() {
         return uid;
@@ -32,12 +77,12 @@ public class Dynamic {
         this.uid = uid;
     }
 
-    public String getDynamicld() {
-        return dynamicld;
+    public String getDynamicId() {
+        return dynamicId;
     }
 
-    public void setDynamicld(String dynamicld) {
-        this.dynamicld = dynamicld;
+    public void setDynamicId(String dynamicId) {
+        this.dynamicId = dynamicId;
     }
 
     public String getNickName() {
@@ -56,19 +101,19 @@ public class Dynamic {
         this.photo = photo;
     }
 
-    public long getPraiseCount() {
+    public String getPraiseCount() {
         return praiseCount;
     }
 
-    public void setPraiseCount(long praiseCount) {
+    public void setPraiseCount(String praiseCount) {
         this.praiseCount = praiseCount;
     }
 
-    public long getCommentCount() {
+    public String getCommentCount() {
         return commentCount;
     }
 
-    public void setCommentCount(long commentCount) {
+    public void setCommentCount(String commentCount) {
         this.commentCount = commentCount;
     }
 
@@ -88,14 +133,6 @@ public class Dynamic {
         this.content = content;
     }
 
-    public List<Images> getImage() {
-        return image;
-    }
-
-    public void setImage(List<Images> image) {
-        this.image = image;
-    }
-
     public String getVideoCover() {
         return videoCover;
     }
@@ -112,14 +149,6 @@ public class Dynamic {
         this.videoURL = videoURL;
     }
 
-    public List<Cm> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Cm> comments) {
-        this.comments = comments;
-    }
-
     public String getType() {
         return type;
     }
@@ -128,15 +157,53 @@ public class Dynamic {
         this.type = type;
     }
 
-    public List<Praise> getPraises() {
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public List<DynamicImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<DynamicImage> images) {
+        this.images = images;
+    }
+
+    public List<DynamicComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<DynamicComment> comments) {
+        this.comments = comments;
+    }
+
+    public List<DynamicpPraise> getPraises() {
         return praises;
     }
 
-    public void setPraises(List<Praise> praises) {
+    public void setPraises(List<DynamicpPraise> praises) {
         this.praises = praises;
     }
-
-    private List<Praise> praises;
 
 
 }

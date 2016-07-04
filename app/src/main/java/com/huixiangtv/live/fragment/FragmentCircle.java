@@ -18,6 +18,9 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.FriendCircleAdapter;
 import com.huixiangtv.live.model.Cm;
 import com.huixiangtv.live.model.Dynamic;
+import com.huixiangtv.live.model.DynamicComment;
+import com.huixiangtv.live.model.DynamicImage;
+import com.huixiangtv.live.model.DynamicpPraise;
 import com.huixiangtv.live.model.Images;
 import com.huixiangtv.live.model.Praise;
 import com.huixiangtv.live.ui.HuixiangLoadingLayout;
@@ -139,40 +142,40 @@ public class FragmentCircle extends Fragment implements OnItemOnClickListener {
         List<Dynamic> dynamics = new ArrayList<>();
 
         Dynamic dynamic1 = new Dynamic();
-        dynamic1.setCommentCount(5);
-        Cm cm = new Cm();
+        dynamic1.setCommentCount("5");
+        DynamicComment cm = new DynamicComment();
         cm.setContent("hahahaha");
         cm.setNickName("szj:");
 
-        Cm cm1 = new Cm();
+        DynamicComment cm1 = new DynamicComment();
         cm1.setContent("今天在干嘛？");
         cm1.setNickName("兰艳:");
 
-        Cm cm2 = new Cm();
+        DynamicComment cm2 = new DynamicComment();
         cm2.setContent("？");
         cm2.setNickName("兰艳:");
 
 
-        Praise praise = new Praise();
+        DynamicpPraise praise = new DynamicpPraise();
         praise.setPhoto("http://c.hiphotos.baidu.com/image/h%3D200/sign=b7453bef44166d222777129476220945/b3b7d0a20cf431ad2951ff1d4c36acaf2edd9817.jpg");
 
 
-        Praise praise1 = new Praise();
+        DynamicpPraise praise1 = new DynamicpPraise();
         praise1.setPhoto("http://c.hiphotos.baidu.com/image/h%3D200/sign=b7453bef44166d222777129476220945/b3b7d0a20cf431ad2951ff1d4c36acaf2edd9817.jpg");
 
-        List<Praise> praiseList= new ArrayList<>();
+        List<DynamicpPraise> praiseList= new ArrayList<>();
         praiseList.add(praise); praiseList.add(praise1);praiseList.add(praise1);praiseList.add(praise1);praiseList.add(praise1);praiseList.add(praise1);praiseList.add(praise1);praiseList.add(praise1);praiseList.add(praise1);praiseList.add(praise1);
         dynamic1.setPraises(praiseList);
 
-        List<Images> imagesList = new ArrayList<>();
-        Images images = new Images();
+        List<DynamicImage> imagesList = new ArrayList<>();
+        DynamicImage images = new DynamicImage();
         images.setBig("http://c.hiphotos.baidu.com/image/h%3D200/sign=b7453bef44166d222777129476220945/b3b7d0a20cf431ad2951ff1d4c36acaf2edd9817.jpg");
         images.setSmall("http://c.hiphotos.baidu.com/image/h%3D200/sign=b7453bef44166d222777129476220945/b3b7d0a20cf431ad2951ff1d4c36acaf2edd9817.jpg");
         imagesList.add(images);
-        dynamic1.setImage(imagesList);
+        dynamic1.setImages(imagesList);
 
 
-        List<Cm> cmList= new ArrayList<>();
+        List<DynamicComment> cmList= new ArrayList<>();
         cmList.add(cm);
         cmList.add(cm1);  cmList.add(cm2);
         dynamic1.setContent("xixixi");
@@ -185,7 +188,7 @@ public class FragmentCircle extends Fragment implements OnItemOnClickListener {
 
 
         Dynamic dynamic2 = new Dynamic();
-        dynamic2.setCommentCount(5);
+        dynamic2.setCommentCount("5");
         Cm c3 = new Cm();
         c3.setContent("xxxxx");
         c3.setNickName("Andy:");
@@ -203,14 +206,14 @@ public class FragmentCircle extends Fragment implements OnItemOnClickListener {
 
 
 
-        List<Cm> cmList1= new ArrayList<>();
+        List<DynamicComment> cmList1= new ArrayList<>();
         cmList1.add(cm);
         cmList1.add(cm1);  cmList1.add(cm2);
         dynamic2.setContent("xixixi");
         dynamic2.setComments(cmList);
         dynamic2.setNickName("Andy");
         dynamic2.setPhoto("http://c.hiphotos.baidu.com/image/h%3D200/sign=b7453bef44166d222777129476220945/b3b7d0a20cf431ad2951ff1d4c36acaf2edd9817.jpg");
-        List<Praise> praiseList1= new ArrayList<>();
+        List<DynamicpPraise> praiseList1= new ArrayList<>();
         praiseList1.add(praise); praiseList1.add(praise1);praiseList1.add(praise1);
         dynamic2.setPraises(praiseList1);
         dynamics.add(dynamic2);

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Cm;
+import com.huixiangtv.live.model.DynamicComment;
 
 import java.util.List;
 
@@ -26,10 +27,10 @@ public class CommentListViewAdapter  extends BaseAdapter {
     private Context context;
     private String text;
     private int number;
-    private List<Cm> cmList;
+    private List<DynamicComment> cmList;
     private String str;
 
-    public CommentListViewAdapter(Context context, List<Cm> cmList) {
+    public CommentListViewAdapter(Context context, List<DynamicComment> cmList) {
         this.context = context;
         this.cmList = cmList;
         inflater = LayoutInflater.from(context);

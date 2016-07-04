@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.model.DynamicpPraise;
 import com.huixiangtv.live.model.Images;
 import com.huixiangtv.live.model.Praise;
 import com.huixiangtv.live.utils.image.ImageUtils;
@@ -20,12 +21,12 @@ import java.util.List;
  */
 public class HeadCommentGridViewAdapter extends BaseAdapter {
 
-    private List<Praise> list = new ArrayList<>();
+    private List<DynamicpPraise> list = new ArrayList<>();
     private boolean isHeadPic = false;
     private LayoutInflater inflater;
     private Context context;
 
-    public HeadCommentGridViewAdapter(Context context, List<Praise> list ) {
+    public HeadCommentGridViewAdapter(Context context, List<DynamicpPraise> list ) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.list = list;

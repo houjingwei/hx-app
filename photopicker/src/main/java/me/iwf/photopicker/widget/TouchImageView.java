@@ -63,7 +63,8 @@ public class TouchImageView extends ImageView {
     //
 	private Matrix matrix, prevMatrix;
 
-    private static enum State { NONE, DRAG, ZOOM, FLING, ANIMATE_ZOOM };
+    private enum State { NONE, DRAG, ZOOM, FLING, ANIMATE_ZOOM }
+
     private State state;
 
     private float minScale;
@@ -137,7 +138,7 @@ public class TouchImageView extends ImageView {
     }
 
     @Override
-    public void setOnTouchListener(OnTouchListener l) {
+    public void setOnTouchListener(View.OnTouchListener l) {
         userTouchListener = l;
     }
     
@@ -805,7 +806,7 @@ public class TouchImageView extends ImageView {
     }
     
     public interface OnTouchImageViewListener {
-    	public void onMove();
+    	void onMove();
     }
     
     /**
@@ -1133,7 +1134,7 @@ public class TouchImageView extends ImageView {
     			minY = maxY = startY;
     		}
     		
-    		scroller.fling(startX, startY, (int) velocityX, (int) velocityY, minX,
+    		scroller.fling(startX, startY, velocityX, velocityY, minX,
                     maxX, minY, maxY);
     		currX = startX;
     		currY = startY;
@@ -1177,7 +1178,7 @@ public class TouchImageView extends ImageView {
 		}
     }
     
-    @TargetApi(VERSION_CODES.GINGERBREAD)
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	private class CompatScroller {
     	Scroller scroller;
     	OverScroller overScroller;
@@ -1244,7 +1245,7 @@ public class TouchImageView extends ImageView {
     	}
     }
     
-    @TargetApi(VERSION_CODES.JELLY_BEAN)
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void compatPostOnAnimation(Runnable runnable) {
     	if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
             postOnAnimation(runnable);

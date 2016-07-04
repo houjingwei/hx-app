@@ -34,7 +34,7 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.callback.CodeCallBack;
 import com.huixiangtv.live.common.CommonUtil;
 import com.huixiangtv.live.model.AuthInfo;
-import com.huixiangtv.live.model.Upfeile;
+import com.huixiangtv.live.model.Upfile;
 import com.huixiangtv.live.pay.weichat.WeiChatConstants;
 import com.huixiangtv.live.pay.weichat.WxPayUtils;
 import com.huixiangtv.live.pop.SelectPicWayWindow;
@@ -386,9 +386,9 @@ public class RegLiveMainActivity extends BaseBackActivity {
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("type", "1");
-        ImageUtils.upFileInfo(params, new ApiCallback<Upfeile>() {
+        ImageUtils.upFileInfo(params, new ApiCallback<Upfile>() {
             @Override
-            public void onSuccess(Upfeile data) {
+            public void onSuccess(Upfile data) {
                 ImageUtils.upFile(RegLiveMainActivity.this, data, authInfo.getImage(), new ApiCallback<FileInfo>() {
                     @Override
                     public void onSuccess(FileInfo file) {

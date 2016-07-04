@@ -108,8 +108,8 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.mGridView
                     .setAdapter(new HeadCommentGridViewAdapter(context, dynamic.getPraises()));
         }
-        if (null != dynamic.getImage() && dynamic.getImage().size() > 0) {
-            viewHolder.mImgGridView.setAdapter(new GridViewFriendAdapter(context, dynamic.getImage()));
+        if (null != dynamic.getImages() && dynamic.getImages().size() > 0) {
+            viewHolder.mImgGridView.setAdapter(new GridViewFriendAdapter(context, dynamic.getImages()));
         }
 
         if (null != dynamic.getComments() && dynamic.getComments().size() > 0) {

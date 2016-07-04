@@ -298,13 +298,35 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="black_bold_small_style">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/normal_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="black_bold_normal_style">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/normal_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="black_bold_bigger_style">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/normal_color</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="black_bold_bigest_style">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/normal_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="black_bold_bigest_x_style">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/normal_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="black_bold_bigest_xx_style">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/normal_color</item>
         <item name="android:textStyle">bold</item>
@@ -510,4 +532,5 @@
         <item name="android:windowExitAnimation">@anim/avatar_animation_right_out</item>
     </style>
 
+    <dimen name="__picker_iwf_actionBarSize">45dp</dimen>
 </resources>

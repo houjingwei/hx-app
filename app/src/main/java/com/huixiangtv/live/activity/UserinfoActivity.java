@@ -21,7 +21,7 @@ import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.model.Upfeile;
+import com.huixiangtv.live.model.Upfile;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.SelectPicWayWindow;
 import com.huixiangtv.live.pop.UpdateSexWindow;
@@ -306,9 +306,9 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             cp = ColaProgress.show(UserinfoActivity.this, "头像上传中", false, true, null);
             Map<String,String> params = new HashMap<String,String>();
             params.put("type","1");
-            ImageUtils.upFileInfo(params,new ApiCallback<Upfeile>() {
+            ImageUtils.upFileInfo(params,new ApiCallback<Upfile>() {
                 @Override
-                public void onSuccess(Upfeile data) {
+                public void onSuccess(Upfile data) {
                     ImageUtils.upFile(UserinfoActivity.this,data, picUri, new ApiCallback<FileInfo>() {
                         @Override
                         public void onSuccess(FileInfo file) {

@@ -1,16 +1,38 @@
 package com.huixiangtv.live.adapter;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.huixiangtv.live.Api;
+import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.activity.MyCircleActivity;
+import com.huixiangtv.live.activity.PushDynamicActivity;
+import com.huixiangtv.live.common.CommonUtil;
+import com.huixiangtv.live.model.Dynamic;
+import com.huixiangtv.live.model.DynamicImage;
+import com.huixiangtv.live.model.Fans;
 import com.huixiangtv.live.model.Love;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.ui.CenterLoadingView;
+import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.image.ImageUtils;
+import com.huixiangtv.live.utils.widget.WidgetUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,12 +44,16 @@ import java.util.Map;
 public class MyCircleAdapter extends BaseAdapter {
 
 
+
+
     Activity activity;
     Context context;
-    List<Love> voList = new ArrayList<Love>();
+    List<Dynamic> voList = new ArrayList<Dynamic>();
+
+    private int photoWidth;
 
 
-    private Map<Integer, View> viewMap = new HashMap<Integer, View>();
+
 
     public MyCircleAdapter(Activity activity) {
         this.activity = activity;
@@ -55,21 +81,157 @@ public class MyCircleAdapter extends BaseAdapter {
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = convertView;
-        if (null == rowView) {
-            final Love love = (Love) getItem(position);
-            rowView = LayoutInflater.from(context).inflate(R.layout.loves_item, parent, false);
-            TextView tvTitle = (TextView) rowView.findViewById(R.id.tvTitle);
-            TextView tvTime = (TextView) rowView.findViewById(R.id.tvTime);
-            TextView tvContent = (TextView) rowView.findViewById(R.id.tvContent);
-            TextView tvLoveCount = (TextView) rowView.findViewById(R.id.tvLoveCount);
-            tvTime.setText(love.getDateTime());
-            tvTitle.setText(love.getSource());
-            tvLoveCount.setText(love.getCount());
-            tvContent.setText(love.getDesc());
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        ViewHolder holder;
+        final Dynamic dn = (Dynamic) getItem(position);
+        if(convertView == null)
+        {
+            holder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.my_circle_item, parent, false);
+            holder.llRootView = (LinearLayout) convertView.findViewById(R.id.llRootView);
+            holder.tvDate = (TextView) convertView.findViewById(R.id.tvDate);
+            holder.tvMonth = (TextView) convertView.findViewById(R.id.tvMonth);
+            holder.tvDay = (TextView) convertView.findViewById(R.id.tvDay);
+            holder.tvContent = (TextView) convertView.findViewById(R.id.tvContent);
+            holder.tvImgCount = (TextView) convertView.findViewById(R.id.tvImgCount);
+            holder.tvDelete = (TextView) convertView.findViewById(R.id.tvDelete);
+
+
+            holder.oneImg = (ImageView) convertView.findViewById(R.id.oneImg);
+            holder.llImg2 = (LinearLayout) convertView.findViewById(R.id.llImg2);
+            holder.twoImg1 = (ImageView) convertView.findViewById(R.id.twoImg1);
+            holder.twoImg2 = (ImageView) convertView.findViewById(R.id.twoImg2);
+
+            holder.llImg3 = (LinearLayout) convertView.findViewById(R.id.llImg3);
+            holder.threeImg1 = (ImageView) convertView.findViewById(R.id.threeImg1);
+            holder.threeImg2 = (ImageView) convertView.findViewById(R.id.threeImg2);
+            holder.threeImg3 = (ImageView) convertView.findViewById(R.id.threeImg3);
+
+            holder.llImg4 = (LinearLayout) convertView.findViewById(R.id.llImg4);
+            holder.fourImg1 = (ImageView) convertView.findViewById(R.id.fourImg1);
+            holder.fourImg2 = (ImageView) convertView.findViewById(R.id.fourImg2);
+            holder.fourImg3 = (ImageView) convertView.findViewById(R.id.fourImg3);
+            holder.fourImg4 = (ImageView) convertView.findViewById(R.id.fourImg4);
+
+
+
+
+            convertView.setTag(holder);
+        }else
+        {
+            holder = (ViewHolder)convertView.getTag();
         }
-        return rowView;
+
+        holder.tvDate.setText(dn.getLastDate());
+        holder.tvMonth.setText(dn.getMonth());
+        holder.tvDay.setText(dn.getDay());
+        holder.tvContent.setText(dn.getContent());
+        Log.i("qnmlgb",dn.getLastDate()+">>>>"+dn.getMonth());
+        if(dn.getImages().size()==0){
+            holder.tvImgCount.setVisibility(View.GONE);
+            hideImages(holder);
+        }else{
+            holder.tvImgCount.setText("共"+dn.getImages().size()+"张");
+            setImages(holder,dn.getImages());
+        }
+
+        holder.tvDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delDynamic(dn,position);
+            }
+        });
+
+
+        if(dn.getMarginTop()){
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.llRootView.getLayoutParams();
+            params.topMargin = WidgetUtil.dip2px(activity,15);
+            holder.llRootView.setLayoutParams(params);
+        }
+
+        return convertView;
+    }
+
+    CenterLoadingView loadingDialog = null;
+    private void delDynamic(Dynamic dn, final int position) {
+        Map<String,String> params = new HashMap<>();
+        params.put("dynamicId",dn.getDynamicId());
+
+        RequestUtils.sendPostRequest(Api.DELETE_DYNAMIC, params, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccess(String data) {
+                super.onSuccess(data);
+
+                if(null!=loadingDialog){
+                    loadingDialog.dismiss();
+                }
+                voList.remove(position);
+                notifyDataSetChanged();
+                CommonHelper.showTip(activity,"动态发布成功");
+
+
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                if(null!=loadingDialog){
+                    loadingDialog.dismiss();
+                }
+                CommonHelper.showTip(activity,e.getMessage());
+            }
+        },String.class);
+    }
+
+    private void hideImages(ViewHolder holder) {
+        holder.llImg4.setVisibility(View.GONE);
+        holder.oneImg.setVisibility(View.GONE);
+        holder.llImg2.setVisibility(View.GONE);
+        holder.llImg3.setVisibility(View.GONE);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void setImages(ViewHolder holder, List<DynamicImage> images) {
+        if(images.size()>3){
+            holder.llImg4.setVisibility(View.VISIBLE);
+            holder.oneImg.setVisibility(View.GONE);
+            holder.llImg2.setVisibility(View.GONE);
+            holder.llImg3.setVisibility(View.GONE);
+
+            ImageUtils.display(holder.fourImg1,images.get(0).getSmall());
+            ImageUtils.display(holder.fourImg2,images.get(1).getSmall());
+            ImageUtils.display(holder.fourImg3,images.get(2).getSmall());
+            ImageUtils.display(holder.fourImg4,images.get(3).getSmall());
+
+        }else if(images.size()==3){
+            holder.llImg3.setVisibility(View.VISIBLE);
+            holder.oneImg.setVisibility(View.GONE);
+            holder.llImg2.setVisibility(View.GONE);
+            holder.llImg4.setVisibility(View.GONE);
+
+            ImageUtils.display(holder.threeImg1,images.get(0).getSmall());
+            ImageUtils.display(holder.threeImg2,images.get(1).getSmall());
+            ImageUtils.display(holder.threeImg3,images.get(2).getSmall());
+        }else if(images.size()==2){
+            holder.llImg2.setVisibility(View.VISIBLE);
+            holder.oneImg.setVisibility(View.GONE);
+            holder.llImg3.setVisibility(View.GONE);
+            holder.llImg4.setVisibility(View.GONE);
+
+
+            ImageUtils.display(holder.twoImg1,images.get(0).getSmall());
+            ImageUtils.display(holder.twoImg2,images.get(1).getSmall());
+
+
+        }else if(images.size()==1){
+            holder.oneImg.setVisibility(View.VISIBLE);
+            holder.llImg2.setVisibility(View.GONE);
+            holder.llImg3.setVisibility(View.GONE);
+            holder.llImg4.setVisibility(View.GONE);
+
+            ImageUtils.display(holder.oneImg,images.get(0).getSmall());
+        }
     }
 
     public void clear() {
@@ -77,10 +239,72 @@ public class MyCircleAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void addList(List<Love> ls) {
+    public void addList(List<Dynamic> ls) {
         if (ls != null) {
             voList.addAll(ls);
         }
         notifyDataSetChanged();
     }
+
+    public void setPhotoWidth(int photoWidth) {
+        this.photoWidth = photoWidth;
+    }
+
+
+    static class ViewHolder
+    {
+        LinearLayout llRootView;
+
+        TextView tvDate ;
+        TextView tvMonth ;
+        TextView tvDay;
+        TextView tvContent;
+        TextView tvImgCount;
+        TextView tvDelete;
+
+        ImageView oneImg;
+
+        LinearLayout llImg2;
+        ImageView twoImg1;
+        ImageView twoImg2;
+
+        LinearLayout llImg3;
+        ImageView threeImg1;
+        ImageView threeImg2;
+        ImageView threeImg3;
+
+        LinearLayout llImg4;
+        ImageView fourImg1;
+        ImageView fourImg2;
+        ImageView fourImg3;
+        ImageView fourImg4;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

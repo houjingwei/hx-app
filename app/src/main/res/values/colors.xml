@@ -60,4 +60,5 @@
     <color name="proc_value">#FC5E90</color>
     <color name="yellow">#f5eb2a</color>
     <color name="black80">#e6333333</color>
+    <color name="dy_text_bg">#FBFBFB</color>
 </resources>

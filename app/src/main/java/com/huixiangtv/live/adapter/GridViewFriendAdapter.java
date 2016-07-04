@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.model.DynamicImage;
 import com.huixiangtv.live.model.Images;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
@@ -19,10 +20,10 @@ import java.util.List;
 public class GridViewFriendAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
-    private List<Images> images;
+    private List<DynamicImage> images;
     private Context context;
 
-    public GridViewFriendAdapter(Context context,List<Images> images) {
+    public GridViewFriendAdapter(Context context,List<DynamicImage> images) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.images = images;

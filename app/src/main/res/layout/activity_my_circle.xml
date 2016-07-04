@@ -11,7 +11,7 @@
         android:id="@+id/refreshView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/trans"
+        android:background="@color/white"
         android:divider="@color/trans"
         android:dividerHeight="0dp"
         android:fadingEdge="none"
