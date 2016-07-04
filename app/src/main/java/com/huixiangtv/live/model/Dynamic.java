@@ -1,12 +1,9 @@
 package com.huixiangtv.live.model;
-
-import com.huixiangtv.live.common.CommonUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by houjingwei on 2016/7/3.
+ * Created by Stone on 16/7/1.
  */
 public class Dynamic {
     private String uid;

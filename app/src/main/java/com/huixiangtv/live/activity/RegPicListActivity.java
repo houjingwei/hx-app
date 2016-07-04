@@ -675,7 +675,7 @@ public class RegPicListActivity extends BaseBackActivity {
                 mertoBean.setIsFinish(55);
 
 
-               // mertoBeans.get(moveTag).setIconId(mertoBean.getIconId());
+                // mertoBeans.get(moveTag).setIconId(mertoBean.getIconId());
 
 
 //                mertoBeans.get(moveTag).setIconId(mertoBean.getIconId());

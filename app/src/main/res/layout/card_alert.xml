@@ -20,6 +20,7 @@
 
 
             <TextView
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -29,12 +30,13 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="15dp"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_height="wrap_content"
-                android:text="设置形象卡后，才能被推荐，吸引更多粉丝关注"
+                android:textColor="#666666"
+                android:text="设置形象卡后,才能被推荐,吸引更多粉丝关注"
                 android:textSize="14sp" />
 
 
@@ -50,7 +52,7 @@
         <LinearLayout
             android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="8dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 

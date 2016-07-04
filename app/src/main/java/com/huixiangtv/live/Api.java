@@ -144,7 +144,15 @@ public class Api {
 
     public static final String GETGLOBALCONFIG =  BASE_URL+"/config/getGlobalConfig";
 
+    /**
+     * 绑定优惠码
+     */
     public static final String SHAREBINDSHARECODE = BASE_URL+"/share/bindShareCode";
+
+    public static final String SETAUTHINFO = BASE_URL +"/user/setAuthInfo";
+
+    public static final String DYNAMIC_OWNDYNAMIC = BASE_URL +"/dynamic/ownDynamic";
+
 
 
 }

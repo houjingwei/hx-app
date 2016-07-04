@@ -509,7 +509,7 @@ public class CommonHelper {
         RequestUtils.sendPostRequest(Api.SHARE_INFO, paramsMap, new ResponseCallBack<Share>() {
             @Override
             public void onSuccess(Share data) {
-                    apiCallback.onSuccess(data);
+                apiCallback.onSuccess(data);
             }
 
             @Override
@@ -520,5 +520,14 @@ public class CommonHelper {
         }, Share.class);
     }
 
+
+    public static int dip2px(Context context, float px) {
+        final float scale = getScreenDensity(context);
+        return (int) (px * scale + 0.5);
+    }
+
+    public static float getScreenDensity(Context context) {
+        return context.getResources().getDisplayMetrics().density;
+    }
 
 }

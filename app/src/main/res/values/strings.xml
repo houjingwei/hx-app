@@ -92,7 +92,7 @@
     <string name="txt_mobile">手机</string>
     <string name="txt_validate_code">验证码</string>
     <string name="txt_get_code">获取验证码</string>
-    <string name="txt_next_step">下一步</string>
+    <string name="txt_next_step">提交认证</string>
     <string name="txt_authentication">身份认证</string>
     <string name="txt_reg_success_msg">认证申请提交成功</string>
     <string name="txt_reg_success_info"><Data><![CDATA[我们会在<font color="#EE5383">5个工作日内</font>审核]]></Data></string>
