@@ -5,12 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.model.Dynamic;
 import com.huixiangtv.live.model.DynamicpPraise;
-import com.huixiangtv.live.model.Images;
-import com.huixiangtv.live.model.Praise;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.ArrayList;
@@ -76,4 +74,18 @@ public class HeadCommentGridViewAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+
+    public void clear() {
+        list.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addList(List<DynamicpPraise> ls) {
+        if (ls != null) {
+            list.addAll(ls);
+        }
+        notifyDataSetChanged();
+    }
+
 }

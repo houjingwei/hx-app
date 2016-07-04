@@ -12,7 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.model.Cm;
 import com.huixiangtv.live.model.DynamicComment;
 
 import java.util.List;
@@ -74,7 +73,7 @@ public class CommentListViewAdapter  extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        text = cmList.get(arg0).getNickName() + cmList.get(arg0).getContent();
+        text = cmList.get(arg0).getNickName()+":" + cmList.get(arg0).getContent();
         for (int i = 0; i < text.length(); i++) {
             char ch = text.charAt(i);
             str = String.valueOf(ch);
@@ -89,7 +88,7 @@ public class CommentListViewAdapter  extends BaseAdapter {
         // ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
         ForegroundColorSpan redSpan = new ForegroundColorSpan(
                 Color.parseColor("#323232"));
-        builder.setSpan(redSpan, 0, number, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(redSpan, 0, number+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         viewHolder.mTextView.setText(builder+" ");
         return convertView;
     }

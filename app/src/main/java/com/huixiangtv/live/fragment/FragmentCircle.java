@@ -12,29 +12,29 @@ import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.FriendCircleAdapter;
-import com.huixiangtv.live.model.Cm;
 import com.huixiangtv.live.model.Dynamic;
 import com.huixiangtv.live.model.DynamicComment;
 import com.huixiangtv.live.model.DynamicImage;
 import com.huixiangtv.live.model.DynamicpPraise;
-import com.huixiangtv.live.model.Images;
-import com.huixiangtv.live.model.Praise;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.HuixiangLoadingLayout;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
-import com.huixiangtv.live.utils.widget.ActionItem;
-import com.huixiangtv.live.utils.widget.TitlePopup;
-import com.huixiangtv.live.utils.widget.TitlePopup.OnItemOnClickListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class FragmentCircle extends Fragment implements OnItemOnClickListener {
+public class FragmentCircle extends Fragment {
 
     private final String PAGESIZE = "10";
     View mRootView;
@@ -50,22 +50,12 @@ public class FragmentCircle extends Fragment implements OnItemOnClickListener {
     }
 
 
-    private TitlePopup titlePopup;
 
     private void initView() {
         refreshView = (PullToRefreshListView) mRootView.findViewById(R.id.refreshView);
         refreshView.setMode(PullToRefreshBase.Mode.BOTH);
         refreshView.setHeaderLayout(new HuixiangLoadingLayout(getActivity()));
         refreshView.setFooterLayout(new HuixiangLoadingLayout(getActivity()));
-        titlePopup = new TitlePopup(getActivity(), CommonHelper.dip2px(getActivity(), 165), CommonHelper.dip2px(
-                getActivity(), 40));
-        titlePopup
-                .addAction(new ActionItem(getActivity(), "评论", R.drawable.point_zan));
-        titlePopup.addAction(new ActionItem(getActivity(), "赞",
-                R.drawable.point_comm));
-
-
-        titlePopup.setItemOnClickListener(this);
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_circle_head, null, false);
         refreshView.getRefreshableView().addHeaderView(view);
 
@@ -79,7 +69,7 @@ public class FragmentCircle extends Fragment implements OnItemOnClickListener {
             }
         });
         initHeadInfo(view);
-        adapter = new FriendCircleAdapter(titlePopup, getActivity());
+        adapter = new FriendCircleAdapter(getActivity());
         refreshView.setAdapter(adapter);
 
         refreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
@@ -131,17 +121,13 @@ public class FragmentCircle extends Fragment implements OnItemOnClickListener {
         super.onResume();
     }
 
-    @Override
-    public void onItemClick(ActionItem item, int position) {
-
-        CommonHelper.showTip(getActivity(), item.mTitle.toString());
-    }
 
     private List<Dynamic> getData(){
 
         List<Dynamic> dynamics = new ArrayList<>();
 
         Dynamic dynamic1 = new Dynamic();
+        dynamic1.setDynamicId("11");
         dynamic1.setCommentCount("5");
         DynamicComment cm = new DynamicComment();
         cm.setContent("hahahaha");
@@ -189,15 +175,16 @@ public class FragmentCircle extends Fragment implements OnItemOnClickListener {
 
         Dynamic dynamic2 = new Dynamic();
         dynamic2.setCommentCount("5");
-        Cm c3 = new Cm();
+        dynamic2.setDynamicId("22");
+        DynamicComment c3 = new DynamicComment();
         c3.setContent("xxxxx");
         c3.setNickName("Andy:");
 
-        Cm cm4 = new Cm();
+        DynamicComment cm4 = new DynamicComment();
         cm4.setContent("今天在干嘛？");
         cm4.setNickName("艳子:");
 
-        Cm cm5 = new Cm();
+        DynamicComment cm5 = new DynamicComment();
         cm5.setContent("我回家了");
         cm5.setNickName("艳子:");
 
@@ -224,46 +211,47 @@ public class FragmentCircle extends Fragment implements OnItemOnClickListener {
     }
 
     /**
-     * @param
+     *  获取圈子列表
      */
     private void bindDynamicInfo() {
 
-        adapter.clear();
 
-        adapter.addList(getData());
+//        adapter.addList(getData());
+//
+//        refreshView.onRefreshComplete();
 
-        refreshView.onRefreshComplete();
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("page", page + "");
+        paramsMap.put("pageSize", PAGESIZE);
 
-//        Map<String, String> paramsMap = new HashMap<String, String>();
-//        paramsMap.put("page", page + "");
-//        paramsMap.put("pageSize", PAGESIZE);
-//
-//        RequestUtils.sendPostRequest(Api.DYNAMIC_OWNDYNAMIC, paramsMap, new ResponseCallBack<Dynamic>() {
-//            @Override
-//            public void onSuccessList(List<Dynamic> data) {
-//                if (data != null && data.size() > 0) {
-//                    if (page == 1) {
-//                        adapter.clear();
-//                        adapter.addList(data);
-//                    } else {
-//                        adapter.addList(data);
-//                    }
-//                } else {
-//                    if (page == 1) {
-//                        CommonHelper.noData("暂无动态", refreshView.getRefreshableView(), getActivity(), 2);
-//                    }
-//                }
-//                refreshView.onRefreshComplete();
-//            }
-//
-//            @Override
-//            public void onFailure(ServiceException e) {
-//                super.onFailure(e);
-//                CommonHelper.showTip(getActivity(), "暂无动态:" + e.getMessage());
-//                refreshView.onRefreshComplete();
-//
-//            }
-//        }, Dynamic.class);
+        RequestUtils.sendPostRequest(Api.DYNAMIC_OWNDYNAMIC, paramsMap, new ResponseCallBack<Dynamic>() {
+            @Override
+            public void onSuccessList(List<Dynamic> data) {
+                if (data != null && data.size() > 0) {
+                    if (page == 1) {
+                        adapter.clear();
+                        adapter.addList(data);
+                    } else {
+                        adapter.addList(data);
+                    }
+                } else {
+                    if (page == 1) {
+                        CommonHelper.noData("暂无动态", refreshView.getRefreshableView(), getActivity(), 2);
+                    }
+                }
+                refreshView.onRefreshComplete();
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                CommonHelper.showTip(getActivity(), "暂无动态:" + e.getMessage());
+                refreshView.onRefreshComplete();
+
+            }
+        }, Dynamic.class);
     }
+
+
 
 }
