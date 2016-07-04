@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,18 +28,27 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.huixiangtv.live.Api;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.callback.CodeCallBack;
 import com.huixiangtv.live.common.CommonUtil;
+import com.huixiangtv.live.model.AuthInfo;
+import com.huixiangtv.live.model.Upfeile;
 import com.huixiangtv.live.pay.weichat.WeiChatConstants;
 import com.huixiangtv.live.pay.weichat.WxPayUtils;
 import com.huixiangtv.live.pop.SelectPicWayWindow;
+import com.huixiangtv.live.service.ApiCallback;
+import com.huixiangtv.live.service.RequestUtils;
+import com.huixiangtv.live.service.ResponseCallBack;
+import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.ui.ColaProgress;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.image.PictureHelper;
+import com.tencent.upload.task.data.FileInfo;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -46,12 +56,18 @@ import com.zhy.view.flowlayout.TagFlowLayout;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Stone on 16/5/18.
  */
 public class RegLiveMainActivity extends BaseBackActivity {
 
 
+    private ColaProgress cp;
 
     @ViewInject(R.id.tvRegTitle)
     TextView tvRegTitle;
@@ -59,6 +75,8 @@ public class RegLiveMainActivity extends BaseBackActivity {
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 
+    @ViewInject(R.id.tvName)
+    EditText tvName;
 
     @ViewInject(R.id.txtHqyzm)
     TextView hqyzm;
@@ -66,13 +84,17 @@ public class RegLiveMainActivity extends BaseBackActivity {
     @ViewInject(R.id.txtPhone)
     TextView phone;
 
-    @ViewInject(R.id.etJob)
-    EditText etJob;
+    @ViewInject(R.id.etNum)
+    EditText etNum;
 
+    @ViewInject(R.id.etCode)
+    EditText etCode;
 
     @ViewInject(R.id.tvNext)
     TextView tvNext;
 
+    @ViewInject(R.id.txtPhone)
+    EditText txtPhone;
 
     @ViewInject(R.id.ivPhoto)
     ImageView ivPhoto;
@@ -123,18 +145,21 @@ public class RegLiveMainActivity extends BaseBackActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(s.toString().trim().length()==0)
-            {
-                hqyzm.setEnabled(false);
-                hqyzm.setBackgroundResource(R.drawable.button_radius_no);
-            }
+
         }
 
         @Override
         public void afterTextChanged(Editable s) {
 
-            hqyzm.setEnabled(true);
-            hqyzm.setBackgroundResource(R.drawable.button_radius);
+            if(s.toString().trim().length()==0)
+            {
+                hqyzm.setEnabled(false);
+                hqyzm.setBackgroundResource(R.drawable.button_radius_no);
+            }
+            else {
+                hqyzm.setEnabled(true);
+                hqyzm.setBackgroundResource(R.drawable.button_radius);
+            }
 
         }
     };
@@ -163,6 +188,7 @@ public class RegLiveMainActivity extends BaseBackActivity {
             }
             llPhone.setVisibility(View.GONE);
             ivPhoto.setVisibility(View.VISIBLE);
+            ivPhoto.setTag(picUri);
             ImageUtils.display(ivPhoto, picUri);
         }
     };
@@ -174,7 +200,47 @@ public class RegLiveMainActivity extends BaseBackActivity {
 
 
             case R.id.tvNext:
-                popupLoginNotice(RegLiveMainActivity.this, RegLiveMainActivity.this);
+
+                if(null==ivPhoto.getTag() || TextUtils.isEmpty(ivPhoto.getTag().toString())){
+                    CommonHelper.showTip(getApplication(), "请上传证件图片");
+                    return ;
+                }
+
+
+                if(TextUtils.isEmpty(tvName.getText().toString())){
+                    CommonHelper.showTip(getApplication(), "请填写姓名");
+                    return ;
+                }
+
+
+                if(TextUtils.isEmpty(etNum.getText().toString())){
+                    CommonHelper.showTip(getApplication(), "请填写身份证号码");
+                    return ;
+                }
+
+
+                if(TextUtils.isEmpty(txtPhone.getText().toString())){
+                    CommonHelper.showTip(getApplication(), "请填写手机号");
+                    return ;
+                }
+
+
+
+                if(TextUtils.isEmpty(etCode.getText().toString())){
+                    CommonHelper.showTip(getApplication(), "请填写验证码");
+                    return ;
+                }
+
+                AuthInfo authInfo = new AuthInfo();
+                authInfo.setName(tvName.getText().toString());
+                authInfo.setAuthNum(etNum.getText().toString());
+                authInfo.setAuthType("1");
+                authInfo.setImage(ivPhoto.getTag().toString());
+                authInfo.setCode(etCode.getText().toString());
+                authInfo.setPhoto(txtPhone.getText().toString());
+                cp = ColaProgress.show(RegLiveMainActivity.this, "正在保存...", true, false, null);
+                upEveryPhoto(authInfo);
+
                 break;
 
             case R.id.txtHqyzm:
@@ -233,9 +299,9 @@ public class RegLiveMainActivity extends BaseBackActivity {
         @Override
         public void onTick(long millisUntilFinished) {
             int i = (int) millisUntilFinished / 1000;
-            hqyzm.setText("(" + i + "秒)");
-            hqyzm.setTextColor(Color.parseColor("#bcbcbc"));
-            hqyzm.setBackgroundColor(getResources().getColor(R.color.white));
+            hqyzm.setText("重新获取 (" + i + ")秒");
+            hqyzm.setEnabled(false);
+            hqyzm.setBackgroundResource(R.drawable.button_radius_no);
 
         }
     }
@@ -254,22 +320,27 @@ public class RegLiveMainActivity extends BaseBackActivity {
     }
 
 
-    public static void popupLoginNotice(final Activity activity, final Context context) {
+    public static void popupLoginNotice(final Context context) {
 
-        final AlertDialog dlg = new AlertDialog.Builder(context).create();
+        final AlertDialog dlg = new AlertDialog.Builder(context,R.style.Theme_Dialog_From_Bottom).create();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.card_alert, null);
+        dlg.setView(layout);
         dlg.show();
+        dlg.setCancelable(false);
         Window window = dlg.getWindow();
         window.setContentView(R.layout.card_alert);
         window.findViewById(R.id.tvGoSetting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ForwardUtils.target(activity, Constant.PIC_LIST, null);
+                ForwardUtils.target((Activity)context, Constant.PIC_LIST, null);
             }
         });
         window.findViewById(R.id.tvCLose).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dlg.dismiss();
+                ((Activity)context).finish();
             }
         });
 
@@ -277,5 +348,57 @@ public class RegLiveMainActivity extends BaseBackActivity {
 
 
     }
+
+    private void setAuthInfo(AuthInfo authInfo,String image) {
+        authInfo.setImage(image);
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("name", authInfo.getName());
+        paramsMap.put("authType", authInfo.getAuthType());
+        paramsMap.put("authNum", authInfo.getAuthNum());
+        paramsMap.put("phone", authInfo.getPhoto());
+        paramsMap.put("image", authInfo.getImage());
+        paramsMap.put("code", authInfo.getCode());
+
+        RequestUtils.sendPostRequest(Api.SETAUTHINFO, paramsMap, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccess(String data) {
+                if(cp.isShowing())
+                    cp.dismiss();
+                popupLoginNotice(RegLiveMainActivity.this);
+
+
+            }
+
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                if(cp.isShowing())
+                    cp.dismiss();
+                CommonHelper.showTip(getApplication(), e.getMessage());
+
+            }
+        }, String.class);
+    }
+
+
+    private void upEveryPhoto(final AuthInfo authInfo) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("type", "1");
+        ImageUtils.upFileInfo(params, new ApiCallback<Upfeile>() {
+            @Override
+            public void onSuccess(Upfeile data) {
+                ImageUtils.upFile(RegLiveMainActivity.this, data, authInfo.getImage(), new ApiCallback<FileInfo>() {
+                    @Override
+                    public void onSuccess(FileInfo file) {
+
+                        setAuthInfo(authInfo,file.url);
+                    }
+                });
+            }
+        });
+    }
+
 
 }
