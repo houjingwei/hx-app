@@ -8,6 +8,7 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.AccountActivity;
 import com.huixiangtv.live.activity.AttentionMeActivity;
 import com.huixiangtv.live.activity.CouponActivity;
+import com.huixiangtv.live.activity.DynamicDetialActivity;
 import com.huixiangtv.live.activity.H5Activity;
 import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.activity.LiveRecordActivity;
@@ -134,8 +135,10 @@ public class ForwardUtils {
             }else if (url.equals(Constant.PUSH_DYNAMIC)){
                 Intent intent = new Intent(oriActivity, PushDynamicActivity.class);
                 toIntent(oriActivity,params,intent);
-            }
-            else if (url.equals(Constant.COUPON)){
+            }else if (url.equals(Constant.DYNAMIC_DETAIL)){
+                Intent intent = new Intent(oriActivity, DynamicDetialActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.equals(Constant.COUPON)){
                 Intent intent = new Intent(oriActivity, CouponActivity.class);
                 toIntent(oriActivity,params,intent);
             }

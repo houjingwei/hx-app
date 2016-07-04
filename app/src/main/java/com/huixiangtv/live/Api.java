@@ -31,7 +31,7 @@ public class Api {
     //通过ID获取直播详情
     public static final String LIVEINFO = BASE_URL+ "live/getLiveInfoByLid";
     //直播拉流地址
-    public static final String PLAY_URL = BASE_URL+ "live/getPlayUrl";;
+    public static final String PLAY_URL = BASE_URL+ "live/getPlayUrl";
     //版本升级
     public static final String UPGRADE_LEVEL = BASE_URL + "config/getUpgradeInfo";
 
@@ -78,6 +78,7 @@ public class Api {
     //我的动态列表
     public static final String MY_DYNAMIC =  BASE_URL+"dynamic/ownDynamic";
     public static final String DELETE_DYNAMIC = BASE_URL+"dynamic/removeDynamic";
+    public static final String DYNAMIC_DETIAL =BASE_URL+"dynamic/getDynamicById";
 
 
     //我关注的人

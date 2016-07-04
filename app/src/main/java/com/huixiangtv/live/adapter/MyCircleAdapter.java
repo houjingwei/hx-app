@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huixiangtv.live.Api;
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Dynamic;
 import com.huixiangtv.live.model.DynamicImage;
@@ -23,6 +24,7 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 
@@ -83,6 +85,15 @@ public class MyCircleAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.my_circle_item, parent, false);
             holder.llRootView = (LinearLayout) convertView.findViewById(R.id.llRootView);
+            holder.llRootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Map<String,String> params = new HashMap<String, String>();
+                    params.put("did",dn.getDynamicId());
+                    ForwardUtils.target(activity, Constant.DYNAMIC_DETAIL, params);
+
+                }
+            });
 
             holder.tvDate = (TextView) convertView.findViewById(R.id.tvDate);
             holder.tvMonth = (TextView) convertView.findViewById(R.id.tvMonth);
