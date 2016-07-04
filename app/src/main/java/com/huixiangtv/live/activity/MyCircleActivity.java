@@ -2,7 +2,6 @@ package com.huixiangtv.live.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.MyCircleAdapter;
 import com.huixiangtv.live.model.Dynamic;
-import com.huixiangtv.live.model.Fans;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
@@ -99,7 +97,6 @@ public class MyCircleActivity extends BaseBackActivity {
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-                        disTime = "";
                         page = 1;
                         loadData();
 
@@ -146,6 +143,7 @@ public class MyCircleActivity extends BaseBackActivity {
             public void onSuccessList(List<Dynamic> data) {
                 super.onSuccessList(data);
                 if (data != null && data.size() > 0) {
+                    disTime = "今天";
                     resetData(data);
                     if(page==1){
                         adapter.clear();
@@ -153,7 +151,7 @@ public class MyCircleActivity extends BaseBackActivity {
                     adapter.addList(data);
                 }else{
                     if (page == 1) {
-                        CommonHelper.noData("暂无人气贡献记录哦",refreshView.getRefreshableView(),MyCircleActivity.this,1);
+                        CommonHelper.noData("还没有发不过动态哦",refreshView.getRefreshableView(),MyCircleActivity.this,1);
                     }
                 }
 
@@ -179,7 +177,7 @@ public class MyCircleActivity extends BaseBackActivity {
     }
 
 
-    String disTime = "";
+    String disTime = "今天";
     private void resetData(List<Dynamic> data) {
         for (Dynamic dn : data) {
             if(StringUtil.isNotEmpty(dn.getDate())){
@@ -214,8 +212,14 @@ public class MyCircleActivity extends BaseBackActivity {
         }
     }
 
-
-    public void refreshAdapter() {
-        adapter.notifyDataSetChanged();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        disTime = "今天";
+        if(App.createDynamic){
+            App.createDynamic = false;
+            page = 1;
+            loadData();
+        }
     }
 }

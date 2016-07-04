@@ -66,18 +66,14 @@
                 android:layout_marginBottom="5dp"
                 android:src="@mipmap/icon_secondfan" />
 
-            <com.github.siyamed.shapeimageview.CircularImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivPhoto2"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
-                android:src="@drawable/default_head"
                 android:layout_marginBottom="5dp"
-                app:siBorderWidth="1dp"
-                app:siBorderColor="@color/white"/>
-
-
-
-
+                android:src="@drawable/default_head"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp" />
 
             <TextView
                 android:id="@+id/tvNickName2"
@@ -112,16 +108,14 @@
                 android:layout_marginBottom="5dp"
                 android:src="@mipmap/icon_firstfan" />
 
-
-            <com.github.siyamed.shapeimageview.CircularImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivPhoto1"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
-                android:src="@drawable/default_head"
                 android:layout_marginBottom="5dp"
-                app:siBorderWidth="1dp"
-                app:siBorderColor="@color/white"/>
-
+                android:src="@drawable/default_head"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp" />
 
             <TextView
                 android:id="@+id/tvNickName1"
@@ -157,15 +151,14 @@
                 android:layout_marginBottom="5dp"
                 android:src="@mipmap/icon_thirdfan" />
 
-
-            <com.github.siyamed.shapeimageview.CircularImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivPhoto3"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
-                android:src="@drawable/default_head"
                 android:layout_marginBottom="5dp"
-                app:siBorderWidth="1dp"
-                app:siBorderColor="@color/white"/>
+                android:src="@drawable/default_head"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp" />
 
             <TextView
                 android:id="@+id/tvNickName3"

@@ -7,6 +7,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.duanqu.qupai.engine.session.MovieExportOptions;
 import com.duanqu.qupai.engine.session.ProjectOptions;
 import com.duanqu.qupai.engine.session.ThumbnailExportOptions;
@@ -38,6 +44,7 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.Utils;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 import com.tencent.upload.task.data.FileInfo;
@@ -52,7 +59,7 @@ import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPicker2;
 import me.iwf.photopicker.PhotoPreview2;
 
-public class PushDynamicActivity extends BaseActivity {
+public class PushDynamicActivity extends BaseActivity implements AMapLocationListener {
 
 
     private static final int RECORD_CODE = 10001;
@@ -64,6 +71,9 @@ public class PushDynamicActivity extends BaseActivity {
     private RelativeLayout switchWrapper;
     private RelativeLayout switchTrigger;
     private TextView switchLabel;
+    private TextView tvLocal;
+    private String jd;
+    private String wd;
 
     /***** 录制参数******/
     private float mDurationLimit;
@@ -104,17 +114,64 @@ public class PushDynamicActivity extends BaseActivity {
 
     CenterLoadingView loadingDialog = null;
 
+
+
+
+    /********  定位  ********/
+    private AMapLocationClient locationClient = null;
+    private AMapLocationClientOption locationOption = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_dynamic);
 
+        initLocal();
+
         initView();
+
+        toLocal(true);
 
 
 
     }
 
+    private void initLocal() {
+        locationClient = new AMapLocationClient(this.getApplicationContext());
+        locationOption = new AMapLocationClientOption();
+        // 设置定位模式为低功耗模式
+        locationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+        // 设置定位监听
+        locationClient.setLocationListener(this);
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation loc) {
+        if (null != loc) {
+            Message msg = mHandler.obtainMessage();
+            msg.obj = loc;
+            msg.what = Utils.MSG_LOCATION_FINISH;
+            mHandler.sendMessage(msg);
+        }
+    }
+
+
+    Handler mHandler = new Handler(){
+        public void dispatchMessage(android.os.Message msg) {
+            switch (msg.what) {
+                //定位完成
+                case Utils.MSG_LOCATION_FINISH:
+                    AMapLocation loc = (AMapLocation)msg.obj;
+                    jd = loc.getLongitude()+"";
+                    wd  = loc.getLatitude()+"";
+                    String cityArea = loc.getCity()+loc.getDistrict()+"";
+                    tvLocal.setText(cityArea);
+                    break;
+                default:
+                    break;
+            }
+        };
+    };
 
 
 
@@ -151,6 +208,7 @@ public class PushDynamicActivity extends BaseActivity {
         switchWrapper = (RelativeLayout) findViewById(R.id.switchWrapper);
         switchTrigger = (RelativeLayout) findViewById(R.id.switchTrigger);
         switchLabel = (TextView) findViewById(R.id.switchLabel);
+        tvLocal = (TextView) findViewById(R.id.tvLocal);
         //添加定位切换事件
         switchWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,6 +345,12 @@ public class PushDynamicActivity extends BaseActivity {
                     loadingDialog.dismiss();
                 }
                 CommonHelper.showTip(PushDynamicActivity.this,"动态发布成功");
+                App.createDynamic = true;
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        onBackPressed();
+                    }
+                }, 1000);
 
             }
 
@@ -316,6 +380,12 @@ public class PushDynamicActivity extends BaseActivity {
                     loadingDialog.dismiss();
                 }
                 CommonHelper.showTip(PushDynamicActivity.this,"动态发布成功");
+                App.createDynamic = true;
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        onBackPressed();
+                    }
+                }, 1000);
 
             }
 
@@ -351,7 +421,7 @@ public class PushDynamicActivity extends BaseActivity {
     private void upImages() {
         Log.i("dynamicType","upImage");
         Map<String, String> upParams = new HashMap<String, String>();
-        upParams.put("type", "1");
+        upParams.put("type", "3");
 
         ImageUtils.upFileInfo(upParams, new ApiCallback<Upfile>() {
             @Override
@@ -400,6 +470,12 @@ public class PushDynamicActivity extends BaseActivity {
                     loadingDialog.dismiss();
                 }
                 CommonHelper.showTip(PushDynamicActivity.this,"动态发布成功");
+                App.createDynamic = true;
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        onBackPressed();
+                    }
+                }, 1000);
 
             }
 
@@ -765,6 +841,31 @@ public class PushDynamicActivity extends BaseActivity {
     }
 
 
+    private void toLocal(boolean bool){
+        if(bool){
+
+            // 设置是否需要显示地址信息
+            locationOption.setNeedAddress(true);
+            // 设置是否开启缓存
+            locationOption.setLocationCacheEnable(true);
+            //设置是否等待设备wifi刷新，如果设置为true,会自动变为单次定位，持续定位时不要使用
+            locationOption.setOnceLocationLatest(true);
+            locationOption.setInterval(Long.valueOf(2000l));
+
+            // 设置定位参数
+            locationClient.setLocationOption(locationOption);
+            // 启动定位
+            locationClient.startLocation();
+        }else{
+            tvLocal.setText("");
+            jd = null;
+            wd = null;
+        }
+
+    }
+
+
+
     /**
      * 定位开关切换
      */
@@ -782,6 +883,7 @@ public class PushDynamicActivity extends BaseActivity {
             ObjectAnimator anim = ObjectAnimator.ofFloat(switchTrigger, "translationX", 0.0f, -offset);
             anim.setDuration(300l);
             anim.start();
+            toLocal(false);
 
         } else {
             //关闭状态
@@ -792,10 +894,23 @@ public class PushDynamicActivity extends BaseActivity {
             ObjectAnimator anim = ObjectAnimator.ofFloat(switchTrigger, "translationX", -offset, 0.0f);
             anim.setDuration(300l);
             anim.start();
+            toLocal(true);
+
 
         }
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != locationClient) {
+            /**
+             * 如果AMapLocationClient是在当前Activity实例化的，
+             * 在Activity的onDestroy中一定要执行AMapLocationClient的onDestroy
+             */
+            locationClient.onDestroy();
+            locationClient = null;
+            locationOption = null;
+        }
+    }
 }

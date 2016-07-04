@@ -225,17 +225,18 @@
             android:name=".activity.MyCircleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-        <activity android:name=".activity.PushDynamicActivity"
+        <activity
+            android:name=".activity.PushDynamicActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"/>
+            android:theme="@style/backStyle" />
         <activity
             android:name=".activity.WelcomActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".activity.CouponActivity"
+        <activity
+            android:name=".activity.CouponActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"></activity>
+            android:theme="@style/backStyle" />
 
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
@@ -257,7 +258,13 @@
             </intent-filter>
         </receiver>
 
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="de57ca4c325d62cd2627c82529a78293" />
+        <!-- 定位需要的服务 -->
+        <service android:name="com.amap.api.location.APSService"></service>
 
+        <activity android:name=".activity.DynamicDetialActivity"></activity>
     </application>
 
 </manifest>

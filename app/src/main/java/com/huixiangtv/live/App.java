@@ -23,8 +23,6 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.PreferencesHelper;
 import com.huixiangtv.live.utils.RongyunUtils;
-import com.tencent.upload.task.impl.PhotoUploadTask;
-import com.tencent.upload.task.impl.VideoUploadTask;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -57,6 +55,7 @@ public class App extends MultiDexApplication {
     //设备型号
     public static String model;
     public static RongIMClient imClient;
+    public static boolean createDynamic = false;
 
     private List<Activity> listActivity = new LinkedList<Activity>();
     //屏幕宽度，屏幕高度

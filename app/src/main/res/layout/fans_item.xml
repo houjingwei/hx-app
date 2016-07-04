@@ -23,14 +23,16 @@
             android:text="4" />
 
 
-        <com.github.siyamed.shapeimageview.CircularImageView
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ivPhoto"
             android:layout_width="52dp"
             android:layout_height="52dp"
-            android:src="@drawable/default_head"
-            android:layout_toRightOf="@+id/tvRank"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:layout_centerVertical="true"/>
+            android:layout_toRightOf="@+id/tvRank"
+            android:src="@drawable/default_head"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp" />
 
 
 
