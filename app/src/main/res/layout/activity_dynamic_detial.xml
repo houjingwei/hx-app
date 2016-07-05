@@ -56,7 +56,7 @@
             android:fitsSystemWindows="false"
             android:gravity="center_vertical"
             android:hint="请输入评论"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionSend"
             android:maxLength="300"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"

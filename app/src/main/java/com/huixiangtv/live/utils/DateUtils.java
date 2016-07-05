@@ -1,11 +1,8 @@
 package com.huixiangtv.live.utils;
 
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 
 /**
  * Created by houjingwei on 2016/7/3.
@@ -142,4 +139,8 @@ public class DateUtils {
         return  sdf2.format(d);
     }
 
+    public static String dateToString(Date date, String pattern) {
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern) ;
+        return sdf.format(date);
+    }
 }

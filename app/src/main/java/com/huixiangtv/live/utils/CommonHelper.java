@@ -21,6 +21,7 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
+import com.huixiangtv.live.model.DynamicComment;
 import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.Share;
 import com.huixiangtv.live.pop.CameraWindow;
@@ -530,4 +531,27 @@ public class CommonHelper {
         return context.getResources().getDisplayMetrics().density;
     }
 
+    /**
+     * 回复评论
+     * @param dc
+     * @param apiCallback
+     */
+    public static void reComment(DynamicComment dc, final ApiCallback<String> apiCallback) {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("dynamicId",dc.getDynamicId());
+        paramsMap.put("content",dc.getContent());
+
+        RequestUtils.sendPostRequest(Api.ADD_COMMENT, paramsMap, new ResponseCallBack<String>() {
+            @Override
+            public void onSuccess(String data) {
+                apiCallback.onSuccess(data);
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                apiCallback.onSuccess(null);
+            }
+        }, String.class);
+    }
 }

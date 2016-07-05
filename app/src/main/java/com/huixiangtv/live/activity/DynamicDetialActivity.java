@@ -5,8 +5,10 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +24,17 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.adapter.DynamicCommentAdapter;
+import com.huixiangtv.live.adapter.PraiseAdapter;
+import com.huixiangtv.live.adapter.RecyclerviewListener;
 import com.huixiangtv.live.model.Dynamic;
 import com.huixiangtv.live.model.DynamicComment;
 import com.huixiangtv.live.model.DynamicImage;
+import com.huixiangtv.live.model.DynamicpPraise;
+import com.huixiangtv.live.model.Praise;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
@@ -46,6 +54,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +83,9 @@ public class DynamicDetialActivity extends BaseBackActivity {
     ArrayList<String> showImgList = new ArrayList<String>();
 
     int imgTotalWidth = 0;
+
+
+    PraiseAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +152,27 @@ public class DynamicDetialActivity extends BaseBackActivity {
         }
 
         //动态添加视频
+
+
+        //赞数据
+        if(null!=data.getPraises()){
+            mAdapter = new PraiseAdapter(null);
+            mAdapter.setOnItemClickListener(new RecyclerviewListener() {
+                @Override
+                public void onItemClick(View view, Object data) {
+                    CommonHelper.showTip(DynamicDetialActivity.this, ((Praise) data).getNickName());
+                }
+            });
+            mAdapter.addAll(data.getPraises());
+            mRecylerView.setAdapter(mAdapter);
+
+            for (DynamicpPraise dynamicpPraise : dn.getPraises()) {
+                if (dynamicpPraise.getUid().equals(App.getLoginUser().getUid())) {
+                    dn.setIsZan(true);
+                }
+            }
+
+        }
     }
 
 
@@ -311,6 +344,16 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
         llCommentView = (LinearLayout) findViewById(R.id.llCommentView);
         etComment = (EditText) findViewById(R.id.etComment);
+        etComment.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId== 4 )
+                {
+                    reComment();
+                }
+                return false;
+            }
+        });
         ffRoot.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
 
         adapter = new DynamicCommentAdapter(this);
@@ -346,6 +389,10 @@ public class DynamicDetialActivity extends BaseBackActivity {
             }
         });
     }
+
+
+
+
 
 
 
@@ -458,12 +505,15 @@ public class DynamicDetialActivity extends BaseBackActivity {
     private void loadData() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("dynamicId", did);
+        map.put("page", page+"");
+        map.put("pageSize", Constant.PAGE_SIZE);
         RequestUtils.sendPostRequest(Api.DYNAMIC_COMMENT, map, new ResponseCallBack<DynamicComment>() {
             @Override
             public void onSuccessList(List<DynamicComment> data) {
                 super.onSuccessList(data);
                 if (data != null && data.size() > 0) {
                     if(page==1){
+                        data.get(0).setShowIcon(true);
                         adapter.clear();
                     }
                     adapter.addList(data);
@@ -496,6 +546,9 @@ public class DynamicDetialActivity extends BaseBackActivity {
         tvContent = (TextView) view.findViewById(R.id.tvContent);
         tvTime = (TextView) view.findViewById(R.id.tvTime);
         mRecylerView = (RecyclerView) view.findViewById(R.id.mRecylerView);
+        mRecylerView.setHasFixedSize(true);
+        mRecylerView.setLayoutManager(new LinearLayoutManager(DynamicDetialActivity.this, LinearLayoutManager.HORIZONTAL, false));
+
         llImgRoot = (LinearLayout) view.findViewById(R.id.llImgRoot);
         ivZanAndComm = (ImageView) view.findViewById(R.id.ivZanAndComm);
         ivZanAndComm.setOnClickListener(new View.OnClickListener() {
@@ -527,9 +580,11 @@ public class DynamicDetialActivity extends BaseBackActivity {
                     if (item.mTitle.equals("赞")) {
                         Log.i("popup","赞");
                         titlePopup.setComment("取消");
+                        zan();
                     }
                     if (item.mTitle.equals("取消")) {
                         titlePopup.setComment("赞");
+                        cancelZan();
                     }
                     if (item.mTitle.equals("评论")) {
                         Log.i("popup","评论");
@@ -542,5 +597,67 @@ public class DynamicDetialActivity extends BaseBackActivity {
             titlePopup.show(v);
         }
 
+    }
+
+    private void cancelZan() {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("dynamicId", did);
+
+        RequestUtils.sendPostRequest(Api.DYNAMIC_REMOVEPRAISE, paramsMap, new ResponseCallBack<DynamicpPraise>() {
+            @Override
+            public void onSuccess(DynamicpPraise data) {
+                mAdapter.removeData(0);
+                dn.setIsZan(false);
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                CommonHelper.showTip(DynamicDetialActivity.this, e.getMessage());
+            }
+        }, DynamicpPraise.class);
+    }
+
+    private void zan() {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("dynamicId", did);
+
+        RequestUtils.sendPostRequest(Api.DYNAMIC_ADDPRAISE, paramsMap, new ResponseCallBack<DynamicpPraise>() {
+            @Override
+            public void onSuccess(DynamicpPraise data) {
+                if (data != null) {
+                    mAdapter.addData(data);
+                    dn.setIsZan(true);
+                }
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                CommonHelper.showTip(DynamicDetialActivity.this,e.getMessage());
+            }
+        }, DynamicpPraise.class);
+    }
+
+    private void reComment() {
+        Log.i("rinima",etComment.getText().toString());
+        String comment = etComment.getText().toString();
+        String did = dn.getDynamicId();
+        final DynamicComment dc = new DynamicComment();
+        dc.setContent(comment);
+        dc.setDynamicId(did);
+        dc.setNickName(App.getLoginUser().getNickName());
+        dc.setPhoto(App.getLoginUser().getPhoto());
+        dc.setDate(DateUtils.dateToString(new Date(),"yyyy-MM-dd HH:mm:ss"));
+        CommonHelper.reComment(dc,new ApiCallback<String>(){
+            @Override
+            public void onSuccess(String data) {
+                dc.setCommentId(data);
+                if(adapter.getCount()==0){
+                    dc.setShowIcon(true);
+                }
+                adapter.add(dc);
+            }
+        });
     }
 }

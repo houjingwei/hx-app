@@ -31,6 +31,7 @@ public class DynamicCommentAdapter extends BaseAdapter {
     List<DynamicComment> voList = new ArrayList<DynamicComment>();
 
 
+
     private Map<Integer, View> viewMap = new HashMap<Integer, View>();
 
     public DynamicCommentAdapter(Activity activity) {
@@ -68,6 +69,7 @@ public class DynamicCommentAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.dynamic_comment_item, parent, false);
             holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
+            holder.viIcon = (ImageView) convertView.findViewById(R.id.ivIcon);
             holder.tvContent = (TextView) convertView.findViewById(R.id.tvContent);
             holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
             holder.ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
@@ -77,6 +79,9 @@ public class DynamicCommentAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
+        if(dc.isShowIcon()){
+            holder.viIcon.setVisibility(View.VISIBLE);
+        }
         holder.tvName.setText(dc.getNickName());
         holder.tvTime.setText(DateUtils.formatDisplayTime(dc.getDate(),"yyyy-MM-dd HH:mm:ss"));
         holder.tvContent.setText(dc.getContent());
@@ -97,6 +102,10 @@ public class DynamicCommentAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void add(DynamicComment dc) {
+        voList.add(dc);
+        notifyDataSetChanged();
+    }
 
 
     static class ViewHolder
