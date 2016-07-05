@@ -6,10 +6,14 @@ package com.huixiangtv.live.model;
 public class DynamicComment {
 
     private String uid;
+    private String commentId;
+    private String dynamicId;
     private String content;
     private String nickName;
     private String photo;
-    private String Date;
+    private String date;
+
+    private boolean showIcon = false;
 
     public String getUid() {
         return uid;
@@ -36,11 +40,11 @@ public class DynamicComment {
     }
 
     public String getDate() {
-        return Date;
+        return date;
     }
 
     public void setDate(String date) {
-        Date = date;
+        this.date = date;
     }
 
     public String getPhoto() {
@@ -49,5 +53,29 @@ public class DynamicComment {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
+    }
+
+    public String getDynamicId() {
+        return dynamicId;
+    }
+
+    public void setDynamicId(String dynamicId) {
+        this.dynamicId = dynamicId;
+    }
+
+    public boolean isShowIcon() {
+        return showIcon;
+    }
+
+    public void setShowIcon(boolean showIcon) {
+        this.showIcon = showIcon;
     }
 }

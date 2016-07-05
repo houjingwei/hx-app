@@ -80,6 +80,7 @@ public class Api {
     public static final String DELETE_DYNAMIC = BASE_URL+"dynamic/removeDynamic";
     public static final String DYNAMIC_DETIAL =BASE_URL+"dynamic/getDynamicById";
     public static final String DYNAMIC_COMMENT = BASE_URL+"dynamic/getComments";
+    public static final String ADD_COMMENT = BASE_URL+"dynamic/addComment";
 
 
     //我关注的人
