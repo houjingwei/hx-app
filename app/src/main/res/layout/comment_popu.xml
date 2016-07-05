@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="165dp"
-    android:layout_height="40dp"
-    android:background="@drawable/comment_bg"
-    android:gravity="center_horizontal">
+    android:layout_width="110dp"
+    android:layout_height="30dp"
+    android:background="@mipmap/v2_zan_or_comm_bg"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_marginLeft="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@mipmap/v2_dynamic_zan" />
 
         <TextView
             android:id="@+id/popu_comment"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/select_comment_right"
-            android:drawableLeft="@mipmap/v2_dynamic_zan"
-            android:gravity="center_vertical"
-            android:padding="4dp"
+            android:layout_marginLeft="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="赞"
-            android:textColor="#ffffffff"
-            android:textSize="16sp" />
+            style="@style/white_small_style" />
+    </LinearLayout>
 
-        <View
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:background="#ff000000" />
-
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@mipmap/v2_dynamic_comment" />
         <TextView
-            android:layout_marginLeft="10dp"
             android:id="@+id/popu_praise"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/select_comment_left"
-            android:drawableLeft="@mipmap/v2_dynamic_comm"
-            android:gravity="center_vertical"
-            android:padding="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:gravity="center"
             android:text="评论"
-            android:textColor="#ffffffff"
-            android:textSize="16sp" />
+            style="@style/white_small_style"/>
 
     </LinearLayout>
 </LinearLayout>

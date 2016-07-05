@@ -83,7 +83,6 @@ public class MyCircleAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.my_circle_item, parent, false);
             holder.llRootView = (LinearLayout) convertView.findViewById(R.id.llRootView);
-
             holder.tvDate = (TextView) convertView.findViewById(R.id.tvDate);
             holder.tvMonth = (TextView) convertView.findViewById(R.id.tvMonth);
             holder.tvDay = (TextView) convertView.findViewById(R.id.tvDay);

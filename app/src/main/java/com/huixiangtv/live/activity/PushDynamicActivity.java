@@ -46,6 +46,7 @@ import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.Utils;
 import com.huixiangtv.live.utils.image.ImageUtils;
+import com.huixiangtv.live.utils.image.RoundImageView;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 import com.tencent.upload.task.data.FileInfo;
 
@@ -170,7 +171,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
                 default:
                     break;
             }
-        };
+        }
     };
 
 
@@ -797,7 +798,10 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
         int position = line * 4;
         for (String img : imgList) {
             final int curPosition = position;
-            ImageView imgView = new ImageView(this);
+            RoundImageView imgView = new RoundImageView(this);
+            imgView.setBorderRadius(2);
+            imgView.setType(1);
+            imgView.setScaleType(ImageView.ScaleType.FIT_XY);
             imgView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

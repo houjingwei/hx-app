@@ -8,6 +8,7 @@ public class DynamicComment {
     private String uid;
     private String content;
     private String nickName;
+    private String photo;
     private String Date;
 
     public String getUid() {
@@ -40,5 +41,13 @@ public class DynamicComment {
 
     public void setDate(String date) {
         Date = date;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

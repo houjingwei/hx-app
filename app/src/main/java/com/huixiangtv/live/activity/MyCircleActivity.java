@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -76,7 +77,17 @@ public class MyCircleActivity extends BaseBackActivity {
         refreshView.setAdapter(adapter);
         adapter = new MyCircleAdapter(this);
         adapter.setPhotoWidth(WidgetUtil.dip2px(this,80));
+
         refreshView.setAdapter(adapter);
+        refreshView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Dynamic dn = (Dynamic) adapter.getItem(i-3);
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("did",dn.getDynamicId());
+                ForwardUtils.target(MyCircleActivity.this, Constant.DYNAMIC_DETAIL, params);
+            }
+        });
         View view = LayoutInflater.from(this).inflate(R.layout.activity_my_circle_head, null, false);
         refreshView.getRefreshableView().addHeaderView(view);
 
