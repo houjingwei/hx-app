@@ -4,7 +4,11 @@
     android:layout_height="match_parent"
     xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        ></LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -16,8 +20,11 @@
             android:id="@+id/ivDmPic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            zhy:borderRadius="2dp"
-            zhy:type="round"
+            zhy:border_width_riv="1dp"
+            zhy:corner_radius="2dp"
+            zhy:border_color_riv="@color/white"
+            zhy:mutate_background="true"
+            zhy:oval="false"
             android:src="@drawable/default_head" />
 
         <LinearLayout
@@ -32,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mcdull"
-                android:textColor="#336699"
+                android:textColor="#414141"
                 android:textSize="16sp" />
 
             <TextView
@@ -44,7 +51,6 @@
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
                 android:paddingTop="2dp"
-                android:text="@string/live_create"
                 android:textColor="#7C7C7C" />
 
             <com.huixiangtv.live.utils.widget.GridViewCircle
@@ -64,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="北京"
+                android:text=""
                 android:textColor="#A8A8A8"
                 android:textSize="12sp" />
 
@@ -80,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="21天前"
+                    android:text=""
                     android:textColor="#A8A8A8"
                     android:textSize="12sp" />
 
@@ -123,5 +129,6 @@
                 android:divider="@null" />
         </LinearLayout>
     </LinearLayout>
+
 
 </LinearLayout>

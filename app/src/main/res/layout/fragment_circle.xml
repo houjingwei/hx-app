@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
+    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/sysBg"
-    android:orientation="vertical">
+    >
+
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/refreshView"
+        android:paddingTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/trans"
@@ -18,4 +21,44 @@
         android:headerDividersEnabled="false"
         android:smoothScrollbar="true" />
 
-</LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        android:background="#CCCCCC"
+        android:layout_height="45dp"
+        android:id="@+id/commentLinear"
+         android:paddingLeft="10dp"
+        android:orientation="horizontal">
+        <!-- 输入框 -->
+        <EditText
+            android:id="@+id/commentEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:maxLength="100"
+            android:minHeight="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:inputType="textMultiLine"
+            android:gravity="left"
+            android:maxLines="6"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"/>
+        <!-- 留言按钮 -->
+        <Button
+            android:id="@+id/commentButton"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:textColor="#000000"
+            android:text="Send"
+            android:layout_marginRight="10dp"
+            android:background="#FFFFFF"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+</FrameLayout>
