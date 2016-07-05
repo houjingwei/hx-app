@@ -289,7 +289,8 @@ public class FragmentCircle extends Fragment {
         ViewGroup.MarginLayoutParams margin = new ViewGroup.MarginLayoutParams(commentLinear.getLayoutParams());
         //左上右下
         Log.i("rinima", App.screenHeight - keyboardHeight + "");
-        int topY = App.screenHeight - keyboardHeight - WidgetUtil.dip2px(getActivity(), 15);
+
+        int topY = App.screenHeight - keyboardHeight  - WidgetUtil.dip2px(getActivity(), 110);
         margin.setMargins(0, topY, 0, 0);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         commentLinear.setLayoutParams(layoutParams);

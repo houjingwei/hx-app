@@ -78,7 +78,7 @@ public class CommentListViewAdapter  extends BaseAdapter {
             char ch = text.charAt(i);
             str = String.valueOf(ch);
             if (str.equals(":")) {
-                number = i;
+                number = i+1;
                 break;
             }
         }

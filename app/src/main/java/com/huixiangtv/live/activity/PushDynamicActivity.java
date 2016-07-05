@@ -799,8 +799,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
         for (String img : imgList) {
             final int curPosition = position;
             RoundImageView imgView = new RoundImageView(this);
-            imgView.setBorderRadius(2);
-            imgView.setType(1);
+            imgView.setBorderWidth(2);
             imgView.setScaleType(ImageView.ScaleType.FIT_XY);
             imgView.setOnClickListener(new View.OnClickListener() {
                 @Override

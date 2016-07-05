@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        ></LinearLayout>
+        android:orientation="vertical"></LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -20,12 +21,12 @@
             android:id="@+id/ivDmPic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/default_head"
+            zhy:border_color_riv="@color/white"
             zhy:border_width_riv="1dp"
             zhy:corner_radius="2dp"
-            zhy:border_color_riv="@color/white"
             zhy:mutate_background="true"
-            zhy:oval="false"
-            android:src="@drawable/default_head" />
+            zhy:oval="false" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -58,11 +59,11 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:horizontalSpacing="5dp"
+                android:horizontalSpacing="0.5dp"
                 android:listSelector="#00000000"
                 android:numColumns="3"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="5dp"
+                android:verticalSpacing="0.5dp"
                 android:visibility="gone" />
 
             <TextView
@@ -92,6 +93,7 @@
 
                 <ImageView
                     android:id="@+id/ivPoint"
+                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -99,8 +101,8 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
                 android:id="@+id/ll_comment_head"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -122,13 +124,18 @@
 
             <com.huixiangtv.live.utils.widget.ListViewCircle
                 android:id="@+id/lv_item_listView"
-                android:layout_marginTop="5dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
                 android:divider="@null" />
         </LinearLayout>
     </LinearLayout>
 
+    <View
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#B6B6B6" />
 
 </LinearLayout>

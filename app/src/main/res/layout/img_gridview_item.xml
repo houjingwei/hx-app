@@ -11,7 +11,7 @@
         android:src="@drawable/default_head"
         android:scaleType="fitXY"
         zhy:border_width_riv="1dp"
-        zhy:corner_radius="2dp"
+        zhy:corner_radius="1dp"
         zhy:border_color_riv="@color/white"
         zhy:mutate_background="true"
         zhy:oval="false"  />

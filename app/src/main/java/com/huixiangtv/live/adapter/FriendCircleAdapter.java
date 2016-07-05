@@ -184,7 +184,7 @@ public class FriendCircleAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                getTitlePopup(v, dynamic, viewHolder.mGridView,viewHolder.headCommentGridViewAdapter,viewHolder.ll_comment_head);
+                getTitlePopup(v, dynamic,viewHolder.headCommentGridViewAdapter,viewHolder.ll_comment_head);
 
             }
         });
@@ -193,10 +193,10 @@ public class FriendCircleAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void getTitlePopup(View v, final Dynamic dynamic,final GridView mGridView, final HeadCommentGridViewAdapter headCommentGridViewAdapter,final LinearLayout ll_comment_head) {
+    private void getTitlePopup(View v, final Dynamic dynamic,final HeadCommentGridViewAdapter headCommentGridViewAdapter,final LinearLayout ll_comment_head) {
 
-        final TitlePopup titlePopup = new TitlePopup(context, CommonHelper.dip2px(context, 165), CommonHelper.dip2px(
-                context, 40));
+        final TitlePopup titlePopup = new TitlePopup(context, CommonHelper.dip2px(context, 110), CommonHelper.dip2px(
+                context, 30));
         titlePopup
                 .addAction(new ActionItem(context, "评论", dynamic.getDynamicId(), R.mipmap.v2_dynamic_zan));
         if (!dynamic.isZan()) {
