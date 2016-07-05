@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:melove="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ffRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/sysBg"
@@ -14,18 +14,57 @@
         android:layout_height="wrap_content" />
 
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/refreshView"
+    <LinearLayout
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent">
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:id="@+id/refreshView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:divider="@color/trans"
+            android:dividerHeight="0dp"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:smoothScrollbar="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llCommentView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
         android:background="@color/white"
-        android:divider="@color/trans"
-        android:dividerHeight="0dp"
-        android:fadingEdge="none"
-        android:fastScrollEnabled="false"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:smoothScrollbar="true" />
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <View style="@style/split_line" />
 
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/etComment"
+            style="@style/black_normal_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:background="@drawable/dynamic_comment_style"
+            android:clipToPadding="false"
+            android:fitsSystemWindows="false"
+            android:gravity="center_vertical"
+            android:hint="请输入评论"
+            android:imeOptions="actionDone"
+            android:maxLength="300"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"
+            android:textColorHint="@color/gray02" />
+
+        <View style="@style/split_line" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/ivIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:visibility="invisible"
+        android:src="@mipmap/v2_dynamic_comm"/>
+    <RelativeLayout
+        android:layout_toRightOf="@+id/ivIcon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.huixiangtv.live.utils.image.RoundImageView
+            android:id="@+id/ivPhoto"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/default_head"
+            zhy:borderRadius="1dp"
+            zhy:type="round" />
+        <LinearLayout
+            android:layout_toRightOf="@+id/ivPhoto"
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvName"
+                    style="@style/gray_normal_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="永恒的陪伴"/>
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_alignParentRight="true"
+                    style="@style/gray02_small_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="刚刚"/>
+
+            </RelativeLayout>
+            <TextView
+
+                android:id="@+id/tvContent"
+                style="@style/black_bigger_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="哈哈 果然人品好！都来帮了"/>
+
+            <View
+                style="@style/split_line"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentBottom="true" />
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -2,6 +2,7 @@ package com.huixiangtv.live.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.DynamicComment;
-import com.huixiangtv.live.model.Fans;
+import com.huixiangtv.live.utils.DateUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
 import java.util.ArrayList;
@@ -59,16 +60,16 @@ public class DynamicCommentAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        Log.i("position_me",position+"");
         ViewHolder holder;
-        Fans fans = (Fans) getItem(position);
+        DynamicComment dc = (DynamicComment) getItem(position);
         if(convertView == null)
         {
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.fans_item, parent, false);
-            holder.tvRank = (TextView) convertView.findViewById(R.id.tvRank);
-            holder.tvNickName = (TextView) convertView.findViewById(R.id.tvNickName);
-            holder.tvHots = (TextView) convertView.findViewById(R.id.tvHots);
+            convertView = LayoutInflater.from(context).inflate(R.layout.dynamic_comment_item, parent, false);
+            holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
+            holder.tvContent = (TextView) convertView.findViewById(R.id.tvContent);
+            holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
             holder.ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
             convertView.setTag(holder);
         }else
@@ -76,10 +77,10 @@ public class DynamicCommentAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        holder.tvRank.setText(position+1+"");
-        holder.tvHots.setText(fans.getHots());
-        holder.tvNickName.setText(fans.getNickName());
-        ImageUtils.displayAvator(holder.ivPhoto,fans.getPhoto());
+        holder.tvName.setText(dc.getNickName());
+        holder.tvTime.setText(DateUtils.formatDisplayTime(dc.getDate(),"yyyy-MM-dd HH:mm:ss"));
+        holder.tvContent.setText(dc.getContent());
+        ImageUtils.displayAvator(holder.ivPhoto,dc.getPhoto());
 
         return convertView;
     }
@@ -100,10 +101,10 @@ public class DynamicCommentAdapter extends BaseAdapter {
 
     static class ViewHolder
     {
-        public TextView msg;
-        public TextView tvRank;
-        public TextView tvNickName;
-        public TextView tvHots;
+        public TextView tvContent;
+        public TextView tvTime;
+        public TextView tvName;
         public ImageView ivPhoto;
+        public ImageView viIcon;
     }
 }
