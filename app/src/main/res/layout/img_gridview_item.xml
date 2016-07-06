@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/default_head"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         zhy:border_width_riv="1dp"
-        zhy:corner_radius="1dp"
-        zhy:border_color_riv="@color/white"
+        zhy:corner_radius="2dp"
+        zhy:border_color_riv="@color/sysBg"
         zhy:mutate_background="true"
         zhy:oval="false"  />
 

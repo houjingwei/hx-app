@@ -22,6 +22,16 @@ public class Dynamic {
     private String address;
     private boolean isZan;
 
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
+    }
+
+    private int currentIndex;
+
     public boolean isZan() {
         return isZan;
     }

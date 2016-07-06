@@ -67,4 +67,7 @@
     <color name="yellow">#f5eb2a</color>
     <color name="black80">#e6333333</color>
     <color name="dy_text_bg">#FBFBFB</color>
+    <color name="comm_title">#323232</color>
+    <color name="comm_context">#A8A8A8</color>
+
 </resources>
