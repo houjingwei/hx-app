@@ -282,7 +282,14 @@ public final class ImageUtils {
         videoAttr.title = "";
         videoAttr.desc = "";
         videoAttr.coverUrl = ""; // 视频封面地址
-        VideoUploadTask videoTask = new VideoUploadTask(data.getBucket(), videoPath,data.getFileName(), "", videoAttr,new IUploadTaskListener(){
+        String fileName= "";
+        if(data.getFileName().contains(".mkv")){
+            fileName= data.getFileName();
+        }else{
+            fileName= data.getFileName()+".mkv";
+        }
+        Log.i("dynamicType",fileName);
+        VideoUploadTask videoTask = new VideoUploadTask(data.getBucket(), videoPath,fileName, "", videoAttr,new IUploadTaskListener(){
 
 
             @Override

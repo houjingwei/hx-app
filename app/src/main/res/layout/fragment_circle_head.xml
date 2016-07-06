@@ -6,42 +6,42 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="315dp"
         android:orientation="vertical">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="260dp"
+            android:layout_height="285dp"
             android:scaleType="centerCrop"
             android:src="@drawable/circle_bg"
             android:orientation="vertical">
         </ImageView>
 
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ivPhoto"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:src="@drawable/default_head"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="215dp"
-            android:clickable="false"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="245dp"
+            android:src="@drawable/default_head"
             app:civ_border_color="@color/white"
-            app:civ_border_width="1dp"
-            />
+            app:civ_border_width="2dp" />
 
 
 
         <TextView
             android:layout_toLeftOf="@+id/ivPhoto"
-            android:layout_marginBottom="45dp"
+            android:layout_marginBottom="40dp"
             android:layout_marginRight="10dp"
             android:layout_alignParentBottom="true"
             android:id="@+id/tvNickName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/white_bigger_style"/>
+            style="@style/white_bigger_style"
+            android:text="123asdfaf"/>
     </RelativeLayout>
 
 

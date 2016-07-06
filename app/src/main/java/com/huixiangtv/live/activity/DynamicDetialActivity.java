@@ -626,6 +626,8 @@ public class DynamicDetialActivity extends BaseBackActivity {
             @Override
             public void onSuccess(DynamicpPraise data) {
                 if (data != null) {
+                    data.setNickName(App.getLoginUser().getNickName());
+                    data.setPhoto(App.getLoginUser().getPhoto());
                     mAdapter.addData(data);
                     dn.setIsZan(true);
                 }

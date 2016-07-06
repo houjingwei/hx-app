@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:zhy="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp"
+    android:layout_marginTop="5dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/ivIcon"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:visibility="invisible"
         android:src="@mipmap/v2_dynamic_comm"/>
     <RelativeLayout
         android:layout_toRightOf="@+id/ivIcon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.huixiangtv.live.utils.image.RoundImageView
+
+
+        <com.huixiangtv.live.ui.ZJImageView
             android:id="@+id/ivPhoto"
+            android:layout_toRightOf="@+id/tvDate"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/default_head"
-            zhy:borderRadius="1dp"
-            zhy:type="round" />
+            app:radius="1dp"
+            app:shape_type="rectangle" />
         <LinearLayout
             android:layout_toRightOf="@+id/ivPhoto"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -50,18 +54,16 @@
 
             </RelativeLayout>
             <TextView
-
                 android:id="@+id/tvContent"
                 style="@style/black_small_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="哈哈 果然人品好！都来帮了"/>
+                android:layout_marginTop="5dp"/>
 
             <View
                 style="@style/split_line"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="0dp"
                 android:layout_alignParentBottom="true" />
         </LinearLayout>
 

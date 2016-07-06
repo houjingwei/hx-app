@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/ll_popu_comment"
+        android:id="@+id/popu_comment"
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -19,7 +19,7 @@
             android:src="@mipmap/v2_dynamic_zan" />
 
         <TextView
-            android:id="@+id/popu_comment"
+            android:id="@+id/tvComment"
             android:layout_marginLeft="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_popu_praise"
+        android:id="@+id/popu_praise"
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -39,7 +39,7 @@
             android:layout_height="16dp"
             android:src="@mipmap/v2_dynamic_comment" />
         <TextView
-            android:id="@+id/popu_praise"
+            android:id="@+id/tvPraise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"

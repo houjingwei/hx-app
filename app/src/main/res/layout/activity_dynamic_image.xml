@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.huixiangtv.live.utils.image.RoundImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:zhy="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/iv_gridview_img"
+
+<com.huixiangtv.live.ui.ZJImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ivAdd"
+    android:layout_toRightOf="@+id/tvDate"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:src="@drawable/default_head"
-    zhy:borderRadius="1dp"
-    zhy:type="round" />
+    app:radius="1dp"
+    app:shape_type="rectangle" />
 

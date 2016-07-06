@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,7 @@ import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 
@@ -122,8 +122,15 @@ public class MyCircleAdapter extends BaseAdapter {
         holder.tvDate.setText(dn.getLastDate());
         holder.tvMonth.setText(dn.getMonth());
         holder.tvDay.setText(dn.getDay());
-        holder.tvContent.setText(dn.getContent());
-        Log.i("qnmlgb",dn.getLastDate()+">>>>"+dn.getMonth());
+        if(StringUtil.isNotEmpty(dn.getContent())){
+            if(dn.getContent().length()>60){
+                holder.tvContent.setText(dn.getContent().substring(0,60)+"...");
+            }else{
+                holder.tvContent.setText(dn.getContent());
+            }
+        }
+
+
         if(dn.getType().equals("0")){
             holder.tvImgCount.setVisibility(View.GONE);
             holder.rlVideo.setVisibility(View.GONE);
