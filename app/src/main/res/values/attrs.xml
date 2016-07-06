@@ -83,9 +83,13 @@
         <enum name="round" value="1" />
     </attr>
 
-    <declare-styleable name="RoundImageView">
-        <attr name="borderRadius" />
-        <attr name="type" />
+    <declare-styleable name="RoundedImageView">
+        <attr name="corner_radius" format="dimension" />
+        <attr name="border_width_riv" format="dimension" />
+        <attr name="border_color_riv" format="color" />
+        <attr name="mutate_background" format="boolean" />
+        <attr name="oval" format="boolean" />
+        <attr name="android:scaleType" />
     </declare-styleable>
 
 

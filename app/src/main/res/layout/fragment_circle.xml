@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
+    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/sysBg"
-    android:orientation="vertical">
+    >
+
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/refreshView"
         android:layout_width="match_parent"
@@ -18,4 +20,40 @@
         android:headerDividersEnabled="false"
         android:smoothScrollbar="true" />
 
-</LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/commentLinear"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <View style="@style/split_line" />
+
+
+        <EditText
+            android:id="@+id/commentEdit"
+            style="@style/black_normal_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:background="@drawable/dynamic_comment_style"
+            android:clipToPadding="false"
+            android:fitsSystemWindows="false"
+            android:gravity="center_vertical"
+            android:hint="请输入评论"
+            android:imeOptions="actionDone"
+            android:maxLength="300"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"
+            android:textColorHint="@color/gray02" />
+
+        <View style="@style/split_line" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -88,4 +88,8 @@ public class HeadCommentGridViewAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public List<DynamicpPraise> getList() {
+       return list;
+    }
+
 }

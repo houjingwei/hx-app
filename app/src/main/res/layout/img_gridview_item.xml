@@ -10,7 +10,11 @@
         android:layout_height="match_parent"
         android:src="@drawable/default_head"
         android:scaleType="fitXY"
-        zhy:borderRadius="2dp"
-        zhy:type="round" />
+        zhy:border_width_riv="1dp"
+        zhy:corner_radius="1dp"
+        zhy:border_color_riv="@color/white"
+        zhy:mutate_background="true"
+        zhy:oval="false"  />
+
 
 </com.huixiangtv.live.utils.widget.SquareLayout>

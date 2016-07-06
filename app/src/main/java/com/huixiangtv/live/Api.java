@@ -173,6 +173,8 @@ public class Api {
     public static final String DYNAMIC_REMOVEPRAISE = BASE_URL +"/dynamic/removePraise";
 
 
+    public static final String GETCOLLECTARTISTDYNAMIC = BASE_URL + "dynamic/getCollectArtistDynamic";
+
 
 
 

@@ -1,22 +1,15 @@
 package com.huixiangtv.live.utils.image;
 
-
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Shader.TileMode;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.os.Parcelable;
+import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.huixiangtv.live.R;
@@ -25,242 +18,304 @@ import com.huixiangtv.live.R;
 /**
  * Created by Stone on 16/7/4.
  */
-public class RoundImageView extends ImageView
-{
-    /**
-     * 图片的类型，圆形or圆角
-     */
-    private int type;
-    public static final int TYPE_CIRCLE = 0;
-    public static final int TYPE_ROUND = 1;
-    /**
-     * 圆角大小的默认值
-     */
-    private static final int BODER_RADIUS_DEFAULT = 10;
-    /**
-     * 圆角的大小
-     */
-    private int mBorderRadius;
+public class RoundImageView extends ImageView {
 
-    /**
-     * 绘图的Paint
-     */
-    private Paint mBitmapPaint;
-    /**
-     * 圆角的半径
-     */
-    private int mRadius;
-    /**
-     * 3x3 矩阵，主要用于缩小放大
-     */
-    private Matrix mMatrix;
-    /**
-     * 渲染图像，使用图像为绘制图形着色
-     */
-    private BitmapShader mBitmapShader;
-    /**
-     * view的宽度
-     */
-    private int mWidth;
-    private RectF mRoundRect;
+    public static final String TAG = "RoundedImageView";
+    public static final float DEFAULT_RADIUS = 0f;
+    public static final float DEFAULT_BORDER_WIDTH = 0f;
+    private static final ScaleType[] SCALE_TYPES = {
+            ScaleType.MATRIX,
+            ScaleType.FIT_XY,
+            ScaleType.FIT_START,
+            ScaleType.FIT_CENTER,
+            ScaleType.FIT_END,
+            ScaleType.CENTER,
+            ScaleType.CENTER_CROP,
+            ScaleType.CENTER_INSIDE
+    };
 
-    public RoundImageView(Context context, AttributeSet attrs)
-    {
+    private float cornerRadius = DEFAULT_RADIUS;
+    private float borderWidth = DEFAULT_BORDER_WIDTH;
+    private ColorStateList borderColor =
+            ColorStateList.valueOf(RoundedDrawable.DEFAULT_BORDER_COLOR);
+    private boolean isOval = false;
+    private boolean mutateBackground = false;
 
-        super(context, attrs);
-        mMatrix = new Matrix();
-        mBitmapPaint = new Paint();
-        mBitmapPaint.setAntiAlias(true);
+    private int mResource;
+    private Drawable mDrawable;
+    private Drawable mBackgroundDrawable;
 
-        TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.RoundImageView);
+    private ScaleType mScaleType;
 
-        mBorderRadius = a.getDimensionPixelSize(
-                R.styleable.RoundImageView_borderRadius, (int) TypedValue
-                        .applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                BODER_RADIUS_DEFAULT, getResources()
-                                        .getDisplayMetrics()));// 默认为10dp
-        type = a.getInt(R.styleable.RoundImageView_type, TYPE_CIRCLE);// 默认为Circle
+    public RoundImageView(Context context) {
+        super(context);
+    }
+
+    public RoundImageView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public RoundImageView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RoundedImageView, defStyle, 0);
+
+        int index = a.getInt(R.styleable.RoundedImageView_android_scaleType, -1);
+        if (index >= 0) {
+            setScaleType(SCALE_TYPES[index]);
+        } else {
+            // default scaletype to FIT_CENTER
+            setScaleType(ScaleType.FIT_CENTER);
+        }
+
+        cornerRadius = a.getDimensionPixelSize(R.styleable.RoundedImageView_corner_radius, -1);
+        borderWidth = a.getDimensionPixelSize(R.styleable.RoundedImageView_border_width_riv, -1);
+
+        // don't allow negative values for radius and border
+        if (cornerRadius < 0) {
+            cornerRadius = DEFAULT_RADIUS;
+        }
+        if (borderWidth < 0) {
+            borderWidth = DEFAULT_BORDER_WIDTH;
+        }
+
+        borderColor = a.getColorStateList(R.styleable.RoundedImageView_border_color_riv);
+        if (borderColor == null) {
+            borderColor = ColorStateList.valueOf(RoundedDrawable.DEFAULT_BORDER_COLOR);
+        }
+
+        mutateBackground = a.getBoolean(R.styleable.RoundedImageView_mutate_background, false);
+        isOval = a.getBoolean(R.styleable.RoundedImageView_oval, false);
+
+        updateDrawableAttrs();
+        updateBackgroundDrawableAttrs(true);
 
         a.recycle();
     }
 
-    public RoundImageView(Context context)
-    {
-        this(context, null);
-    }
-
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        /**
-         * 如果类型是圆形，则强制改变view的宽高一致，以小值为准
-         */
-        if (type == TYPE_CIRCLE)
-        {
-            mWidth = Math.min(getMeasuredWidth(), getMeasuredHeight());
-            mRadius = mWidth / 2;
-            setMeasuredDimension(mWidth, mWidth);
-        }
-
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+        invalidate();
     }
 
     /**
-     * 初始化BitmapShader
+     * Return the current scale type in use by this ImageView.
+     *
+     * @attr ref android.R.styleable#ImageView_scaleType
+     * @see android.widget.ImageView.ScaleType
      */
-    private void setUpShader()
-    {
-        Drawable drawable = getDrawable();
-        if (drawable == null)
-        {
-            return;
-        }
+    @Override
+    public ScaleType getScaleType() {
+        return mScaleType;
+    }
 
-        Bitmap bmp = drawableToBitamp(drawable);
-        // 将bmp作为着色器，就是在指定区域内绘制bmp
-        mBitmapShader = new BitmapShader(bmp, TileMode.CLAMP, TileMode.CLAMP);
-        float scale = 1.0f;
-        if (type == TYPE_CIRCLE)
-        {
-            // 拿到bitmap宽或高的小值
-            int bSize = Math.min(bmp.getWidth(), bmp.getHeight());
-            scale = mWidth * 1.0f / bSize;
+    /**
+     * Controls how the image should be resized or moved to match the size
+     * of this ImageView.
+     *
+     * @param scaleType The desired scaling mode.
+     * @attr ref android.R.styleable#ImageView_scaleType
+     */
+    @Override
+    public void setScaleType(ScaleType scaleType) {
+        assert scaleType != null;
 
-        } else if (type == TYPE_ROUND)
-        {
-            Log.e("TAG",
-                    "b'w = " + bmp.getWidth() + " , " + "b'h = "
-                            + bmp.getHeight());
-            if (!(bmp.getWidth() == getWidth() && bmp.getHeight() == getHeight()))
-            {
-                // 如果图片的宽或者高与view的宽高不匹配，计算出需要缩放的比例；缩放后的图片的宽高，一定要大于我们view的宽高；所以我们这里取大值；
-                scale = Math.max(getWidth() * 1.0f / bmp.getWidth(),
-                        getHeight() * 1.0f / bmp.getHeight());
+        if (mScaleType != scaleType) {
+            mScaleType = scaleType;
+
+            switch (scaleType) {
+                case CENTER:
+                case CENTER_CROP:
+                case CENTER_INSIDE:
+                case FIT_CENTER:
+                case FIT_START:
+                case FIT_END:
+                case FIT_XY:
+                    super.setScaleType(ScaleType.FIT_XY);
+                    break;
+                default:
+                    super.setScaleType(scaleType);
+                    break;
             }
 
-        }
-        // shader的变换矩阵，我们这里主要用于放大或者缩小
-        mMatrix.setScale(scale, scale);
-        // 设置变换矩阵
-        mBitmapShader.setLocalMatrix(mMatrix);
-        // 设置shader
-        mBitmapPaint.setShader(mBitmapShader);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas)
-    {
-        Log.e("TAG", "onDraw");
-        if (getDrawable() == null)
-        {
-            return;
-        }
-        setUpShader();
-
-        if (type == TYPE_ROUND)
-        {
-            canvas.drawRoundRect(mRoundRect, mBorderRadius, mBorderRadius,
-                    mBitmapPaint);
-        } else
-        {
-            canvas.drawCircle(mRadius, mRadius, mRadius, mBitmapPaint);
-            // drawSomeThing(canvas);
-        }
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh)
-    {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        // 圆角图片的范围
-        if (type == TYPE_ROUND)
-            mRoundRect = new RectF(0, 0, w, h);
-    }
-
-    /**
-     * drawable转bitmap
-     *
-     * @param drawable
-     * @return
-     */
-    private Bitmap drawableToBitamp(Drawable drawable)
-    {
-        if (drawable instanceof BitmapDrawable)
-        {
-            BitmapDrawable bd = (BitmapDrawable) drawable;
-            return bd.getBitmap();
-        }
-        int w = drawable.getIntrinsicWidth();
-        int h = drawable.getIntrinsicHeight();
-        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, w, h);
-        drawable.draw(canvas);
-        return bitmap;
-    }
-
-    private static final String STATE_INSTANCE = "state_instance";
-    private static final String STATE_TYPE = "state_type";
-    private static final String STATE_BORDER_RADIUS = "state_border_radius";
-
-    @Override
-    protected Parcelable onSaveInstanceState()
-    {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(STATE_INSTANCE, super.onSaveInstanceState());
-        bundle.putInt(STATE_TYPE, type);
-        bundle.putInt(STATE_BORDER_RADIUS, mBorderRadius);
-        return bundle;
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state)
-    {
-        if (state instanceof Bundle)
-        {
-            Bundle bundle = (Bundle) state;
-            super.onRestoreInstanceState(((Bundle) state)
-                    .getParcelable(STATE_INSTANCE));
-            this.type = bundle.getInt(STATE_TYPE);
-            this.mBorderRadius = bundle.getInt(STATE_BORDER_RADIUS);
-        } else
-        {
-            super.onRestoreInstanceState(state);
-        }
-
-    }
-
-    public void setBorderRadius(int borderRadius)
-    {
-        int pxVal = dp2px(borderRadius);
-        if (this.mBorderRadius != pxVal)
-        {
-            this.mBorderRadius = pxVal;
+            updateDrawableAttrs();
+            updateBackgroundDrawableAttrs(false);
             invalidate();
         }
     }
 
-    public void setType(int type)
-    {
-        if (this.type != type)
-        {
-            this.type = type;
-            if (this.type != TYPE_ROUND && this.type != TYPE_CIRCLE)
-            {
-                this.type = TYPE_CIRCLE;
-            }
-            requestLayout();
+    @Override
+    public void setImageDrawable(Drawable drawable) {
+        mResource = 0;
+        mDrawable = RoundedDrawable.fromDrawable(drawable);
+        updateDrawableAttrs();
+        super.setImageDrawable(mDrawable);
+    }
+
+    @Override
+    public void setImageBitmap(Bitmap bm) {
+        mResource = 0;
+        mDrawable = RoundedDrawable.fromBitmap(bm);
+        updateDrawableAttrs();
+        super.setImageDrawable(mDrawable);
+    }
+
+    @Override
+    public void setImageResource(int resId) {
+        if (mResource != resId) {
+            mResource = resId;
+            mDrawable = resolveResource();
+            updateDrawableAttrs();
+            super.setImageDrawable(mDrawable);
         }
-
     }
 
-    public int dp2px(int dpVal)
-    {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                dpVal, getResources().getDisplayMetrics());
+    @Override public void setImageURI(Uri uri) {
+        super.setImageURI(uri);
+        setImageDrawable(getDrawable());
     }
 
+    private Drawable resolveResource() {
+        Resources rsrc = getResources();
+        if (rsrc == null) { return null; }
+
+        Drawable d = null;
+
+        if (mResource != 0) {
+            try {
+                d = rsrc.getDrawable(mResource);
+            } catch (Exception e) {
+                Log.w(TAG, "Unable to find resource: " + mResource, e);
+                // Don't try again.
+                mResource = 0;
+            }
+        }
+        return RoundedDrawable.fromDrawable(d);
+    }
+
+    @Override
+    public void setBackground(Drawable background) {
+        setBackgroundDrawable(background);
+    }
+
+    private void updateDrawableAttrs() {
+        updateAttrs(mDrawable);
+    }
+
+    private void updateBackgroundDrawableAttrs(boolean convert) {
+        if (mutateBackground) {
+            if (convert) {
+                mBackgroundDrawable = RoundedDrawable.fromDrawable(mBackgroundDrawable);
+            }
+            updateAttrs(mBackgroundDrawable);
+        }
+    }
+
+    private void updateAttrs(Drawable drawable) {
+        if (drawable == null) { return; }
+
+        if (drawable instanceof RoundedDrawable) {
+            ((RoundedDrawable) drawable)
+                    .setScaleType(mScaleType)
+                    .setCornerRadius(cornerRadius)
+                    .setBorderWidth(borderWidth)
+                    .setBorderColor(borderColor)
+                    .setOval(isOval);
+        } else if (drawable instanceof LayerDrawable) {
+            // loop through layers to and set drawable attrs
+            LayerDrawable ld = ((LayerDrawable) drawable);
+            for (int i = 0, layers = ld.getNumberOfLayers(); i < layers; i++) {
+                updateAttrs(ld.getDrawable(i));
+            }
+        }
+    }
+
+    @Override
+    @Deprecated
+    public void setBackgroundDrawable(Drawable background) {
+        mBackgroundDrawable = background;
+        updateBackgroundDrawableAttrs(true);
+        super.setBackgroundDrawable(mBackgroundDrawable);
+    }
+
+    public float getCornerRadius() {
+        return cornerRadius;
+    }
+
+    public void setCornerRadius(int resId) {
+        setCornerRadius(getResources().getDimension(resId));
+    }
+
+    public void setCornerRadius(float radius) {
+        if (cornerRadius == radius) { return; }
+
+        cornerRadius = radius;
+        updateDrawableAttrs();
+        updateBackgroundDrawableAttrs(false);
+    }
+
+    public float getBorderWidth() {
+        return borderWidth;
+    }
+
+    public void setBorderWidth(int resId) {
+        setBorderWidth(getResources().getDimension(resId));
+    }
+
+    public void setBorderWidth(float width) {
+        if (borderWidth == width) { return; }
+
+        borderWidth = width;
+        updateDrawableAttrs();
+        updateBackgroundDrawableAttrs(false);
+        invalidate();
+    }
+
+    public int getBorderColor() {
+        return borderColor.getDefaultColor();
+    }
+
+    public void setBorderColor(int color) {
+        setBorderColor(ColorStateList.valueOf(color));
+    }
+
+    public ColorStateList getBorderColors() {
+        return borderColor;
+    }
+
+    public void setBorderColor(ColorStateList colors) {
+        if (borderColor.equals(colors)) { return; }
+
+        borderColor =
+                (colors != null) ? colors : ColorStateList.valueOf(RoundedDrawable.DEFAULT_BORDER_COLOR);
+        updateDrawableAttrs();
+        updateBackgroundDrawableAttrs(false);
+        if (borderWidth > 0) {
+            invalidate();
+        }
+    }
+
+    public boolean isOval() {
+        return isOval;
+    }
+
+    public void setOval(boolean oval) {
+        isOval = oval;
+        updateDrawableAttrs();
+        updateBackgroundDrawableAttrs(false);
+        invalidate();
+    }
+
+    public boolean isMutateBackground() {
+        return mutateBackground;
+    }
+
+    public void setMutateBackground(boolean mutate) {
+        if (mutateBackground == mutate) { return; }
+
+        mutateBackground = mutate;
+        updateBackgroundDrawableAttrs(true);
+        invalidate();
+    }
 }

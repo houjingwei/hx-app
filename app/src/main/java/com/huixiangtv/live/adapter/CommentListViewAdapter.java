@@ -78,7 +78,7 @@ public class CommentListViewAdapter  extends BaseAdapter {
             char ch = text.charAt(i);
             str = String.valueOf(ch);
             if (str.equals(":")) {
-                number = i;
+                number = i+1;
                 break;
             }
         }
@@ -88,8 +88,8 @@ public class CommentListViewAdapter  extends BaseAdapter {
         // ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
         ForegroundColorSpan redSpan = new ForegroundColorSpan(
                 Color.parseColor("#323232"));
-        builder.setSpan(redSpan, 0, number+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        viewHolder.mTextView.setText(builder+" ");
+        builder.setSpan(redSpan, 0, number, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        viewHolder.mTextView.setText(builder);
         return convertView;
     }
 }
