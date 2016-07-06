@@ -2,6 +2,7 @@ package com.huixiangtv.live.adapter;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,13 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
+import com.huixiangtv.live.fragment.FragmentCircle;
 import com.huixiangtv.live.model.Dynamic;
 import com.huixiangtv.live.model.DynamicComment;
 import com.huixiangtv.live.model.DynamicImage;
@@ -27,9 +30,6 @@ import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.ActionItem;
 import com.huixiangtv.live.utils.widget.ListViewCircle;
 import com.huixiangtv.live.utils.widget.TitlePopup;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,12 +41,14 @@ import java.util.Map;
 public class FriendCircleAdapter extends BaseAdapter {
 
     private Context context;
+    private FragmentCircle fragmentCircle;
     private List<Dynamic> list = new ArrayList<>();
     private Handler handler;
 
-    public FriendCircleAdapter(Context context,Handler handler) {
+    public FriendCircleAdapter(FragmentCircle fragmentCircle, Context context, Handler handler) {
         this.context = context;
         this.handler = handler;
+        this.fragmentCircle = fragmentCircle;
     }
 
     @Override
@@ -67,9 +69,14 @@ public class FriendCircleAdapter extends BaseAdapter {
         return arg0;
     }
 
+    public void refreshCommAdapter(DynamicComment dc) {
+        List<DynamicComment> dynamicComments= list.get(dc.getCurrentIndex()).getComments();
+        dynamicComments.add(0,dc);
+
+        notifyDataSetChanged();
+    }
 
     public class ViewHolder {
-
         private GridView mGridView;
         private GridView mImgGridView;
         private ListViewCircle mListView;
@@ -81,16 +88,20 @@ public class FriendCircleAdapter extends BaseAdapter {
         private ImageView ivDmPic;
         private LinearLayout ll_comment_head;
         private HeadCommentGridViewAdapter headCommentGridViewAdapter;
-
+        private CommentListViewAdapter commentListViewAdapter;
+        private RelativeLayout rlVideo;
+        private ImageView ivVideo;
     }
 
+
     @Override
-    public View getView(int current, View convertView, ViewGroup arg2) {
+    public View getView(final int current, View convertView, ViewGroup arg2) {
 
         final Dynamic dynamic = (Dynamic) list.get(current);
         dynamic.setIsZan(false);
 
         final ViewHolder viewHolder;
+
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.listview_circle_item, null);
             viewHolder = new ViewHolder();
@@ -107,11 +118,14 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.mListView = (ListViewCircle) convertView
                     .findViewById(R.id.lv_item_listView);
             viewHolder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
+            viewHolder.rlVideo = (RelativeLayout) convertView.findViewById(R.id.rlVideo);
+            viewHolder.ivVideo = (ImageView) convertView.findViewById(R.id.ivVideo);
+
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
 
         ImageUtils.display(viewHolder.ivDmPic, dynamic.getPhoto()); //pic
 
@@ -148,52 +162,64 @@ public class FriendCircleAdapter extends BaseAdapter {
                     .setAdapter(viewHolder.headCommentGridViewAdapter);
         }
 
+        if (dynamic.getType().equals("0")) {  //文本
+            //viewHolder.rlVideo.setVisibility(View.GONE);
+            //viewHolder.mImgGridView.setVisibility(View.GONE);
+        } else if (dynamic.getType().equals("1")) {  //图片
+            viewHolder.mImgGridView.setVisibility(View.VISIBLE);
+            viewHolder.rlVideo.setVisibility(View.GONE);
 
-        if (null != dynamic.getImages() && dynamic.getImages().size() > 0) {
-            viewHolder.mImgGridView.setNumColumns(3);
-
-            GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages());
-            viewHolder.mImgGridView.setAdapter(gridViewFriendAdapter);
-
-
-            int size = dynamic.getImages().size();
-            if (size == 1) {
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewHolder.mImgGridView.getLayoutParams();
-                layoutParams.height = (int) (App.screenHeight * 0.15);
-                viewHolder.mImgGridView.setLayoutParams(layoutParams);
-                viewHolder.mImgGridView.setNumColumns(1);
-            } else if (size == 2) {
-                viewHolder.mImgGridView.setNumColumns(2);
-            } else if (size > 2) {
+            if (null != dynamic.getImages() && dynamic.getImages().size() > 0) {
                 viewHolder.mImgGridView.setNumColumns(3);
+
+                int size = dynamic.getImages().size();
+                if (size == 1) {
+                    viewHolder.mImgGridView.setNumColumns(1);
+                } else if (size == 2) {
+                    viewHolder.mImgGridView.setNumColumns(2);
+                } else if (size > 2) {
+                    viewHolder.mImgGridView.setNumColumns(3);
+                }
+
+                GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages());
+                viewHolder.mImgGridView.setAdapter(gridViewFriendAdapter);
+                gridViewFriendAdapter.notifyDataSetChanged();
+            } else {
+                List<DynamicImage> dynamicImages = new ArrayList<>();
+                viewHolder.mImgGridView.setAdapter(new GridViewFriendAdapter(context, dynamicImages));
             }
-            gridViewFriendAdapter.notifyDataSetChanged();
-        } else {
-            List<DynamicImage> dynamicImages = new ArrayList<>();
-            viewHolder.mImgGridView.setAdapter(new GridViewFriendAdapter(context, dynamicImages));
+
+
+        } else if (dynamic.getType().equals("2")) {   //视频
+            viewHolder.mImgGridView.setVisibility(View.GONE);
+            viewHolder.rlVideo.setVisibility(View.VISIBLE);
+            ImageUtils.display(viewHolder.ivVideo, dynamic.getVideoCover());
         }
 
+
         if (null != dynamic.getComments() && dynamic.getComments().size() > 0) {
-            viewHolder.mListView.setAdapter(new CommentListViewAdapter(context, dynamic.getComments()));
+            viewHolder.commentListViewAdapter = new CommentListViewAdapter(context, dynamic.getComments());
+            viewHolder.mListView.setAdapter(viewHolder.commentListViewAdapter);
         } else {
             List<DynamicComment> dynamicComments = new ArrayList<>();
             viewHolder.mListView.setAdapter(new CommentListViewAdapter(context, dynamicComments));
         }
 
+
         viewHolder.ivPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                getTitlePopup(v, dynamic,viewHolder.headCommentGridViewAdapter,viewHolder.ll_comment_head);
+                dynamic.setCurrentIndex(current);
+                getTitlePopup(v, dynamic, viewHolder.headCommentGridViewAdapter, viewHolder.ll_comment_head);
 
             }
         });
 
-
         return convertView;
     }
 
-    private void getTitlePopup(View v, final Dynamic dynamic,final HeadCommentGridViewAdapter headCommentGridViewAdapter,final LinearLayout ll_comment_head) {
+    private void getTitlePopup(View v, final Dynamic dynamic, final HeadCommentGridViewAdapter headCommentGridViewAdapter, final LinearLayout ll_comment_head) {
 
         final TitlePopup titlePopup = new TitlePopup(context, CommonHelper.dip2px(context, 110), CommonHelper.dip2px(
                 context, 30));
@@ -219,18 +245,20 @@ public class FriendCircleAdapter extends BaseAdapter {
                 if (item.mTitle.equals("赞")) {
                     dynamic.setIsZan(true);
                     titlePopup.setComment("取消");
-                    addPraise(ll_comment_head,headCommentGridViewAdapter, item.dynamicId + "");
+                    addPraise(ll_comment_head, headCommentGridViewAdapter, item.dynamicId + "");
 
                 }
                 if (item.mTitle.equals("取消")) {
                     titlePopup.setComment("赞");
                     dynamic.setIsZan(false);
-                    removePraise(ll_comment_head,headCommentGridViewAdapter,item.dynamicId + "");
+                    removePraise(ll_comment_head, headCommentGridViewAdapter, item.dynamicId + "");
                 }
 
                 if (item.mTitle.equals("评论")) {
-
-                    handler.sendMessage(handler.obtainMessage(10, position));
+                    Message msg = new Message();
+                    msg.what =10;
+                    msg.obj = dynamic;
+                    handler.sendMessage(msg);
                 }
             }
         });
@@ -239,7 +267,7 @@ public class FriendCircleAdapter extends BaseAdapter {
         titlePopup.show(v);
     }
 
-    private void unZan(final  LinearLayout ll_comment_head,HeadCommentGridViewAdapter headCommentGridViewAdapter) {
+    private void unZan(final LinearLayout ll_comment_head, HeadCommentGridViewAdapter headCommentGridViewAdapter) {
         List<DynamicpPraise> dynamicpPraiseList = headCommentGridViewAdapter.getList();
         for (int i = 0; i < dynamicpPraiseList.size(); i++) {
             if (dynamicpPraiseList.get(i).getUid().equals(App.getLoginUser().getUid())) {
@@ -251,12 +279,9 @@ public class FriendCircleAdapter extends BaseAdapter {
     }
 
     private void inVisiblePraiseUI(LinearLayout ll_comment_head, HeadCommentGridViewAdapter headCommentGridViewAdapter) {
-        if(headCommentGridViewAdapter.getList().size()==0)
-        {
+        if (headCommentGridViewAdapter.getList().size() == 0) {
             ll_comment_head.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             ll_comment_head.setVisibility(View.VISIBLE);
         }
     }
@@ -264,9 +289,10 @@ public class FriendCircleAdapter extends BaseAdapter {
 
     /**
      * 点赞
+     *
      * @param headCommentGridViewAdapter
      */
-    private void zanBinderUi(final  LinearLayout ll_comment_head,HeadCommentGridViewAdapter headCommentGridViewAdapter) {
+    private void zanBinderUi(final LinearLayout ll_comment_head, HeadCommentGridViewAdapter headCommentGridViewAdapter) {
         List<DynamicpPraise> dynamicpPraiseList = headCommentGridViewAdapter.getList();
 
         boolean isHasObject = false;
@@ -276,7 +302,7 @@ public class FriendCircleAdapter extends BaseAdapter {
                 isHasObject = true;
             }
         }
-        if(!isHasObject) {
+        if (!isHasObject) {
 
             DynamicpPraise dynamicpPraise = new DynamicpPraise();
             dynamicpPraise.setPhoto(App.getLoginUser().getPhoto());
@@ -305,7 +331,7 @@ public class FriendCircleAdapter extends BaseAdapter {
     /**
      * 点赞
      */
-    private void addPraise(final  LinearLayout ll_comment_head,final HeadCommentGridViewAdapter headCommentGridViewAdapter,String dynamicId) {
+    private void addPraise(final LinearLayout ll_comment_head, final HeadCommentGridViewAdapter headCommentGridViewAdapter, String dynamicId) {
 
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("dynamicId", dynamicId);
@@ -314,7 +340,7 @@ public class FriendCircleAdapter extends BaseAdapter {
             @Override
             public void onSuccess(Dynamic data) {
                 if (data != null) {
-                    zanBinderUi(ll_comment_head,headCommentGridViewAdapter);
+                    zanBinderUi(ll_comment_head, headCommentGridViewAdapter);
                 } else {
                     CommonHelper.showTip(context, "点赞失败");
                 }
@@ -329,7 +355,7 @@ public class FriendCircleAdapter extends BaseAdapter {
     }
 
 
-    private void removePraise(final  LinearLayout ll_comment_head,final HeadCommentGridViewAdapter headCommentGridViewAdapter,String dynamicId) {
+    private void removePraise(final LinearLayout ll_comment_head, final HeadCommentGridViewAdapter headCommentGridViewAdapter, String dynamicId) {
 
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("dynamicId", dynamicId);
@@ -337,7 +363,7 @@ public class FriendCircleAdapter extends BaseAdapter {
         RequestUtils.sendPostRequest(Api.DYNAMIC_REMOVEPRAISE, paramsMap, new ResponseCallBack<Dynamic>() {
             @Override
             public void onSuccess(Dynamic data) {
-                unZan(ll_comment_head,headCommentGridViewAdapter);
+                unZan(ll_comment_head, headCommentGridViewAdapter);
             }
 
             @Override
@@ -348,6 +374,10 @@ public class FriendCircleAdapter extends BaseAdapter {
         }, Dynamic.class);
     }
 
+
+    public List<Dynamic> getList() {
+        return list;
+    }
 
 }
 

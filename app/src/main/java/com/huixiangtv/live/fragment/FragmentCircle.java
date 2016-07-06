@@ -1,43 +1,48 @@
 package com.huixiangtv.live.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.adapter.FriendCircleAdapter;
 import com.huixiangtv.live.model.Dynamic;
+import com.huixiangtv.live.model.DynamicComment;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.HuixiangLoadingLayout;
 import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.DateUtils;
 import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +55,9 @@ public class FragmentCircle extends Fragment {
     private FriendCircleAdapter adapter;
     int page = 1;
     private FrameLayout main;
-    private LinearLayout commentLinear;
-    private EditText commentEdit;		//评论输入框
+    public LinearLayout commentLinear;
+    private EditText commentEdit;        //评论输入框
+    private boolean isReply;            //是否是回复
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,7 +65,6 @@ public class FragmentCircle extends Fragment {
         initView();
         return mRootView;
     }
-
 
 
     private void initView() {
@@ -76,6 +81,22 @@ public class FragmentCircle extends Fragment {
 
         commentLinear = (LinearLayout) mRootView.findViewById(R.id.commentLinear);
         commentEdit = (EditText) mRootView.findViewById(R.id.commentEdit);
+
+        commentEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == 4) {
+                    if(isEditEmply()) {
+                        if (null != dynamicClass)
+                            reComment(dynamicClass);
+
+                        onHideKeyboard();
+                        hideKeyBoard();
+                    }
+                }
+                return true;
+            }
+        });
         refreshView = (PullToRefreshListView) mRootView.findViewById(R.id.refreshView);
         refreshView.setMode(PullToRefreshBase.Mode.BOTH);
         refreshView.setHeaderLayout(new HuixiangLoadingLayout(getActivity()));
@@ -93,7 +114,7 @@ public class FragmentCircle extends Fragment {
             }
         });
         initHeadInfo(view);
-        adapter = new FriendCircleAdapter(getActivity(),handler);
+        adapter = new FriendCircleAdapter(this, getActivity(), handler);
         refreshView.setAdapter(adapter);
 
         refreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
@@ -144,8 +165,9 @@ public class FragmentCircle extends Fragment {
     public void onResume() {
         super.onResume();
     }
+
     /**
-     *  获取圈子列表
+     * 获取圈子列表
      */
     private void bindDynamicInfo() {
 
@@ -153,7 +175,7 @@ public class FragmentCircle extends Fragment {
         paramsMap.put("page", page + "");
         paramsMap.put("pageSize", PAGESIZE);
 
-        RequestUtils.sendPostRequest(Api.DYNAMIC_OWNDYNAMIC, paramsMap, new ResponseCallBack<Dynamic>() {
+        RequestUtils.sendPostRequest(Api.GETCOLLECTARTISTDYNAMIC, paramsMap, new ResponseCallBack<Dynamic>() {
             @Override
             public void onSuccessList(List<Dynamic> data) {
                 if (data != null && data.size() > 0) {
@@ -181,33 +203,17 @@ public class FragmentCircle extends Fragment {
         }, Dynamic.class);
     }
 
+    public Dynamic dynamicClass = null;
 
-
-    private void onFocusChange(boolean hasFocus){
-        final boolean isFocus = hasFocus;
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                InputMethodManager imm = (InputMethodManager)
-                        commentEdit.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (isFocus) {
-                    //显示输入法
-                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                } else {
-                    //隐藏输入法
-                    imm.hideSoftInputFromWindow(commentEdit.getWindowToken(), 0);
-                }
-            }
-        }, 100);
-    }
-
-
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what == 10){
+            if (msg.what == 10) {
                 commentLinear.setVisibility(View.VISIBLE);
-                showChatInputView();// onFocusChange(true);
+                showChatInputView();
+                Dynamic dynamic = (Dynamic) msg.obj;
+                dynamicClass = dynamic;
             }
         }
     };
@@ -215,21 +221,20 @@ public class FragmentCircle extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(commentLinear.getVisibility() == View.VISIBLE){
+        if (commentLinear.getVisibility() == View.VISIBLE) {
             commentLinear.setVisibility(View.GONE);
         }
     }
-
 
 
     // 状态栏的高度
     private int statusBarHeight = 0;
 
     private int myStautHeight() {
-        Rect rectangle= new Rect();
-        Window window= getActivity().getWindow();
+        Rect rectangle = new Rect();
+        Window window = getActivity().getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
-        int statusBarHeight= rectangle.top;
+        int statusBarHeight = rectangle.top;
         return statusBarHeight;
     }
 
@@ -257,7 +262,7 @@ public class FragmentCircle extends Fragment {
             // 在显示软键盘时，heightDiff会变大，等于软键盘加状态栏的高度。
             // 所以heightDiff大于状态栏高度时表示软键盘出现了，
             // 这时可算出软键盘的高度，即heightDiff减去状态栏的高度
-            if(statusBarHeight==0) {
+            if (statusBarHeight == 0) {
                 statusBarHeight = myStautHeight();
             }
             if (keyboardHeight == 0 && heightDiff > statusBarHeight) {
@@ -283,14 +288,13 @@ public class FragmentCircle extends Fragment {
     };
 
 
-
     private void onShowKeyboard() {
         commentLinear.setVisibility(View.VISIBLE);
         ViewGroup.MarginLayoutParams margin = new ViewGroup.MarginLayoutParams(commentLinear.getLayoutParams());
         //左上右下
         Log.i("rinima", App.screenHeight - keyboardHeight + "");
 
-        int topY = App.screenHeight - keyboardHeight  - WidgetUtil.dip2px(getActivity(), 110);
+        int topY = App.screenHeight - keyboardHeight - WidgetUtil.dip2px(getActivity(), 110);
         margin.setMargins(0, topY, 0, 0);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(margin);
         commentLinear.setLayoutParams(layoutParams);
@@ -313,8 +317,41 @@ public class FragmentCircle extends Fragment {
     /**
      * 显示聊天区域
      */
-    private void showChatInputView() {
+    public void showChatInputView() {
         KeyBoardUtils.openKeybord(commentEdit, getActivity());
+    }
+
+    private void reComment(Dynamic dn) {
+        Log.i("rinima", commentEdit.getText().toString());
+        String comment = commentEdit.getText().toString();
+        String did = dn.getDynamicId();
+        final DynamicComment dc = new DynamicComment();
+        dc.setContent(comment);
+        dc.setCurrentIndex(dn.getCurrentIndex());
+        dc.setUid(App.getLoginUser().getUid());
+        dc.setDynamicId(did);
+        dc.setNickName(App.getLoginUser().getNickName());
+        dc.setPhoto(App.getLoginUser().getPhoto());
+        dc.setDate(DateUtils.dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        CommonHelper.reComment(dc, new ApiCallback<String>() {
+            @Override
+            public void onSuccess(String data) {
+                dc.setCommentId(data);
+                adapter.refreshCommAdapter(dc);
+                commentEdit.setText("");
+            }
+        });
+    }
+
+
+
+    private boolean isEditEmply(){
+        String comment = commentEdit.getText().toString().trim();
+        if(comment.equals("")){
+            return false;
+        }
+        commentEdit.setText("");
+        return true;
     }
 
 }

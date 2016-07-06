@@ -13,13 +13,14 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.DynamicComment;
+import com.huixiangtv.live.model.DynamicpPraise;
 
 import java.util.List;
 
 /**
  * Created by Stone on 16/7/1.
  */
-public class CommentListViewAdapter  extends BaseAdapter {
+public class CommentListViewAdapter extends BaseAdapter {
 
     private static final String TAG = "CommentListViewAdapter";
     private LayoutInflater inflater;
@@ -53,10 +54,15 @@ public class CommentListViewAdapter  extends BaseAdapter {
         return arg0;
     }
 
+    public void add(DynamicComment dc) {
+        cmList.add(dc);
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder {
 
         private TextView mTextView;
-
+        private TextView tv_comment_key;
     }
 
     @Override
@@ -69,27 +75,30 @@ public class CommentListViewAdapter  extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.mTextView = (TextView) convertView
                     .findViewById(R.id.tv_comment_text);
+            viewHolder.tv_comment_key = (TextView) convertView.findViewById(R.id.tv_comment_key);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        text = cmList.get(arg0).getNickName()+":" + cmList.get(arg0).getContent();
-        for (int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i);
-            str = String.valueOf(ch);
-            if (str.equals(":")) {
-                number = i+1;
-                break;
-            }
-        }
-
-        SpannableStringBuilder builder = new SpannableStringBuilder(text);
-
-        // ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
-        ForegroundColorSpan redSpan = new ForegroundColorSpan(
-                Color.parseColor("#323232"));
-        builder.setSpan(redSpan, 0, number, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        viewHolder.mTextView.setText(builder);
+        viewHolder.tv_comment_key.setText(cmList.get(arg0).getNickName() + ":  ");
+        viewHolder.mTextView.setText(cmList.get(arg0).getContent());
         return convertView;
     }
+
+    public void clear() {
+        cmList.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addList(List<DynamicComment> ls) {
+        if (ls != null) {
+            cmList.addAll(ls);
+        }
+        notifyDataSetChanged();
+    }
+
+    public List<DynamicComment> getList() {
+        return cmList;
+    }
+
 }

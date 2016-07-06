@@ -13,6 +13,15 @@ public class DynamicComment {
     private String photo;
     private String date;
 
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
+    }
+
+    private int currentIndex;
     private boolean showIcon = false;
 
     public String getUid() {

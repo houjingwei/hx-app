@@ -13,6 +13,13 @@
         android:paddingRight="2dp"
         android:paddingTop="2dp" >
 
+
+        <TextView
+            android:id="@+id/tv_comment_key"
+            android:textColor="#323232"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_comment_text"
             android:textColor="#A8A8A8"

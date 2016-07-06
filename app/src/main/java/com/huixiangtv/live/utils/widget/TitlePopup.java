@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.huixiangtv.live.R;
@@ -21,8 +22,9 @@ import com.huixiangtv.live.R;
  */
 public class TitlePopup extends PopupWindow {
 
-    private TextView priase;
-    private TextView comment;
+    private LinearLayout priase;
+    private TextView  tv_priase ,tv_comment;
+    private LinearLayout comment;
 
     private Context mContext;
 
@@ -79,8 +81,10 @@ public class TitlePopup extends PopupWindow {
         View view = LayoutInflater.from(mContext).inflate(
                 R.layout.comment_popu, null);
         setContentView(view);
-        priase = (TextView) view.findViewById(R.id.popu_praise);
-        comment = (TextView) view.findViewById(R.id.popu_comment);
+        priase = (LinearLayout) view.findViewById(R.id.ll_popu_praise);
+        comment = (LinearLayout) view.findViewById(R.id.ll_popu_comment);
+        tv_priase = (TextView) view.findViewById(R.id.popu_praise);
+        tv_comment = (TextView) view.findViewById(R.id.popu_comment);
         priase.setOnClickListener(onclick);
         comment.setOnClickListener(onclick);
     }
@@ -94,7 +98,7 @@ public class TitlePopup extends PopupWindow {
         // 设置矩形的大小
         mRect.set(mLocation[0], mLocation[1], mLocation[0] + c.getWidth(),
                 mLocation[1] + c.getHeight());
-        priase.setText(mActionItems.get(0).mTitle);
+        tv_priase.setText(mActionItems.get(0).mTitle);
         // 判断是否需要添加或更新列表子类项
         if (mIsDirty) {
             // populateActions();
@@ -113,10 +117,10 @@ public class TitlePopup extends PopupWindow {
         public void onClick(View v) {
             dismiss();
             switch (v.getId()) {
-                case R.id.popu_comment:
+                case R.id.ll_popu_comment:
                     mItemOnClickListener.onItemClick(mActionItems.get(1), 1);
                     break;
-                case R.id.popu_praise:
+                case R.id.ll_popu_praise:
                     mItemOnClickListener.onItemClick(mActionItems.get(0), 0);
                     break;
             }
@@ -170,6 +174,6 @@ public class TitlePopup extends PopupWindow {
 
     public void setComment(String comment_value)
     {
-        comment.setText(comment_value);
+        tv_comment.setText(comment_value);
     }
 }
