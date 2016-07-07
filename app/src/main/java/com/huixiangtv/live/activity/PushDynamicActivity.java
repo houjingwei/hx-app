@@ -43,10 +43,10 @@ import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CenterLoadingView;
+import com.huixiangtv.live.ui.ZJImageView;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.Utils;
 import com.huixiangtv.live.utils.image.ImageUtils;
-import com.huixiangtv.live.utils.image.RoundImageView;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 import com.tencent.upload.task.data.FileInfo;
 
@@ -73,8 +73,9 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
     private RelativeLayout switchTrigger;
     private TextView switchLabel;
     private TextView tvLocal;
-    private String jd;
-    private String wd;
+    private String address;
+    private String lon;
+    private String lat;
 
     /***** 录制参数******/
     private float mDurationLimit;
@@ -163,9 +164,12 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
                 //定位完成
                 case Utils.MSG_LOCATION_FINISH:
                     AMapLocation loc = (AMapLocation)msg.obj;
-                    jd = loc.getLongitude()+"";
-                    wd  = loc.getLatitude()+"";
+
+
                     String cityArea = loc.getCity()+loc.getDistrict()+"";
+                    lon = loc.getLongitude()+"";
+                    lat  = loc.getLatitude()+"";
+                    address = cityArea;
                     tvLocal.setText(cityArea);
                     break;
                 default:
@@ -338,6 +342,11 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
         params.put("content",etShareContent.getText().toString());
         params.put("images", "");
         params.put("video", url);
+        if(switchTrigger.getTag().toString().equals("open_yes")){
+            params.put("lon",lon);
+            params.put("lat", lat);
+            params.put("address", address);
+        }
         RequestUtils.sendPostRequest(Api.CREATE_DYNAMIC, params, new ResponseCallBack<String>() {
             @Override
             public void onSuccess(String data) {
@@ -373,6 +382,11 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
         params.put("content",etShareContent.getText().toString());
         params.put("images", "");
         params.put("video", "");
+        if(switchTrigger.getTag().toString().equals("open_yes")){
+            params.put("lon",lon);
+            params.put("lat", lat);
+            params.put("address", address);
+        }
         RequestUtils.sendPostRequest(Api.CREATE_DYNAMIC, params, new ResponseCallBack<String>() {
             @Override
             public void onSuccess(String data) {
@@ -456,6 +470,12 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
         params.put("content",etShareContent.getText().toString());
         params.put("images", CommonUtil.listToString(imgPaths));
         params.put("video", "");
+        if(switchTrigger.getTag().toString().equals("open_yes")){
+            params.put("lon",lon);
+            params.put("lat", lat);
+            params.put("address", address);
+        }
+
         RequestUtils.sendPostRequest(Api.CREATE_DYNAMIC, params, new ResponseCallBack<String>() {
             @Override
             public void onSuccess(String data) {
@@ -524,7 +544,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
         //视频时长
         mDurationLimit = 60f;
         //默认最小时长
-        mMinDurationLimit = 12f;
+        mMinDurationLimit = 6f;
         //视频码率
         mVideoBitrate = 2;
         //是否需要水印
@@ -617,7 +637,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
 
     /**
      * 视频选择刷新重置
-     * @param
+     * @para
      */
     private void resetVideo() {
         type = 2;
@@ -738,7 +758,9 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
      * @param ll
      */
     private void addPicBtn(LinearLayout ll) {
-        ImageView addPhotoImageView = new ImageView(PushDynamicActivity.this);
+        ZJImageView addPhotoImageView = new ZJImageView(PushDynamicActivity.this);
+        addPhotoImageView.setBorderRadius(2);
+        addPhotoImageView.setType(1);
         addPhotoImageView.setImageDrawable(getResources().getDrawable(R.mipmap.icon_dynamic_photo));
         addPhotoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -798,16 +820,15 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
         int position = line * 4;
         for (String img : imgList) {
             final int curPosition = position;
-            RoundImageView imgView = new RoundImageView(this);
-            imgView.setBorderWidth(2);
-            imgView.setScaleType(ImageView.ScaleType.FIT_XY);
+            ZJImageView imgView = new ZJImageView(this);
+            imgView.setBorderRadius(2);
+            imgView.setType(1);
             imgView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     previewImg(curPosition);
                 }
             });
-            imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             ImageUtils.display(imgView, img);
             ll.addView(imgView, photoParams);
             position++;
@@ -861,8 +882,9 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
             locationClient.startLocation();
         }else{
             tvLocal.setText("");
-            jd = null;
-            wd = null;
+            lon = null;
+            lat = null;
+            address = null;
         }
 
     }

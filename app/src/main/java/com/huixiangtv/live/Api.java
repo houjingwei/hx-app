@@ -128,7 +128,7 @@ public class Api {
 
 
 
-    public  static String GETPOPULARITYRANK = BASE_URL +"/fans/getPopularityRank";
+    public  static String GETPOPULARITYRANK = BASE_URL +"fans/getPopularityRank";
 
 
     /**
@@ -143,18 +143,18 @@ public class Api {
     public static final String SHARE_URL = "http://119.29.94.122:8888/h5/index.html?uid=&lid=";
 
 
-    public static final String SHARE_INFO = BASE_URL+"/share/getShareInfo";
+    public static final String SHARE_INFO = BASE_URL+"share/getShareInfo";
 
-    public static final String GETGLOBALCONFIG =  BASE_URL+"/config/getGlobalConfig";
+    public static final String GETGLOBALCONFIG =  BASE_URL+"config/getGlobalConfig";
 
     /**
      * 绑定优惠码
      */
-    public static final String SHAREBINDSHARECODE = BASE_URL+"/share/bindShareCode";
+    public static final String SHAREBINDSHARECODE = BASE_URL+"share/bindShareCode";
 
-    public static final String SETAUTHINFO = BASE_URL +"/user/setAuthInfo";
+    public static final String SETAUTHINFO = BASE_URL +"user/setAuthInfo";
 
-    public static final String DYNAMIC_OWNDYNAMIC = BASE_URL +"/dynamic/ownDynamic";
+    public static final String DYNAMIC_OWNDYNAMIC = BASE_URL +"dynamic/ownDynamic";
 
     /**
      * 点赞列表
@@ -164,13 +164,13 @@ public class Api {
     /**
      * 点赞
      */
-    public static final String DYNAMIC_ADDPRAISE = BASE_URL +"/dynamic/addPraise";
+    public static final String DYNAMIC_ADDPRAISE = BASE_URL +"dynamic/addPraise";
 
 
     /**
      * 点赞取消
      */
-    public static final String DYNAMIC_REMOVEPRAISE = BASE_URL +"/dynamic/removePraise";
+    public static final String DYNAMIC_REMOVEPRAISE = BASE_URL +"dynamic/removePraise";
 
 
     public static final String GETCOLLECTARTISTDYNAMIC = BASE_URL + "dynamic/getCollectArtistDynamic";

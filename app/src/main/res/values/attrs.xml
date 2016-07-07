@@ -93,6 +93,7 @@
     </declare-styleable>
 
 
+
     <!--自定义MLImageView的属性-->
     <declare-styleable name="MLImageView">
         <attr name="press_alpha" format="integer" />

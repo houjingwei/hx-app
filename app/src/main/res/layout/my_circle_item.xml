@@ -1,6 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_marginTop="5dp"
+    android:paddingBottom="5dp"
     android:clickable="false">
 
     <LinearLayout
@@ -8,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="50dp"
-        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -46,12 +49,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <ImageView
+
+
+            <com.huixiangtv.live.ui.ZJImageView
                 android:id="@+id/oneImg"
-                android:visibility="gone"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:scaleType="fitCenter"/>
+                android:src="@drawable/default_head"
+                app:radius="0dp"
+                app:shape_type="rectangle" />
+
 
             <LinearLayout
                 android:visibility="gone"

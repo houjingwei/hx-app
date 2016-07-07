@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:melove="http://schemas.android.com/tools"
     android:clickable="false"
+    android:background="@color/white"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal">
@@ -21,14 +22,14 @@
             android:text="今天"
             style="@style/black_bold_bigest_xx_style"/>
 
-        <com.huixiangtv.live.ui.MLImageView
+        <com.huixiangtv.live.ui.ZJImageView
             android:id="@+id/ivAdd"
             android:layout_toRightOf="@+id/tvDate"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@mipmap/icon_add_camera"
-            melove:radius="2dp"
-            melove:shape_type="rectangle" />
+            app:radius="2dp"
+            app:shape_type="rectangle" />
 
 
 

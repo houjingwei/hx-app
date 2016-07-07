@@ -82,10 +82,13 @@ public class MyCircleActivity extends BaseBackActivity {
         refreshView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Dynamic dn = (Dynamic) adapter.getItem(i-3);
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("did",dn.getDynamicId());
-                ForwardUtils.target(MyCircleActivity.this, Constant.DYNAMIC_DETAIL, params);
+                if(i>=3){
+                    Dynamic dn = (Dynamic) adapter.getItem(i-3);
+                    Map<String,String> params = new HashMap<String, String>();
+                    params.put("did",dn.getDynamicId());
+                    ForwardUtils.target(MyCircleActivity.this, Constant.DYNAMIC_DETAIL, params);
+                }
+
             }
         });
         View view = LayoutInflater.from(this).inflate(R.layout.activity_my_circle_head, null, false);

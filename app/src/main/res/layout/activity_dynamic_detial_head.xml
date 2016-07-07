@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.huixiangtv.live.ui.MLImageView
+        <ImageView
             android:id="@+id/ivPhoto"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -17,8 +17,7 @@
             android:layout_toRightOf="@+id/tvDate"
             android:scaleType="centerCrop"
             android:src="@drawable/default_head"
-            melove:radius="2dp"
-            melove:shape_type="rectangle" />
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,9 +80,11 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:gravity="center_vertical"
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/ivZan"
@@ -103,10 +104,10 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/mRecylerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="34dp"
+                android:padding="2dp"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/liveClose"
-                android:padding="2dp"></android.support.v7.widget.RecyclerView>
+                android:layout_toLeftOf="@+id/liveClose" />
 
         </LinearLayout>
     </RelativeLayout>
