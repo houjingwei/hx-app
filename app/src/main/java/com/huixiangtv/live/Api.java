@@ -81,6 +81,7 @@ public class Api {
     public static final String DYNAMIC_DETIAL =BASE_URL+"dynamic/getDynamicById";
     public static final String DYNAMIC_COMMENT = BASE_URL+"dynamic/getComments";
     public static final String ADD_COMMENT = BASE_URL+"dynamic/addComment";
+    public static final String VIDEO_URL = BASE_URL+"resource/getPlayUrl";
 
 
     //我关注的人
