@@ -202,6 +202,7 @@ public class FriendCircleAdapter extends BaseAdapter {
 
                 }
             });
+
             ImageUtils.display(viewHolder.ivVideo, dynamic.getVideoCover());
         }
 
