@@ -209,22 +209,20 @@ public final class ImageUtils {
 
 
     public static void upFile(Activity activity, Upfile data, String picUri, final ApiCallback callBack) {
-
-
-
-
-
-
-
-
-        String path = compressPath(activity,picUri);
+        final String path = compressPath(activity,picUri);
 
         UploadManager fileUploadMgr = new UploadManager(activity,data.getAppId(), Const.FileType.Photo,data.getPersistenceId());
         PhotoUploadTask task = new PhotoUploadTask(path,new IUploadTaskListener() {
 
             @Override
             public void onUploadSucceed(FileInfo fileInfo) {
+                File file = new File(path);
+                if(file.exists()){
+                    file.delete();
+                    Log.i("imgPath","删除了");
+                }
                 callBack.onSuccess(fileInfo);
+
             }
 
             @Override
@@ -263,7 +261,7 @@ public final class ImageUtils {
         File  compressedImage = new Compressor.Builder(activity)
                 .setMaxWidth(1024)
 //                .setMaxHeight(800)
-                .setQuality(60)
+                .setQuality(80)
                 .setCompressFormat(Bitmap.CompressFormat.JPEG)
                 .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath())
                 .build()

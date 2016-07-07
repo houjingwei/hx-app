@@ -53,6 +53,7 @@
 
             <RelativeLayout
                 android:id="@+id/rlVideo"
+                android:visibility="gone"
                 android:background="@color/mainColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
