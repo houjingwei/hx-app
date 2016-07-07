@@ -350,7 +350,7 @@ public class FragmentCircle extends Fragment {
         if(comment.equals("")){
             return false;
         }
-        commentEdit.setText("");
+        //commentEdit.setText("");
         return true;
     }
 
