@@ -57,7 +57,6 @@ public class FragmentCircle extends Fragment {
     private FrameLayout main;
     public LinearLayout commentLinear;
     private EditText commentEdit;        //评论输入框
-    private boolean isReply;            //是否是回复
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -146,7 +145,7 @@ public class FragmentCircle extends Fragment {
 
     private void loadData() {
 
-        bindDynamicInfo();
+        loadDynamicInfo();
 
     }
 
@@ -169,7 +168,7 @@ public class FragmentCircle extends Fragment {
     /**
      * 获取圈子列表
      */
-    private void bindDynamicInfo() {
+    private void loadDynamicInfo() {
 
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", page + "");
@@ -344,13 +343,15 @@ public class FragmentCircle extends Fragment {
     }
 
 
-
+    /**
+     * 验证评论框
+     * @return
+     */
     private boolean isEditEmply(){
         String comment = commentEdit.getText().toString().trim();
         if(comment.equals("")){
             return false;
         }
-        //commentEdit.setText("");
         return true;
     }
 

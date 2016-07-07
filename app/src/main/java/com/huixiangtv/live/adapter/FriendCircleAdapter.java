@@ -1,6 +1,9 @@
 package com.huixiangtv.live.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -177,14 +180,19 @@ public class FriendCircleAdapter extends BaseAdapter {
                 int size = dynamic.getImages().size();
                 if (size == 1) {
                     viewHolder.mImgGridView.setNumColumns(1);
+//                    GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages());
+//                    ViewGroup.LayoutParams layoutParams = viewHolder.mImgGridView.getLayoutParams();
+//                    layoutParams.height = 50;//(int)(App.screenHeight * 0.75);
+//                    viewHolder.mImgGridView.setLayoutParams(layoutParams);
+//                    viewHolder.mImgGridView.setAdapter(gridViewFriendAdapter);
                 } else if (size == 2) {
                     viewHolder.mImgGridView.setNumColumns(2);
                 } else if (size > 2) {
                     viewHolder.mImgGridView.setNumColumns(3);
                 }
-
                 GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages());
                 viewHolder.mImgGridView.setAdapter(gridViewFriendAdapter);
+
             } else {
                 List<DynamicImage> dynamicImages = new ArrayList<>();
                 viewHolder.mImgGridView.setAdapter(new GridViewFriendAdapter(context, dynamicImages));
@@ -196,6 +204,7 @@ public class FriendCircleAdapter extends BaseAdapter {
         if (dynamic.getType().equals("2")) {   //视频
             viewHolder.mImgGridView.setVisibility(View.GONE);
             viewHolder.rlVideo.setVisibility(View.VISIBLE);
+//            getVideoUrl(viewHolder.ivVideo,dynamic.getVideoURL());
             viewHolder.rlVideo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -389,5 +398,17 @@ public class FriendCircleAdapter extends BaseAdapter {
         return list;
     }
 
+
+    private void getVideoUrl(ImageView image,String url){
+
+
+        String path  = Environment.getExternalStorageDirectory().getPath();
+        MediaMetadataRetriever media = new MediaMetadataRetriever();
+        media.setDataSource(url);
+
+        Bitmap bitmap = media.getFrameAtTime();
+        image.setImageBitmap(bitmap);
+
+    }
 }
 
