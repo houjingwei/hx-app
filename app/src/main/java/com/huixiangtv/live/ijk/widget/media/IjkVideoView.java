@@ -43,7 +43,6 @@ import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.LiveActivity;
 import com.huixiangtv.live.ijk.application.Settings;
 import com.huixiangtv.live.ijk.services.MediaPlayerService;
-import com.huixiangtv.live.utils.CommonHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -904,6 +903,13 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         return mCurrentAspectRatio;
     }
 
+    public int setViewModel(int model) {
+        mCurrentAspectRatio = s_allAspectRatio[model];
+        if (mRenderView != null)
+            mRenderView.setAspectRatio(mCurrentAspectRatio);
+        return mCurrentAspectRatio;
+    }
+
     //-------------------------
     // Extend: Render
     //-------------------------
@@ -1015,7 +1021,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                 IjkMediaPlayer ijkMediaPlayer = null;
                 if (mUri != null) {
                     ijkMediaPlayer = new IjkMediaPlayer();
-                    ijkMediaPlayer.native_setLogLevel(IjkMediaPlayer.IJK_LOG_DEBUG);
+                    IjkMediaPlayer.native_setLogLevel(IjkMediaPlayer.IJK_LOG_DEBUG);
 
                     if (mSettings.getUsingMediaCodec()) {
                         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);

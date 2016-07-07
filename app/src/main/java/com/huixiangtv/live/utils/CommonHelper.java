@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.model.DynamicComment;
 import com.huixiangtv.live.model.Other;
+import com.huixiangtv.live.model.PlayUrl;
 import com.huixiangtv.live.model.Share;
 import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.LoginWindow;
@@ -42,6 +43,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import simbest.com.sharelib.IShareCallback;
@@ -176,6 +178,7 @@ public class CommonHelper {
             }
         }).execute();
     }
+
 
 
     public static void viewSetBackage(final String url, final View view) {
@@ -553,5 +556,29 @@ public class CommonHelper {
                 apiCallback.onSuccess(null);
             }
         }, String.class);
+    }
+
+    public static void videoPlayUrl(Map<String, String> params, final ApiCallback<String> apiCallback) {
+
+        RequestUtils.sendPostRequest(Api.VIDEO_URL, params, new ResponseCallBack<PlayUrl>() {
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+
+            @Override
+            public void onSuccess(PlayUrl data) {
+                super.onSuccess(data);
+                apiCallback.onSuccess(data.getUrl());
+            }
+
+            @Override
+            public void onSuccessList(List<PlayUrl> datas) {
+                super.onSuccessList(datas);
+                if (null != datas && datas.size() > 0) {
+                    apiCallback.onSuccess(datas.get(0).getUrl());
+                }
+            }
+        }, PlayUrl.class);
     }
 }

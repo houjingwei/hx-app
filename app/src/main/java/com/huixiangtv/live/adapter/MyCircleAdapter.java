@@ -142,7 +142,7 @@ public class MyCircleAdapter extends BaseAdapter {
         }else if(dn.getType().equals("2")){
             holder.rlVideo.setVisibility(View.VISIBLE);
             holder.tvImgCount.setVisibility(View.GONE);
-            ImageUtils.display(holder.threeImg1,dn.getVideoCover());
+            ImageUtils.display(holder.ivVideo,dn.getVideoCover());
             hideImages(holder);
         }
 

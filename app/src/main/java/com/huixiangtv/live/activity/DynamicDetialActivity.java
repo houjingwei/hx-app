@@ -2,6 +2,8 @@ package com.huixiangtv.live.activity;
 
 import android.annotation.TargetApi;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -49,6 +52,8 @@ import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.ActionItem;
 import com.huixiangtv.live.utils.widget.TitlePopup;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
+import com.yqritc.scalablevideoview.ScalableType;
+import com.yqritc.scalablevideoview.ScalableVideoView;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -84,6 +89,8 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
     int imgTotalWidth = 0;
 
+    int videoWidth = 0;
+    int videoHeight = 0;
 
     PraiseAdapter mAdapter;
 
@@ -152,7 +159,20 @@ public class DynamicDetialActivity extends BaseBackActivity {
         }
 
         //动态添加视频
-
+        if(data.getType().equals("2")){
+            videoWidth = App.screenWidth - WidgetUtil.dip2px(DynamicDetialActivity.this,80);
+            videoHeight = (int) (videoWidth*0.75);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)rlVideo.getLayoutParams();
+            params.width = videoWidth;
+            params.height = videoHeight;
+            rlVideo.setLayoutParams(params);
+            ImageUtils.display(ivVideo,dn.getVideoCover());
+            if(StringUtil.isNotNull(playUrl)){
+                toPlay();
+            }else{
+                loadPlayUrlAndPlay();
+            }
+        }
 
         //赞数据
         if(null!=data.getPraises()){
@@ -536,8 +556,14 @@ public class DynamicDetialActivity extends BaseBackActivity {
     TextView tvTime;
     RecyclerView mRecylerView;
     LinearLayout llImgRoot;
+    RelativeLayout rlVideo;
+    ImageView ivVideo;
+    ImageView ivPlay;
+    LinearLayout llVideoView;
+    RelativeLayout rlPlay;
 
     ImageView ivZanAndComm;
+    boolean isPlay = false;
     private void addHeadView() {
         View view = LayoutInflater.from(DynamicDetialActivity.this).inflate(R.layout.activity_dynamic_detial_head, null, false);
         refreshView.getRefreshableView().addHeaderView(view);
@@ -557,6 +583,88 @@ public class DynamicDetialActivity extends BaseBackActivity {
                 showZanAndCommPop(view);
             }
         });
+
+        rlVideo = (RelativeLayout) view.findViewById(R.id.rlVideo);
+        ivVideo= (ImageView) view.findViewById(R.id.ivVideo);
+        ivPlay= (ImageView) view.findViewById(R.id.ivPlay);
+        rlPlay = (RelativeLayout) view.findViewById(R.id.rlPlay);
+        rlPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPlay){
+                    if(StringUtil.isNotNull(playUrl)){
+                        play();
+                    }else{
+                        loadPlayUrlAndPlay();
+                    }
+                }else{
+                    toPause();
+                }
+            }
+        });
+        llVideoView = (LinearLayout) view.findViewById(R.id.llVideoView);
+
+    }
+
+    private void play() {
+        if(null!=mVideoView){
+            mVideoView.start();
+            isPlay = true;
+            ivPlay.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 获取点播视频地址并播放
+     */
+    private void loadPlayUrlAndPlay() {
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("key",dn.getVideoURL());
+        params.put("type","1");
+        CommonHelper.videoPlayUrl(params,new ApiCallback<String>(){
+
+            @Override
+            public void onSuccess(String data) {
+                playUrl = data;
+                toPlay();
+            }
+        });
+    }
+
+    private void toPause() {
+        ivPlay.setVisibility(View.VISIBLE);
+        isPlay = false;
+        mVideoView.stop();
+
+    }
+
+    ScalableVideoView mVideoView;
+    private String playUrl = "";
+    private void toPlay() {
+        try{
+            mVideoView = new ScalableVideoView(DynamicDetialActivity.this);
+            mVideoView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            mVideoView.setDataSource(DynamicDetialActivity.this, Uri.parse(playUrl));
+            llVideoView.addView(mVideoView);
+            mVideoView.setScalableType(ScalableType.CENTER_CROP);
+            //mVideoView.setVolume(50, 100);
+            mVideoView.setLooping(true);
+            mVideoView.prepare(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mVideoView.start();
+                    isPlay = true;
+                    ivPlay.setVisibility(View.GONE);
+                }
+            });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 
