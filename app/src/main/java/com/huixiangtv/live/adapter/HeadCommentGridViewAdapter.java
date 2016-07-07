@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.huixiangtv.live.R;
-import com.huixiangtv.live.model.Dynamic;
 import com.huixiangtv.live.model.DynamicpPraise;
 import com.huixiangtv.live.utils.image.ImageUtils;
 
@@ -58,6 +57,8 @@ public class HeadCommentGridViewAdapter extends BaseAdapter {
     @Override
     public View getView(int arg0, View convertView, ViewGroup arg2) {
 
+        DynamicpPraise dynamicpPraise = (DynamicpPraise) getItem(arg0);
+
         ViewHolder viewHolder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.praise_gridview_item, null);
@@ -68,10 +69,7 @@ public class HeadCommentGridViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ImageUtils.displayAvator(viewHolder.mImageView, list.get(arg0).getPhoto()); //pic
-
-
-
+        ImageUtils.displayAvator(viewHolder.mImageView, dynamicpPraise.getPhoto()); //pic
         return convertView;
     }
 

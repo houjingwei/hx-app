@@ -65,6 +65,7 @@ public class GridViewFriendAdapter extends BaseAdapter {
     @Override
     public View getView(final int arg0, View convertView, ViewGroup arg2) {
 
+        DynamicImage dynamicImage = (DynamicImage) getItem(arg0);
         final ViewHolder viewHolder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.img_gridview_item, null);
@@ -101,7 +102,7 @@ public class GridViewFriendAdapter extends BaseAdapter {
 //        viewHolder.mImageView.setMaxHeight((int)(App.screenWidth * 5));
 
 
-        ImageUtils.display(viewHolder.mImageView,images.get(arg0).getSmall());
+        ImageUtils.display(viewHolder.mImageView,dynamicImage.getSmall());
 
         return convertView;
     }

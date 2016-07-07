@@ -135,7 +135,7 @@
                     android:id="@+id/gv_comment_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:columnWidth="33dp"
+                    android:columnWidth="35dp"
                     android:listSelector="#00000000"
                     android:numColumns="auto_fit" />
 

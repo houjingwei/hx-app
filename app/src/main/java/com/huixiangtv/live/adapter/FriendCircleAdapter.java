@@ -96,15 +96,12 @@ public class FriendCircleAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int current, View convertView, ViewGroup arg2) {
-
-        final Dynamic dynamic = (Dynamic) list.get(current);
-        dynamic.setIsZan(false);
-
+        final Dynamic dynamic = (Dynamic) getItem(current);
         final ViewHolder viewHolder;
-
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.listview_circle_item, null);
+
             viewHolder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.listview_circle_item, null);
             viewHolder.ll_comment_head = (LinearLayout) convertView.findViewById(R.id.ll_comment_head);
             viewHolder.tv_location = (TextView) convertView.findViewById(R.id.tv_location);
             viewHolder.tv_context = (TextView) convertView.findViewById(R.id.tv_context);
@@ -120,12 +117,14 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             viewHolder.rlVideo = (RelativeLayout) convertView.findViewById(R.id.rlVideo);
             viewHolder.ivVideo = (ImageView) convertView.findViewById(R.id.ivVideo);
-
-
             convertView.setTag(viewHolder);
+
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+
+        dynamic.setIsZan(false);
 
         ImageUtils.display(viewHolder.ivDmPic, dynamic.getPhoto()); //pic
 
@@ -163,9 +162,12 @@ public class FriendCircleAdapter extends BaseAdapter {
         }
 
         if (dynamic.getType().equals("0")) {  //文本
-            //viewHolder.rlVideo.setVisibility(View.GONE);
-            //viewHolder.mImgGridView.setVisibility(View.GONE);
-        } else if (dynamic.getType().equals("1")) {  //图片
+            viewHolder.rlVideo.setVisibility(View.GONE);
+            viewHolder.mImgGridView.setVisibility(View.GONE);
+        }
+
+
+        if (dynamic.getType().equals("1")) {  //图片
             viewHolder.mImgGridView.setVisibility(View.VISIBLE);
             viewHolder.rlVideo.setVisibility(View.GONE);
 
@@ -183,16 +185,24 @@ public class FriendCircleAdapter extends BaseAdapter {
 
                 GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages());
                 viewHolder.mImgGridView.setAdapter(gridViewFriendAdapter);
-                gridViewFriendAdapter.notifyDataSetChanged();
             } else {
                 List<DynamicImage> dynamicImages = new ArrayList<>();
                 viewHolder.mImgGridView.setAdapter(new GridViewFriendAdapter(context, dynamicImages));
             }
 
 
-        } else if (dynamic.getType().equals("2")) {   //视频
+        }
+
+        if (dynamic.getType().equals("2")) {   //视频
             viewHolder.mImgGridView.setVisibility(View.GONE);
             viewHolder.rlVideo.setVisibility(View.VISIBLE);
+            viewHolder.rlVideo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
             ImageUtils.display(viewHolder.ivVideo, dynamic.getVideoCover());
         }
 
