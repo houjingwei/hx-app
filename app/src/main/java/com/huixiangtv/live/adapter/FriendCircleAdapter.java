@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,12 @@ public class FriendCircleAdapter extends BaseAdapter {
     private boolean isPlay = false;
     private int currTag = 100000;
 
+
+    /**
+     * 上一个播放的视频的position
+     */
+    int videoIndex = 10000;
+
     public FriendCircleAdapter(FragmentCircle fragmentCircle, Context context, Handler handler) {
         this.context = context;
         this.handler = handler;
@@ -123,6 +130,8 @@ public class FriendCircleAdapter extends BaseAdapter {
     }
 
 
+
+
     @Override
     public View getView(final int current, View convertView, ViewGroup arg2) {
         final Dynamic dynamic = (Dynamic) getItem(current);
@@ -136,28 +145,32 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.tv_context = (TextView) convertView.findViewById(R.id.tv_context);
             viewHolder.tvNickName = (TextView) convertView.findViewById(R.id.tvNickName);
             viewHolder.ivPoint = (ImageView) convertView.findViewById(R.id.ivPoint);
-            viewHolder.mGridView = (GridView) convertView
-                    .findViewById(R.id.gv_comment_head);
+            viewHolder.mGridView = (GridView) convertView.findViewById(R.id.gv_comment_head);
             viewHolder.ivDmPic = (ImageView) convertView.findViewById(R.id.ivDmPic);
-            viewHolder.mImgGridView = (GridView) convertView
-                    .findViewById(R.id.gv_listView_main_gridView);
-            viewHolder.mListView = (ListViewCircle) convertView
-                    .findViewById(R.id.lv_item_listView);
+            viewHolder.mImgGridView = (GridView) convertView.findViewById(R.id.gv_listView_main_gridView);
+            viewHolder.mListView = (ListViewCircle) convertView.findViewById(R.id.lv_item_listView);
             viewHolder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             viewHolder.lltoDetails = (LinearLayout) convertView.findViewById(R.id.ll_toDetails);
+
+            //视频
             viewHolder.rlVideo = (RelativeLayout) convertView.findViewById(R.id.rlVideo);
             viewHolder.ivVideo = (ImageView) convertView.findViewById(R.id.ivVideo);
+            viewHolder.ivVideo.setVisibility(View.GONE);
+            //播放器容器
             viewHolder.llVideoView = (LinearLayout) convertView.findViewById(R.id.llVideoView);
+            //播放控制view
             viewHolder.rlPlay = (RelativeLayout) convertView.findViewById(R.id.rlPlay);
             viewHolder.ivPlay = (ImageView) convertView.findViewById(R.id.ivPlay);
 
             convertView.setTag(viewHolder);
-
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+        //convertView.setTag("wode tag"+current);
 
+
+        //动态详情
         viewHolder.lltoDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,9 +181,7 @@ public class FriendCircleAdapter extends BaseAdapter {
         });
 
         dynamic.setIsZan(false);
-
         ImageUtils.display(viewHolder.ivDmPic, dynamic.getPhoto()); //pic
-
         viewHolder.ll_comment_head.setVisibility(View.GONE);
         if (null != dynamic.getAddress() && dynamic.getAddress().trim().length() > 0) {
             viewHolder.tv_location.setText(dynamic.getAddress());
@@ -185,23 +196,19 @@ public class FriendCircleAdapter extends BaseAdapter {
         viewHolder.mImgGridView.setVisibility(View.VISIBLE);
 
         if (null != dynamic.getPraises() && dynamic.getPraises().size() > 0) {
-
             for (DynamicpPraise dynamicpPraise : dynamic.getPraises()) {
                 if (dynamicpPraise.getUid().equals(App.getLoginUser().getUid())) {
                     dynamic.setIsZan(true);
                 }
             }
-
             viewHolder.headCommentGridViewAdapter = new HeadCommentGridViewAdapter(context, dynamic.getPraises());
             viewHolder.ll_comment_head.setVisibility(View.VISIBLE);
-            viewHolder.mGridView
-                    .setAdapter(viewHolder.headCommentGridViewAdapter);
+            viewHolder.mGridView.setAdapter(viewHolder.headCommentGridViewAdapter);
         } else {
             List<DynamicpPraise> dynamicpPraiseList = new ArrayList<>();
             viewHolder.headCommentGridViewAdapter = new HeadCommentGridViewAdapter(context, dynamicpPraiseList);
             viewHolder.ll_comment_head.setVisibility(View.GONE);
-            viewHolder.mGridView
-                    .setAdapter(viewHolder.headCommentGridViewAdapter);
+            viewHolder.mGridView.setAdapter(viewHolder.headCommentGridViewAdapter);
         }
 
         if (dynamic.getType().equals("0")) {  //文本
@@ -216,15 +223,9 @@ public class FriendCircleAdapter extends BaseAdapter {
 
             if (null != dynamic.getImages() && dynamic.getImages().size() > 0) {
                 viewHolder.mImgGridView.setNumColumns(3);
-
                 int size = dynamic.getImages().size();
                 if (size == 1) {
                     viewHolder.mImgGridView.setNumColumns(1);
-//                    GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages());
-//                    ViewGroup.LayoutParams layoutParams = viewHolder.mImgGridView.getLayoutParams();
-//                    layoutParams.height = 50;//(int)(App.screenHeight * 0.75);
-//                    viewHolder.mImgGridView.setLayoutParams(layoutParams);
-//                    viewHolder.mImgGridView.setAdapter(gridViewFriendAdapter);
                 } else if (size == 2) {
                     viewHolder.mImgGridView.setNumColumns(2);
                 } else if (size > 2) {
@@ -232,35 +233,38 @@ public class FriendCircleAdapter extends BaseAdapter {
                 }
                 GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages(),size);
                 viewHolder.mImgGridView.setAdapter(gridViewFriendAdapter);
-
             } else {
                 List<DynamicImage> dynamicImages = new ArrayList<>();
                 viewHolder.mImgGridView.setAdapter(new GridViewFriendAdapter(context, dynamicImages,0));
             }
-
-
         }
 
         if (dynamic.getType().equals("2")) {   //视频
             viewHolder.mImgGridView.setVisibility(View.GONE);
             viewHolder.rlVideo.setVisibility(View.VISIBLE);
-
             viewHolder.rlPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(currTag!=current) {
                         if (null != mVideoView) {
+                            LinearLayout ll = (LinearLayout) mVideoView.getParent();
                             if (mVideoView.isPlaying()) {
                                 mVideoView.pause();
                                 mVideoView.stop();
                             }
-                            viewHolder.llVideoView.removeView(mVideoView);
                             mVideoView.release();
-                            mVideoView = null;
+                            ll.removeView(mVideoView);
 
 
+//                            View v = getView(videoIndex,null,null);
+                            Log.i("wodeTag",ll.getId()+"");
+//                            LinearLayout ll = (LinearLayout) v.findViewById(R.id.llVideoView);
+//                            ll.removeView(mVideoView);
+                            RelativeLayout rl= (RelativeLayout) ll.getParent();
+                            rl.findViewById(R.id.ivPlay).setVisibility(View.VISIBLE);
 
                         }
+                        videoIndex = current;
                         loadPlayUrlAndPlay(viewHolder, dynamic.getVideoURL(), current);
                     }else {
                         if (isPlay) {
@@ -269,12 +273,8 @@ public class FriendCircleAdapter extends BaseAdapter {
                             play(viewHolder);
                         }
                     }
-
-
-
                 }
             });
-
             videoWidth = App.screenWidth - WidgetUtil.dip2px(context, 80);
             videoHeight = (int) (videoWidth*0.75);
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)viewHolder.rlVideo.getLayoutParams();
@@ -283,15 +283,7 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.rlVideo.setLayoutParams(params);
             viewHolder.ivVideo.setVisibility(View.VISIBLE);
             ImageUtils.display(viewHolder.ivVideo, dynamic.getVideoCover());
-//            if(StringUtil.isNotNull(viewHolder.playUrl) || StringUtil.isNotNull(list.get(current).getPlayUrl())){
-//                if(StringUtil.isNotNull(list.get(current).getPlayUrl())){
-//                    viewHolder.playUrl = list.get(current).getPlayUrl();
-//                }
-//                toPlay(viewHolder.playUrl,viewHolder.mVideoView,viewHolder.llVideoView,viewHolder.ivPlay);
-//
-//            }else{
-//                loadPlayUrlAndPlay(current,viewHolder.mVideoView,viewHolder.llVideoView,viewHolder.ivPlay,dynamic.getVideoURL());
-//            }
+
         }
 
 
