@@ -420,7 +420,7 @@ public class App extends MultiDexApplication {
 
     public static  long getPreferencesLong(String key)
     {
-        return loginHelper.getLongValue(key,0);
+        return loginHelper.getLongValue(key, 0);
     }
 
 
@@ -444,4 +444,7 @@ public class App extends MultiDexApplication {
     }
 
 
+    public static void saveLoginStatus(String keyValue) {
+        loginHelper.setValue("status", keyValue);
+    }
 }

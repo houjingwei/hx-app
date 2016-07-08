@@ -257,6 +257,12 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
 	private void saveLoginInfo(User data) {
 		App.saveLoginUser(data);
+		if (null!=App.getPreferencesValue("status") && App.getPreferencesValue("status").equals("true"))
+		{
+			App.saveLoginStatus("false");
+			if(null!=FragmentCircle.refreshView)
+			   FragmentCircle.refreshView.setRefreshing();
+		}
 		getActivity().finish();
 	}
 

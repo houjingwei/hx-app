@@ -1,6 +1,12 @@
 package com.huixiangtv.live.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -15,21 +21,29 @@ import android.widget.TextView;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.App;
+import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.fragment.FragmentCircle;
 import com.huixiangtv.live.model.Dynamic;
 import com.huixiangtv.live.model.DynamicComment;
 import com.huixiangtv.live.model.DynamicImage;
 import com.huixiangtv.live.model.DynamicpPraise;
+import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.DateUtils;
+import com.huixiangtv.live.utils.ForwardUtils;
+import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.ActionItem;
 import com.huixiangtv.live.utils.widget.ListViewCircle;
 import com.huixiangtv.live.utils.widget.TitlePopup;
+import com.huixiangtv.live.utils.widget.WidgetUtil;
+import com.yqritc.scalablevideoview.ScalableType;
+import com.yqritc.scalablevideoview.ScalableVideoView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +58,14 @@ public class FriendCircleAdapter extends BaseAdapter {
     private FragmentCircle fragmentCircle;
     private List<Dynamic> list = new ArrayList<>();
     private Handler handler;
+    int videoWidth = 0;
+    private  ImageView imagePlay;
+    private  static  int currentId = -1;
+    int videoHeight = 0;
+    private  ScalableVideoView  mVideoView;
+    private String playUrl = "";
+    private boolean isPlay = false;
+    private int currTag = 100000;
 
     public FriendCircleAdapter(FragmentCircle fragmentCircle, Context context, Handler handler) {
         this.context = context;
@@ -89,8 +111,15 @@ public class FriendCircleAdapter extends BaseAdapter {
         private LinearLayout ll_comment_head;
         private HeadCommentGridViewAdapter headCommentGridViewAdapter;
         private CommentListViewAdapter commentListViewAdapter;
+
         private RelativeLayout rlVideo;
         private ImageView ivVideo;
+        private LinearLayout llVideoView;
+        private RelativeLayout rlPlay;
+        private ImageView ivPlay;
+        private LinearLayout lltoDetails;
+
+
     }
 
 
@@ -115,14 +144,28 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.mListView = (ListViewCircle) convertView
                     .findViewById(R.id.lv_item_listView);
             viewHolder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
+            viewHolder.lltoDetails = (LinearLayout) convertView.findViewById(R.id.ll_toDetails);
             viewHolder.rlVideo = (RelativeLayout) convertView.findViewById(R.id.rlVideo);
             viewHolder.ivVideo = (ImageView) convertView.findViewById(R.id.ivVideo);
+            viewHolder.llVideoView = (LinearLayout) convertView.findViewById(R.id.llVideoView);
+            viewHolder.rlPlay = (RelativeLayout) convertView.findViewById(R.id.rlPlay);
+            viewHolder.ivPlay = (ImageView) convertView.findViewById(R.id.ivPlay);
+
             convertView.setTag(viewHolder);
 
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+
+        viewHolder.lltoDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Map<String,String> params = new HashMap<String, String>();
+                    params.put("did",dynamic.getDynamicId());
+                    ForwardUtils.target((Activity)context, Constant.DYNAMIC_DETAIL, params);
+            }
+        });
 
         dynamic.setIsZan(false);
 
@@ -177,17 +220,22 @@ public class FriendCircleAdapter extends BaseAdapter {
                 int size = dynamic.getImages().size();
                 if (size == 1) {
                     viewHolder.mImgGridView.setNumColumns(1);
+//                    GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages());
+//                    ViewGroup.LayoutParams layoutParams = viewHolder.mImgGridView.getLayoutParams();
+//                    layoutParams.height = 50;//(int)(App.screenHeight * 0.75);
+//                    viewHolder.mImgGridView.setLayoutParams(layoutParams);
+//                    viewHolder.mImgGridView.setAdapter(gridViewFriendAdapter);
                 } else if (size == 2) {
                     viewHolder.mImgGridView.setNumColumns(2);
                 } else if (size > 2) {
                     viewHolder.mImgGridView.setNumColumns(3);
                 }
-
-                GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages());
+                GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages(),size);
                 viewHolder.mImgGridView.setAdapter(gridViewFriendAdapter);
+
             } else {
                 List<DynamicImage> dynamicImages = new ArrayList<>();
-                viewHolder.mImgGridView.setAdapter(new GridViewFriendAdapter(context, dynamicImages));
+                viewHolder.mImgGridView.setAdapter(new GridViewFriendAdapter(context, dynamicImages,0));
             }
 
 
@@ -196,14 +244,54 @@ public class FriendCircleAdapter extends BaseAdapter {
         if (dynamic.getType().equals("2")) {   //视频
             viewHolder.mImgGridView.setVisibility(View.GONE);
             viewHolder.rlVideo.setVisibility(View.VISIBLE);
-            viewHolder.rlVideo.setOnClickListener(new View.OnClickListener() {
+
+            viewHolder.rlPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
+                    if(currTag!=current) {
+                        if (null != mVideoView) {
+                            if (mVideoView.isPlaying()) {
+                                mVideoView.pause();
+                                mVideoView.stop();
+                            }
+                            viewHolder.llVideoView.removeView(mVideoView);
+                            mVideoView.release();
+                            mVideoView = null;
+
+
+
+                        }
+                        loadPlayUrlAndPlay(viewHolder, dynamic.getVideoURL(), current);
+                    }else {
+                        if (isPlay) {
+                            toPause(viewHolder);
+                        } else{
+                            play(viewHolder);
+                        }
+                    }
+
+
 
                 }
             });
 
-            //ImageUtils.display(viewHolder.ivVideo, dynamic.getVideoCover());
+            videoWidth = App.screenWidth - WidgetUtil.dip2px(context, 80);
+            videoHeight = (int) (videoWidth*0.75);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)viewHolder.rlVideo.getLayoutParams();
+            params.width = videoWidth;
+            params.height = videoHeight;
+            viewHolder.rlVideo.setLayoutParams(params);
+            viewHolder.ivVideo.setVisibility(View.VISIBLE);
+            ImageUtils.display(viewHolder.ivVideo, dynamic.getVideoCover());
+//            if(StringUtil.isNotNull(viewHolder.playUrl) || StringUtil.isNotNull(list.get(current).getPlayUrl())){
+//                if(StringUtil.isNotNull(list.get(current).getPlayUrl())){
+//                    viewHolder.playUrl = list.get(current).getPlayUrl();
+//                }
+//                toPlay(viewHolder.playUrl,viewHolder.mVideoView,viewHolder.llVideoView,viewHolder.ivPlay);
+//
+//            }else{
+//                loadPlayUrlAndPlay(current,viewHolder.mVideoView,viewHolder.llVideoView,viewHolder.ivPlay,dynamic.getVideoURL());
+//            }
         }
 
 
@@ -388,6 +476,73 @@ public class FriendCircleAdapter extends BaseAdapter {
     public List<Dynamic> getList() {
         return list;
     }
+
+
+
+    /**
+     * 获取点播视频地址并播放
+     */
+    private void loadPlayUrlAndPlay(final ViewHolder viewHolder, String videoUrl, final int current) {
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("key",videoUrl);
+        params.put("type","1");
+        CommonHelper.videoPlayUrl(params,new ApiCallback<String>(){
+
+            @Override
+            public void onSuccess(String data) {
+                playUrl = data;
+                toPlay(viewHolder,data,current);
+            }
+        });
+    }
+
+
+    private void play(ViewHolder viewHolder) {
+        if(null!=mVideoView){
+            isPlay = true;
+            mVideoView.start();
+            //mVideoView.seekTo(mVideoView.getCurrentPosition());
+            viewHolder.ivPlay.setVisibility(View.GONE);
+        }
+    }
+    private void toPause(ViewHolder viewHolder) {
+
+        if(mVideoView.isPlaying()) {
+            isPlay = false;
+            viewHolder.ivPlay.setVisibility(View.VISIBLE);
+            mVideoView.pause();
+
+        }else{
+            play(viewHolder);
+        }
+
+    }
+
+
+
+
+    private void toPlay(final ViewHolder viewHolder, String playUrl,final int current) {
+        try{
+
+            mVideoView = new ScalableVideoView(context);
+            mVideoView.setDataSource(playUrl);
+            viewHolder.llVideoView.addView(mVideoView);
+            mVideoView.setLooping(true);
+            mVideoView.prepare(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    currTag = current;
+                    isPlay = true;
+                    mVideoView.setScalableType(ScalableType.CENTER_CROP);
+                    mVideoView.start();
+                    viewHolder.ivPlay.setVisibility(View.GONE);
+                }
+            });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 }
 

@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.duanqu.qupai.jni.Releasable;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.DynamicImage;
 import com.huixiangtv.live.utils.image.ImageUtils;
+import com.huixiangtv.live.utils.widget.SquareLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +31,18 @@ public class GridViewFriendAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<DynamicImage> images;
     private Context context;
+    private int size = 0;
 
-    public GridViewFriendAdapter(Context context,List<DynamicImage> images) {
+    public GridViewFriendAdapter(Context context, List<DynamicImage> images, int size) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.images = images;
+        this.size = size;
     }
 
     @Override
     public int getCount() {
-        if (images.size()> 9) {
+        if (images.size() > 9) {
             return 9;
         } else {
             return images.size();
@@ -57,7 +62,7 @@ public class GridViewFriendAdapter extends BaseAdapter {
     public class ViewHolder {
 
         private ImageView mImageView;
-
+        private SquareLayout rlSL;
 
 
     }
@@ -72,15 +77,16 @@ public class GridViewFriendAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.mImageView = (ImageView) convertView
                     .findViewById(R.id.iv_gridview_img);
+            viewHolder.rlSL = (SquareLayout) convertView.findViewById(R.id.rlSL);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-       final ArrayList<String> showImgList = new ArrayList<String>();
+        final ArrayList<String> showImgList = new ArrayList<String>();
         //所有大图图片
-        if(null!=images){
-            for (DynamicImage img :images) {
+        if (null != images) {
+            for (DynamicImage img : images) {
                 showImgList.add(img.getBig());
             }
         }
@@ -89,20 +95,23 @@ public class GridViewFriendAdapter extends BaseAdapter {
         viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                previewImg(arg0,showImgList);
+                previewImg(arg0, showImgList);
             }
         });
-//
-//        ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams) viewHolder.mImageView.getLayoutParams();
-//        layoutParams.width = App.screenWidth;
-//        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-//        viewHolder.mImageView.setLayoutParams(layoutParams);
-//
-//        viewHolder.mImageView.setMaxWidth(App.screenWidth);
-//        viewHolder.mImageView.setMaxHeight((int)(App.screenWidth * 5));
+        double height = 0;
+        if (size == 1) {
+            height = 0.46;
+        } else if (size == 2) {
+            height = 0.35;
+        } else {
+            height = 0.25;
+        }
 
-
-        ImageUtils.display(viewHolder.mImageView,dynamicImage.getSmall());
+        ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams) viewHolder.mImageView.getLayoutParams();
+        layoutParams.width = App.screenWidth;
+        layoutParams.height = (int) (App.screenWidth * height);
+        viewHolder.mImageView.setLayoutParams(layoutParams);
+        ImageUtils.display(viewHolder.mImageView, dynamicImage.getSmall());
 
         return convertView;
     }
@@ -112,7 +121,7 @@ public class GridViewFriendAdapter extends BaseAdapter {
      *
      * @param curPosition
      */
-    private void previewImg(int curPosition,ArrayList<String> showImgList) {
+    private void previewImg(int curPosition, ArrayList<String> showImgList) {
         PhotoPreview2.builder().setPhotos(showImgList).setCurrentItem(curPosition).setShowDeleteButton(false).start((Activity) context, PhotoPicker.REQUEST_CODE);
     }
 

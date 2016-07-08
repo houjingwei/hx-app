@@ -22,6 +22,16 @@ public class Dynamic {
     private String address;
     private boolean isZan;
 
+    public String getPlayUrl() {
+        return playUrl;
+    }
+
+    public void setPlayUrl(String playUrl) {
+        this.playUrl = playUrl;
+    }
+
+    private String playUrl;
+
     public int getCurrentIndex() {
         return currentIndex;
     }
