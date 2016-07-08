@@ -175,6 +175,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
         //赞数据
         if(null!=data.getPraises()){
+            rlZan.setVisibility(View.VISIBLE);
             mAdapter = new PraiseAdapter(null);
             mAdapter.setOnItemClickListener(new RecyclerviewListener() {
                 @Override
@@ -227,26 +228,26 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
 
             //设置图片2张时图片的布局宽度
-            int width = (int) (imgTotalWidth*0.5-WidgetUtil.dip2px(DynamicDetialActivity.this,1));
+            int width = (int) (imgTotalWidth*0.5-WidgetUtil.dip2px(DynamicDetialActivity.this,6));
             photoParams = new LinearLayout.LayoutParams(width,width);
-            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,1);
+            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,3);
 
             addOneImgToLl(images, photoParams, ll1,0);
             addOneImgToLl(images, photoParams, ll1,1);
 
         }else if(rowNum==1 && consNum==3){
-            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,1);
+            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,9);
             photoParams = new LinearLayout.LayoutParams(width,width);
-            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,1);
+            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,3);
 
             addllToRootLl(0,images, llViewParams, photoParams);
 
 
         }else{
 
-            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,1);
+            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,9);
             photoParams = new LinearLayout.LayoutParams(width,width);
-            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,1);
+            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,3);
 
 
             addllToRootLl(0,images, llViewParams, photoParams);
@@ -368,6 +369,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId== 4 )
                 {
+                    KeyBoardUtils.closeKeybord(etComment,DynamicDetialActivity.this);
                     reComment();
                 }
                 return false;
@@ -560,6 +562,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
     ImageView ivPlay;
     LinearLayout llVideoView;
     RelativeLayout rlPlay;
+    RelativeLayout rlZan;
 
     ImageView ivZanAndComm;
     boolean isPlay = false;
@@ -570,6 +573,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
         tvName = (TextView) view.findViewById(R.id.tvName);
         tvContent = (TextView) view.findViewById(R.id.tvContent);
         tvTime = (TextView) view.findViewById(R.id.tvTime);
+        rlZan = (RelativeLayout) view.findViewById(R.id.rlZan);
         mRecylerView = (RecyclerView) view.findViewById(R.id.mRecylerView);
         mRecylerView.setHasFixedSize(true);
         mRecylerView.setLayoutManager(new LinearLayoutManager(DynamicDetialActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -751,6 +755,9 @@ public class DynamicDetialActivity extends BaseBackActivity {
             public void onSuccess(DynamicpPraise data) {
                 mAdapter.removeData(0);
                 dn.setIsZan(false);
+                if(mAdapter.getDataSize()==0){
+                    rlZan.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -769,10 +776,13 @@ public class DynamicDetialActivity extends BaseBackActivity {
             @Override
             public void onSuccess(DynamicpPraise data) {
                 if (data != null) {
+                    rlZan.setVisibility(View.VISIBLE);
                     data.setNickName(App.getLoginUser().getNickName());
                     data.setPhoto(App.getLoginUser().getPhoto());
                     mAdapter.addData(data);
                     dn.setIsZan(true);
+                }else{
+                    rlZan.setVisibility(View.GONE);
                 }
             }
 
@@ -797,6 +807,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
         CommonHelper.reComment(dc,new ApiCallback<String>(){
             @Override
             public void onSuccess(String data) {
+                etComment.setText("");
                 dc.setCommentId(data);
                 if(adapter.getCount()==0){
                     dc.setShowIcon(true);

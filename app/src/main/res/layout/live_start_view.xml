@@ -267,15 +267,14 @@ android:orientation="vertical">
         android:text="@string/startLive" />
 
     <TextView
-        android:visibility="gone"
-        android:id="@+id/tvDynami"
-        style="@style/white_bigger_bold_style"
+        android:id="@+id/tvDynamic"
+        style="@style/white_bigger_style"
         android:layout_width="130dp"
         android:layout_height="46dp"
         android:layout_below="@+id/ll_input"
         android:layout_gravity="center"
         android:background="@drawable/start_add_dynamic_btn_style"
         android:gravity="center"
-        android:text="@string/startLive" />
+        android:text="@string/push_dynamic" />
 </LinearLayout>
 </LinearLayout>

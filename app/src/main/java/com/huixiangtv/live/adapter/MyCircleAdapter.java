@@ -24,7 +24,6 @@ import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
-import com.huixiangtv.live.utils.widget.WidgetUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,7 +87,7 @@ public class MyCircleAdapter extends BaseAdapter {
             holder.tvDay = (TextView) convertView.findViewById(R.id.tvDay);
             holder.tvContent = (TextView) convertView.findViewById(R.id.tvContent);
             holder.tvImgCount = (TextView) convertView.findViewById(R.id.tvImgCount);
-            holder.tvDelete = (TextView) convertView.findViewById(R.id.tvDelete);
+
 
 
             holder.oneImg = (ImageView) convertView.findViewById(R.id.oneImg);
@@ -123,8 +122,8 @@ public class MyCircleAdapter extends BaseAdapter {
         holder.tvMonth.setText(dn.getMonth());
         holder.tvDay.setText(dn.getDay());
         if(StringUtil.isNotEmpty(dn.getContent())){
-            if(dn.getContent().length()>60){
-                holder.tvContent.setText(dn.getContent().substring(0,60)+"...");
+            if(dn.getContent().length()>30){
+                holder.tvContent.setText(dn.getContent().substring(0,30)+"...");
             }else{
                 holder.tvContent.setText(dn.getContent());
             }
@@ -147,19 +146,19 @@ public class MyCircleAdapter extends BaseAdapter {
         }
 
 
-        holder.tvDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                delDynamic(dn,position);
-            }
-        });
+//        holder.tvDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                delDynamic(dn,position);
+//            }
+//        });
 
-
-        if(dn.getMarginTop()){
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.llRootView.getLayoutParams();
-            params.topMargin = WidgetUtil.dip2px(activity,25);
-            holder.llRootView.setLayoutParams(params);
-        }
+////
+//        if(dn.getMarginTop()){
+//            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.llRootView.getLayoutParams();
+//            params.topMargin = WidgetUtil.dip2px(activity,25);
+//            holder.llRootView.setLayoutParams(params);
+//        }
 
         return convertView;
     }
