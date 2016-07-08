@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.duanqu.qupai.jni.Releasable;
 import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.DynamicImage;
 import com.huixiangtv.live.utils.image.ImageUtils;
+import com.huixiangtv.live.utils.widget.SquareLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +31,13 @@ public class GridViewFriendAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<DynamicImage> images;
     private Context context;
+    private int size=0;
 
-    public GridViewFriendAdapter(Context context,List<DynamicImage> images) {
+    public GridViewFriendAdapter(Context context,List<DynamicImage> images,int size) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.images = images;
+        this.size = size;
     }
 
     @Override
@@ -57,6 +62,7 @@ public class GridViewFriendAdapter extends BaseAdapter {
     public class ViewHolder {
 
         private ImageView mImageView;
+        private SquareLayout rlSL;
 
 
 
@@ -72,6 +78,7 @@ public class GridViewFriendAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.mImageView = (ImageView) convertView
                     .findViewById(R.id.iv_gridview_img);
+            viewHolder.rlSL = (SquareLayout) convertView.findViewById(R.id.rlSL);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -92,15 +99,20 @@ public class GridViewFriendAdapter extends BaseAdapter {
                 previewImg(arg0,showImgList);
             }
         });
-//
-//        ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams) viewHolder.mImageView.getLayoutParams();
-//        layoutParams.width = App.screenWidth;
-//        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-//        viewHolder.mImageView.setLayoutParams(layoutParams);
-//
-//        viewHolder.mImageView.setMaxWidth(App.screenWidth);
-//        viewHolder.mImageView.setMaxHeight((int)(App.screenWidth * 5));
 
+        if(size ==1) {
+            ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams) viewHolder.rlSL.getLayoutParams();
+            layoutParams.width = App.screenWidth;
+            layoutParams.height = 140;//ViewGroup.LayoutParams.WRAP_CONTENT;
+            viewHolder.rlSL.setLayoutParams(layoutParams);
+
+
+//            ViewGroup.LayoutParams layoutParamss = (ViewGroup.LayoutParams) viewHolder.mImageView.getLayoutParams();
+//            layoutParamss.width = App.screenWidth;
+//            layoutParamss.height = 1;//ViewGroup.LayoutParams.WRAP_CONTENT;
+//            viewHolder.mImageView.setLayoutParams(layoutParamss);
+
+        }
 
         ImageUtils.display(viewHolder.mImageView,dynamicImage.getSmall());
 

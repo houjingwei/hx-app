@@ -38,6 +38,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
     LinearLayout llLocal;
     TextView tvLocal;
     TextView tvStart;
+    TextView tvDynamic;
     ImageView ivCamera;
 
 
@@ -98,6 +99,7 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
         llLocal = (LinearLayout) findViewById(R.id.llLocal);
         tvLocal = (TextView) findViewById(R.id.tvLocal);
         tvStart = (TextView) findViewById(R.id.tvStart);
+        tvDynamic = (TextView) findViewById(R.id.tvDynamic);
 
 
         llRoot.setOnClickListener(this);
@@ -245,5 +247,9 @@ public class StartLiveView extends LinearLayout implements View.OnClickListener 
     public String[] getJwd() {
         initLocalInfo();
         return jwd;
+    }
+
+    public TextView getTvDynamic() {
+        return tvDynamic;
     }
 }

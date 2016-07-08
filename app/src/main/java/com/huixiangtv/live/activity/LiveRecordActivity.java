@@ -85,6 +85,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
     TextView tvTheme;
     TextView tvStart;
+    TextView tvDynamic;
     StartLiveView startLiveView;
 
     LiveView liveView;
@@ -157,8 +158,10 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         });
         tvTheme = startLiveView.getTvTheme();
         tvStart = startLiveView.getTvStart();
+        tvDynamic = startLiveView.getTvDynamic();
         tvTheme.setOnClickListener(this);
         tvStart.setOnClickListener(this);
+        tvDynamic.setOnClickListener(this);
         KeyBoardUtils.closeKeybord(startLiveView.getEtTitle(), this);
     }
 
@@ -304,11 +307,8 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
             float x = motionEvent.getX() / _SurfaceControl.getWidth();
             float y = motionEvent.getY() / _SurfaceControl.getHeight();
 
-            if (!_Client.autoFocus(x, y, _SurfaceControl)) {
-                return false;
-            }
+            return _Client.autoFocus(x, y, _SurfaceControl);
 
-            return true;
         }
 
         @Override
@@ -496,6 +496,13 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
                 params.put("platform", startLiveView.getPlatform() + "");
                 //请求开始直播
                 toLive();
+                break;
+            case R.id.tvDynamic:
+                if (null != App.getLoginUser()) {
+                    ForwardUtils.target(LiveRecordActivity.this, Constant.PUSH_DYNAMIC, null);
+                } else {
+                    ForwardUtils.target(LiveRecordActivity.this, Constant.LOGIN, null);
+                }
                 break;
 
         }

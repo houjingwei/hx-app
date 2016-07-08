@@ -50,7 +50,6 @@ import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
 import com.tencent.upload.task.data.FileInfo;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -480,13 +479,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
             @Override
             public void onSuccess(String data) {
                 super.onSuccess(data);
-                for (String path : imgPaths) {
-                    File f = new File(path);
-                    if(f.exists()){
-                        Log.i("myImgPath","删除"+path);
-                        f.delete();
-                    }
-                }
+
                 if(null!=loadingDialog){
                     loadingDialog.dismiss();
                 }

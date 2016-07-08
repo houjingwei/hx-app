@@ -8,16 +8,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <ImageView
+        <com.huixiangtv.live.ui.ZJImageView
             android:id="@+id/ivPhoto"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:layout_toRightOf="@+id/tvDate"
-            android:scaleType="centerCrop"
             android:src="@drawable/default_head"
-            />
+            app:radius="2dp"
+            app:shape_type="rectangle" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,6 +53,7 @@
 
             <RelativeLayout
                 android:id="@+id/rlVideo"
+                android:visibility="gone"
                 android:background="@color/mainColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,10 +120,12 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rlZan"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:gravity="center_vertical"
+        android:visibility="gone"
         android:padding="5dp">
 
         <ImageView
@@ -136,15 +139,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_toRightOf="@+id/ivZan"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/mRecylerView"
                 android:layout_width="match_parent"
-                android:layout_height="34dp"
-                android:padding="2dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/liveClose" />
 

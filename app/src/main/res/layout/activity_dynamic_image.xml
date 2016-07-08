@@ -8,6 +8,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:src="@drawable/default_head"
-    app:radius="1dp"
+    app:radius="2dp"
     app:shape_type="rectangle" />
 

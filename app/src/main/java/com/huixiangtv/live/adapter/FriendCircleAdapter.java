@@ -230,12 +230,12 @@ public class FriendCircleAdapter extends BaseAdapter {
                 } else if (size > 2) {
                     viewHolder.mImgGridView.setNumColumns(3);
                 }
-                GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages());
+                GridViewFriendAdapter gridViewFriendAdapter = new GridViewFriendAdapter(context, dynamic.getImages(),size);
                 viewHolder.mImgGridView.setAdapter(gridViewFriendAdapter);
 
             } else {
                 List<DynamicImage> dynamicImages = new ArrayList<>();
-                viewHolder.mImgGridView.setAdapter(new GridViewFriendAdapter(context, dynamicImages));
+                viewHolder.mImgGridView.setAdapter(new GridViewFriendAdapter(context, dynamicImages,0));
             }
 
 

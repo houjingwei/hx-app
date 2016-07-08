@@ -93,7 +93,7 @@ public class DateUtils {
         long now = longPattern(nowTime,pattern,"yyyyMMdd");
         long dataTime = longPattern(time,pattern,"yyyyMMdd");
         if(now-dataTime==0){
-            str = "";
+            str = "今天";
         }else if(now-dataTime==1){
             str = "昨天";
         }else{

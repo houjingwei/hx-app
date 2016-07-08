@@ -3,7 +3,6 @@ package com.huixiangtv.live.activity;
 import android.annotation.TargetApi;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -176,6 +175,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
         //赞数据
         if(null!=data.getPraises()){
+            rlZan.setVisibility(View.VISIBLE);
             mAdapter = new PraiseAdapter(null);
             mAdapter.setOnItemClickListener(new RecyclerviewListener() {
                 @Override
@@ -228,26 +228,26 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
 
             //设置图片2张时图片的布局宽度
-            int width = (int) (imgTotalWidth*0.5-WidgetUtil.dip2px(DynamicDetialActivity.this,1));
+            int width = (int) (imgTotalWidth*0.5-WidgetUtil.dip2px(DynamicDetialActivity.this,6));
             photoParams = new LinearLayout.LayoutParams(width,width);
-            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,1);
+            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,3);
 
             addOneImgToLl(images, photoParams, ll1,0);
             addOneImgToLl(images, photoParams, ll1,1);
 
         }else if(rowNum==1 && consNum==3){
-            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,1);
+            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,9);
             photoParams = new LinearLayout.LayoutParams(width,width);
-            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,1);
+            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,3);
 
             addllToRootLl(0,images, llViewParams, photoParams);
 
 
         }else{
 
-            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,1);
+            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,9);
             photoParams = new LinearLayout.LayoutParams(width,width);
-            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,1);
+            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,3);
 
 
             addllToRootLl(0,images, llViewParams, photoParams);
@@ -369,6 +369,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId== 4 )
                 {
+                    KeyBoardUtils.closeKeybord(etComment,DynamicDetialActivity.this);
                     reComment();
                 }
                 return false;
@@ -561,6 +562,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
     ImageView ivPlay;
     LinearLayout llVideoView;
     RelativeLayout rlPlay;
+    RelativeLayout rlZan;
 
     ImageView ivZanAndComm;
     boolean isPlay = false;
@@ -571,6 +573,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
         tvName = (TextView) view.findViewById(R.id.tvName);
         tvContent = (TextView) view.findViewById(R.id.tvContent);
         tvTime = (TextView) view.findViewById(R.id.tvTime);
+        rlZan = (RelativeLayout) view.findViewById(R.id.rlZan);
         mRecylerView = (RecyclerView) view.findViewById(R.id.mRecylerView);
         mRecylerView.setHasFixedSize(true);
         mRecylerView.setLayoutManager(new LinearLayoutManager(DynamicDetialActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -584,9 +587,13 @@ public class DynamicDetialActivity extends BaseBackActivity {
             }
         });
 
+
+
         rlVideo = (RelativeLayout) view.findViewById(R.id.rlVideo);
+        llVideoView = (LinearLayout) view.findViewById(R.id.llVideoView);
         ivVideo= (ImageView) view.findViewById(R.id.ivVideo);
         ivPlay= (ImageView) view.findViewById(R.id.ivPlay);
+        ivPlay.setVisibility(View.GONE);
         rlPlay = (RelativeLayout) view.findViewById(R.id.rlPlay);
         rlPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -602,15 +609,31 @@ public class DynamicDetialActivity extends BaseBackActivity {
                 }
             }
         });
-        llVideoView = (LinearLayout) view.findViewById(R.id.llVideoView);
+
 
     }
 
-    private void play() {
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
         if(null!=mVideoView){
+            mVideoView.release();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(null!=mVideoView && StringUtil.isNotEmpty(playUrl)){
             mVideoView.start();
-            isPlay = true;
-            ivPlay.setVisibility(View.GONE);
+
         }
     }
 
@@ -618,6 +641,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
      * 获取点播视频地址并播放
      */
     private void loadPlayUrlAndPlay() {
+        rlVideo.setVisibility(View.VISIBLE);
         Map<String,String> params = new HashMap<String,String>();
         params.put("key",dn.getVideoURL());
         params.put("type","1");
@@ -631,11 +655,26 @@ public class DynamicDetialActivity extends BaseBackActivity {
         });
     }
 
+    int currPosition = 0;
     private void toPause() {
         ivPlay.setVisibility(View.VISIBLE);
         isPlay = false;
-        mVideoView.stop();
+        mVideoView.pause();
+        currPosition = mVideoView.getCurrentPosition();
 
+    }
+
+    private void play() {
+        if(null!=mVideoView){
+            if(mVideoView.isPlaying()){
+                mVideoView.seekTo(currPosition);
+            }else{
+                mVideoView.start();
+            }
+
+            isPlay = true;
+            ivPlay.setVisibility(View.GONE);
+        }
     }
 
     ScalableVideoView mVideoView;
@@ -643,23 +682,23 @@ public class DynamicDetialActivity extends BaseBackActivity {
     private void toPlay() {
         try{
             mVideoView = new ScalableVideoView(DynamicDetialActivity.this);
-            mVideoView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-            mVideoView.setDataSource(DynamicDetialActivity.this, Uri.parse(playUrl));
             llVideoView.addView(mVideoView);
-            mVideoView.setScalableType(ScalableType.CENTER_CROP);
+            mVideoView.setDataSource(playUrl);
             //mVideoView.setVolume(50, 100);
             mVideoView.setLooping(true);
             mVideoView.prepare(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
+                    mVideoView.setScalableType(ScalableType.CENTER_CROP);
                     mVideoView.start();
                     isPlay = true;
                     ivPlay.setVisibility(View.GONE);
+                }
+            });
+            mVideoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                @Override
+                public boolean onInfo(MediaPlayer mediaPlayer, int i, int i1) {
+                    return false;
                 }
             });
         }catch(Exception e){
@@ -716,6 +755,9 @@ public class DynamicDetialActivity extends BaseBackActivity {
             public void onSuccess(DynamicpPraise data) {
                 mAdapter.removeData(0);
                 dn.setIsZan(false);
+                if(mAdapter.getDataSize()==0){
+                    rlZan.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -734,10 +776,13 @@ public class DynamicDetialActivity extends BaseBackActivity {
             @Override
             public void onSuccess(DynamicpPraise data) {
                 if (data != null) {
+                    rlZan.setVisibility(View.VISIBLE);
                     data.setNickName(App.getLoginUser().getNickName());
                     data.setPhoto(App.getLoginUser().getPhoto());
                     mAdapter.addData(data);
                     dn.setIsZan(true);
+                }else{
+                    rlZan.setVisibility(View.GONE);
                 }
             }
 
@@ -762,6 +807,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
         CommonHelper.reComment(dc,new ApiCallback<String>(){
             @Override
             public void onSuccess(String data) {
+                etComment.setText("");
                 dc.setCommentId(data);
                 if(adapter.getCount()==0){
                     dc.setShowIcon(true);

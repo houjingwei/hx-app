@@ -12,7 +12,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/default_head"
-        app:radius="1dp"
+        app:radius="2dp"
         app:shape_type="rectangle" />
 
 </RelativeLayout>

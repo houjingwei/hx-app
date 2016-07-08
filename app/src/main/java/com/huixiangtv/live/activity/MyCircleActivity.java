@@ -134,7 +134,12 @@ public class MyCircleActivity extends BaseBackActivity {
     }
 
     private void toPushDynamic() {
-        ForwardUtils.target(MyCircleActivity.this, Constant.PUSH_DYNAMIC, null);
+        if (null != App.getLoginUser()) {
+            ForwardUtils.target(MyCircleActivity.this, Constant.PUSH_DYNAMIC, null);
+        } else {
+            ForwardUtils.target(MyCircleActivity.this, Constant.LOGIN, null);
+        }
+
     }
 
     private void initHeadInfo(View view) {
@@ -157,15 +162,15 @@ public class MyCircleActivity extends BaseBackActivity {
             public void onSuccessList(List<Dynamic> data) {
                 super.onSuccessList(data);
                 if (data != null && data.size() > 0) {
-                    disTime = "今天";
-                    resetData(data);
                     if(page==1){
+                        disTime = "今天";
                         adapter.clear();
                     }
+                    resetData(data);
                     adapter.addList(data);
                 }else{
                     if (page == 1) {
-                        CommonHelper.noData("还没有发不过动态哦",refreshView.getRefreshableView(),MyCircleActivity.this,1);
+                        CommonHelper.noData("还没有发布过动态哦",refreshView.getRefreshableView(),MyCircleActivity.this,1);
                     }
                 }
 
@@ -191,35 +196,34 @@ public class MyCircleActivity extends BaseBackActivity {
     }
 
 
-    String disTime = "今天";
+    String disTime = "";
     private void resetData(List<Dynamic> data) {
         for (Dynamic dn : data) {
             if(StringUtil.isNotEmpty(dn.getDate())){
                 String strTime = com.huixiangtv.live.utils.DateUtils.formatDisplayTime2(dn.getDate(),"yyyy-MM-dd HH:mm:ss");
-                if(!strTime.equals(disTime)){
-                    dn.setMarginTop(true);
-                    disTime = strTime;
-                    if(disTime.equals("今天")){
-                        dn.setMonth("");
-                        dn.setDay("");
-                        dn.setLastDate("");
-                    }else{
-                        if(strTime.contains(",")){
-                            String[] md = strTime.split(",");
-                            dn.setMonth(md[0]);
-                            dn.setDay(md[1]);
-                            dn.setLastDate("");
-                        }else{
-                            dn.setMonth("");
-                            dn.setDay("");
-                            dn.setLastDate(disTime);
-                        }
-                    }
-                }else{
+                Log.i("toDay",disTime+"****"+strTime);
+                if(strTime.equals(disTime)){
+                    dn.setMarginTop(false);
                     dn.setMonth("");
                     dn.setDay("");
                     dn.setLastDate("");
+                    Log.i("toDay",disTime+"****"+strTime + "***" + dn.getContent()+"****"+dn.getMarginTop());
+                }else{
+                    disTime = strTime;
+                    dn.setMarginTop(true);
+                    if(strTime.contains(",")){
+                        String[] md = strTime.split(",");
+                        dn.setMonth(md[0]);
+                        dn.setDay(md[1]);
+                        dn.setLastDate("");
+                    }else{
+                        dn.setMonth("");
+                        dn.setDay("");
+                        dn.setLastDate(disTime);
+                    }
+
                 }
+
 
             }
             Log.i("dndateTime",dn.getLastDate()+"**"+dn.getMonth()+"**"+dn.getDay());
@@ -229,7 +233,6 @@ public class MyCircleActivity extends BaseBackActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        disTime = "今天";
         if(App.createDynamic){
             App.createDynamic = false;
             page = 1;

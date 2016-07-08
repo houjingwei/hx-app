@@ -21,17 +21,17 @@ public class SquareLayout extends RelativeLayout {
         super(context);
     }
 
-    @SuppressWarnings("unused")
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        setMeasuredDimension(getDefaultSize(0, widthMeasureSpec),
-                getDefaultSize(0, heightMeasureSpec));
-
-        int childWidthSize = getMeasuredWidth();
-        int childHeightSize = getMeasuredHeight();
-        heightMeasureSpec = widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(
-                childWidthSize, View.MeasureSpec.EXACTLY);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
+//    @SuppressWarnings("unused")
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//
+//        setMeasuredDimension(getDefaultSize(0, widthMeasureSpec),
+//                getDefaultSize(0, heightMeasureSpec));
+//
+//        int childWidthSize = getMeasuredWidth();
+//        int childHeightSize = getMeasuredHeight();
+//        heightMeasureSpec = widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(
+//                childWidthSize, View.MeasureSpec.EXACTLY);
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//    }
 }

@@ -1,19 +1,24 @@
-<com.huixiangtv.live.utils.widget.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:zhy="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
+    <com.huixiangtv.live.utils.widget.SquareLayout
+        xmlns:zhy="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rlSL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <com.huixiangtv.live.utils.image.RoundImageView
-        android:id="@+id/iv_gridview_img"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        zhy:border_width_riv="1dp"
-        zhy:corner_radius="2dp"
-        zhy:border_color_riv="@color/white"
-        zhy:mutate_background="true"
-        zhy:oval="false"  />
+        <com.huixiangtv.live.utils.image.RoundImageView
+            android:id="@+id/iv_gridview_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            zhy:border_color_riv="@color/white"
+            zhy:border_width_riv="1dp"
+            zhy:corner_radius="2dp"
+            zhy:mutate_background="true"
+            zhy:oval="false" />
 
 
-</com.huixiangtv.live.utils.widget.SquareLayout>
+    </com.huixiangtv.live.utils.widget.SquareLayout>
+</LinearLayout>
