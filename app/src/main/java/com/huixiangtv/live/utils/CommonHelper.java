@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.huixiangtv.live.Api;
 import com.huixiangtv.live.model.DynamicComment;
+import com.huixiangtv.live.model.Live;
 import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.PlayUrl;
 import com.huixiangtv.live.model.Share;
@@ -29,6 +30,7 @@ import com.huixiangtv.live.pop.CameraWindow;
 import com.huixiangtv.live.pop.LoginWindow;
 import com.huixiangtv.live.pop.ShareTwoWindow;
 import com.huixiangtv.live.pop.ShareWindow;
+import com.huixiangtv.live.pop.UserWindow;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.service.RequestUtils;
@@ -133,6 +135,17 @@ public class CommonHelper {
         }
 
     }
+
+
+    public static void showUserPopWindow(Activity activity, int atLocationId,Live live) {
+        pop = new UserWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,live);
+        pop.showAtLocation(activity.findViewById(atLocationId), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        pop.update();
+
+
+    }
+
+
 
 
 

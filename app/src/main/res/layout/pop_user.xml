@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pop_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:clickable="true">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="325dp"
+            android:background="@color/white90"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/ivPhoto"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/default_head"
+                    app:civ_border_color="@color/white" />
+
+                <LinearLayout
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivPhoto"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:id="@+id/llInfo"
+                            android:layout_alignParentLeft="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="right"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvName"
+                                style="@style/black_bigger_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="陈百中［Andy baby］" />
+
+                            <TextView
+                                style="@style/black_bigger_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="3dp"
+                                android:text="·" />
+
+                            <TextView
+                                android:id="@+id/tvAddress"
+                                style="@style/black_small_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="3dp"
+                                android:gravity="center"
+                                android:text="深圳" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llReport"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="right"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/black_normal_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="3dp"
+                                android:gravity="center"
+                                android:text="举报" />
+                            <ImageView
+                                android:layout_width="19dp"
+                                android:layout_height="19dp"
+                                android:layout_marginLeft="5dp"
+                                android:src="@mipmap/v2_icon_report"/>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+                        <TextView
+                            android:id="@+id/tvHeight"
+                            style="@style/black_small_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="170 cm" />
+
+                        <TextView
+                            android:id="@+id/tvWeight"
+                            style="@style/black_small_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="45 kg" />
+
+                        <TextView
+                            android:id="@+id/tvSanwei"
+                            style="@style/black_small_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="三围：84－70-89" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llTags"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+
+
+
+
+
+
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View style="@style/split_line" android:layout_margin="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/llFans"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="37dp"
+                        android:layout_height="37dp"
+                        android:src="@mipmap/v2_icon_fans"/>
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        style="@style/gray_small_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="粉丝" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/llDynamic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="37dp"
+                        android:layout_height="37dp"
+                        android:src="@mipmap/v2_icon_user_dynamic"/>
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        style="@style/gray_small_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="动态" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/llCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="37dp"
+                        android:layout_height="37dp"
+                        android:src="@mipmap/v2_icon_user_card"/>
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        style="@style/gray_small_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="艺人卡" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

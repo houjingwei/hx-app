@@ -70,4 +70,7 @@
     <color name="comm_title">#323232</color>
     <color name="comm_context">#A8A8A8</color>
 
+
+    <color name="white90">#dcffffff</color>
+
 </resources>

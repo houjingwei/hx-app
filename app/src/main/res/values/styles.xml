@@ -273,7 +273,11 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-
+    <style name="black_smaller_style">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/normal_color</item>
+        <item name="android:textStyle">normal</item>
+    </style>
     <style name="black_small_style">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/normal_color</item>

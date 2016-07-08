@@ -674,13 +674,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 }
                 break;
             case R.id.LlUser:
-                Map<String,String> params = new HashMap<String,String>();
-                params.put("uid",live.getUid());
-                if (null != App.getLoginUser() && !live.getUid().equals(App.getLoginUser().getUid())) {
-                    ForwardUtils.target(activity, Constant.PIC_LIST, params);
-                }else if(null==App.getLoginUser()){
-                    ForwardUtils.target(activity, Constant.PIC_LIST, params);
-                }
+
+                CommonHelper.showUserPopWindow(activity, R.id.liveMain, live);
                 break;
         }
     }
