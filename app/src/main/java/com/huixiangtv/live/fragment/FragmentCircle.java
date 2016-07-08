@@ -57,6 +57,7 @@ public class FragmentCircle extends Fragment {
     private FrameLayout main;
     public LinearLayout commentLinear;
     private EditText commentEdit;        //评论输入框
+    private  View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,7 +101,7 @@ public class FragmentCircle extends Fragment {
         refreshView.setMode(PullToRefreshBase.Mode.BOTH);
         refreshView.setHeaderLayout(new HuixiangLoadingLayout(getActivity()));
         refreshView.setFooterLayout(new HuixiangLoadingLayout(getActivity()));
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_circle_head, null, false);
+        view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_circle_head, null, false);
         refreshView.getRefreshableView().addHeaderView(view);
 
         //点击进入自己的相册圈
@@ -146,8 +147,10 @@ public class FragmentCircle extends Fragment {
     public void loadData() {
 
         loadDynamicInfo();
+        initHeadInfo(view);
 
     }
+
 
 
     private void initHeadInfo(View view) {
@@ -163,6 +166,7 @@ public class FragmentCircle extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        loadDynamicInfo();
     }
 
     /**
