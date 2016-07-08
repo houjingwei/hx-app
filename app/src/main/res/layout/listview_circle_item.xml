@@ -32,43 +32,76 @@
             android:layout_marginRight="10dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvNickName"
+            <LinearLayout
+                android:id="@+id/ll_toDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="#333333"
-                android:textSize="16sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_context"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:paddingBottom="2dp"
-                android:textSize="15sp"
-                android:paddingLeft="2dp"
-                android:layout_marginBottom="5dp"
-                android:paddingRight="2dp"
-                android:paddingTop="2dp"
-                android:textColor="#777777" />
+                <TextView
+                    android:id="@+id/tvNickName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="#333333"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_context"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingTop="2dp"
+                    android:textColor="#777777"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/rlVideo"
-                android:layout_width="80dp"
-                android:visibility="gone"
-                android:background="@drawable/default_43"
-                android:layout_height="60dp"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/mainColor"
+                android:orientation="vertical">
 
+                <com.huixiangtv.live.ui.ZJImageView
+                    android:id="@+id/ivVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/default_43"
+                    zhy:radius="1dp"
+                    zhy:shape_type="rectangle" />
 
-                <ImageView
-                    android:layout_centerInParent="true"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/live"/>
+                <LinearLayout
+                    android:id="@+id/llVideoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/trans"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlPlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/trans"
+                    android:clickable="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivPlay"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/v2_dynamic_play" />
+                </RelativeLayout>
 
             </RelativeLayout>
+
 
             <com.huixiangtv.live.utils.widget.GridViewCircle
                 android:id="@+id/gv_listView_main_gridView"
@@ -107,18 +140,18 @@
 
                 <ImageView
                     android:id="@+id/ivPoint"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:padding="10dp"
                     android:src="@drawable/cricle_point" />
             </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/ll_comment_head"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="5dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -148,9 +181,9 @@
     </LinearLayout>
 
     <View
-        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_marginBottom="5dp"
         android:background="#B6B6B6" />
 
 </LinearLayout>

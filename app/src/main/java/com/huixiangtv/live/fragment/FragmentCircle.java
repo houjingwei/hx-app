@@ -51,8 +51,8 @@ public class FragmentCircle extends Fragment {
 
     private final String PAGESIZE = "10";
     View mRootView;
-    private PullToRefreshListView refreshView;
-    private FriendCircleAdapter adapter;
+    public static PullToRefreshListView refreshView;
+    public static FriendCircleAdapter adapter;
     int page = 1;
     private FrameLayout main;
     public LinearLayout commentLinear;
@@ -143,7 +143,7 @@ public class FragmentCircle extends Fragment {
 
     }
 
-    private void loadData() {
+    public void loadData() {
 
         loadDynamicInfo();
 

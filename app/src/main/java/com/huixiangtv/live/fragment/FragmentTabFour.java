@@ -14,6 +14,7 @@ import android.view.Window;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.huixiangtv.live.App;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.activity.MainActivity;
 import com.huixiangtv.live.model.TabEntity;

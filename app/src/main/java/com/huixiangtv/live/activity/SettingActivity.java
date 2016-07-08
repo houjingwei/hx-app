@@ -127,6 +127,7 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.tvLoginOut:
                 App.clearLoginUser();
+                App.saveLoginStatus("true");
                 finish();
                 ForwardUtils.target(SettingActivity.this, Constant.LOGIN, null);
 
