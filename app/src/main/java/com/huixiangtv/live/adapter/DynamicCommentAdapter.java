@@ -74,13 +74,14 @@ public class DynamicCommentAdapter extends BaseAdapter {
             holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
             holder.ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
             convertView.setTag(holder);
-        }else
-        {
+        }else{
             holder = (ViewHolder)convertView.getTag();
         }
-
+        Log.i("isShowIcon",dc.isShowIcon()+"---"+dc.getContent());
         if(dc.isShowIcon()){
             holder.viIcon.setVisibility(View.VISIBLE);
+        }else{
+            holder.viIcon.setVisibility(View.INVISIBLE);
         }
         holder.tvName.setText(dc.getNickName());
         holder.tvTime.setText(DateUtils.formatDisplayTime(dc.getDate(),"yyyy-MM-dd HH:mm:ss"));

@@ -57,6 +57,9 @@ public class App extends MultiDexApplication {
     public static RongIMClient imClient;
     public static boolean createDynamic = false;
 
+    //动态有删除，需要返回时刷新
+    public static boolean refreshMyCircleActivity = false;
+
     private List<Activity> listActivity = new LinkedList<Activity>();
     //屏幕宽度，屏幕高度
     public static int screenWidth, screenHeight, statuBarHeight;

@@ -41,10 +41,12 @@ import com.huixiangtv.live.service.LoginCallBack;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
 import com.huixiangtv.live.service.ServiceException;
+import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.ui.CommonTitle;
 import com.huixiangtv.live.ui.HuixiangLoadingLayout;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.DateUtils;
+import com.huixiangtv.live.utils.ForwardUtils;
 import com.huixiangtv.live.utils.KeyBoardUtils;
 import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
@@ -63,6 +65,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.drakeet.materialdialog.MaterialDialog;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview2;
 
@@ -113,6 +116,11 @@ public class DynamicDetialActivity extends BaseBackActivity {
     private void upViewData(Dynamic data) {
 
         dn = data;
+
+        //设置动态删除按钮是否显示
+        if(null!=App.getLoginUser() && App.getLoginUser().getUid().equals(dn.getUid())){
+            commonTitle.saveShow(View.VISIBLE);
+        }
 
         //所有大图图片
         if(null!=data.getImages()){
@@ -174,18 +182,17 @@ public class DynamicDetialActivity extends BaseBackActivity {
         }
 
         //赞数据
-        if(null!=data.getPraises()){
+        mAdapter = new PraiseAdapter(null);
+        mRecylerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new RecyclerviewListener() {
+            @Override
+            public void onItemClick(View view, Object data) {
+                CommonHelper.showTip(DynamicDetialActivity.this, ((Praise) data).getNickName());
+            }
+        });
+        if(null!=data.getPraises() && data.getPraises().size()>0){
             rlZan.setVisibility(View.VISIBLE);
-            mAdapter = new PraiseAdapter(null);
-            mAdapter.setOnItemClickListener(new RecyclerviewListener() {
-                @Override
-                public void onItemClick(View view, Object data) {
-                    CommonHelper.showTip(DynamicDetialActivity.this, ((Praise) data).getNickName());
-                }
-            });
             mAdapter.addAll(data.getPraises());
-            mRecylerView.setAdapter(mAdapter);
-
             for (DynamicpPraise dynamicpPraise : dn.getPraises()) {
                 if (dynamicpPraise.getUid().equals(App.getLoginUser().getUid())) {
                     dn.setIsZan(true);
@@ -361,6 +368,13 @@ public class DynamicDetialActivity extends BaseBackActivity {
     private void intitView() {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.dynamic_detial));
+        commonTitle.setSaveText("删除");
+        commonTitle.getSave().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDynamic();
+            }
+        });
 
         llCommentView = (LinearLayout) findViewById(R.id.llCommentView);
         etComment = (EditText) findViewById(R.id.etComment);
@@ -412,9 +426,75 @@ public class DynamicDetialActivity extends BaseBackActivity {
     }
 
 
+    CenterLoadingView loadingDialog = null;
+    private void deleteDynamic() {
 
+        final MaterialDialog mMaterialDialog = new MaterialDialog(this);
+        mMaterialDialog.setTitle("MaterialDialog")
+                .setMessage("Hello world!")
+                .setPositiveButton("删除", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mMaterialDialog.dismiss();
+                        doDeleteDynamic();
+                    }
+                })
+                .setNegativeButton("放弃", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mMaterialDialog.dismiss();
 
+                    }
+                });
 
+        mMaterialDialog.show();
+        mMaterialDialog.setTitle("提示");
+        mMaterialDialog.show();
+        mMaterialDialog.setMessage("确定要删除动态吗");
+    }
+
+    private void doDeleteDynamic() {
+        if(null!=dn){
+            loadingDialog = new CenterLoadingView(DynamicDetialActivity.this);
+            loadingDialog.setCancelable(true);
+            loadingDialog.setTitle("正在删除");
+            loadingDialog.show();
+            Map<String,String> params = new HashMap<>();
+            params.put("dynamicId",dn.getDynamicId());
+
+            RequestUtils.sendPostRequest(Api.DELETE_DYNAMIC, params, new ResponseCallBack<String>() {
+                @Override
+                public void onSuccess(String data) {
+                    super.onSuccess(data);
+                    App.refreshMyCircleActivity = true;
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            if(null!=loadingDialog){
+                                loadingDialog.dismiss();
+                                CommonHelper.showTip(DynamicDetialActivity.this,"动态删除成功");
+                            }
+                        }
+                    }, 800);
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            onBackPressed();
+                        }
+                    }, 1000);
+                }
+
+                @Override
+                public void onFailure(ServiceException e) {
+                    super.onFailure(e);
+                    if(null!=loadingDialog){ CommonHelper.showTip(DynamicDetialActivity.this,e.getMessage());
+                        loadingDialog.dismiss();
+                    }
+
+                }
+            },String.class);
+        }else{
+            CommonHelper.showTip(DynamicDetialActivity.this,"动态删除异常");
+        }
+    }
 
 
     // 软键盘的高度
@@ -625,7 +705,6 @@ public class DynamicDetialActivity extends BaseBackActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     @Override
@@ -747,6 +826,10 @@ public class DynamicDetialActivity extends BaseBackActivity {
     }
 
     private void cancelZan() {
+        if(null==App.getLoginUser()){
+            ForwardUtils.target(DynamicDetialActivity.this, Constant.LOGIN, null);
+            return;
+        }
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("dynamicId", did);
 
@@ -769,6 +852,10 @@ public class DynamicDetialActivity extends BaseBackActivity {
     }
 
     private void zan() {
+        if(null==App.getLoginUser()){
+            ForwardUtils.target(DynamicDetialActivity.this, Constant.LOGIN, null);
+            return;
+        }
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("dynamicId", did);
 
@@ -782,7 +869,10 @@ public class DynamicDetialActivity extends BaseBackActivity {
                     mAdapter.addData(data);
                     dn.setIsZan(true);
                 }else{
-                    rlZan.setVisibility(View.GONE);
+                    if(mAdapter.getDataSize()==0){
+                        rlZan.setVisibility(View.GONE);
+                    }
+
                 }
             }
 

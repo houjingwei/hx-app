@@ -238,5 +238,10 @@ public class MyCircleActivity extends BaseBackActivity {
             page = 1;
             loadData();
         }
+        if(App.refreshMyCircleActivity){
+            App.refreshMyCircleActivity = false;
+            page = 1;
+            loadData();
+        }
     }
 }
