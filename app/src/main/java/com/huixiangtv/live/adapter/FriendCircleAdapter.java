@@ -2,11 +2,7 @@ package com.huixiangtv.live.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -36,7 +32,6 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.DateUtils;
 import com.huixiangtv.live.utils.ForwardUtils;
-import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.ActionItem;
 import com.huixiangtv.live.utils.widget.ListViewCircle;
@@ -174,9 +169,10 @@ public class FriendCircleAdapter extends BaseAdapter {
         viewHolder.lltoDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Map<String,String> params = new HashMap<String, String>();
-                    params.put("did",dynamic.getDynamicId());
-                    ForwardUtils.target((Activity)context, Constant.DYNAMIC_DETAIL, params);
+
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("did",dynamic.getDynamicId());
+                ForwardUtils.target((Activity)context, Constant.DYNAMIC_DETAIL, params);
             }
         });
 

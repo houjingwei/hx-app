@@ -91,6 +91,13 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     FrameLayout flLive;
     LinearLayout LlUser;
 
+    LinearLayout llLoves;
+    LinearLayout llOffline;
+    LinearLayout llOnline;
+    LinearLayout llDynamicAndCard;
+    ImageView ivCard;
+    ImageView ivDynamic;
+
     protected RecyclerView mRecyclerView;
     LiveOnlineUsersAdapter mAdapter;
 
@@ -156,6 +163,27 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     }
 
+
+
+    /**
+     * 艺人不在线时显示的view
+     */
+    public void showOfflineView() {
+        llLoves.setVisibility(GONE);
+        llOffline.setVisibility(VISIBLE);
+        llOnline.setVisibility(GONE);
+        llDynamicAndCard.setVisibility(VISIBLE);
+
+    }
+
+    public void hideOffline() {
+        llLoves.setVisibility(VISIBLE);
+        llOffline.setVisibility(GONE);
+        llOnline.setVisibility(VISIBLE);
+        llDynamicAndCard.setVisibility(GONE);
+    }
+
+
     private void initView() {
 
         LlUser = (LinearLayout) findViewById(R.id.LlUser);
@@ -166,6 +194,42 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         tvHot = (TextView) findViewById(R.id.tvHot);
         tvLove = (TextView) findViewById(R.id.tvLove);
         tvOnline = (TextView) findViewById(R.id.tvOnline);
+
+
+        llLoves = (LinearLayout) findViewById(R.id.llLoves);
+        llOffline = (LinearLayout) findViewById(R.id.llOffline);
+        llOnline = (LinearLayout) findViewById(R.id.llOnline);
+        llDynamicAndCard = (LinearLayout) findViewById(R.id.llDynamicAndCard);
+        ivCard = (ImageView) findViewById(R.id.ivCard);
+        ivDynamic = (ImageView) findViewById(R.id.ivDynamic);
+        ivCard.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Map<String,String> params = new HashMap<String,String>();
+                params.put("uid",live.getUid());
+                if (null != App.getLoginUser() && !live.getUid().equals(App.getLoginUser().getUid())) {
+                    ForwardUtils.target(activity, Constant.PIC_LIST, params);
+                }else if(null==App.getLoginUser()){
+                    ForwardUtils.target(activity, Constant.PIC_LIST, params);
+                }
+            }
+        });
+        ivDynamic.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (null != App.getLoginUser()) {
+                    ForwardUtils.target(activity, Constant.OWN_CIRCLE, null);
+                }else{
+                    CommonHelper.showLoginPopWindow(activity, R.id.liveMain, new LoginCallBack() {
+                        @Override
+                        public void loginSuccess() {
+                            ForwardUtils.target(activity, Constant.OWN_CIRCLE, null);
+                        }
+                    });
+                }
+            }
+        });
+
 
 
         rlMenu = (RelativeLayout) findViewById(R.id.rlMenu);
@@ -394,7 +458,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         App.imClient.joinChatRoom(live.getChatroom(), -1, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
-                App.imClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
+                RongIMClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
             }
 
             @Override
@@ -504,6 +568,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                     mAdapter.addData(list);
                     mRecyclerView.setAdapter(mAdapter);
                     onLineNum = data.size();
+                    tvOnline.setText(onLineNum+"");
                 }
 
             }
@@ -1114,7 +1179,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
     public void removeMsgListener() {
-        App.imClient.setOnReceiveMessageListener(null);
+        RongIMClient.setOnReceiveMessageListener(null);
         App.imClient.quitChatRoom("123456", new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
@@ -1185,6 +1250,9 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         this.handler = handle;
     }
 
+
+
+
     private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
         @Override
         public boolean onReceived(Message message, int i) {
@@ -1243,6 +1311,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                         mRecyclerView.setAdapter(mAdapter);
                         onLineNum++;
                     }
+                    tvOnline.setText(onLineNum+"");
 
 
 

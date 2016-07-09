@@ -436,6 +436,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
                     @Override
                     public void onClick(View v) {
                         mMaterialDialog.dismiss();
+
                         doDeleteDynamic();
                     }
                 })
@@ -455,6 +456,9 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
     private void doDeleteDynamic() {
         if(null!=dn){
+            if(null!=loadingDialog){
+                loadingDialog = null;
+            }
             loadingDialog = new CenterLoadingView(DynamicDetialActivity.this);
             loadingDialog.setCancelable(true);
             loadingDialog.setTitle("正在删除");
