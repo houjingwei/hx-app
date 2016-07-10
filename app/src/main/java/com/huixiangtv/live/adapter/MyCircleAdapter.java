@@ -24,6 +24,7 @@ import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
+import com.huixiangtv.live.utils.widget.WidgetUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -160,12 +161,7 @@ public class MyCircleAdapter extends BaseAdapter {
 //            }
 //        });
 
-////
-//        if(dn.getMarginTop()){
-//            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.llRootView.getLayoutParams();
-//            params.topMargin = WidgetUtil.dip2px(activity,25);
-//            holder.llRootView.setLayoutParams(params);
-//        }
+
 
         return convertView;
     }

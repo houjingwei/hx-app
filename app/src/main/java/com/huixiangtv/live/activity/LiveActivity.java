@@ -69,10 +69,7 @@ public class LiveActivity extends BaseBackActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live);
         x.view().inject(this);
-        if (MeizuSmartBarUtils.hasSmartBar()) {
-            View decorView = getWindow().getDecorView();
-            MeizuSmartBarUtils.hide(decorView);
-        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
         }
