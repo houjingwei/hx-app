@@ -102,9 +102,10 @@ public class UserWindow extends BasePopupWindow implements OnClickListener {
                 ImageUtils.displayAvator(ivPhoto,live.getPhoto());
                 tvName.setText(live.getNickName());
                 tvAddress.setText(live.getCity());
-                tvHeight.setText(live.getHeight());
-                tvWeight.setText(live.getWeight());
-                tvSanwei.setText(live.getBwh());
+
+                tvHeight.setText(StringUtil.isNotNull(live.getHeight())?live.getHeight()+"cm":"163cm");
+                tvWeight.setText(StringUtil.isNotNull(live.getWeight())?live.getWeight()+"kg":"45kg");
+                tvSanwei.setText(StringUtil.isNotNull(live.getBwh())?live.getBwh():"89-63-94");
                 if(StringUtil.isNotNull(live.getTags())){
                     String[] tags = live.getTags().split(",");
                     for (String tag : tags) {

@@ -189,9 +189,9 @@ public class FragmentCircle extends Fragment {
                         adapter.addList(data);
                     }
                 } else {
-                    if (page == 1) {
-                        CommonHelper.noData("暂无动态", refreshView.getRefreshableView(), getActivity(), 2);
-                    }
+//                    if (page == 1) {
+//                        CommonHelper.noData("暂无动态", refreshView.getRefreshableView(), getActivity(), 2);
+//                    }
                 }
                 refreshView.onRefreshComplete();
             }

@@ -142,9 +142,12 @@ public class MyCircleAdapter extends BaseAdapter {
             holder.rlVideo.setVisibility(View.VISIBLE);
             holder.tvImgCount.setVisibility(View.GONE);
             if(StringUtil.isNotNull(dn.getVideoCover())) {
+
                 ImageUtils.display(holder.ivVideo, dn.getVideoCover());
             }else{
-                holder.ivVideo.setBackgroundResource(R.drawable.default_43);
+
+                holder.ivVideo.setImageDrawable(activity.getResources().getDrawable(R.drawable.default_43));
+                //ImageUtils.display(holder.ivVideo, "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=4159758596,1465917751&fm=58");
             }
             hideImages(holder);
         }

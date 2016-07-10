@@ -297,7 +297,7 @@ public final class ImageUtils {
 
             @Override
             public void onUploadProgress(long l, long l1) {
-
+                Log.i("upLoad",l+"***"+l1);
             }
 
             @Override
