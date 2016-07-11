@@ -81,6 +81,7 @@ public class FragmentTabFour extends Fragment {
 
 			@Override
 			public void onPageSelected(int position) {
+				FragmentCircle.clearViode();
 				mTabLayout.setCurrentTab(position);
 
 			}
@@ -95,6 +96,7 @@ public class FragmentTabFour extends Fragment {
 		mTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
 			@Override
 			public void onTabSelect(int position) {
+
 				mViewPager.setCurrentItem(position);
 			}
 
