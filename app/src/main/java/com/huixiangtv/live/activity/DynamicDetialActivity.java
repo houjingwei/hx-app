@@ -256,12 +256,13 @@ public class DynamicDetialActivity extends BaseBackActivity {
             int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,9);
             photoParams = new LinearLayout.LayoutParams(width,width);
             photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,3);
-
+            llViewParams.height = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,6);
 
             addllToRootLl(0,images, llViewParams, photoParams);
             if(rowNum==2){
                 addllToRootLl(1,images, llViewParams, photoParams);
             }else{
+
                 addllToRootLl(1,images, llViewParams, photoParams);
                 addllToRootLl(2,images, llViewParams, photoParams);
 

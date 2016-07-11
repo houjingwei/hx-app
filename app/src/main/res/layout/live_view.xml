@@ -124,10 +124,9 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="28dp"
-
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="10dp">
 
                 <LinearLayout
                     android:id="@+id/llLoves"
@@ -265,8 +264,8 @@
         <ImageView
             android:layout_margin="10dp"
             android:id="@+id/ivMsg"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:src="@mipmap/living_chat" />
 
@@ -281,7 +280,7 @@
             <ImageView
                 android:id="@+id/ivShare"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
+                android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:layout_weight="1"
                 android:src="@mipmap/living_share" />
@@ -290,7 +289,7 @@
             <ImageView
                 android:id="@+id/ivCamera"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
+                android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:layout_weight="1"
                 android:src="@mipmap/living_camera" />
@@ -300,7 +299,7 @@
             <ImageView
                 android:id="@+id/ivLove"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
+                android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:layout_weight="1"
                 android:src="@mipmap/living_love" />
@@ -308,7 +307,7 @@
             <ImageView
                 android:id="@+id/ivGift"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
+                android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:layout_weight="1"
                 android:src="@mipmap/living_gift" />

@@ -9,6 +9,18 @@
 
     </style>
 
+    <style name="myTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="actionBarTheme">@style/myTheme.actionBar</item>
+        <item name="colorPrimary">@color/mainColor</item>
+        <item name="actionBarSize">@dimen/__picker_iwf_actionBarSize</item>
+    </style>
+
+    <style name="myTheme2" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="actionBarTheme">@style/myTheme.actionBar</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="actionBarSize">@dimen/__picker_iwf_actionBarSize</item>
+    </style>
+
 
     <style name="WrapMatch">
         <item name="android:layout_width">wrap_content</item>
@@ -479,11 +491,7 @@
         <item name="actionBarSize">@dimen/__picker_iwf_actionBarSize</item>
     </style>
 
-    <style name="myTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="actionBarTheme">@style/myTheme.actionBar</item>
-        <item name="colorPrimary">@color/mainColor</item>
-        <item name="actionBarSize">@dimen/__picker_iwf_actionBarSize</item>
-    </style>
+
 
 
     <style name="mydialog">

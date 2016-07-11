@@ -10,8 +10,7 @@
               android:left="-2dip"
               android:bottom="-2dip"
               android:right="-2dip"/>
-          <stroke android:width="1dip"
-              android:color="@android:color/white"/>
+
         </shape>
       </item>
       <item android:drawable="@drawable/__picker_checkbox_marked"/>
@@ -27,8 +26,6 @@
               android:left="-2dip"
               android:bottom="-2dip"
               android:right="-2dip"/>
-          <stroke android:width="1dip"
-              android:color="@android:color/white"/>
         </shape>
       </item>
       <item android:drawable="@drawable/__picker_checkbox_n"/>
