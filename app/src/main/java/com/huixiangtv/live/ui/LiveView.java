@@ -207,11 +207,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
             public void onClick(View view) {
                 Map<String,String> params = new HashMap<String,String>();
                 params.put("uid",live.getUid());
-                if (null != App.getLoginUser() && !live.getUid().equals(App.getLoginUser().getUid())) {
-                    ForwardUtils.target(activity, Constant.PIC_LIST, params);
-                }else if(null==App.getLoginUser()){
-                    ForwardUtils.target(activity, Constant.PIC_LIST, params);
-                }
+                ForwardUtils.target(activity, Constant.PIC_LIST, params);
+
             }
         });
         ivDynamic.setOnClickListener(new OnClickListener() {

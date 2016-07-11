@@ -223,7 +223,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
 
             //设置图片1张时图片的布局宽度
-            photoParams = new LinearLayout.LayoutParams(imgTotalWidth, (int) (imgTotalWidth*0.5));
+            photoParams = new LinearLayout.LayoutParams(imgTotalWidth, imgTotalWidth/2);
 
             addOneImgToLl(images, photoParams, ll1,0);
 
@@ -288,7 +288,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
             }
         });
         ll.addView(imageView,params);
-        ImageUtils.display(imageView,images.get(position).getSmall());
+        ImageUtils.display(imageView,images.get(position).getBig());
     }
 
 

@@ -35,7 +35,7 @@ public class BubbView {
     private AnimatorSet animSet;
 
 
-    int[] resources = new int[]{R.mipmap.b1,R.mipmap.b2,R.mipmap.b3,R.mipmap.b4,R.mipmap.b5,R.mipmap.b6};
+    int[] resources = new int[]{R.mipmap.b1,R.mipmap.b2,R.mipmap.b3,R.mipmap.b5,R.mipmap.b6};
 
     /**
      * 传进来上边要冒气泡的view
@@ -60,7 +60,7 @@ public class BubbView {
     }
 
     public void bubble(){
-        handler.postDelayed(runnable, 500);
+        handler.postDelayed(runnable, 300);
     }
 
 
@@ -95,7 +95,7 @@ public class BubbView {
     Runnable runnable=new Runnable() {
         @Override
         public void run() {
-            handler.postDelayed(runnable, 500);
+            handler.postDelayed(runnable, 300);
             startBubble();
         }
     };
@@ -114,7 +114,7 @@ public class BubbView {
     }
 
     private int bubbleNumView() {
-        int index=(int)(Math.random()*3);
+        int index=(int)(Math.random()*2);
         return index;
     }
 
@@ -176,11 +176,11 @@ public class BubbView {
 
 
     private void initAnimator(View view) {
-        animator1 = ObjectAnimator.ofFloat(view, "alpha",0.2f);
-        animator2 = ObjectAnimator.ofFloat(view, "scaleX",0.9f,1.2f);
-        animator5 = ObjectAnimator.ofFloat(view, "scaleY",0.9f,1.2f);
+        animator1 = ObjectAnimator.ofFloat(view, "alpha",0.9f,0.0f);
+        animator2 = ObjectAnimator.ofFloat(view, "scaleX",1.1f,1.2f);
+        animator5 = ObjectAnimator.ofFloat(view, "scaleY",1.1f,1.2f);
         setAnimator4(view);
-        animator3 = ObjectAnimator.ofFloat(view, "translationY", 0f, -700f);
+        animator3 = ObjectAnimator.ofFloat(view, "translationY", 0f, -1200f);
     }
 
     private void setAnimator4(View view) {
