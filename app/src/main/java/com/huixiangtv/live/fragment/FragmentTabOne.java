@@ -128,8 +128,23 @@ public class FragmentTabOne extends Fragment {
         initLayout();
         initData();
 
+        setIndexStyle();
 
         return mRootView;
+    }
+
+    private void setIndexStyle() {
+        if(null != App.getPreferencesValue("indexStyle") && App.getPreferencesValue("indexStyle").equals("1"))
+        {
+
+            refreshView.setVisibility(View.GONE);
+            mRootView.findViewById(R.id.rotRl).setVisibility(View.GONE);
+            if (!hasLoadBig) {
+                loadBigViewData();
+            }
+
+        }
+
     }
 
 

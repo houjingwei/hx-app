@@ -294,6 +294,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static boolean isSwitch = false;
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void onDBClick() {
+        indexStyle();
+
+    }
+
+    private void indexStyle() {
         if (isSwitch) {
             setTabSelection(0);
             sendToOneFragment("1");
@@ -305,7 +310,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             isSwitch = true;
             changeIcon(false);
         }
-
     }
 
     private void changeIcon(boolean bool) {
