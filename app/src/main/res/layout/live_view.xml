@@ -130,6 +130,7 @@
                 android:layout_marginTop="20dp">
 
                 <LinearLayout
+                    android:id="@+id/llLoves"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
@@ -155,8 +156,32 @@
 
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:visibility="gone"
+                    android:id="@+id/llOffline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/live_loves_bg"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+
+                    <TextView
+
+                        style="@style/white_normal_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="主播不在线" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llOnline"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
@@ -177,14 +202,35 @@
                         style="@style/white_normal_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:text="68989" />
+                        android:layout_marginLeft="3dp" />
 
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/llDynamicAndCard"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp">
+            v2_icon_offline_card.png
+            v2_icon_offline_dynamic.png<ImageView
+                android:id="@+id/ivCard"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@mipmap/v2_icon_offline_card"/>
+            <ImageView
+                android:id="@+id/ivDynamic"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:src="@mipmap/v2_icon_offline_dynamic"/>
 
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -249,13 +295,7 @@
                 android:layout_weight="1"
                 android:src="@mipmap/living_camera" />
 
-            <ImageView
-                android:id="@+id/ivGift"
-                android:layout_width="0dp"
-                android:layout_height="35dp"
-                android:layout_centerVertical="true"
-                android:layout_weight="1"
-                android:src="@mipmap/living_gift" />
+
 
             <ImageView
                 android:id="@+id/ivLove"
@@ -265,7 +305,13 @@
                 android:layout_weight="1"
                 android:src="@mipmap/living_love" />
 
-
+            <ImageView
+                android:id="@+id/ivGift"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:layout_weight="1"
+                android:src="@mipmap/living_gift" />
         </LinearLayout>
 
     </RelativeLayout>

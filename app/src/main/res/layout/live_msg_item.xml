@@ -20,12 +20,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:gravity="center"
+            android:gravity="center|left"
             android:shadowColor="@color/normal_color"
             android:shadowDx="1"
             android:shadowDy="1"
-            android:shadowRadius="2"
-            android:text="小清新小清新小清新小清新小清新小清新" />
+            android:shadowRadius="2"/>
     </LinearLayout>
 
 

@@ -562,7 +562,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
 
         MovieExportOptions movie_options = new MovieExportOptions.Builder().setVideoBitrate(mVideoBitrate).configureMuxer("movflags", "+faststart").build();
 
-        ProjectOptions projectOptions = new ProjectOptions.Builder().setVideoSize(480, 360).setVideoFrameRate(30).setDurationRange(mMinDurationLimit, mDurationLimit).get();
+        ProjectOptions projectOptions = new ProjectOptions.Builder().setVideoSize(480, 480).setVideoFrameRate(30).setDurationRange(mMinDurationLimit, mDurationLimit).get();
 
         //设置只要一张略缩图
         ThumbnailExportOptions thumbnailExportOptions = new ThumbnailExportOptions.Builder().setCount(1).get();

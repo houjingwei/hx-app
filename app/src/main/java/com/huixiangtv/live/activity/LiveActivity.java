@@ -40,8 +40,6 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class LiveActivity extends BaseBackActivity{
 
-
-
     private static final String TAG = "LiveActivity";
 
     @ViewInject(R.id.flCover)
@@ -111,20 +109,17 @@ public class LiveActivity extends BaseBackActivity{
                 if(null!=data){
                     live = data;
                     if(data.getLiveStatus().equals("1")){
+
                         initPlayer();
                         living(data);
                     }else if(data.getLiveStatus().equals("0")){
-                        if(null==loadingDialog){
+                        if(null!=loadingDialog){
                             loadingDialog.dismiss();
                         }
-                        CommonHelper.showTip(LiveActivity.this,"直播已结束");
-                        new Handler().postDelayed(new Runnable() {
-                            public void run() {
-                                onBackPressed();
-                            }
-                        }, 1000);
+                        living(data);
+                        showOffline();
                     }else if(data.getLiveStatus().equals("-1")){
-                        if(null==loadingDialog){
+                        if(null!=loadingDialog){
                             loadingDialog.dismiss();
                         }
                         CommonHelper.showTip(LiveActivity.this,"直播被禁止，不可观看");
@@ -152,6 +147,19 @@ public class LiveActivity extends BaseBackActivity{
     }
 
 
+
+    private void showOffline() {
+        liveView.showOfflineView();
+    }
+
+
+    private void hideOffline() {
+        liveView.hideOffline();
+    }
+
+
+
+
     private void initPlayer() {
         playView = LayoutInflater.from(LiveActivity.this).inflate(R.layout.play_view, null, false);
         flPlayView.addView(playView);
@@ -172,23 +180,14 @@ public class LiveActivity extends BaseBackActivity{
         mVideoView.setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(IMediaPlayer mp) {
-                CommonHelper.showTip(LiveActivity.this,"播放完成");
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        onBackPressed();
-                    }
-                }, 1000);
+                showOffline();
             }
         });
         mVideoView.setOnErrorListener(new IMediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(IMediaPlayer mp, int what, int extra) {
                 CommonHelper.showTip(LiveActivity.this,"直播错误");
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        onBackPressed();
-                    }
-                }, 1000);
+                showOffline();
                 return false;
             }
         });
@@ -223,9 +222,12 @@ public class LiveActivity extends BaseBackActivity{
         });
         mVideoView.setAlpha(0.0f);
         mVideoView.start();
+        hideOffline();
 
 
     }
+
+
 
 
     @TargetApi(19)
@@ -320,17 +322,27 @@ public class LiveActivity extends BaseBackActivity{
     @Override
     protected void onResume() {
         super.onResume();
+        if(App.goPlay){
+            mVideoView.start();
+            hideOffline();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.i("myTest","onPause");
+        if (null != mVideoView) {
+            App.goPlay = true;
+            mVideoView.pause();
+        }
     }
 
     @Override
     protected void onStop() {
         Log.i("myTest","onStop");
         super.onStop();
+        App.goPlay = false;
         if (null != mVideoView) {
             if (!mVideoView.isBackgroundPlayEnabled()) {
                 mVideoView.stopPlayback();
@@ -341,6 +353,7 @@ public class LiveActivity extends BaseBackActivity{
             flPlayView.removeView(playView);
         }
     }
+
 
     @Override
     protected void onDestroy() {

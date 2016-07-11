@@ -3,7 +3,10 @@ package com.huixiangtv.live.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
+<<<<<<< HEAD
 import android.os.AsyncTask;
+=======
+>>>>>>> 6c60473245d0ad801f754e28e5ec99823493bd84
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -128,6 +131,8 @@ public class FriendCircleAdapter extends BaseAdapter {
     }
 
 
+
+
     @Override
     public View getView(final int current, View convertView, ViewGroup arg2) {
         final Dynamic dynamic = (Dynamic) getItem(current);
@@ -172,9 +177,15 @@ public class FriendCircleAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
+<<<<<<< HEAD
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("did", dynamic.getDynamicId());
                 ForwardUtils.target((Activity) context, Constant.DYNAMIC_DETAIL, params);
+=======
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("did",dynamic.getDynamicId());
+                ForwardUtils.target((Activity)context, Constant.DYNAMIC_DETAIL, params);
+>>>>>>> 6c60473245d0ad801f754e28e5ec99823493bd84
             }
         });
 
@@ -243,6 +254,7 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.rlPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+<<<<<<< HEAD
                     if (currTag != current) {
 
                         try {
@@ -289,6 +301,31 @@ public class FriendCircleAdapter extends BaseAdapter {
 
                     } else {
                         if (viewHolder.isPlay) {
+=======
+                    if(currTag!=current) {
+                        if (null != mVideoView) {
+                            LinearLayout ll = (LinearLayout) mVideoView.getParent();
+                            if (mVideoView.isPlaying()) {
+                                mVideoView.pause();
+                                mVideoView.stop();
+                            }
+                            mVideoView.release();
+                            ll.removeView(mVideoView);
+
+
+//                            View v = getView(videoIndex,null,null);
+                            Log.i("wodeTag",ll.getId()+"");
+//                            LinearLayout ll = (LinearLayout) v.findViewById(R.id.llVideoView);
+//                            ll.removeView(mVideoView);
+                            RelativeLayout rl= (RelativeLayout) ll.getParent();
+                            rl.findViewById(R.id.ivPlay).setVisibility(View.VISIBLE);
+
+                        }
+                        videoIndex = current;
+                        loadPlayUrlAndPlay(viewHolder, dynamic.getVideoURL(), current);
+                    }else {
+                        if (isPlay) {
+>>>>>>> 6c60473245d0ad801f754e28e5ec99823493bd84
                             toPause(viewHolder);
                         } else {
                             play(viewHolder);
@@ -306,11 +343,14 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.ivVideo.setVisibility(View.VISIBLE);
             ImageUtils.display(viewHolder.ivVideo, dynamic.getVideoCover());
 
+<<<<<<< HEAD
         }
         else
         {
             viewHolder.mImgGridView.setVisibility(View.VISIBLE);
             viewHolder.rlVideo.setVisibility(View.GONE);
+=======
+>>>>>>> 6c60473245d0ad801f754e28e5ec99823493bd84
         }
 
 
