@@ -1,4 +1,6 @@
 package com.huixiangtv.live.model;
+import com.yqritc.scalablevideoview.ScalableVideoView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,16 @@ public class Dynamic {
     private String lat;
     private String address;
     private boolean isZan;
+
+    public ScalableVideoView getScalableVideoView() {
+        return scalableVideoView;
+    }
+
+    public void setScalableVideoView(ScalableVideoView scalableVideoView) {
+        this.scalableVideoView = scalableVideoView;
+    }
+
+    private ScalableVideoView scalableVideoView;
 
     public String getPlayUrl() {
         return playUrl;

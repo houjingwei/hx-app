@@ -234,11 +234,11 @@ public class CouponActivity  extends BaseBackActivity{
 
         RequestUtils.sendPostRequest(Api.SHAREBINDSHARECODE, paramsMap, new ResponseCallBack<String>() {
             @Override
-            public void onSuccess(String data) {
-                if (data != null && data.toString().trim().length() > 0) {
-                    popupShareNotice(CouponActivity.this);
+            public void onSuccess(String info) {
+                if (info != null && info.toString().trim().length() > 0) {
+                    popupShareNotice(CouponActivity.this,info);
                 } else {
-                    CommonHelper.showTip(getApplication(), "返回:" + data);
+                    CommonHelper.showTip(getApplication(), "返回:" + info);
                 }
             }
 
@@ -252,13 +252,15 @@ public class CouponActivity  extends BaseBackActivity{
     }
 
 
-    public static void popupShareNotice(final Context context) {
-        final AlertDialog dlg = new AlertDialog.Builder(context).create();
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.coupon_alert, null);
-        dlg.setView(layout);
-        dlg.setCancelable(false);
+    public static void popupShareNotice(final Context context,String info) {
+
+        final AlertDialog dlg = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT).create();
+        dlg.show();
         Window window = dlg.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width  = (int) (App.screenWidth * 0.75);
+        window.setAttributes(lp);
+
         window.setContentView(R.layout.coupon_alert);
         window.findViewById(R.id.tvCLose).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,6 +274,8 @@ public class CouponActivity  extends BaseBackActivity{
                 ((Activity)context).finish();
             }
         });
+
+        ((TextView)window.findViewById(R.id.tvInfo)).setText(info);
         dlg.show();
 
     }

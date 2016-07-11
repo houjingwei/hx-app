@@ -27,6 +27,7 @@ import com.huixiangtv.live.App;
 import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.common.CommonUtil;
+import com.huixiangtv.live.fragment.FragmentCircle;
 import com.huixiangtv.live.fragment.FragmentTabFour;
 import com.huixiangtv.live.fragment.FragmentTabOne;
 import com.huixiangtv.live.fragment.FragmentTabTwo;
@@ -213,6 +214,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.tab1:
                 onDBClick();
+                FragmentCircle.clearViode();
                 break;
             case R.id.tab2:
                 if(null!=App.getLoginUser()){
@@ -227,6 +229,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
 
                 isSwitch = true;
+                FragmentCircle.clearViode();
                 break;
             case R.id.iv2:
                 if(null!=App.getLoginUser()){
@@ -251,6 +254,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     });
                 }
                 isSwitch = true;
+                FragmentCircle.clearViode();
                 break;
             case R.id.tab3:
                 if(null!=App.getLoginUser()) {

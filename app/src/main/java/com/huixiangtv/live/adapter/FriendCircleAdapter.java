@@ -58,10 +58,10 @@ public class FriendCircleAdapter extends BaseAdapter {
     private  ImageView imagePlay;
     private  static  int currentId = -1;
     int videoHeight = 0;
-    private  ScalableVideoView  mVideoView;
+    private static   ScalableVideoView  mVideoView;
     private String playUrl = "";
     private boolean isPlay = false;
-    private int currTag = 100000;
+    public static int currTag = 100000;
 
 
     /**
@@ -242,24 +242,7 @@ public class FriendCircleAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     if(currTag!=current) {
-                        if (null != mVideoView) {
-                            LinearLayout ll = (LinearLayout) mVideoView.getParent();
-                            if (mVideoView.isPlaying()) {
-                                mVideoView.pause();
-                                mVideoView.stop();
-                            }
-                            mVideoView.release();
-                            ll.removeView(mVideoView);
-
-
-//                            View v = getView(videoIndex,null,null);
-                            Log.i("wodeTag",ll.getId()+"");
-//                            LinearLayout ll = (LinearLayout) v.findViewById(R.id.llVideoView);
-//                            ll.removeView(mVideoView);
-                            RelativeLayout rl= (RelativeLayout) ll.getParent();
-                            rl.findViewById(R.id.ivPlay).setVisibility(View.VISIBLE);
-
-                        }
+                        isSingleton();
                         videoIndex = current;
                         loadPlayUrlAndPlay(viewHolder, dynamic.getVideoURL(), current);
                     }else {
@@ -303,6 +286,33 @@ public class FriendCircleAdapter extends BaseAdapter {
         });
 
         return convertView;
+    }
+
+    public void isSingleton() {
+        if (null != mVideoView) {
+            LinearLayout ll = (LinearLayout) mVideoView.getParent();
+            if (mVideoView.isPlaying()) {
+                mVideoView.pause();
+                mVideoView.stop();
+            }
+            mVideoView.release();
+            mVideoView = null;
+            ll.removeView(mVideoView);
+            RelativeLayout rl= (RelativeLayout) ll.getParent();
+            rl.findViewById(R.id.ivPlay).setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void isSingletonSetNull() {
+        if (null != mVideoView) {
+            LinearLayout ll = (LinearLayout) mVideoView.getParent();
+            if (mVideoView.isPlaying()) {
+                mVideoView.pause();
+            }
+
+            RelativeLayout rl= (RelativeLayout) ll.getParent();
+            rl.findViewById(R.id.ivPlay).setVisibility(View.VISIBLE);
+        }
     }
 
     private void getTitlePopup(View v, final Dynamic dynamic, final HeadCommentGridViewAdapter headCommentGridViewAdapter, final LinearLayout ll_comment_head) {
@@ -516,7 +526,7 @@ public class FriendCircleAdapter extends BaseAdapter {
             mVideoView.setDataSource(playUrl);
             viewHolder.llVideoView.addView(mVideoView);
             mVideoView.setLooping(true);
-            mVideoView.prepare(new MediaPlayer.OnPreparedListener() {
+            mVideoView.prepareAsync(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     currTag = current;
@@ -533,4 +543,3 @@ public class FriendCircleAdapter extends BaseAdapter {
 
 
 }
-

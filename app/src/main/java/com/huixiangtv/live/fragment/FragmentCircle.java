@@ -1,7 +1,5 @@
 package com.huixiangtv.live.fragment;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,7 +55,7 @@ public class FragmentCircle extends Fragment {
     private FrameLayout main;
     public LinearLayout commentLinear;
     private EditText commentEdit;        //评论输入框
-    private  View view;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,7 +84,7 @@ public class FragmentCircle extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == 4) {
-                    if(isEditEmply()) {
+                    if (isEditEmply()) {
                         if (null != dynamicClass)
                             reComment(dynamicClass);
 
@@ -109,6 +107,7 @@ public class FragmentCircle extends Fragment {
             @Override
             public void onClick(View view) {
                 if (null != App.getLoginUser()) {
+                    clearViode();
                     ForwardUtils.target(getActivity(), Constant.OWN_CIRCLE, null);
                 }
             }
@@ -152,7 +151,6 @@ public class FragmentCircle extends Fragment {
     }
 
 
-
     private void initHeadInfo(View view) {
         ImageView ivPhoto = (ImageView) view.findViewById(R.id.ivPhoto);
         TextView tvNickName = (TextView) view.findViewById(R.id.tvNickName);
@@ -167,6 +165,7 @@ public class FragmentCircle extends Fragment {
     public void onResume() {
         super.onResume();
         loadDynamicInfo();
+        clearViode();
     }
 
     /**
@@ -349,14 +348,22 @@ public class FragmentCircle extends Fragment {
 
     /**
      * 验证评论框
+     *
      * @return
      */
-    private boolean isEditEmply(){
+    private boolean isEditEmply() {
         String comment = commentEdit.getText().toString().trim();
-        if(comment.equals("")){
+        if (comment.equals("")) {
             return false;
         }
         return true;
+    }
+
+
+    public static void clearViode() {
+        if (null != adapter) {
+            adapter.isSingletonSetNull();
+        }
     }
 
 }
