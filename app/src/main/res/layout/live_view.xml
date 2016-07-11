@@ -220,13 +220,13 @@
             v2_icon_offline_card.png
             v2_icon_offline_dynamic.png<ImageView
                 android:id="@+id/ivCard"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
                 android:src="@mipmap/v2_icon_offline_card"/>
             <ImageView
                 android:id="@+id/ivDynamic"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="20dp"
                 android:src="@mipmap/v2_icon_offline_dynamic"/>
 

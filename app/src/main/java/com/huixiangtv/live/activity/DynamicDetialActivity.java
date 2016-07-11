@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -222,7 +223,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
 
             //设置图片1张时图片的布局宽度
-            photoParams = new LinearLayout.LayoutParams(imgTotalWidth, (int) (imgTotalWidth*0.5));
+            photoParams = new LinearLayout.LayoutParams(imgTotalWidth, imgTotalWidth/2);
 
             addOneImgToLl(images, photoParams, ll1,0);
 
@@ -287,7 +288,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
             }
         });
         ll.addView(imageView,params);
-        ImageUtils.display(imageView,images.get(position).getSmall());
+        ImageUtils.display(imageView,images.get(position).getBig());
     }
 
 
@@ -389,17 +390,38 @@ public class DynamicDetialActivity extends BaseBackActivity {
                 return false;
             }
         });
-        ffRoot.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
 
+
+        ffRoot.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
+        ffRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onHideKeyboard();
+            }
+        });
         adapter = new DynamicCommentAdapter(this);
         refreshView = (PullToRefreshListView) findViewById(R.id.refreshView);
         refreshView.setMode(PullToRefreshBase.Mode.BOTH);
         refreshView.setHeaderLayout(new HuixiangLoadingLayout(this));
         refreshView.setFooterLayout(new HuixiangLoadingLayout(this));
         refreshView.setAdapter(adapter);
+        refreshView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                onHideKeyboard();
+
+            }
+        });
+        refreshView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onHideKeyboard();
+            }
+        });
         addHeadView();
         loadDetialData();
         loadData();
+
         refreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -428,7 +450,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
     CenterLoadingView loadingDialog = null;
     private void deleteDynamic() {
-
+        onHideKeyboard();
         final MaterialDialog mMaterialDialog = new MaterialDialog(this);
         mMaterialDialog.setTitle("MaterialDialog")
                 .setMessage("Hello world!")
@@ -565,6 +587,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
 
     private void onHideKeyboard() {
+        KeyBoardUtils.closeKeybord(etComment,DynamicDetialActivity.this);
         llCommentView.setVisibility(View.GONE);
 
     }
@@ -653,6 +676,12 @@ public class DynamicDetialActivity extends BaseBackActivity {
     private void addHeadView() {
         View view = LayoutInflater.from(DynamicDetialActivity.this).inflate(R.layout.activity_dynamic_detial_head, null, false);
         refreshView.getRefreshableView().addHeaderView(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onHideKeyboard();
+            }
+        });
         ivPhoto = (ImageView) view.findViewById(R.id.ivPhoto);
         tvName = (TextView) view.findViewById(R.id.tvName);
         tvContent = (TextView) view.findViewById(R.id.tvContent);
@@ -682,6 +711,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
         rlPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                onHideKeyboard();
                 if(!isPlay){
                     if(StringUtil.isNotNull(playUrl)){
                         play();
@@ -769,7 +799,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
             mVideoView.setDataSource(playUrl);
             //mVideoView.setVolume(50, 100);
             mVideoView.setLooping(true);
-            mVideoView.prepare(new MediaPlayer.OnPreparedListener() {
+            mVideoView.prepareAsync(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mVideoView.setScalableType(ScalableType.CENTER_CROP);
@@ -791,7 +821,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
 
     private void showZanAndCommPop(View v) {
-
+        onHideKeyboard();
         if(null!=dn){
             final TitlePopup titlePopup = new TitlePopup(DynamicDetialActivity.this, CommonHelper.dip2px(DynamicDetialActivity.this, 110), CommonHelper.dip2px(DynamicDetialActivity.this, 30));
             titlePopup.addAction(new ActionItem(DynamicDetialActivity.this, "评论", dn.getDynamicId(), R.mipmap.v2_dynamic_zan));

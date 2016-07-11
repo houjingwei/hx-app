@@ -13,7 +13,6 @@
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/shareWxfriend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
