@@ -55,11 +55,8 @@ public class FriendCircleAdapter extends BaseAdapter {
     private List<Dynamic> list = new ArrayList<>();
     private Handler handler;
     int videoWidth = 0;
-    private  ImageView imagePlay;
-    private  static  int currentId = -1;
     int videoHeight = 0;
     private static   ScalableVideoView  mVideoView;
-    private String playUrl = "";
     private boolean isPlay = false;
     public static int currTag = 100000;
 
@@ -161,9 +158,6 @@ public class FriendCircleAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-        //convertView.setTag("wode tag"+current);
-
 
         //动态详情
         viewHolder.lltoDetails.setOnClickListener(new View.OnClickListener() {
@@ -488,7 +482,6 @@ public class FriendCircleAdapter extends BaseAdapter {
 
             @Override
             public void onSuccess(String data) {
-                playUrl = data;
                 toPlay(viewHolder,data,current);
             }
         });
@@ -499,7 +492,6 @@ public class FriendCircleAdapter extends BaseAdapter {
         if(null!=mVideoView){
             isPlay = true;
             mVideoView.start();
-            //mVideoView.seekTo(mVideoView.getCurrentPosition());
             viewHolder.ivPlay.setVisibility(View.GONE);
         }
     }
