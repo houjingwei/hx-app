@@ -107,6 +107,7 @@ public class FragmentCircle extends Fragment {
             @Override
             public void onClick(View view) {
                 if (null != App.getLoginUser()) {
+                    clearViode();
                     ForwardUtils.target(getActivity(), Constant.OWN_CIRCLE, null);
                 }
             }
