@@ -24,6 +24,7 @@ import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.utils.CommonHelper;
 import com.huixiangtv.live.utils.StringUtil;
 import com.huixiangtv.live.utils.image.ImageUtils;
+import com.huixiangtv.live.utils.widget.WidgetUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -142,9 +143,12 @@ public class MyCircleAdapter extends BaseAdapter {
             holder.rlVideo.setVisibility(View.VISIBLE);
             holder.tvImgCount.setVisibility(View.GONE);
             if(StringUtil.isNotNull(dn.getVideoCover())) {
+
                 ImageUtils.display(holder.ivVideo, dn.getVideoCover());
             }else{
-                holder.ivVideo.setBackgroundResource(R.drawable.default_43);
+
+                holder.ivVideo.setImageDrawable(activity.getResources().getDrawable(R.drawable.default_43));
+                //ImageUtils.display(holder.ivVideo, "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=4159758596,1465917751&fm=58");
             }
             hideImages(holder);
         }
@@ -157,12 +161,7 @@ public class MyCircleAdapter extends BaseAdapter {
 //            }
 //        });
 
-////
-//        if(dn.getMarginTop()){
-//            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.llRootView.getLayoutParams();
-//            params.topMargin = WidgetUtil.dip2px(activity,25);
-//            holder.llRootView.setLayoutParams(params);
-//        }
+
 
         return convertView;
     }

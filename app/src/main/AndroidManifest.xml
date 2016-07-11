@@ -98,11 +98,11 @@
         <activity
             android:name=".activity.LiveActivity"
             android:theme="@style/backStyle"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".activity.LiveRecordActivity"
             android:theme="@style/backStyle"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".activity.TopicActivity"
             android:screenOrientation="portrait"

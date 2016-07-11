@@ -3,8 +3,11 @@ package com.huixiangtv.live.activity;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.Camera;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -45,6 +49,7 @@ import com.huixiangtv.live.service.ServiceException;
 import com.huixiangtv.live.ui.CenterLoadingView;
 import com.huixiangtv.live.ui.ZJImageView;
 import com.huixiangtv.live.utils.CommonHelper;
+import com.huixiangtv.live.utils.FileUtils;
 import com.huixiangtv.live.utils.Utils;
 import com.huixiangtv.live.utils.image.ImageUtils;
 import com.huixiangtv.live.utils.widget.WidgetUtil;
@@ -63,6 +68,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
 
 
     private static final int RECORD_CODE = 10001;
+    private static final int CHOISE_LOCAL_VIDEO = 10002;
 
     //没张小图片宽度和高度
     int width = 0;
@@ -510,6 +516,38 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
      * 拍摄视频或选择本地视频
      */
     private void choiseVideo() {
+        new MaterialDialog.Builder(this)
+                .title("发布视频")
+                .items(R.array.dynamic_video)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        if(which==0){
+                            qupaiRecord();
+                        }else if(which==1){
+                            choiseLocalVideo();
+                        }
+                    }
+                })
+                .show();
+
+    }
+
+    private void choiseLocalVideo() {
+        Intent intent = new Intent();
+        /* 开启Pictures画面Type设定为image */
+        //intent.setType("image/*");
+        //intent.setType("audio/*"); //选择音频
+        intent.setType("video/*"); //选择视频 （mp4 3gp 是android支持的视频格式）
+
+
+        /* 使用Intent.ACTION_GET_CONTENT这个Action */
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        /* 取得相片后返回本画面 */
+        startActivityForResult(intent, CHOISE_LOCAL_VIDEO);
+    }
+
+    private void qupaiRecord() {
         //判断鉴权，如果鉴权过，直接录制
         if (null != Constant.accessToken) {
             toRecord();
@@ -535,26 +573,26 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
         }
 
         //视频时长
-        mDurationLimit = 60f;
+        mDurationLimit = 600f;
         //默认最小时长
-        mMinDurationLimit = 6f;
+        mMinDurationLimit = 2f;
         //视频码率
-        mVideoBitrate = 2;
+        mVideoBitrate = 1;
         //是否需要水印
         mWaterMark = 0;
         //水印存储的目录
         waterMarkPath = "assets://Qupai/watermark/qupai-logo.png";
         //美颜参数:1-100.这里不设指定为80,这个值只在第一次设置，之后在录制界面滑动美颜参数之后系统会记住上一次滑动的状态
-        beautySkinProgress = 60;
+        beautySkinProgress = 20;
         UISettings _UISettings = new UISettings() {
             @Override
             public boolean hasEditor() { return false; }
 
             @Override
-            public boolean hasImporter() { return true; }
+            public boolean hasImporter() { return false; }
 
             @Override
-            public boolean hasGuide() { return false; }
+            public boolean hasGuide() { return true; }
 
             @Override
             public boolean hasSkinBeautifer() { return false; }
@@ -562,7 +600,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
 
         MovieExportOptions movie_options = new MovieExportOptions.Builder().setVideoBitrate(mVideoBitrate).configureMuxer("movflags", "+faststart").build();
 
-        ProjectOptions projectOptions = new ProjectOptions.Builder().setVideoSize(480, 480).setVideoFrameRate(30).setDurationRange(mMinDurationLimit, mDurationLimit).get();
+        ProjectOptions projectOptions = new ProjectOptions.Builder().setVideoSize(320, 320).setVideoFrameRate(10).setDurationRange(mMinDurationLimit, mDurationLimit).get();
 
         //设置只要一张略缩图
         ThumbnailExportOptions thumbnailExportOptions = new ThumbnailExportOptions.Builder().setCount(1).get();
@@ -618,21 +656,39 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
             //得到视频地址，和缩略图地址的数组，返回十张缩略图
             videoFile = result.getPath();
             thum = result.getThumbnail()[0];
-            result.getDuration();
-            resetVideo();
+            resetVideo(getVideoThumbnail(videoFile));
+        }else if (resultCode == RESULT_OK && requestCode == CHOISE_LOCAL_VIDEO) {
+            Uri uri = data.getData();
+            videoFile = FileUtils.getPath(this, uri);
+            if(videoFile.contains(".jpg") || videoFile.contains(".jpeg") || videoFile.contains(".png") ){
+                CommonHelper.showTip(PushDynamicActivity.this,"请选择文件视频");
+                return;
+            }else{
+                resetVideo(getVideoThumbnail(videoFile));
+            }
+
         } else {
             if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(PushDynamicActivity.this, "RESULT_CANCELED", Toast.LENGTH_LONG).show();
+                //Toast.makeText(PushDynamicActivity.this, "RESULT_CANCELED", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+
+    public Bitmap getVideoThumbnail(String videoPath) {
+        MediaMetadataRetriever media =new MediaMetadataRetriever();
+        media.setDataSource(videoPath);
+        Bitmap bitmap = media.getFrameAtTime();
+        return bitmap;
     }
 
 
     /**
      * 视频选择刷新重置
      * @para
+     * @param
      */
-    private void resetVideo() {
+    private void resetVideo(Bitmap bm) {
         type = 2;
         resetView();
         videoRoot = new RelativeLayout(PushDynamicActivity.this);
@@ -640,13 +696,19 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
 
         ImageView imgView = new ImageView(this);
         imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        ImageUtils.display(imgView, thum);
+        if(null!=bm){
+            imgView.setImageBitmap(bm);
+        }else{
+            ImageUtils.display(imgView, thum);
+        }
+
         videoRoot.addView(imgView, rlVideoPhotoParams);
 
         ImageView delImg = new ImageView(this);
         delImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                resetView();
                 initAddPhotoAndVideoImageBth();
             }
         });

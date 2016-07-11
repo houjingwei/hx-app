@@ -235,4 +235,9 @@
     <string name="push_dynamic">发布动态</string>
 
 
+
+    <string-array name="dynamic_video">
+        <item>录制拍摄</item>
+        <item>本地视频</item>
+    </string-array>
 </resources>
