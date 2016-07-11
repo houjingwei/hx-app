@@ -314,7 +314,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void changeIcon(boolean bool) {
         if(bool){
-            iv1.setImageResource(R.mipmap.tab1_pressed);
+            iv1.setImageResource(R.mipmap.tab1);
         }else{
             iv1.setImageResource(R.mipmap.tab1_big);
         }
@@ -469,6 +469,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if(null != App.getPreferencesValue("indexStyle") && App.getPreferencesValue("indexStyle").equals("1"))
         {
             isSwitch = true;
+            changeIcon(false);
         }
         return isSwitch;
     }

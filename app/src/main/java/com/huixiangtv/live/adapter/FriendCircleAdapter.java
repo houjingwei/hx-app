@@ -51,7 +51,6 @@ import java.util.Map;
 public class FriendCircleAdapter extends BaseAdapter {
 
     private Context context;
-    private FragmentCircle fragmentCircle;
     private List<Dynamic> list = new ArrayList<>();
     private Handler handler;
     int videoWidth = 0;
@@ -66,10 +65,9 @@ public class FriendCircleAdapter extends BaseAdapter {
      */
     int videoIndex = 10000;
 
-    public FriendCircleAdapter(FragmentCircle fragmentCircle, Context context, Handler handler) {
+    public FriendCircleAdapter( Context context, Handler handler) {
         this.context = context;
         this.handler = handler;
-        this.fragmentCircle = fragmentCircle;
     }
 
     @Override
@@ -272,7 +270,7 @@ public class FriendCircleAdapter extends BaseAdapter {
         viewHolder.ivPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                isSingletonSetNull();
                 dynamic.setCurrentIndex(current);
                 getTitlePopup(v, dynamic, viewHolder.headCommentGridViewAdapter, viewHolder.ll_comment_head);
 
