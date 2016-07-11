@@ -81,8 +81,14 @@
                     android:layout_height="match_parent"
                     android:background="@color/trans"
                     android:orientation="vertical">
-
+                    <!--<com.huixiangtv.live.utils.widget.ScalableVideoViewControl.ScalableVideoView-->
+                        <!--android:id="@+id/video_view"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--zhy:scalableType="centerCrop"/>-->
                 </LinearLayout>
+
+
 
                 <RelativeLayout
                     android:id="@+id/rlPlay"
