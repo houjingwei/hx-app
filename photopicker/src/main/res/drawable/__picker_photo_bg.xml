@@ -3,13 +3,15 @@
 
   <item android:state_selected="true">
     <shape>
-      <stroke android:color="@color/__picker_item_photo_border_selected"/>
+      <stroke android:color="@color/__picker_item_photo_border_selected"
+          android:width="0dip"/>
     </shape>
   </item>
 
   <item>
     <shape>
-      <stroke android:color="@color/__picker_item_photo_border_n"/>
+      <stroke android:color="@color/__picker_item_photo_border_n"
+          android:width="0dip"/>
     </shape>
   </item>
 

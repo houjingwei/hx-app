@@ -12,6 +12,7 @@ import android.text.ClipboardManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ import com.huixiangtv.live.model.Share;
 import com.huixiangtv.live.model.ShoutGift;
 import com.huixiangtv.live.model.User;
 import com.huixiangtv.live.pop.CameraWindow;
+import com.huixiangtv.live.pop.GiftWindow;
 import com.huixiangtv.live.pop.ShareWindow;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.ChatTokenCallBack;
@@ -124,10 +126,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     RelativeLayout rlChatView;
     EditText etChatMsg;
 
-
-    //礼物面板
-    RelativeLayout rlGift;
-    GiftView giftView;
 
     RelativeLayout rlMenu;
 
@@ -270,7 +268,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         flLive.setOnClickListener(this);
 
 
-        rlGift = (RelativeLayout) findViewById(R.id.rlGift);
+
 
 
         ivLove.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -328,8 +326,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         //初始化消息
         initMsg();
 
-        //初始化礼物面板
-        initGift();
 
         //初始化喊话礼物
         initShoutGift(new ApiCallback<ShoutGift>() {
@@ -375,19 +371,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         }, ShoutGift.class);
     }
 
-
-    /**
-     * 初始化礼物面板
-     */
-    private void initGift() {
-        giftView = new GiftView(activity);
-        giftView.setHotsView(tvHot);
-        giftView.setActivity(activity);
-        giftView.initView();
-        giftView.setLiveInfo(live);
-        giftView.setRootView(flLive);
-        rlGift.addView(giftView);
-    }
 
 
     /**
@@ -695,21 +678,22 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
                 break;
             case R.id.ivGift:
-                if (null == App.getLoginUser()) {
-                    CommonHelper.showLoginPopWindow(activity, R.id.liveMain, new LoginCallBack() {
-                        @Override
-                        public void loginSuccess() {
-                            showGift();
-                        }
-                    });
-                    return;
-                }
-                showGift();
+//                if (null == App.getLoginUser()) {
+//                    CommonHelper.showLoginPopWindow(activity, R.id.liveMain, new LoginCallBack() {
+//                        @Override
+//                        public void loginSuccess() {
+//                            //showGift();
+//                        }
+//                    });
+//                    return;
+//                }
+//                showGift();
+                GiftWindow pop = new GiftWindow(activity, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,live,tvHot);
+                pop.showAtLocation(activity.findViewById(R.id.liveMain), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+                pop.update();
+
                 break;
             case R.id.flLive:
-                if (giftShow) {
-                    hideGift();
-                }
                 hideKeyBoard();
                 break;
             case R.id.ivLove:
@@ -917,27 +901,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 CommonHelper.showTip(activity, e.getMessage());
             }
         }, BasePayent.class);
-    }
-
-    /**
-     * 隐藏礼物面板
-     */
-    boolean giftShow = true;
-
-    private void hideGift() {
-        giftShow = false;
-        rlMenu.setVisibility(View.VISIBLE);
-        AnimHelper.viewDownToBottom(rlGift, WidgetUtil.dip2px(activity, 150), 300);
-    }
-
-    /**
-     * 显示礼物面板
-     */
-    private void showGift() {
-        giftShow = true;
-        rlGift.setVisibility(VISIBLE);
-        AnimHelper.viewDownToBottom(rlMenu, WidgetUtil.dip2px(activity, 60), 300);
-        AnimHelper.viewUpToMiddle(rlGift, WidgetUtil.dip2px(activity, 150), 500);
     }
 
 

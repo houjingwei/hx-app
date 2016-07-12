@@ -105,7 +105,7 @@
                         android:layout_height="match_parent"
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@+id/liveClose"
-                        android:padding="2dp"></android.support.v7.widget.RecyclerView>
+                        android:padding="2dp" />
 
                     <ImageView
                         android:id="@+id/liveClose"
@@ -126,7 +126,7 @@
                 android:layout_height="28dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="8dp">
 
                 <LinearLayout
                     android:id="@+id/llLoves"
@@ -270,7 +270,7 @@
             android:src="@mipmap/living_chat" />
 
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
@@ -279,38 +279,38 @@
 
             <ImageView
                 android:id="@+id/ivShare"
-                android:layout_width="0dp"
+                android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginRight="8dp"
                 android:layout_centerVertical="true"
-                android:layout_weight="1"
                 android:src="@mipmap/living_share" />
 
 
             <ImageView
                 android:id="@+id/ivCamera"
-                android:layout_width="0dp"
+                android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginRight="8dp"
                 android:layout_centerVertical="true"
-                android:layout_weight="1"
                 android:src="@mipmap/living_camera" />
-
-
-
-            <ImageView
-                android:id="@+id/ivLove"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                android:layout_weight="1"
-                android:src="@mipmap/living_love" />
 
             <ImageView
                 android:id="@+id/ivGift"
-                android:layout_width="0dp"
+                android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginRight="8dp"
                 android:layout_centerVertical="true"
-                android:layout_weight="1"
                 android:src="@mipmap/living_gift" />
+
+            <ImageView
+                android:id="@+id/ivLove"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="8dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/living_love" />
+
+
         </LinearLayout>
 
     </RelativeLayout>
@@ -407,15 +407,5 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/rlGift"
-        android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:layout_gravity="bottom"
-        android:visibility="gone">
 
-
-
-
-    </RelativeLayout>
 </FrameLayout>

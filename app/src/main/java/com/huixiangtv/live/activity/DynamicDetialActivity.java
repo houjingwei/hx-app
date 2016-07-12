@@ -218,6 +218,7 @@ public class DynamicDetialActivity extends BaseBackActivity {
         if(rowNum==1 && consNum==1){
             //设置图片1张时llImgRoot子布局宽度
             LinearLayout ll1 = new LinearLayout(DynamicDetialActivity.this);
+            llViewParams.height = imgTotalWidth/2;
             ll1.setLayoutParams(llViewParams);
             llImgRoot.addView(ll1);
 
@@ -236,27 +237,27 @@ public class DynamicDetialActivity extends BaseBackActivity {
 
 
             //设置图片2张时图片的布局宽度
-            int width = (int) (imgTotalWidth*0.5-WidgetUtil.dip2px(DynamicDetialActivity.this,6));
+            int width = (int) (imgTotalWidth*0.5-WidgetUtil.dip2px(DynamicDetialActivity.this,4));
             photoParams = new LinearLayout.LayoutParams(width,width);
-            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,3);
+            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,2);
 
             addOneImgToLl(images, photoParams, ll1,0);
             addOneImgToLl(images, photoParams, ll1,1);
 
         }else if(rowNum==1 && consNum==3){
-            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,9);
+            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,6);
             photoParams = new LinearLayout.LayoutParams(width,width);
-            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,3);
+            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,2);
 
             addllToRootLl(0,images, llViewParams, photoParams);
 
 
         }else{
 
-            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,9);
+            int width = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,6);
             photoParams = new LinearLayout.LayoutParams(width,width);
-            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,3);
-            llViewParams.height = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,6);
+            photoParams.rightMargin = WidgetUtil.dip2px(DynamicDetialActivity.this,2);
+            llViewParams.height = imgTotalWidth/3-WidgetUtil.dip2px(DynamicDetialActivity.this,4);
 
             addllToRootLl(0,images, llViewParams, photoParams);
             if(rowNum==2){

@@ -24,19 +24,21 @@
             android:layout_toRightOf="@+id/tvDate"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginTop="1dp"
             android:src="@drawable/default_head"
             app:radius="1dp"
             app:shape_type="rectangle" />
         <LinearLayout
             android:layout_toRightOf="@+id/ivPhoto"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="7.5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_gravity="top"
+                android:layout_height="30dp">
                 <TextView
                     android:id="@+id/tvName"
                     style="@style/gray_normal_style"
@@ -47,7 +49,7 @@
                 <TextView
                     android:id="@+id/tvTime"
                     android:layout_alignParentRight="true"
-                    style="@style/gray02_small_style"
+                    style="@style/gray_smaller_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="刚刚"/>
@@ -55,10 +57,12 @@
             </RelativeLayout>
             <TextView
                 android:id="@+id/tvContent"
-                style="@style/black_small_style"
+                android:lineSpacingMultiplier="1.2"
+                style="@style/black_normal_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="3dp"
+                android:text="楼上废话，正常发挥行分分钟第一名正常发挥就......."/>
 
             <View
                 style="@style/split_line"

@@ -2,6 +2,7 @@ package com.huixiangtv.live.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.huixiangtv.live.Constant;
 import com.huixiangtv.live.R;
 import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.User;
+import com.huixiangtv.live.pop.InputWindow;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.RequestUtils;
 import com.huixiangtv.live.service.ResponseCallBack;
@@ -46,6 +48,12 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
         User user = App.getLoginUser();
         if (user != null) {
             tvNickName.setText(user.getNickName());
+            tvNickName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //showInputWindow();
+                }
+            });
             if (null != user.getPhoto() && user.getPhoto().length() > 0) {
                 ImageUtils.displayAvator(ivPhoto, user.getPhoto());
             }
@@ -73,6 +81,15 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
             tvNickName.setText("未登录");
 
         }
+    }
+
+    InputWindow pop;
+    private void showInputWindow() {
+        pop = new InputWindow(getActivity(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop.showAtLocation(getActivity().findViewById(R.id.main), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        pop.update();
+        pop.showKeyBoard();
+
     }
 
     private void initView() {

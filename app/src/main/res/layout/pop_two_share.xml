@@ -14,7 +14,7 @@
         android:clickable="true" >
 
         <LinearLayout
-            android:background="@color/black80"
+            android:background="@color/gray"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
