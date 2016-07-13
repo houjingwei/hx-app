@@ -133,7 +133,7 @@ public class InputWindow extends BasePopupWindow implements OnClickListener {
             etChatMsg.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId== 4 )
+                    if (actionId== 6 )
                     {
                         sendMessage();
                     }
