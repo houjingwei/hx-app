@@ -2,7 +2,7 @@
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_view"
-    class="com.huixiangtv.live.utils.widget.pullView.RefreshLoadMoreListView"
+    class="com.huixiangtv.liveshow.utils.widget.pullView.RefreshLoadMoreListView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

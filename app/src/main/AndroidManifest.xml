@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.huixiangtv.live"
+    package="com.huixiangtv.liveshow"
     android:versionCode="268"
     android:versionName="2.6.8">
 

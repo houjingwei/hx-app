@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".CropImageUI">
 
-    <com.huixiangtv.live.utils.image.CropImageView
+    <com.huixiangtv.liveshow.utils.image.CropImageView
         android:id="@+id/cropImg"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
     android:background="#4a74a6"
     android:orientation="vertical">
 
-    <com.huixiangtv.live.ui.CommonTitle
+    <com.huixiangtv.liveshow.ui.CommonTitle
         android:id="@+id/myTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

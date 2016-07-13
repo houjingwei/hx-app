@@ -6,7 +6,7 @@
     android:orientation="horizontal">
 
 
-    <com.huixiangtv.live.ui.ZJImageView
+    <com.huixiangtv.liveshow.ui.ZJImageView
         android:id="@+id/iv_foot_img"
         android:layout_toRightOf="@+id/tvDate"
         android:src="@drawable/default_head"

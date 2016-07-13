@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.huixiangtv.live.activity.SplashActivity">
+    tools:context="com.huixiangtv.liveshow.activity.SplashActivity">
     <ImageView
         android:id="@+id/rlSplash"
         android:layout_width="match_parent"

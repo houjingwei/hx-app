@@ -18,7 +18,7 @@
             android:layout_height="wrap_content">
 
 
-            <com.huixiangtv.live.utils.widget.MySeekBar
+            <com.huixiangtv.liveshow.utils.widget.MySeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:changeVal="3"
@@ -27,9 +27,9 @@
                 app:textHight="170cm"
                 app:textName="@string/txt_hight"
                  
-                app:unit="cm"></com.huixiangtv.live.utils.widget.MySeekBar>
+                app:unit="cm"></com.huixiangtv.liveshow.utils.widget.MySeekBar>
 
-            <com.huixiangtv.live.utils.widget.MySeekBar
+            <com.huixiangtv.liveshow.utils.widget.MySeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:changeVal="3"
@@ -38,10 +38,10 @@
                 app:textHight="50kg"
                   
                 app:textName="@string/txt_weight"
-                app:unit="kg"></com.huixiangtv.live.utils.widget.MySeekBar>
+                app:unit="kg"></com.huixiangtv.liveshow.utils.widget.MySeekBar>
 
 
-            <com.huixiangtv.live.utils.widget.MySeekBar
+            <com.huixiangtv.liveshow.utils.widget.MySeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:processVal="70"
@@ -49,9 +49,9 @@
                 android:id="@+id/ms_hip"
                 app:textHight="50cm"
                 app:textName="@string/txt_tunwei"
-                app:unit="cm"></com.huixiangtv.live.utils.widget.MySeekBar>
+                app:unit="cm"></com.huixiangtv.liveshow.utils.widget.MySeekBar>
 
-            <com.huixiangtv.live.utils.widget.MySeekBar
+            <com.huixiangtv.liveshow.utils.widget.MySeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:processVal="70"
@@ -59,9 +59,9 @@
                   
                 app:textHight="50cm"
                 app:textName="@string/txt_yaowei"
-                app:unit="cm"></com.huixiangtv.live.utils.widget.MySeekBar>
+                app:unit="cm"></com.huixiangtv.liveshow.utils.widget.MySeekBar>
 
-            <com.huixiangtv.live.utils.widget.MySeekBar
+            <com.huixiangtv.liveshow.utils.widget.MySeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:processVal="70"
@@ -71,7 +71,7 @@
                 app:textName="@string/txt_xw"
                 app:unit="cm"
 
-                ></com.huixiangtv.live.utils.widget.MySeekBar>
+                ></com.huixiangtv.liveshow.utils.widget.MySeekBar>
 
 
         </LinearLayout>

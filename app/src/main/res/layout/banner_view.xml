@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="bottom" >
 
-    <com.huixiangtv.live.utils.widget.PictureViewPager
+    <com.huixiangtv.liveshow.utils.widget.PictureViewPager
         android:id="@+id/pic_vp"
         android:layout_width="fill_parent"
         android:layout_height="match_parent" />

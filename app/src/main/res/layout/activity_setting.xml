@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:background="@color/sysBg"
     android:orientation="vertical"
-    tools:context=".activity.SettingActivity">
+    tools:context="com.huixiangtv.liveshow.activity.SettingActivity">
 
-    <com.huixiangtv.live.ui.CommonTitle
+    <com.huixiangtv.liveshow.ui.CommonTitle
         android:id="@+id/myTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

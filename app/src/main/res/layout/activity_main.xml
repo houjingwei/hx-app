@@ -7,7 +7,7 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="false"
     android:orientation="vertical"
-    tools:context="com.huixiangtv.live.activity.MainActivity">
+    tools:context="com.huixiangtv.liveshow.activity.MainActivity">
 
 
     <!-- 内容界面 -->
