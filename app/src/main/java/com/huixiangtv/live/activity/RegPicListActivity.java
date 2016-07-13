@@ -751,7 +751,7 @@ public class RegPicListActivity extends BaseBackActivity {
             case R.id.txtUpload: {
                 Intent intent = new Intent(RegPicListActivity.this, PhotoPickerActivity.class);
                 PhotoPickerIntent.setPhotoCount(intent, 5);
-                PhotoPickerIntent.setColumn(intent, 4);
+                PhotoPickerIntent.setColumn(intent, 6);
                 startActivityForResult(intent, REQUEST_CODE);
                 break;
             }
@@ -842,7 +842,8 @@ public class RegPicListActivity extends BaseBackActivity {
                     if (photos.size() > 0 && photos.size() < 2) {
 
                         OffDrop(currentTag);
-                        bm = BitmapHelper.readBitMap(new File(photos.get(0)), true);
+                        bm = BitmapHelper.readBitMap(new File(photos.get(0)), false);
+                        bm = BitmapHelper.createScaledBitmap(bm, mertoItemViews.get(currentTag).getWidth(), mertoItemViews.get(currentTag).getHeight(), "CROP");
                         String loc = WriteFileImgLoc(bm, currentTag);
                         bd = new BitmapDrawable(bm);
                         mertoItemViews.get(currentTag).setIcon(bd);
@@ -852,17 +853,18 @@ public class RegPicListActivity extends BaseBackActivity {
                         mertoItemViews.get(currentTag).setIsFinish(15);
                         mertoItemViews.get(currentTag).setLocUrl(loc);
                     } else if (photos.size() > 1) {
-                        for (int size = 0; size < photos.size(); size++) {
-                            bm = BitmapHelper.readBitMap(new File(photos.get(size)), true);
-                            String loc = WriteFileImgLoc(bm, size);
+                        for (int size_index = 0; size_index < photos.size(); size_index++) {
+                            bm = BitmapHelper.readBitMap(new File(photos.get(size_index)), false);
+                            bm = BitmapHelper.createScaledBitmap(bm, mertoItemViews.get(size_index).getWidth(), mertoItemViews.get(size_index).getHeight(), "CROP");
+                            String loc = WriteFileImgLoc(bm, size_index);
                             bd = new BitmapDrawable(bm);
-                            mertoItemViews.get(size).setIcon(bd);
-                            mertoBeans.get(size).setIconId(bd);
-                            mertoBeans.get(size).setIsFinish(15);
-                            mertoBeans.get(size).setLocUrl(loc);
-                            mertoItemViews.get(size).setIsFinish(15);
-                            mertoItemViews.get(size).setLocUrl(loc);
-                            OffDrop(size);
+                            mertoItemViews.get(size_index).setIcon(bd);
+                            mertoBeans.get(size_index).setIconId(bd);
+                            mertoBeans.get(size_index).setIsFinish(15);
+                            mertoBeans.get(size_index).setLocUrl(loc);
+                            mertoItemViews.get(size_index).setIsFinish(15);
+                            mertoItemViews.get(size_index).setLocUrl(loc);
+                            OffDrop(size_index);
                         }
                     }
                 }
@@ -899,7 +901,7 @@ public class RegPicListActivity extends BaseBackActivity {
         }
         String local = outputImage.getAbsolutePath();
         fos = new FileOutputStream(outputImage);
-        bm.compress(Bitmap.CompressFormat.JPEG, 75, fos);// (0 -// 100)压缩文件
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);// (0 -// 100)压缩文件
         fos.flush();
         fos.close();
         return local;
@@ -1218,23 +1220,23 @@ public class RegPicListActivity extends BaseBackActivity {
         try {
             for (DropImageView iv : mertoItemViews) {
                 if (iv.getIsFinish() == 15) {
-                    bm = BitmapHelper.readBitMap(new File(iv.getLocUrl()), false); //267,213
-                    bm = BitmapHelper.createScaledBitmap(bm, iv.getWidth(), iv.getHeight(), "CROP");
-                    loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, iv.getWidth(), iv.getHeight()), Integer.parseInt(iv.getTag().toString()));
+                    //bm = BitmapHelper.readBitMap(new File(iv.getLocUrl()), false); //267,213
+                    //bm = BitmapHelper.createScaledBitmap(bm, iv.getWidth(), iv.getHeight(), "CROP");
+                    loc = iv.getLocUrl(); //WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, bm.getWidth(), bm.getHeight()), Integer.parseInt(iv.getTag().toString()));
                     imgUp.add(loc);
                     imgUpTag.add(iv.getTag().toString());
 
                 }
-                if (iv.getIsFinish() == 55)
+                if (iv.getIsFinish() == 55 )
                     isUploadAll = true;
 
-                bm = BitmapHelper.readBitMap(new File(iv.getLocUrl()), false); //267,213
-                bm = BitmapHelper.createScaledBitmap(bm, iv.getWidth(), iv.getHeight(), "CROP");
-                loc = WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, iv.getWidth(), iv.getHeight()), Integer.parseInt(iv.getTag().toString()));
+                //bm = BitmapHelper.readBitMap(new File(iv.getLocUrl()), false); //267,213
+                //bm = BitmapHelper.createScaledBitmap(bm, iv.getWidth(), iv.getHeight(), "CROP");
+                loc =  iv.getLocUrl(); //WriteFileImgLoc(BitmapHelper.resizeBitmap(bm, bm.getWidth(), bm.getHeight()), Integer.parseInt(iv.getTag().toString()));
                 imgurl.add(loc);
             }
         } catch (Exception ex) {
-
+            String error = ex.getMessage();
         }
 
         final List<String> pics = new ArrayList<String>();
@@ -1282,22 +1284,43 @@ public class RegPicListActivity extends BaseBackActivity {
     private void sendDB(final List<String> pics, final List<String> imgUpTag) {
 
         for (int index = 0; index < pics.size(); index++) {
-            if(imgUpTag.size()==0)
-            {
-                break;
-            }
 
-            if (imgUpTag.get(index).equals("0")) {
-                user.setImg1(pics.get(index));
-            } else if (imgUpTag.get(index).equals("1")) {
-                user.setImg2(pics.get(index));
-            } else if (imgUpTag.get(index).equals("2")) {
-                user.setImg3(pics.get(index));
-            } else if (imgUpTag.get(index).equals("3")) {
-                user.setImg4(pics.get(index));
-            } else if (imgUpTag.get(index).equals("4")) {
-                user.setImg5(pics.get(index));
-            }
+
+             if(imgUpTag.size()>0) {
+                 if (imgUpTag.get(index).equals("0")) {
+                     user.setImg1(pics.get(index));
+                 } else if (imgUpTag.get(index).equals("1")) {
+                     user.setImg2(pics.get(index));
+                 } else if (imgUpTag.get(index).equals("2")) {
+                     user.setImg3(pics.get(index));
+                 } else if (imgUpTag.get(index).equals("3")) {
+                     user.setImg4(pics.get(index));
+                 } else if (imgUpTag.get(index).equals("4")) {
+                     user.setImg5(pics.get(index));
+                 }
+             }
+            else
+             {
+                 if(index == 0 )
+                 {
+                     user.setImg1(pics.get(index));
+                 }
+                 else if(index == 1)
+                 {
+                     user.setImg2(pics.get(index));
+                 }else if(index == 2)
+                 {
+                     user.setImg3(pics.get(index));
+                 }
+                 else  if(index == 3)
+                 {
+                     user.setImg4(pics.get(index));
+                 }
+                 else  if(index == 4)
+                 {
+                     user.setImg5(pics.get(index));
+                 }
+             }
         }
 
         Map<String, String> paramsMap = new HashMap<>();
@@ -1608,6 +1631,7 @@ public class RegPicListActivity extends BaseBackActivity {
             if (arg0.what == 1 && isdbClick) {
                 Intent intent = new Intent(RegPicListActivity.this, PhotoPickerActivity.class);
                 PhotoPickerIntent.setPhotoCount(intent, 1);
+                PhotoPickerIntent.setColumn(intent,6);
                 PhotoPickerIntent.setShowCamera(intent, true);
                 startActivityForResult(intent, REQUEST_CODE);
             }
