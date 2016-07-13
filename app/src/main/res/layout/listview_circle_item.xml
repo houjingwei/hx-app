@@ -58,7 +58,7 @@
                     android:paddingLeft="2dp"
                     android:paddingRight="2dp"
                     android:paddingTop="2dp"
-                    android:textColor="#777777"
+                    android:textColor="#666"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -81,6 +81,7 @@
                     android:id="@+id/llVideoView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:background="@color/trans"
                     android:orientation="vertical">
                     <!--<com.huixiangtv.live.utils.widget.ScalableVideoViewControl.ScalableVideoView-->
@@ -102,10 +103,11 @@
 
                     <ImageView
                         android:id="@+id/ivPlay"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_centerInParent="true"
-                        android:src="@mipmap/v2_dynamic_play" />
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:src="@mipmap/v2_play_pic" />
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -129,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text=""
-                android:textColor="#A8A8A8"
+                android:textColor="#666"
                 android:textSize="12sp" />
 
             <RelativeLayout
@@ -143,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text=""
-                    android:textColor="#A8A8A8"
+                    android:textColor="#666"
                     android:textSize="12sp" />
 
                 <ImageView
@@ -190,8 +192,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="2px"
         android:layout_marginBottom="5dp"
-        android:background="#B6B6B6" />
+        android:background="@color/comm_color" />
 
 </LinearLayout>

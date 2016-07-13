@@ -4,7 +4,7 @@
     android:id="@+id/r1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".RegPicListActivity">
 
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/black">
+        android:background="@color/white">
 
 
         <LinearLayout
@@ -33,7 +33,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
-                    android:background="@color/black">
+                    android:background="@color/white">
 
                     <!--<com.huixiangtv.live.utils.image.ScalableImageView-->
                     <!--android:id="@+id/imageView1"-->
@@ -48,7 +48,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
-                        android:background="@color/black"
+                        android:background="@color/white"
                         android:minHeight="50dp"
                         android:minWidth="50dp"
                         android:scaleType="centerCrop" />
@@ -170,7 +170,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="1dp"
                     android:layout_weight="1"
-                    android:background="@color/black"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <com.huixiangtv.live.utils.widget.DropImageView
@@ -194,7 +194,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginBottom="0dp"
                             android:layout_marginLeft="0dp"
-                            android:layout_marginTop="0dp"
+                            android:layout_marginTop="1dp"
                             android:layout_weight="1"
                             android:background="@color/transparent"
                             android:padding="0dp"
@@ -224,42 +224,103 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtUpload"
-            style="@style/white_normal_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/reg_pic_bg"
-            android:clickable="true"
-            android:gravity="center"
-            android:paddingBottom="3dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="3dp"
-            android:tag="1"
-            android:text="上传" />
+        <!--<TextView-->
+            <!--android:id="@+id/txtUpload"-->
+            <!--style="@style/white_normal_style"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom|right"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:background="@drawable/reg_pic_bg"-->
+            <!--android:clickable="true"-->
+            <!--android:gravity="center"-->
+            <!--android:paddingBottom="3dp"-->
+            <!--android:paddingLeft="8dp"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:paddingTop="3dp"-->
+            <!--android:tag="1"-->
+            <!--android:text="上传" />-->
 
         <TextView
             android:id="@+id/txtSave"
             style="@style/white_normal_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="58dp"
+            android:layout_gravity="right"
+            android:layout_margin="10dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/reg_pic_bg"
             android:clickable="true"
             android:gravity="center"
-            android:paddingBottom="3dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="3dp"
-            android:tag="1"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
             android:text="保存"
             android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/txtUpload"
+            style="@style/white_normal_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="62dp"
+            android:background="@drawable/reg_pic_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:tag="1"
+            android:text="上传"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txtEdit"
+            style="@style/white_normal_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="62dp"
+            android:background="@drawable/reg_pic_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:tag="1"
+            android:text="编辑"
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:id="@+id/txtssj"
+            style="@style/white_normal_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="116dp"
+            android:background="@drawable/reg_pic_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:tag="1"
+            android:text="身价"
+            android:textColor="@color/white" />
+
+
 
         <TextView
             android:id="@+id/txtShare"
@@ -272,10 +333,10 @@
             android:background="@drawable/reg_pic_bg"
             android:clickable="true"
             android:gravity="center"
-            android:paddingBottom="3dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="3dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
             android:text="分享"
             android:textColor="@color/white" />
 

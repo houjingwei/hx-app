@@ -97,15 +97,15 @@ public class CouponActivity  extends BaseBackActivity{
     private void initView() {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.coupon_title));
-        commonTitle.imgShow(View.VISIBLE);
-        ImageView commonTitleImg = commonTitle.getImg();
-        commonTitleImg.setImageDrawable(getResources().getDrawable(R.drawable.coupon_left_pic));
-        commonTitleImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(CouponActivity.this, "此功能暂未开通", Toast.LENGTH_LONG).show();
-            }
-        });
+        //commonTitle.imgShow(View.VISIBLE);
+        //ImageView commonTitleImg = commonTitle.getImg();
+        //commonTitleImg.setImageDrawable(getResources().getDrawable(R.drawable.coupon_left_pic));
+        //commonTitleImg.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        Toast.makeText(CouponActivity.this, "此功能暂未开通", Toast.LENGTH_LONG).show();
+        //     }
+        //});
 
 
     }

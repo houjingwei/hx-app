@@ -89,7 +89,7 @@ public class LiveAdapter extends BaseAdapter {
         holder.rlRoot.setLayoutParams(params);
         ImageUtils.display(holder.ivIcon, live.getImg2());
 
-        holder.tvLive.getBackground().setAlpha(112);
+        holder.tvLive.getBackground().setAlpha(200);
 
         return convertView;
     }

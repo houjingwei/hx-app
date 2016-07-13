@@ -23,8 +23,13 @@ public class Dynamic {
     private String lat;
     private String address;
     private boolean isZan;
+    public boolean setIsPlay=false;
 
     public ScalableVideoView getScalableVideoView() {
+        if(scalableVideoView==null)
+        {
+
+        }
         return scalableVideoView;
     }
 
