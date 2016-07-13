@@ -454,13 +454,10 @@ public class DynamicDetialActivity extends BaseBackActivity {
     private void deleteDynamic() {
         onHideKeyboard();
         final MaterialDialog mMaterialDialog = new MaterialDialog(this);
-        mMaterialDialog.setTitle("MaterialDialog")
-                .setMessage("Hello world!")
-                .setPositiveButton("删除", new View.OnClickListener() {
+        mMaterialDialog.setPositiveButton("删除", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mMaterialDialog.dismiss();
-
                         doDeleteDynamic();
                     }
                 })
@@ -468,14 +465,11 @@ public class DynamicDetialActivity extends BaseBackActivity {
                     @Override
                     public void onClick(View v) {
                         mMaterialDialog.dismiss();
-
                     }
                 });
-
-        mMaterialDialog.show();
-        mMaterialDialog.setTitle("提示");
-        mMaterialDialog.show();
+        mMaterialDialog.setTitle("回想提示");
         mMaterialDialog.setMessage("确定要删除动态吗");
+        mMaterialDialog.show();
     }
 
     private void doDeleteDynamic() {

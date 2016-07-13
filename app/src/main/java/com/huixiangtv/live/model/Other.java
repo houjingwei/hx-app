@@ -12,6 +12,7 @@ public class Other {
     private String collects;
     private String balance;
     private String loves;
+    private String status;
 
     public String getIsFollowed() {
         return isFollowed;
@@ -60,5 +61,13 @@ public class Other {
 
     public void setLoves(String loves) {
         this.loves = loves;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

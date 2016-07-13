@@ -31,6 +31,7 @@ import com.huixiangtv.live.fragment.FragmentCircle;
 import com.huixiangtv.live.fragment.FragmentTabFour;
 import com.huixiangtv.live.fragment.FragmentTabOne;
 import com.huixiangtv.live.fragment.FragmentTabTwo;
+import com.huixiangtv.live.model.Other;
 import com.huixiangtv.live.model.UpgradeLevel;
 import com.huixiangtv.live.service.ApiCallback;
 import com.huixiangtv.live.service.LoginCallBack;
@@ -49,6 +50,8 @@ import org.xutils.x;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import me.drakeet.materialdialog.MaterialDialog;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -243,13 +246,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             startLive();
                         }
                     } else {
-                        startLive();
+                        checkAuth();
                     }
                 }else{
                     CommonHelper.showLoginPopWindow(MainActivity.this, R.id.main, new LoginCallBack() {
                         @Override
                         public void loginSuccess() {
-                            startLive();
+                            checkAuth();
                         }
                     });
                 }
@@ -281,9 +284,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (requestCode == REQUEST_CODE_ASK_CAMERA)
         {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                startLive();
+                checkAuth();
             } else{
-                CommonHelper.showTip(MainActivity.this,"未允许方位相机");
+                CommonHelper.showTip(MainActivity.this,"未允许访问相机");
             }
             return;
         }
@@ -321,25 +324,77 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    /**
-     * 事件处理
-     */
-    public static final int MIN_CLICK_DELAY_TIME = 1000;
-    private long lastClickTime = 0;
+
 
     /**
      * 开启直播
      */
-    private void startLive() {
+    private void checkAuth(){
 
         long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-            lastClickTime = currentTime;
-            Map<String, String> params = new HashMap<>();
-            params.put("isRecord","true");
-            ForwardUtils.target(MainActivity.this, Constant.START_LIVE, params);
-        }
 
+        //判断有没有认证
+        CommonHelper.authStauts(new ApiCallback<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                if(data.getStatus().equals("0")){
+                    CommonHelper.showTip(MainActivity.this,"艺人身份未认证,请先认证");
+                }else if(data.getStatus().equals("1")){
+                    checkCardStatus();
+                }else if(data.getStatus().equals("2")){
+                    CommonHelper.showTip(MainActivity.this,"艺人身份认证中");
+                }else if(data.getStatus().equals("3")){
+                    CommonHelper.showTip(MainActivity.this,"艺人身份认证不通过");
+                }
+            }
+        });
+
+    }
+
+    private void checkCardStatus() {
+        //判断有没有上传艺人卡
+        CommonHelper.cardStatus(new ApiCallback<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                if(data.getStatus().equals("0")){
+                    confirmGotoDialog();
+                }else if(data.getStatus().equals("1")){
+                    startLive();
+                }
+            }
+        });
+    }
+
+    private void confirmGotoDialog() {
+        final MaterialDialog mMaterialDialog = new MaterialDialog(this);
+        mMaterialDialog.setPositiveButton("继续直播", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMaterialDialog.dismiss();
+                startLive();
+            }
+        }).setNegativeButton("设置艺人卡", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (null != App.getLoginUser()) {
+                            ForwardUtils.target(MainActivity.this, Constant.PIC_LIST, null);
+                        } else {
+                            ForwardUtils.target(MainActivity.this, Constant.LOGIN, null);
+                        }
+                        mMaterialDialog.dismiss();
+
+                    }
+                  });
+        mMaterialDialog.setTitle("回想提示");
+        mMaterialDialog.setMessage("不设置艺人卡直播不会出现在首页哦,请选择设置艺人卡，或继续直播~");
+        mMaterialDialog.show();
+    }
+
+    private void startLive() {
+        Map<String, String> params = new HashMap<>();
+        params.put("isRecord","true");
+        ForwardUtils.target(MainActivity.this, Constant.START_LIVE, params);
     }
 
     private void sendToOneFragment(String type) {
@@ -373,7 +428,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         window.setContentView(R.layout.index_guide);
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width  =App.screenWidth;
-        lp.height = (int) (App.screenHeight);
+        lp.height = App.screenHeight;
         window.setAttributes(lp);
         TranslateAnimation mAnimation = new TranslateAnimation(0,0,0,150);
         mAnimation.setRepeatCount(Animation.INFINITE);

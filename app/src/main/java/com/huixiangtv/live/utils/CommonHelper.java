@@ -308,6 +308,46 @@ public class CommonHelper {
         }, Other.class);
     }
 
+
+    /**
+     * 认证状态
+     * @param apiCallback
+     */
+    public static void authStauts(final ApiCallback<Other> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        RequestUtils.sendPostRequest(Api.AUTH_STATUS, params, new ResponseCallBack<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                super.onSuccess(data);
+                apiCallback.onSuccess(data);
+            }
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, Other.class);
+    }
+
+
+    /**
+     * 艺人卡上传状态
+     * @param apiCallback
+     */
+    public static void cardStatus(final ApiCallback<Other> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD_STATUS, params, new ResponseCallBack<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                super.onSuccess(data);
+                apiCallback.onSuccess(data);
+            }
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, Other.class);
+    }
+
     /**
      * 关注
      * @param artistId

@@ -83,6 +83,9 @@ public class Api {
     public static final String ADD_COMMENT = BASE_URL+"dynamic/addComment";
     public static final String VIDEO_URL = BASE_URL+"resource/getPlayUrl";
 
+    //用户认证状态
+    public static final String AUTH_STATUS = BASE_URL+"user/getAuthStatus";
+
 
     //我关注的人
     public static String GETCOLLECTARTIST = BASE_URL+"fans/getCollectArtist";
