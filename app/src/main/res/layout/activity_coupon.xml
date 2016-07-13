@@ -111,40 +111,30 @@
         android:layout_marginBottom="20dp"
         android:layout_weight="0.2"
         android:orientation="vertical">
-
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="10dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="20dp"
-                android:layout_toLeftOf="@+id/tvShare"
-                android:background="#979797" />
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_marginBottom="20dp">
 
             <TextView
-                android:id="@+id/tvShare"
-                style="@style/white_normal_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:background="@null"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/coupon_title_s" />
-
-            <View
+                android:id="@+id/tv_s_p"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:layout_toRightOf="@+id/tvShare"
-                android:background="#979797" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:text="邀请朋友获得优惠" />
+
+            <ImageView
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/coupon_line" />
         </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

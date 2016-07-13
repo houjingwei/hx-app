@@ -51,12 +51,11 @@ import java.util.Map;
 public class FriendCircleAdapter extends BaseAdapter {
 
     private Context context;
-    private FragmentCircle fragmentCircle;
     private List<Dynamic> list = new ArrayList<>();
     private Handler handler;
     int videoWidth = 0;
     int videoHeight = 0;
-    private static   ScalableVideoView  mVideoView;
+    private     ScalableVideoView  mVideoView;
     private boolean isPlay = false;
     public static int currTag = 100000;
 
@@ -66,10 +65,9 @@ public class FriendCircleAdapter extends BaseAdapter {
      */
     int videoIndex = 10000;
 
-    public FriendCircleAdapter(FragmentCircle fragmentCircle, Context context, Handler handler) {
+    public FriendCircleAdapter( Context context, Handler handler) {
         this.context = context;
         this.handler = handler;
-        this.fragmentCircle = fragmentCircle;
     }
 
     @Override
@@ -92,7 +90,7 @@ public class FriendCircleAdapter extends BaseAdapter {
 
     public void refreshCommAdapter(DynamicComment dc) {
         List<DynamicComment> dynamicComments= list.get(dc.getCurrentIndex()).getComments();
-        dynamicComments.add(0,dc);
+        dynamicComments.add(dc);
 
         notifyDataSetChanged();
     }
@@ -116,6 +114,7 @@ public class FriendCircleAdapter extends BaseAdapter {
         private LinearLayout llVideoView;
         private RelativeLayout rlPlay;
         private ImageView ivPlay;
+        private String palyUrl;
         private LinearLayout lltoDetails;
 
 
@@ -150,10 +149,11 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.ivVideo.setVisibility(View.GONE);
             //播放器容器
             viewHolder.llVideoView = (LinearLayout) convertView.findViewById(R.id.llVideoView);
+            viewHolder.llVideoView.setVisibility(View.GONE);
             //播放控制view
             viewHolder.rlPlay = (RelativeLayout) convertView.findViewById(R.id.rlPlay);
             viewHolder.ivPlay = (ImageView) convertView.findViewById(R.id.ivPlay);
-
+            viewHolder.palyUrl="";
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -235,15 +235,27 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.rlPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(currTag!=current) {
+                    if (currTag != current) {
+
                         isSingleton();
+                        viewHolder.ivPlay.setVisibility(View.GONE);
                         videoIndex = current;
-                        loadPlayUrlAndPlay(viewHolder, dynamic.getVideoURL(), current);
-                    }else {
-                        if (isPlay) {
-                            toPause(viewHolder);
-                        } else{
-                            play(viewHolder);
+                        if (null != dynamic.getPlayUrl() && dynamic.getPlayUrl().length() > 0) {
+                            toPlay(viewHolder, viewHolder.palyUrl, current, dynamic);
+                        } else {
+                            loadPlayUrlAndPlay(viewHolder, dynamic.getVideoURL(), current, dynamic);
+                        }
+                    } else {
+                        if (null != dynamic.getPlayUrl() && dynamic.getPlayUrl().length() > 0) {
+                            if (isPlay) {
+                                toPause(viewHolder, current,dynamic);
+                            } else {
+                                play(viewHolder, current,dynamic);
+                            }
+                            viewHolder.llVideoView.setVisibility(View.VISIBLE);
+                        } else {
+                            viewHolder.llVideoView.setVisibility(View.GONE);
+                            viewHolder.ivPlay.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -255,6 +267,18 @@ public class FriendCircleAdapter extends BaseAdapter {
             params.height = videoHeight;
             viewHolder.rlVideo.setLayoutParams(params);
             viewHolder.ivVideo.setVisibility(View.VISIBLE);
+
+
+
+            if(!dynamic.setIsPlay) {
+                viewHolder.llVideoView.setVisibility(View.GONE);
+                viewHolder.ivPlay.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                viewHolder.llVideoView.setVisibility(View.VISIBLE);
+                viewHolder.ivPlay.setVisibility(View.GONE);
+            }
             ImageUtils.display(viewHolder.ivVideo, dynamic.getVideoCover());
 
         }
@@ -272,7 +296,7 @@ public class FriendCircleAdapter extends BaseAdapter {
         viewHolder.ivPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                isSingletonSetNull();
                 dynamic.setCurrentIndex(current);
                 getTitlePopup(v, dynamic, viewHolder.headCommentGridViewAdapter, viewHolder.ll_comment_head);
 
@@ -290,10 +314,16 @@ public class FriendCircleAdapter extends BaseAdapter {
                 mVideoView.stop();
             }
             mVideoView.release();
-            mVideoView = null;
+            //mVideoView = null;
             ll.removeView(mVideoView);
             RelativeLayout rl= (RelativeLayout) ll.getParent();
             rl.findViewById(R.id.ivPlay).setVisibility(View.VISIBLE);
+            list.get(currTag).setIsPlay = false;
+        }
+        else
+        {
+            //mVideoView = null;
+            mVideoView = new ScalableVideoView(context);
         }
     }
 
@@ -474,7 +504,7 @@ public class FriendCircleAdapter extends BaseAdapter {
     /**
      * 获取点播视频地址并播放
      */
-    private void loadPlayUrlAndPlay(final ViewHolder viewHolder, String videoUrl, final int current) {
+    private void loadPlayUrlAndPlay(final ViewHolder viewHolder, String videoUrl, final int current, final Dynamic dynamic) {
         Map<String,String> params = new HashMap<String,String>();
         params.put("key",videoUrl);
         params.put("type","1");
@@ -482,28 +512,32 @@ public class FriendCircleAdapter extends BaseAdapter {
 
             @Override
             public void onSuccess(String data) {
-                toPlay(viewHolder,data,current);
+                viewHolder.palyUrl = data;
+                dynamic.setPlayUrl(data);
+                toPlay(viewHolder, data, current, dynamic);
             }
         });
     }
 
 
-    private void play(ViewHolder viewHolder) {
+    private void play(ViewHolder viewHolder,int current,Dynamic dynamic) {
         if(null!=mVideoView){
             isPlay = true;
+            dynamic.setIsPlay =false;
             mVideoView.start();
             viewHolder.ivPlay.setVisibility(View.GONE);
         }
     }
-    private void toPause(ViewHolder viewHolder) {
+    private void toPause(ViewHolder viewHolder,int current,Dynamic dynamic) {
 
         if(mVideoView.isPlaying()) {
             isPlay = false;
+            dynamic.setIsPlay =false;
             viewHolder.ivPlay.setVisibility(View.VISIBLE);
             mVideoView.pause();
 
         }else{
-            play(viewHolder);
+            play(viewHolder,current,dynamic);
         }
 
     }
@@ -511,11 +545,12 @@ public class FriendCircleAdapter extends BaseAdapter {
 
 
 
-    private void toPlay(final ViewHolder viewHolder, String playUrl,final int current) {
+    private void toPlay(final ViewHolder viewHolder, String playUrl,final int current,final Dynamic dynamic) {
         try{
 
+//            mVideoView=null;
             mVideoView = new ScalableVideoView(context);
-            mVideoView.setDataSource(playUrl);
+            mVideoView.setDataSource(dynamic.getPlayUrl());
             viewHolder.llVideoView.addView(mVideoView);
             mVideoView.setLooping(true);
             mVideoView.prepareAsync(new MediaPlayer.OnPreparedListener() {
@@ -523,11 +558,17 @@ public class FriendCircleAdapter extends BaseAdapter {
                 public void onPrepared(MediaPlayer mp) {
                     currTag = current;
                     isPlay = true;
+                    dynamic.setIsPlay =true;
                     mVideoView.setScalableType(ScalableType.CENTER_CROP);
+                    viewHolder.llVideoView.setVisibility(View.VISIBLE);
                     mVideoView.start();
                     viewHolder.ivPlay.setVisibility(View.GONE);
+                    list.get(current).setScalableVideoView(mVideoView);
                 }
             });
+
+
+
         }catch(Exception e){
             e.printStackTrace();
         }

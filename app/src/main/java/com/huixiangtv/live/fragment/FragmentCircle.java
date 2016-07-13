@@ -113,7 +113,7 @@ public class FragmentCircle extends Fragment {
             }
         });
         initHeadInfo(view);
-        adapter = new FriendCircleAdapter(this, getActivity(), handler);
+        adapter = new FriendCircleAdapter(getActivity(), handler);
         refreshView.setAdapter(adapter);
 
         refreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
