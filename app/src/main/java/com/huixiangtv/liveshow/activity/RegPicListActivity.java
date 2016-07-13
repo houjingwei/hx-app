@@ -177,6 +177,11 @@ public class RegPicListActivity extends BaseBackActivity {
     @ViewInject(R.id.merto_content)
     FrameLayout merto_content;
 
+    @ViewInject(R.id.txtssj)
+    TextView txtssj;
+
+    @ViewInject(R.id.txtEdit)
+    TextView txtEdit;
 
     @ViewInject(R.id.txtSave)
     TextView txtSave;
@@ -247,6 +252,19 @@ public class RegPicListActivity extends BaseBackActivity {
             }
         });
 
+
+        txtEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startOnMertoItemViewListener();
+                txtSave.setVisibility(View.VISIBLE);
+                txtEdit.setVisibility(View.GONE);
+                txtShare.setVisibility(View.GONE);
+                txtssj.setVisibility(View.VISIBLE);
+                txtUpload.setVisibility(View.VISIBLE);
+            }
+        });
+
         ArtistCardInfoStatus();
 
         ll_per_info.getBackground().setAlpha(150);
@@ -256,8 +274,7 @@ public class RegPicListActivity extends BaseBackActivity {
         ll_per_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ll_per_info.getTag().equals("1"))
-                    showRegAlert(RegPicListActivity.this);
+
             }
         });
 
@@ -291,17 +308,31 @@ public class RegPicListActivity extends BaseBackActivity {
             }
         });
 
+
+        txtssj.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRegAlert(RegPicListActivity.this);
+            }
+        });
         lastClickTime = 0;
     }
 
     private void allEdit() {
         user.setUid(App.getPreferencesValue("uid"));
+        txtSave.setVisibility(View.GONE);
+        txtssj.setVisibility(View.GONE);
+        txtUpload.setVisibility(View.GONE);
+        txtShare.setVisibility(View.VISIBLE);
+        txtEdit.setVisibility(View.VISIBLE);
     }
 
     private void noEdit(String uid) {
         txtUpload.setVisibility(View.GONE);
-        ll_per_info.setTag("2");
+        //ll_per_info.setTag("2");
         txtSave.setVisibility(View.GONE);
+        txtEdit.setVisibility(View.VISIBLE);
+        txtShare.setVisibility(View.VISIBLE);
         user.setUid(uid);
     }
 
@@ -1157,10 +1188,6 @@ public class RegPicListActivity extends BaseBackActivity {
 
                     if (data.getStatus().equals("1")) //status
                     {
-                        txtSave.setVisibility(View.GONE);
-                        txtUpload.setText("编辑");
-                        ll_per_info.setTag("2");
-                        txtUpload.setTag("2");
                         //get Info
                         ArtistCardInfo();
                     } else {
@@ -1362,8 +1389,10 @@ public class RegPicListActivity extends BaseBackActivity {
         cp.dismiss();
         txtSave.setVisibility(View.GONE);
         ll_per_info.setTag("2");
-        txtUpload.setText("编辑");
-        txtUpload.setTag("2");
+        txtEdit.setVisibility(View.VISIBLE);
+        txtssj.setVisibility(View.GONE);
+        txtShare.setVisibility(View.VISIBLE);
+        txtUpload.setVisibility(View.GONE);
         CommonHelper.showTip(RegPicListActivity.this, "保存成功");
     }
 
