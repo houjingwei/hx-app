@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.huixiangtv.live.ui.ZJImageView
+            <com.huixiangtv.liveshow.ui.ZJImageView
                 android:visibility="gone"
                 android:id="@+id/oneImg"
                 android:layout_width="70dp"
@@ -64,7 +64,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:orientation="horizontal">
-                <com.huixiangtv.live.ui.ZJImageView
+                <com.huixiangtv.liveshow.ui.ZJImageView
                     android:id="@+id/twoImg1"
                     android:layout_width="35dp"
                     android:layout_height="70dp"
@@ -73,7 +73,7 @@
                     app:shape_type="rectangle" />
 
 
-                <com.huixiangtv.live.ui.ZJImageView
+                <com.huixiangtv.liveshow.ui.ZJImageView
                     android:id="@+id/twoImg2"
                     android:layout_width="34dp"
                     android:layout_height="70dp"
@@ -91,7 +91,7 @@
                 android:orientation="horizontal">
 
 
-                <com.huixiangtv.live.ui.ZJImageView
+                <com.huixiangtv.liveshow.ui.ZJImageView
                     android:id="@+id/threeImg1"
                     android:layout_width="35dp"
                     android:layout_height="70dp"
@@ -107,7 +107,7 @@
                     android:layout_height="70dp"
                     android:orientation="vertical">
 
-                    <com.huixiangtv.live.ui.ZJImageView
+                    <com.huixiangtv.liveshow.ui.ZJImageView
                         android:id="@+id/threeImg2"
                         android:layout_width="match_parent"
                         android:layout_height="34dp"
@@ -115,7 +115,7 @@
                         app:radius="1dp"
                         app:shape_type="rectangle" />
 
-                    <com.huixiangtv.live.ui.ZJImageView
+                    <com.huixiangtv.liveshow.ui.ZJImageView
                         android:id="@+id/threeImg3"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
@@ -138,14 +138,14 @@
                     android:layout_height="70dp"
                     android:orientation="vertical">
 
-                    <com.huixiangtv.live.ui.ZJImageView
+                    <com.huixiangtv.liveshow.ui.ZJImageView
                         android:id="@+id/fourImg1"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:src="@drawable/default_head"
                         app:radius="1dp"
                         app:shape_type="rectangle" />
-                    <com.huixiangtv.live.ui.ZJImageView
+                    <com.huixiangtv.liveshow.ui.ZJImageView
                         android:id="@+id/fourImg3"
                         android:layout_width="match_parent"
                         android:layout_height="34dp"
@@ -162,7 +162,7 @@
                     android:orientation="vertical">
 
 
-                    <com.huixiangtv.live.ui.ZJImageView
+                    <com.huixiangtv.liveshow.ui.ZJImageView
                         android:id="@+id/fourImg2"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
@@ -170,7 +170,7 @@
                         app:radius="1dp"
                         app:shape_type="rectangle" />
 
-                    <com.huixiangtv.live.ui.ZJImageView
+                    <com.huixiangtv.liveshow.ui.ZJImageView
                         android:id="@+id/fourImg4"
                         android:layout_width="match_parent"
                         android:layout_height="34dp"
@@ -189,7 +189,7 @@
                 android:layout_height="60dp"
                 android:orientation="horizontal">
 
-                <com.huixiangtv.live.ui.ZJImageView
+                <com.huixiangtv.liveshow.ui.ZJImageView
                     android:id="@+id/ivVideo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

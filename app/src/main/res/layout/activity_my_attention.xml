@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/black_11"
     android:orientation="vertical"
-    tools:context=".activity.MyAttentionActivity">
+    tools:context="com.huixiangtv.liveshow.activity.MyAttentionActivity">
 
-    <com.huixiangtv.live.ui.CommonTitle
+    <com.huixiangtv.liveshow.ui.CommonTitle
         android:id="@+id/myTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

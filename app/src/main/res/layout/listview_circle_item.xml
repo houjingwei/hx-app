@@ -16,7 +16,7 @@
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
-        <com.huixiangtv.live.utils.image.RoundImageView
+        <com.huixiangtv.liveshow.utils.image.RoundImageView
             android:id="@+id/ivDmPic"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -69,7 +69,7 @@
                 android:background="@color/mainColor"
                 android:orientation="vertical">
 
-                <com.huixiangtv.live.ui.ZJImageView
+                <com.huixiangtv.liveshow.ui.ZJImageView
                     android:id="@+id/ivVideo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -84,11 +84,7 @@
                     android:visibility="gone"
                     android:background="@color/trans"
                     android:orientation="vertical">
-                    <!--<com.huixiangtv.live.utils.widget.ScalableVideoViewControl.ScalableVideoView-->
-                        <!--android:id="@+id/video_view"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--zhy:scalableType="centerCrop"/>-->
+
                 </LinearLayout>
 
 
@@ -113,7 +109,7 @@
             </RelativeLayout>
 
 
-            <com.huixiangtv.live.utils.widget.GridViewCircle
+            <com.huixiangtv.liveshow.utils.widget.GridViewCircle
                 android:id="@+id/gv_listView_main_gridView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -170,7 +166,7 @@
                     android:layout_height="30dp"
                     android:src="@mipmap/v2_dynamic_xin" />
 
-                <com.huixiangtv.live.utils.widget.GridViewCircle
+                <com.huixiangtv.liveshow.utils.widget.GridViewCircle
                     android:id="@+id/gv_comment_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -180,7 +176,7 @@
 
             </LinearLayout>
 
-            <com.huixiangtv.live.utils.widget.ListViewCircle
+            <com.huixiangtv.liveshow.utils.widget.ListViewCircle
                 android:id="@+id/lv_item_listView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

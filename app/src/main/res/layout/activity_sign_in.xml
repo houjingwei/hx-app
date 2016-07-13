@@ -40,28 +40,28 @@
                 android:layout_height="120dp"
                 android:orientation="horizontal">
 
-                <com.huixiangtv.live.utils.widget.SignListLinearLayout
+                <com.huixiangtv.liveshow.utils.widget.SignListLinearLayout
                     android:layout_marginLeft="5dp"
                     app:txtTitle="第1天"
                     app:valImage="@drawable/sign_inner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <com.huixiangtv.live.utils.widget.SignListLinearLayout
+                <com.huixiangtv.liveshow.utils.widget.SignListLinearLayout
                     android:layout_marginLeft="8dp"
                     app:txtTitle="第2天"
                     app:valImage="@drawable/sign_inner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <com.huixiangtv.live.utils.widget.SignListLinearLayout
+                <com.huixiangtv.liveshow.utils.widget.SignListLinearLayout
                     android:layout_marginLeft="8dp"
                     app:valImage="@drawable/sign_inner"
                     app:txtTitle="第3天"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <com.huixiangtv.live.utils.widget.SignListLinearLayout
+                <com.huixiangtv.liveshow.utils.widget.SignListLinearLayout
                     android:layout_marginLeft="8dp"
                     app:txtTitle="第4天"
                     app:valImage="@drawable/sign_down"
@@ -75,21 +75,21 @@
             android:layout_height="120dp"
             android:orientation="horizontal">
 
-            <com.huixiangtv.live.utils.widget.SignListLinearLayout
+            <com.huixiangtv.liveshow.utils.widget.SignListLinearLayout
                 android:layout_marginLeft="8dp"
                 app:txtTitle="第5天"
                 app:valImage="@drawable/sign_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <com.huixiangtv.live.utils.widget.SignListLinearLayout
+            <com.huixiangtv.liveshow.utils.widget.SignListLinearLayout
                 android:layout_marginLeft="8dp"
                 app:txtTitle="第6天"
                 app:valImage="@drawable/sign_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <com.huixiangtv.live.utils.widget.SignListLinearLayout
+            <com.huixiangtv.liveshow.utils.widget.SignListLinearLayout
                 android:layout_marginLeft="8dp"
                 app:txtTitle="第7天"
                 app:valImage="@drawable/sign_down"

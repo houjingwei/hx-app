@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <com.huixiangtv.live.utils.widget.BannerView
+    <com.huixiangtv.liveshow.utils.widget.BannerView
         android:id="@+id/banner"
         android:focusable="true"
         android:layout_width="match_parent"

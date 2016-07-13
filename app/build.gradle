@@ -7,7 +7,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.huixiangtv.live"
+        applicationId "com.huixiangtv.liveshow"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 7
@@ -21,7 +21,7 @@ android {
             if (console != null) {
                 storePw = new String(console.readPassword("\nKeystore password: "))
             }
-            storeFile file("huixiangtv.keystore")
+            storeFile file("huixiangtv.key")
             storePassword 'huixianglive'
             keyAlias "huixiang"
             keyPassword 'huixianglive'

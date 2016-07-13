@@ -6,7 +6,7 @@
     android:layout_marginLeft="3dp"
     android:layout_height="wrap_content">
 
-    <com.huixiangtv.live.ui.ZJImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.huixiangtv.liveshow.ui.ZJImageView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivPhoto"
         android:layout_width="30dp"

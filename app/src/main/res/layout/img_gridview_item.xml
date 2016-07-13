@@ -1,14 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.huixiangtv.live.utils.widget.SquareLayout
+    <com.huixiangtv.liveshow.utils.widget.SquareLayout
         xmlns:zhy="http://schemas.android.com/apk/res-auto"
         android:id="@+id/rlSL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.huixiangtv.live.utils.image.RoundImageView
+        <com.huixiangtv.liveshow.utils.image.RoundImageView
             android:id="@+id/iv_gridview_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -20,5 +20,5 @@
             zhy:oval="false" />
 
 
-    </com.huixiangtv.live.utils.widget.SquareLayout>
+    </com.huixiangtv.liveshow.utils.widget.SquareLayout>
 </LinearLayout>

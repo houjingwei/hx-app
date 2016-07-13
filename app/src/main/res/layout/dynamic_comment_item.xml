@@ -19,7 +19,7 @@
         android:layout_height="wrap_content">
 
 
-        <com.huixiangtv.live.ui.ZJImageView
+        <com.huixiangtv.liveshow.ui.ZJImageView
             android:id="@+id/ivPhoto"
             android:layout_toRightOf="@+id/tvDate"
             android:layout_width="30dp"
