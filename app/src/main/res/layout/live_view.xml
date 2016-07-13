@@ -2,9 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/flLive"
-    android:clickable="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,10 +29,10 @@
                     android:id="@+id/LlUser"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
                     android:layout_alignParentLeft="true"
-                    android:orientation="horizontal"
-                    android:background="@drawable/live_user_bg">
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/live_user_bg"
+                    android:orientation="horizontal">
 
 
                     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -44,16 +44,15 @@
                         app:civ_border_color="@color/white" />
 
 
-
                     <LinearLayout
-                        android:paddingRight="10dp"
                         android:id="@+id/llUser"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@+id/ivPhoto"
                         android:gravity="center_vertical"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingRight="10dp">
 
                         <TextView
                             android:id="@+id/tvNickName"
@@ -66,11 +65,13 @@
 
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent">
+
                             <TextView
                                 style="@style/white_smaller_style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="人气：" />
+
                             <TextView
                                 android:id="@+id/tvHot"
                                 style="@style/white_smaller_style"
@@ -85,18 +86,18 @@
                         android:id="@+id/ivAddFen"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:clickable="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:clickable="true"
                         android:src="@mipmap/icon_fen" />
 
                 </LinearLayout>
 
                 <RelativeLayout
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="right"
                     android:layout_width="180dp"
                     android:layout_height="32dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
                     android:gravity="right">
 
                     <android.support.v7.widget.RecyclerView
@@ -157,7 +158,6 @@
 
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/llOffline"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -166,7 +166,8 @@
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingLeft="15dp"
-                    android:paddingRight="15dp">
+                    android:paddingRight="15dp"
+                    android:visibility="gone">
 
 
                     <TextView
@@ -209,42 +210,45 @@
 
         <LinearLayout
             android:id="@+id/llDynamicAndCard"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp">
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
             v2_icon_offline_card.png
-            v2_icon_offline_dynamic.png<ImageView
+            v2_icon_offline_dynamic.png
+
+            <ImageView
                 android:id="@+id/ivCard"
                 android:layout_width="52dp"
                 android:layout_height="52dp"
-                android:src="@mipmap/v2_icon_offline_card"/>
+                android:src="@mipmap/v2_icon_offline_card" />
+
             <ImageView
                 android:id="@+id/ivDynamic"
                 android:layout_width="52dp"
                 android:layout_height="52dp"
                 android:layout_marginTop="20dp"
-                android:src="@mipmap/v2_icon_offline_dynamic"/>
+                android:src="@mipmap/v2_icon_offline_dynamic" />
 
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_height="110dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="60dp">
+            android:layout_marginBottom="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <ListView
                 android:id="@+id/msgList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="none"
-                android:divider="@null">
+                android:divider="@null"
+                android:scrollbars="none">
 
             </ListView>
 
@@ -254,7 +258,6 @@
     </RelativeLayout>
 
 
-
     <RelativeLayout
         android:id="@+id/rlMenu"
         android:layout_width="match_parent"
@@ -262,11 +265,11 @@
         android:layout_gravity="bottom">
 
         <ImageView
-            android:layout_margin="10dp"
             android:id="@+id/ivMsg"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
+            android:layout_margin="10dp"
             android:src="@mipmap/living_chat" />
 
         <LinearLayout
@@ -281,8 +284,8 @@
                 android:id="@+id/ivShare"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginRight="8dp"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
                 android:src="@mipmap/living_share" />
 
 
@@ -290,122 +293,30 @@
                 android:id="@+id/ivCamera"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginRight="8dp"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
                 android:src="@mipmap/living_camera" />
 
             <ImageView
                 android:id="@+id/ivGift"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginRight="8dp"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
                 android:src="@mipmap/living_gift" />
 
             <ImageView
                 android:id="@+id/ivLove"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginRight="8dp"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
                 android:src="@mipmap/living_love" />
 
 
         </LinearLayout>
 
     </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/rlChatView"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_gravity="bottom"
-        android:visibility="gone"
-        android:background="@color/white"
-        android:paddingLeft="10dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.2dp"
-                android:background="@color/black_08"></View>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.2dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/black_08"></View>
-
-            <RelativeLayout
-                android:id="@+id/switchWrapper"
-                android:layout_width="45dp"
-                android:layout_height="25dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:clickable="true"
-                android:background="@drawable/switch_view_style"
-                android:gravity="center_vertical"
-                android:padding="1.5dp">
-
-                <RelativeLayout
-                    android:id="@+id/switchTrigger"
-                    android:layout_width="30dp"
-                    android:layout_height="22dp"
-                    android:layout_alignParentLeft="true"
-                    android:background="@drawable/switch_view_style_fe"
-                    android:gravity="center"
-                    android:tag="shouting_no">
-
-                    <TextView
-                        android:id="@+id/switchLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="喊话"
-                        android:clickable="false"
-                        android:textColor="@color/gray"
-                        android:textSize="11sp" />
-                </RelativeLayout>
-            </RelativeLayout>
-
-            <EditText
-                android:id="@+id/etChatMsg"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="7.5dp"
-                android:layout_marginRight="60dp"
-                android:layout_toRightOf="@+id/switchWrapper"
-                android:background="@drawable/chat_edittext_style"
-                android:clipToPadding="false"
-                android:fitsSystemWindows="false"
-                android:gravity="center_vertical"
-                android:hint="喊话需要20金币/次"
-                android:imeOptions="actionDone"
-                android:maxLength="300"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black_07"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvSendMsg"
-                android:layout_width="60dp"
-                android:layout_height="50dp"
-                android:layout_alignParentRight="true"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="发送"
-                android:textColor="@color/orange"
-                android:textSize="12sp" />
-        </RelativeLayout>
-
-    </RelativeLayout>
-
 
 
 </FrameLayout>

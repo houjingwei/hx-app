@@ -6,95 +6,101 @@
     android:clickable="true"
     android:orientation="vertical">
 
-
-    <RelativeLayout
-        android:id="@+id/rlChatView"
+    <ScrollView
+        android:id="@+id/bottom"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:paddingLeft="10dp">
+        android:clickable="true">
 
         <RelativeLayout
+            android:id="@+id/rlChatView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.2dp"
-                android:background="@color/black_08"></View>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.2dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/black_08"></View>
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            android:paddingLeft="10dp">
 
             <RelativeLayout
-                android:id="@+id/switchWrapper"
-                android:layout_width="45dp"
-                android:layout_height="25dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/switch_view_style"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:padding="1.5dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="@color/black_08"></View>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/black_08"></View>
 
                 <RelativeLayout
-                    android:id="@+id/switchTrigger"
-                    android:layout_width="30dp"
-                    android:layout_height="22dp"
-                    android:layout_alignParentLeft="true"
-                    android:background="@drawable/switch_view_style_fe"
-                    android:gravity="center"
-                    android:tag="shouting_no">
+                    android:id="@+id/switchWrapper"
+                    android:layout_width="45dp"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:clickable="true"
+                    android:background="@drawable/switch_view_style"
+                    android:gravity="center_vertical"
+                    android:padding="1.5dp">
 
-                    <TextView
-                        android:id="@+id/switchLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:text="喊话"
-                        android:textColor="@color/gray"
-                        android:textSize="11sp" />
+                    <RelativeLayout
+                        android:id="@+id/switchTrigger"
+                        android:layout_width="30dp"
+                        android:layout_height="22dp"
+                        android:layout_alignParentLeft="true"
+                        android:background="@drawable/switch_view_style_fe"
+                        android:gravity="center"
+                        android:tag="shouting_no">
+
+                        <TextView
+                            android:id="@+id/switchLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="喊话"
+                            android:clickable="false"
+                            android:textColor="@color/gray"
+                            android:textSize="11sp" />
+                    </RelativeLayout>
                 </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/etChatMsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7.5dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_toRightOf="@+id/switchWrapper"
+                    android:background="@drawable/chat_edittext_style"
+                    android:clipToPadding="false"
+                    android:fitsSystemWindows="false"
+                    android:gravity="center_vertical"
+                    android:hint="喊话需要20金币/次"
+                    android:imeOptions="actionDone"
+                    android:maxLength="300"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black_07"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvSendMsg"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="发送"
+                    android:textColor="@color/orange"
+                    android:textSize="12sp" />
             </RelativeLayout>
 
-            <EditText
-                android:id="@+id/etChatMsg"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="7.5dp"
-                android:layout_marginRight="60dp"
-                android:layout_toRightOf="@+id/switchWrapper"
-                android:background="@drawable/chat_edittext_style"
-                android:clipToPadding="false"
-                android:fitsSystemWindows="false"
-                android:gravity="center_vertical"
-                android:hint="喊话需要20金币/次"
-                android:imeOptions="actionDone"
-                android:maxLength="300"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black_07"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvSendMsg"
-                android:layout_width="60dp"
-                android:layout_height="50dp"
-                android:layout_alignParentRight="true"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="发送"
-                android:textColor="@color/orange"
-                android:textSize="12sp" />
         </RelativeLayout>
-
-    </RelativeLayout>
-
+    </ScrollView>
 
 </RelativeLayout>

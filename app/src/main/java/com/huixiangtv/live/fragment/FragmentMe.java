@@ -51,7 +51,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
             tvNickName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //showInputWindow();
+                    showInputWindow();
                 }
             });
             if (null != user.getPhoto() && user.getPhoto().length() > 0) {
@@ -85,10 +85,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
 
     InputWindow pop;
     private void showInputWindow() {
-        pop = new InputWindow(getActivity(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        pop.showAtLocation(getActivity().findViewById(R.id.main), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
-        pop.update();
-        pop.showKeyBoard();
+
 
     }
 

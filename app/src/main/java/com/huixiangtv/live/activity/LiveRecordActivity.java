@@ -945,10 +945,6 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != liveView) {
-            liveView.removeGlobalListener();
-            liveView.removeMsgListener();
-        }
         _Client.stopPreview();
         _Client = null;
     }
