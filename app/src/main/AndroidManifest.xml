@@ -198,12 +198,12 @@
         <activity
             android:name="me.iwf.photopicker.PhotoPicker2Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/myTheme"
+            android:theme="@style/myTheme2"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="me.iwf.photopicker.PhotoPager2Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/myTheme2"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="me.iwf.photopicker.PhotoPagerActivity"

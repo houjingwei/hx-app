@@ -362,11 +362,7 @@ public class LiveActivity extends BaseBackActivity{
             } else {
                 mVideoView.enterBackground();
             }
-            if(liveView!=null) {
-                liveView.removeGlobalListener();
-                liveView.removeMsgListener();
-                liveView=null;
-            }
+
             if(flPlayView!=null) {
                 flPlayView.removeView(playView);
                 flPlayView=null;

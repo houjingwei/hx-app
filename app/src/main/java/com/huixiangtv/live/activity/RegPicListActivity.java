@@ -1059,11 +1059,11 @@ public class RegPicListActivity extends BaseBackActivity {
             final AlertDialog dlg = new AlertDialog.Builder(context).create();
             dlg.show();
             Window window = dlg.getWindow();
-            window.setWindowAnimations(R.style.dialogWindowAnim); //设置窗口弹出动画
+            //window.setWindowAnimations(R.style.dialogWindowAnim); //设置窗口弹出动画
             window.setContentView(R.layout.res_list_inner);
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.alpha = 0.9f;
-            window.setAttributes(lp);
+            //window.setAttributes(lp);
             TextView tvSave = (TextView) window.findViewById(R.id.tvSave);
 
             final MySeekBar ms_height = (MySeekBar) window.findViewById(R.id.ms_height);

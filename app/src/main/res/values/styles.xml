@@ -9,6 +9,18 @@
 
     </style>
 
+    <style name="myTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="actionBarTheme">@style/myTheme.actionBar</item>
+        <item name="colorPrimary">@color/mainColor</item>
+        <item name="actionBarSize">@dimen/__picker_iwf_actionBarSize</item>
+    </style>
+
+    <style name="myTheme2" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="actionBarTheme">@style/myTheme.actionBar</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="actionBarSize">@dimen/__picker_iwf_actionBarSize</item>
+    </style>
+
 
     <style name="WrapMatch">
         <item name="android:layout_width">wrap_content</item>
@@ -198,6 +210,11 @@
     </style>
 
 
+    <style name="gray_smaller_style">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textStyle">normal</item>
+    </style>
     <style name="gray_small_style">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/gray</item>
@@ -241,6 +258,10 @@
         <item name="android:textColor">@color/gray02</item>
         <item name="android:textStyle">normal</item>
     </style>
+
+
+
+
 
     <style name="red_small_style">
         <item name="android:textSize">12sp</item>
@@ -459,6 +480,7 @@
 
 
     <color name="mask_txt_color">#c5c6c5</color>
+    <color name="gray777">#777777</color>
 
 
     <!-- 弹出框样式 -->
@@ -479,11 +501,7 @@
         <item name="actionBarSize">@dimen/__picker_iwf_actionBarSize</item>
     </style>
 
-    <style name="myTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="actionBarTheme">@style/myTheme.actionBar</item>
-        <item name="colorPrimary">@color/mainColor</item>
-        <item name="actionBarSize">@dimen/__picker_iwf_actionBarSize</item>
-    </style>
+
 
 
     <style name="mydialog">
