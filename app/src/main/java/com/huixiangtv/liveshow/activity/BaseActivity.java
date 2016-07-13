@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.huixiangtv.liveshow.R;
+import com.huixiangtv.liveshow.fragment.FragmentCircle;
 
 public class BaseActivity extends AppCompatActivity{
 
@@ -24,6 +25,7 @@ public class BaseActivity extends AppCompatActivity{
     @Override
     protected void onPause() {
         super.onPause();
+        FragmentCircle.clearViode();
 
     }
 
