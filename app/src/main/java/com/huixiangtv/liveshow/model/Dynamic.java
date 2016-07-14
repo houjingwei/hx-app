@@ -21,6 +21,7 @@ public class Dynamic {
     private String type;
     private String lon;
     private String lat;
+    private String rate;
     private String address;
     private boolean isZan;
     public boolean setIsPlay=false;
@@ -248,5 +249,27 @@ public class Dynamic {
         this.praises = praises;
     }
 
+    public String getRate() {
+        return rate;
+    }
 
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    public void setZan(boolean zan) {
+        isZan = zan;
+    }
+
+    public boolean isSetIsPlay() {
+        return setIsPlay;
+    }
+
+    public void setSetIsPlay(boolean setIsPlay) {
+        this.setIsPlay = setIsPlay;
+    }
+
+    public boolean isMarginTop() {
+        return marginTop;
+    }
 }

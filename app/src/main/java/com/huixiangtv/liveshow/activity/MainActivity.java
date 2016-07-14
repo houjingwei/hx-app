@@ -343,7 +343,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     checkCardStatus();
                 }else if(data.getStatus().equals("2")){
                     CommonHelper.showTip(MainActivity.this,"艺人身份认证中");
-                }else if(data.getStatus().equals("3")){
+                }else if(data.getStatus().equals("-1")){
                     CommonHelper.showTip(MainActivity.this,"艺人身份认证不通过");
                 }
             }

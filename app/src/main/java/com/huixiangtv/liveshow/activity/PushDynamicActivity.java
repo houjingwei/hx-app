@@ -39,6 +39,7 @@ import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.common.CommonUtil;
+import com.huixiangtv.liveshow.model.Image;
 import com.huixiangtv.liveshow.model.RecordResult;
 import com.huixiangtv.liveshow.model.Upfile;
 import com.huixiangtv.liveshow.service.ApiCallback;
@@ -55,6 +56,7 @@ import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import com.huixiangtv.liveshow.utils.widget.WidgetUtil;
 import com.tencent.upload.task.data.FileInfo;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -112,6 +114,10 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
     //每一行的图片集合
     List<String> imgList = new ArrayList<>();
 
+    List<Image> imageList = new ArrayList<Image>();
+
+    private String videoRate = "";
+
     String videoFile = "";
     String thum = "";
 
@@ -127,6 +133,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
     /********  定位  ********/
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -344,6 +351,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
     private void doPushVideo(String url) {
         Map<String,String> params = new HashMap<>();
         params.put("type",type+"");
+        params.put("rate",videoRate+"");
         params.put("content",etShareContent.getText().toString());
         params.put("images", "");
         params.put("video", url);
@@ -384,6 +392,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
     private void doPushText() {
         Map<String,String> params = new HashMap<>();
         params.put("type",type+"");
+        params.put("rate","");
         params.put("content",etShareContent.getText().toString());
         params.put("images", "");
         params.put("video", "");
@@ -437,6 +446,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
     }
 
     final List<String> imgPaths = new ArrayList<>();
+    final List<String> rates = new ArrayList<>();
     int i = 0;
     private void upImages() {
         Log.i("dynamicType","upImage");
@@ -450,9 +460,18 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
                     @Override
                     public void onSuccess(FileInfo file) {
                         Log.i("dynamicType",file.url);
-                        imgPaths.add(file.url);
+                        String oldPath = photos.get(i);
+
+                        if(null!=imageList && imageList.size()>0){
+                            for (Image img :  imageList) {
+                                if(oldPath.equals(img.getPath())){
+                                    imgPaths.add(file.url);
+                                    rates.add(img.getRate());
+                                }
+                            }
+                        }
                         if(i==(photos.size()-1)){
-                            doPushImage(imgPaths);
+                            doPushImage(imgPaths,rates);
                         }else{
                             upImages();
                             i++;
@@ -466,14 +485,16 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
 
     /**
      * 处理图片上传
-     * @param imgPaths
+     * @param paths
+     * @param rates
      */
-    private void doPushImage(final List<String> imgPaths) {
+    private void doPushImage(List<String> paths, final List<String> rates) {
         Log.i("myImgPath",imgPaths.toString());
         Map<String,String> params = new HashMap<>();
         params.put("type",type+"");
         params.put("content",etShareContent.getText().toString());
         params.put("images", CommonUtil.listToString(imgPaths));
+        params.put("rate", CommonUtil.listToString(rates));
         params.put("video", "");
         if(switchTrigger.getTag().toString().equals("open_yes")){
             params.put("lon",lon);
@@ -577,7 +598,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
         //默认最小时长
         mMinDurationLimit = 2f;
         //视频码率
-        mVideoBitrate = 1;
+        mVideoBitrate = 10;
         //是否需要水印
         mWaterMark = 0;
         //水印存储的目录
@@ -600,7 +621,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
 
         MovieExportOptions movie_options = new MovieExportOptions.Builder().setVideoBitrate(mVideoBitrate).configureMuxer("movflags", "+faststart").build();
 
-        ProjectOptions projectOptions = new ProjectOptions.Builder().setVideoSize(320, 320).setVideoFrameRate(10).setDurationRange(mMinDurationLimit, mDurationLimit).get();
+        ProjectOptions projectOptions = new ProjectOptions.Builder().setVideoSize(480, 480).setVideoFrameRate(10).setDurationRange(mMinDurationLimit, mDurationLimit).get();
 
         //设置只要一张略缩图
         ThumbnailExportOptions thumbnailExportOptions = new ThumbnailExportOptions.Builder().setCount(1).get();
@@ -698,6 +719,9 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
         imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if(null!=bm){
             imgView.setImageBitmap(bm);
+            DecimalFormat df = new DecimalFormat("#.##");
+            videoRate = df.format((double)bm.getWidth()/(double)bm.getHeight());
+
         }else{
             ImageUtils.display(imgView, thum);
         }
@@ -873,7 +897,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
      */
     private void addImageToLl(LinearLayout ll, List<String> imgList, int line) {
         int position = line * 4;
-        for (String img : imgList) {
+        for (final String img : imgList) {
             final int curPosition = position;
             ZJImageView imgView = new ZJImageView(this);
             imgView.setBorderRadius(2);
@@ -884,8 +908,18 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
                     previewImg(curPosition);
                 }
             });
-            ImageUtils.display(imgView, img);
             ll.addView(imgView, photoParams);
+            ImageUtils.display(imgView, img,new ImageUtils.SimpleProgressListener(){
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap bm) {
+                    super.onLoadingComplete(imageUri, view, bm);
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    String rate =df.format((double)bm.getWidth()/(double)bm.getHeight());
+                    Image i = new Image(img,rate);
+                    imageList.add(i);
+
+                }
+            });
             position++;
         }
 

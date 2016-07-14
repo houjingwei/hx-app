@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:paddingBottom="30dp"
+    android:paddingBottom="10dp"
     android:clickable="false">
 
     <LinearLayout
@@ -185,8 +185,8 @@
 
             <RelativeLayout
                 android:id="@+id/rlVideo"
-                android:layout_width="80dp"
-                android:layout_height="60dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:orientation="horizontal">
 
                 <com.huixiangtv.liveshow.ui.ZJImageView

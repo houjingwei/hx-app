@@ -169,7 +169,13 @@ public class DynamicDetialActivity extends BaseBackActivity {
         //动态添加视频
         if(data.getType().equals("2")){
             videoWidth = App.screenWidth - WidgetUtil.dip2px(DynamicDetialActivity.this,80);
-            videoHeight = (int) (videoWidth*0.75);
+            if(StringUtil.isNotNull(data.getRate())){
+                videoHeight = (int) (videoWidth/Float.parseFloat(data.getRate()));
+                Log.i("videoHeight",videoWidth+"*******"+videoHeight);
+            }else{
+                videoHeight = (int) (videoWidth*0.75);
+            }
+
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)rlVideo.getLayoutParams();
             params.width = videoWidth;
             params.height = videoHeight;
@@ -218,14 +224,25 @@ public class DynamicDetialActivity extends BaseBackActivity {
         if(rowNum==1 && consNum==1){
             //设置图片1张时llImgRoot子布局宽度
             LinearLayout ll1 = new LinearLayout(DynamicDetialActivity.this);
-            llViewParams.height = imgTotalWidth/2;
+            if(StringUtil.isNotNull(images.get(0).getRate())){
+                llViewParams.height = (int) (imgTotalWidth/Float.parseFloat(images.get(0).getRate()));
+                Log.i("videoHeight","来了");
+            }else{
+                llViewParams.height = (int) (imgTotalWidth*0.75);
+            }
+
             ll1.setLayoutParams(llViewParams);
             llImgRoot.addView(ll1);
 
 
             //设置图片1张时图片的布局宽度
             photoParams = new LinearLayout.LayoutParams(imgTotalWidth, imgTotalWidth/2);
-
+            if(StringUtil.isNotNull(images.get(0).getRate())){
+                photoParams.height = (int) (imgTotalWidth/Float.parseFloat(images.get(0).getRate()));
+                Log.i("videoHeight","来了");
+            }else{
+                photoParams.height = (int) (imgTotalWidth*0.75);
+            }
             addOneImgToLl(images, photoParams, ll1,0);
 
         }else if(rowNum==1 && consNum==2){
