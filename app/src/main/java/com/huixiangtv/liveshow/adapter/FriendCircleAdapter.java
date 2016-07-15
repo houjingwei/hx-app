@@ -5,6 +5,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import com.huixiangtv.liveshow.service.ServiceException;
 import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.DateUtils;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
+import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import com.huixiangtv.liveshow.utils.widget.ActionItem;
 import com.huixiangtv.liveshow.utils.widget.ListViewCircle;
@@ -245,10 +247,10 @@ public class FriendCircleAdapter extends BaseAdapter {
                         }
                     } else {
                         if (null != dynamic.getPlayUrl() && dynamic.getPlayUrl().length() > 0) {
-                            if (isPlay) {
-                                toPause(viewHolder, current,dynamic);
+                            if (dynamic.setIsPlay) {
+                                toPause(viewHolder, current, dynamic);
                             } else {
-                                play(viewHolder, current,dynamic);
+                                play(viewHolder, current, dynamic);
                             }
                             viewHolder.llVideoView.setVisibility(View.VISIBLE);
                         } else {
@@ -259,7 +261,12 @@ public class FriendCircleAdapter extends BaseAdapter {
                 }
             });
             videoWidth = App.screenWidth - WidgetUtil.dip2px(context, 80);
-            videoHeight = (int) (videoWidth*0.75);
+            if(StringUtil.isNotNull(dynamic.getRate())){
+                videoHeight = (int) (videoWidth/Float.parseFloat(dynamic.getRate()));
+            }else{
+                videoHeight = (int) (videoWidth*0.6);
+            }
+
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)viewHolder.rlVideo.getLayoutParams();
             params.width = videoWidth;
             params.height = videoHeight;
@@ -267,6 +274,15 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.ivVideo.setVisibility(View.VISIBLE);
 
 
+//            if(null!=mVideoView) {
+//                if (mVideoView.isPlaying()) {
+//                    mVideoView.pause();
+//                    mVideoView.stop();
+//                    mVideoView.release();
+//                    mVideoView  =null;
+//                    dynamic.setIsPlay = false;
+//                }
+//            }
 
             if(!dynamic.setIsPlay) {
                 viewHolder.llVideoView.setVisibility(View.GONE);
@@ -291,6 +307,8 @@ public class FriendCircleAdapter extends BaseAdapter {
         }
 
 
+
+
         viewHolder.ivPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -310,13 +328,15 @@ public class FriendCircleAdapter extends BaseAdapter {
             if (mVideoView.isPlaying()) {
                 mVideoView.pause();
                 mVideoView.stop();
+
+                mVideoView.release();
+                //mVideoView = null;
+                ll.removeView(mVideoView);
+                RelativeLayout rl= (RelativeLayout) ll.getParent();
+                rl.findViewById(R.id.ivPlay).setVisibility(View.VISIBLE);
+                list.get(currTag).setIsPlay = false;
             }
-            mVideoView.release();
-            //mVideoView = null;
-            ll.removeView(mVideoView);
-            RelativeLayout rl= (RelativeLayout) ll.getParent();
-            rl.findViewById(R.id.ivPlay).setVisibility(View.VISIBLE);
-            list.get(currTag).setIsPlay = false;
+
         }
         else
         {
@@ -361,22 +381,44 @@ public class FriendCircleAdapter extends BaseAdapter {
 
 
                 if (item.mTitle.equals("赞")) {
-                    dynamic.setIsZan(true);
-                    titlePopup.setComment("取消");
-                    addPraise(ll_comment_head, headCommentGridViewAdapter, item.dynamicId + "");
+
+                    if (null != App.getLoginUser()) {
+
+                        dynamic.setIsZan(true);
+                        titlePopup.setComment("取消");
+                        addPraise(ll_comment_head, headCommentGridViewAdapter, item.dynamicId + "");
+
+                    } else {
+                        ForwardUtils.target((Activity)context, Constant.LOGIN, null);
+                    }
 
                 }
                 if (item.mTitle.equals("取消")) {
-                    titlePopup.setComment("赞");
-                    dynamic.setIsZan(false);
-                    removePraise(ll_comment_head, headCommentGridViewAdapter, item.dynamicId + "");
+
+                    if (null != App.getLoginUser()) {
+
+                        titlePopup.setComment("赞");
+                        dynamic.setIsZan(false);
+                        removePraise(ll_comment_head, headCommentGridViewAdapter, item.dynamicId + "");
+
+                    } else {
+                        ForwardUtils.target((Activity)context, Constant.LOGIN, null);
+                    }
                 }
 
                 if (item.mTitle.equals("评论")) {
-                    Message msg = new Message();
-                    msg.what =10;
-                    msg.obj = dynamic;
-                    handler.sendMessage(msg);
+
+                    if (null != App.getLoginUser()) {
+
+                        Message msg = new Message();
+                        msg.what =10;
+                        msg.obj = dynamic;
+                        handler.sendMessage(msg);
+
+                    } else {
+                        ForwardUtils.target((Activity)context, Constant.LOGIN, null);
+                    }
+
                 }
             }
         });
@@ -521,7 +563,7 @@ public class FriendCircleAdapter extends BaseAdapter {
     private void play(ViewHolder viewHolder,int current,Dynamic dynamic) {
         if(null!=mVideoView){
             isPlay = true;
-            dynamic.setIsPlay =false;
+            dynamic.setIsPlay =true;
             mVideoView.start();
             viewHolder.ivPlay.setVisibility(View.GONE);
         }

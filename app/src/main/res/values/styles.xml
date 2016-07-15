@@ -555,4 +555,15 @@
     </style>
 
     <dimen name="__picker_iwf_actionBarSize">45dp</dimen>
+
+
+    <style name="Translucent_NoTitle" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:width">200dp</item>
+        <item name="android:height">200dp</item>
+    </style>
 </resources>

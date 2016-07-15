@@ -1090,10 +1090,12 @@ public class RegPicListActivity extends BaseBackActivity {
             final AlertDialog dlg = new AlertDialog.Builder(context).create();
             dlg.show();
             Window window = dlg.getWindow();
-            //window.setWindowAnimations(R.style.dialogWindowAnim); //设置窗口弹出动画
+            window.setWindowAnimations(R.style.dialogWindowAnim); //设置窗口弹出动画
             window.setContentView(R.layout.res_list_inner);
             WindowManager.LayoutParams lp = window.getAttributes();
-            lp.alpha = 0.9f;
+//            lp.alpha = 0.9f;
+            lp.width = App.screenWidth;
+            lp.height = App.screenHeight;
             //window.setAttributes(lp);
             TextView tvSave = (TextView) window.findViewById(R.id.tvSave);
 

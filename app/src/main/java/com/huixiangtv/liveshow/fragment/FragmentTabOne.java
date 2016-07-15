@@ -33,12 +33,14 @@ import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.activity.MainActivity;
 import com.huixiangtv.liveshow.adapter.LiveAdapter;
+import com.huixiangtv.liveshow.common.CommonUtil;
 import com.huixiangtv.liveshow.model.BannerModel;
 import com.huixiangtv.liveshow.model.ChatMessage;
 import com.huixiangtv.liveshow.model.HistoryMsg;
 import com.huixiangtv.liveshow.model.Live;
 import com.huixiangtv.liveshow.model.MsgExt;
 import com.huixiangtv.liveshow.model.PlayUrl;
+import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
@@ -142,7 +144,6 @@ public class FragmentTabOne extends Fragment {
             if (!hasLoadBig) {
                 loadBigViewData();
             }
-
         }
 
     }
@@ -380,10 +381,14 @@ public class FragmentTabOne extends Fragment {
                         if (!hasLoadBig) {
                             loadBigViewData();
                         }
+                    setGuideNextUp();
 
                     } else if (intent.getStringExtra("type").toString().equals("1")) {
                         mRootView.findViewById(R.id.rotRl).setVisibility(View.VISIBLE);
                         refreshView.setVisibility(View.VISIBLE);
+
+                    setGuideNextLeft();
+
 
                 }
             }
@@ -839,6 +844,30 @@ public class FragmentTabOne extends Fragment {
                 super.onFailure(e);
             }
         }, HistoryMsg.class);
+    }
+
+
+
+
+    protected void setGuideNextUp() {
+        CommonUtil.setGuidImage(getActivity(), R.id.main, R.drawable.index_hand_clear, "guide2", new ApiCallback() {
+
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+        });
+    }
+
+
+    protected void setGuideNextLeft() {
+        CommonUtil.setGuidImage(getActivity(), R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
+
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+        });
     }
 
 }
