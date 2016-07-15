@@ -1,8 +1,12 @@
 package com.huixiangtv.liveshow.utils.image;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
@@ -19,6 +23,8 @@ import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
 import com.huixiangtv.liveshow.utils.CommonHelper;
+import com.huixiangtv.liveshow.utils.GaussUtils;
+import com.huixiangtv.liveshow.utils.StringUtil;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -324,46 +330,56 @@ public final class ImageUtils {
     public static void catImage(final Activity activity)
     {
 
-//        String filePath = Environment.getExternalStorageDirectory() + "/DCIM/"
-//                + "javaapk.png";
-//        ScreenShot.shoot(this, new File(filePath));
 
-        //1.构建Bitmap
-        WindowManager windowManager = activity.getWindowManager();
-        Display display = windowManager.getDefaultDisplay();
-        int w = display.getWidth();
-        int h = display.getHeight();
-        Bitmap Bmp = Bitmap.createBitmap( w, h, Bitmap.Config.ARGB_8888 );
-        //2.获取屏幕
-        View decorview = activity.getWindow().getDecorView();
-        decorview.setDrawingCacheEnabled(true);
-        Bmp = decorview.getDrawingCache();
-        String SavePath = getSDCardPath()+"/cutImage";
-        //3.保存Bitmap
-        try {
-            File path = new File(SavePath);
-            //文件
-            String filepath = SavePath + "/"+ System.currentTimeMillis()+".png";
-            File file = new File(filepath);
-            if(!path.exists()){
-                path.mkdirs();
-            }
-            if (!file.exists()) {
-                file.createNewFile();
+        (new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... params) {
+                File file = null;
+                WindowManager windowManager = activity.getWindowManager();
+                Display display = windowManager.getDefaultDisplay();
+                int w = display.getWidth();
+                int h = display.getHeight();
+                Bitmap bmp = Bitmap.createBitmap( w, h, Bitmap.Config.ARGB_8888 );
+                //2.获取屏幕
+                View decorview = activity.getWindow().getDecorView();
+                decorview.setDrawingCacheEnabled(true);
+                bmp = decorview.getDrawingCache();
+                String SavePath = getSDCardPath()+"/huixiang_screen_images";
+                //3.保存Bitmap
+                try {
+                    File path = new File(SavePath);
+                    //文件
+                    String filepath = SavePath + "/"+ System.currentTimeMillis()+".png";
+                    file = new File(filepath);
+                    if(!path.exists()){
+                        path.mkdirs();
+                    }
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
+
+                    FileOutputStream fos = null;
+                    fos = new FileOutputStream(file);
+                    if (null != fos) {
+                        bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                        fos.flush();
+                        fos.close();
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return file.getAbsolutePath();
             }
 
-            FileOutputStream fos = null;
-            fos = new FileOutputStream(file);
-            if (null != fos) {
-                Bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
-                fos.flush();
-                fos.close();
-                CommonHelper.showTip(activity,"截屏文件已保存至"+file.getAbsolutePath());
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            protected void onPostExecute(String path) {
+                CommonHelper.showTip(activity,"截屏文件已保存至"+path);
             }
+        }).execute();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 
