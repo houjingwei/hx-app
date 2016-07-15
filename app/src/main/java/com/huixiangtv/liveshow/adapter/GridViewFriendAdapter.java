@@ -109,7 +109,7 @@ public class GridViewFriendAdapter extends BaseAdapter {
             if(StringUtil.isNotNull(dynamicImage.getRate())){
                 height = (int) (videoWidth/Float.parseFloat(images.get(0).getRate()));
             }else{
-                height = (int) (videoWidth*0.75);
+                height = (int) (videoWidth*0.6);
             }
             layoutParams.width = videoWidth;
             layoutParams.height =(int) height;

@@ -264,7 +264,7 @@ public class FriendCircleAdapter extends BaseAdapter {
             if(StringUtil.isNotNull(dynamic.getRate())){
                 videoHeight = (int) (videoWidth/Float.parseFloat(dynamic.getRate()));
             }else{
-                videoHeight = (int) (videoWidth*0.75);
+                videoHeight = (int) (videoWidth*0.6);
             }
 
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)viewHolder.rlVideo.getLayoutParams();
