@@ -85,6 +85,8 @@ public class Api {
 
     //用户认证状态
     public static final String AUTH_STATUS = BASE_URL+"user/getAuthStatus";
+    //举报
+    public static final String TIP_OFF = BASE_URL+"message/tip-off";
 
 
     //我关注的人

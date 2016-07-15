@@ -594,9 +594,9 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
         }
 
         //视频时长
-        mDurationLimit = 600f;
+        mDurationLimit = 180f;
         //默认最小时长
-        mMinDurationLimit = 2f;
+        mMinDurationLimit = 10f;
         //视频码率
         mVideoBitrate = 10;
         //是否需要水印
@@ -677,7 +677,7 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
             //得到视频地址，和缩略图地址的数组，返回十张缩略图
             videoFile = result.getPath();
             thum = result.getThumbnail()[0];
-            resetVideo(getVideoThumbnail(videoFile));
+            resetVideo(null);
         }else if (resultCode == RESULT_OK && requestCode == CHOISE_LOCAL_VIDEO) {
             Uri uri = data.getData();
             videoFile = FileUtils.getPath(this, uri);
@@ -717,13 +717,16 @@ public class PushDynamicActivity extends BaseActivity implements AMapLocationLis
 
         ImageView imgView = new ImageView(this);
         imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        if(null!=bm){
+        if(null==bm){
+
+            DecimalFormat df = new DecimalFormat("#.##");
+            videoRate = df.format((double)4.0/(double)3.0);
+            ImageUtils.display(imgView, thum);
+        }else{
             imgView.setImageBitmap(bm);
             DecimalFormat df = new DecimalFormat("#.##");
             videoRate = df.format((double)bm.getWidth()/(double)bm.getHeight());
 
-        }else{
-            ImageUtils.display(imgView, thum);
         }
 
         videoRoot.addView(imgView, rlVideoPhotoParams);

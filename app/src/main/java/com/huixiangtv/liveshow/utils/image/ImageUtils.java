@@ -1,8 +1,11 @@
 package com.huixiangtv.liveshow.utils.image;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
@@ -321,26 +324,45 @@ public final class ImageUtils {
     /**
      * 获取和保存当前屏幕的截图
      */
-    public static void catImage(final Activity activity)
+    public static void catImage(final Activity activity,final View view)
     {
 
-        //1.构建Bitmap
+
+        (new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... params) {
+                File file = cutAndSave(activity);
+                return file.getAbsolutePath();
+            }
+
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            protected void onPostExecute(String path) {
+                CommonHelper.showTip(activity,"截屏文件已保存至"+path);
+            }
+        }).execute();
+
+
+    }
+
+    private static File cutAndSave(Activity activity) {
+        File file = null;
         WindowManager windowManager = activity.getWindowManager();
         Display display = windowManager.getDefaultDisplay();
         int w = display.getWidth();
         int h = display.getHeight();
-        Bitmap Bmp = Bitmap.createBitmap( w, h, Bitmap.Config.ARGB_8888 );
+        Bitmap bmp = Bitmap.createBitmap( w, h, Bitmap.Config.ARGB_8888 );
         //2.获取屏幕
         View decorview = activity.getWindow().getDecorView();
         decorview.setDrawingCacheEnabled(true);
-        Bmp = decorview.getDrawingCache();
-        String SavePath = getSDCardPath()+"/cutImage";
+        bmp = decorview.getDrawingCache();
+        String SavePath = getSDCardPath()+"/huixiang_screen_images";
         //3.保存Bitmap
         try {
             File path = new File(SavePath);
             //文件
             String filepath = SavePath + "/"+ System.currentTimeMillis()+".png";
-            File file = new File(filepath);
+            file = new File(filepath);
             if(!path.exists()){
                 path.mkdirs();
             }
@@ -351,16 +373,16 @@ public final class ImageUtils {
             FileOutputStream fos = null;
             fos = new FileOutputStream(file);
             if (null != fos) {
-                Bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
                 fos.flush();
                 fos.close();
-                CommonHelper.showTip(activity,"截屏文件已保存至"+file.getAbsolutePath());
+
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return file;
     }
 
 

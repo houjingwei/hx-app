@@ -31,12 +31,10 @@ import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.adapter.DynamicCommentAdapter;
 import com.huixiangtv.liveshow.adapter.PraiseAdapter;
-import com.huixiangtv.liveshow.adapter.RecyclerviewListener;
 import com.huixiangtv.liveshow.model.Dynamic;
 import com.huixiangtv.liveshow.model.DynamicComment;
 import com.huixiangtv.liveshow.model.DynamicImage;
 import com.huixiangtv.liveshow.model.DynamicpPraise;
-import com.huixiangtv.liveshow.model.Praise;
 import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.service.LoginCallBack;
 import com.huixiangtv.liveshow.service.RequestUtils;
@@ -191,12 +189,6 @@ public class DynamicDetialActivity extends BaseBackActivity {
         //赞数据
         mAdapter = new PraiseAdapter(null);
         mRecylerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new RecyclerviewListener() {
-            @Override
-            public void onItemClick(View view, Object data) {
-                CommonHelper.showTip(DynamicDetialActivity.this, ((Praise) data).getNickName());
-            }
-        });
         if(null!=data.getPraises() && data.getPraises().size()>0){
             rlZan.setVisibility(View.VISIBLE);
             mAdapter.addAll(data.getPraises());
@@ -226,7 +218,6 @@ public class DynamicDetialActivity extends BaseBackActivity {
             LinearLayout ll1 = new LinearLayout(DynamicDetialActivity.this);
             if(StringUtil.isNotNull(images.get(0).getRate())){
                 llViewParams.height = (int) (imgTotalWidth/Float.parseFloat(images.get(0).getRate()));
-                Log.i("videoHeight","来了");
             }else{
                 llViewParams.height = (int) (imgTotalWidth*0.75);
             }
@@ -239,7 +230,6 @@ public class DynamicDetialActivity extends BaseBackActivity {
             photoParams = new LinearLayout.LayoutParams(imgTotalWidth, imgTotalWidth/2);
             if(StringUtil.isNotNull(images.get(0).getRate())){
                 photoParams.height = (int) (imgTotalWidth/Float.parseFloat(images.get(0).getRate()));
-                Log.i("videoHeight","来了");
             }else{
                 photoParams.height = (int) (imgTotalWidth*0.75);
             }

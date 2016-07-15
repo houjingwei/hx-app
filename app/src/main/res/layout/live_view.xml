@@ -295,7 +295,7 @@
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
-                android:src="@mipmap/living_camera" />
+                android:src="@mipmap/v2_icon_live_more" />
 
             <ImageView
                 android:id="@+id/ivGift"

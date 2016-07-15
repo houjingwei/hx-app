@@ -28,7 +28,6 @@ import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.activity.LiveRecordActivity;
 import com.huixiangtv.liveshow.adapter.LiveMsgAdapter;
 import com.huixiangtv.liveshow.adapter.LiveOnlineUsersAdapter;
-import com.huixiangtv.liveshow.adapter.RecyclerviewListener;
 import com.huixiangtv.liveshow.model.ChatMessage;
 import com.huixiangtv.liveshow.model.HistoryMsg;
 import com.huixiangtv.liveshow.model.Live;
@@ -42,6 +41,7 @@ import com.huixiangtv.liveshow.model.User;
 import com.huixiangtv.liveshow.pop.CameraWindow;
 import com.huixiangtv.liveshow.pop.GiftWindow;
 import com.huixiangtv.liveshow.pop.InputWindow;
+import com.huixiangtv.liveshow.pop.MenuWindow;
 import com.huixiangtv.liveshow.pop.ShareWindow;
 import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.service.ChatTokenCallBack;
@@ -49,6 +49,7 @@ import com.huixiangtv.liveshow.service.LoginCallBack;
 import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
+import com.huixiangtv.liveshow.ui.menuView.PopClickEvent;
 import com.huixiangtv.liveshow.utils.AnimHelper;
 import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
@@ -466,12 +467,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     public void initLoadOnlineUsers() {
         mAdapter = new LiveOnlineUsersAdapter(null);
-        mAdapter.setOnItemClickListener(new RecyclerviewListener() {
-            @Override
-            public void onItemClick(View view, Object data) {
-                CommonHelper.showTip(activity, ((User) data).getNickName());
-            }
-        });
+
         mRecyclerView = (RecyclerView) findViewById(R.id.mRecylerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
@@ -585,7 +581,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 break;
             case R.id.ivCamera:
                 if(isVisitor){
-                    ImageUtils.catImage(activity);
+                    //ImageUtils.catImage(activity);
+                    cutAndJubao();
                 }else{
                     if (null == App.getLoginUser()) {
                         CommonHelper.showLoginPopWindow(activity, R.id.liveMain, new LoginCallBack() {
@@ -644,6 +641,34 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 CommonHelper.showUserPopWindow(activity, R.id.liveMain, live);
                 break;
         }
+    }
+
+    private void cutAndJubao() {
+        final MenuWindow  mPop = new MenuWindow(activity);
+        mPop.setOnPopClickEvent(new PopClickEvent() {
+            @Override
+            public void onClick(int flag) {
+                if(flag==1){
+                    jubao();
+                }else if(flag==2){
+                    ImageUtils.catImage(activity,flLive);
+                }
+            }
+        });
+        mPop.show(ivCamera);
+    }
+
+
+    /**
+     * 举报
+     */
+    private void jubao() {
+        CommonHelper.jubao("0", "", live.getLid(), new ApiCallback<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                CommonHelper.showTip(activity,"举报成功");
+            }
+        });
     }
 
     private void showChatInputView() {
