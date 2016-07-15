@@ -245,7 +245,7 @@ public class FriendCircleAdapter extends BaseAdapter {
                         }
                     } else {
                         if (null != dynamic.getPlayUrl() && dynamic.getPlayUrl().length() > 0) {
-                            if (isPlay) {
+                            if (dynamic.setIsPlay) {
                                 toPause(viewHolder, current,dynamic);
                             } else {
                                 play(viewHolder, current,dynamic);
@@ -267,6 +267,15 @@ public class FriendCircleAdapter extends BaseAdapter {
             viewHolder.ivVideo.setVisibility(View.VISIBLE);
 
 
+//            if(null!=mVideoView) {
+//                if (mVideoView.isPlaying()) {
+//                    mVideoView.pause();
+//                    mVideoView.stop();
+//                    mVideoView.release();
+//                    mVideoView  =null;
+//                    dynamic.setIsPlay = false;
+//                }
+//            }
 
             if(!dynamic.setIsPlay) {
                 viewHolder.llVideoView.setVisibility(View.GONE);
@@ -291,6 +300,8 @@ public class FriendCircleAdapter extends BaseAdapter {
         }
 
 
+
+
         viewHolder.ivPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -310,13 +321,15 @@ public class FriendCircleAdapter extends BaseAdapter {
             if (mVideoView.isPlaying()) {
                 mVideoView.pause();
                 mVideoView.stop();
+
+                mVideoView.release();
+                //mVideoView = null;
+                ll.removeView(mVideoView);
+                RelativeLayout rl= (RelativeLayout) ll.getParent();
+                rl.findViewById(R.id.ivPlay).setVisibility(View.VISIBLE);
+                list.get(currTag).setIsPlay = false;
             }
-            mVideoView.release();
-            //mVideoView = null;
-            ll.removeView(mVideoView);
-            RelativeLayout rl= (RelativeLayout) ll.getParent();
-            rl.findViewById(R.id.ivPlay).setVisibility(View.VISIBLE);
-            list.get(currTag).setIsPlay = false;
+
         }
         else
         {
@@ -521,7 +534,7 @@ public class FriendCircleAdapter extends BaseAdapter {
     private void play(ViewHolder viewHolder,int current,Dynamic dynamic) {
         if(null!=mVideoView){
             isPlay = true;
-            dynamic.setIsPlay =false;
+            dynamic.setIsPlay =true;
             mVideoView.start();
             viewHolder.ivPlay.setVisibility(View.GONE);
         }

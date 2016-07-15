@@ -337,14 +337,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         CommonHelper.authStauts(new ApiCallback<Other>() {
             @Override
             public void onSuccess(Other data) {
-                if(data.getStatus().equals("0")){
-                    CommonHelper.showTip(MainActivity.this,"艺人身份未认证,请先认证");
-                }else if(data.getStatus().equals("1")){
+                if (data.getStatus().equals("0")) {
+                    CommonHelper.showTip(MainActivity.this, "艺人身份未认证,请先认证");
+                } else if (data.getStatus().equals("1")) {
                     checkCardStatus();
-                }else if(data.getStatus().equals("2")){
-                    CommonHelper.showTip(MainActivity.this,"艺人身份认证中");
-                }else if(data.getStatus().equals("3")){
-                    CommonHelper.showTip(MainActivity.this,"艺人身份认证不通过");
+                } else if (data.getStatus().equals("2")) {
+                    CommonHelper.showTip(MainActivity.this, "艺人身份认证中");
+                } else if (data.getStatus().equals("3")) {
+                    CommonHelper.showTip(MainActivity.this, "艺人身份认证不通过");
                 }
             }
         });
@@ -356,9 +356,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         CommonHelper.cardStatus(new ApiCallback<Other>() {
             @Override
             public void onSuccess(Other data) {
-                if(data.getStatus().equals("0")){
+                if (data.getStatus().equals("0")) {
                     confirmGotoDialog();
-                }else if(data.getStatus().equals("1")){
+                } else if (data.getStatus().equals("1")) {
                     startLive();
                 }
             }
@@ -422,13 +422,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             return;
         }
 
-        final AlertDialog dlg = new AlertDialog.Builder(MainActivity.this, AlertDialog.THEME_HOLO_LIGHT).create();
+        final AlertDialog dlg = new AlertDialog.Builder(MainActivity.this, R.style.Theme_Dialog_From_Bottom).create();
         dlg.show();
         Window window = dlg.getWindow();
         window.setContentView(R.layout.index_guide);
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width  =App.screenWidth;
         lp.height = App.screenHeight;
+        lp.alpha = 2;
         window.setAttributes(lp);
         TranslateAnimation mAnimation = new TranslateAnimation(0,0,0,150);
         mAnimation.setRepeatCount(Animation.INFINITE);
@@ -444,31 +445,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 editor.putBoolean(key, false);
                 editor.commit();
                 dlg.dismiss();
-                setGuideNextLeft();
-            }
-        });
 
-    }
+                if(null != App.getPreferencesValue("indexStyle") && App.getPreferencesValue("indexStyle").equals("1")) {
 
-    protected void setGuideNextLeft() {
-        CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
+                    setGuideNextUp();
+                }
+                else
+                {
+                    setGuideNextLeft();
 
-            @Override
-            public void onSuccess(Object data) {
-                setGuideNextUp();
-            }
-        });
-    }
-
-
-    protected void setGuideNextUp() {
-        CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_hand_clear, "guide2", new ApiCallback() {
-
-            @Override
-            public void onSuccess(Object data) {
+                }
 
             }
         });
+
     }
 
     /**
@@ -542,6 +532,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         //super.onSaveInstanceState(outState);
+    }
+
+
+
+
+
+
+    protected void setGuideNextUp() {
+        CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_hand_clear, "guide2", new ApiCallback() {
+
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+        });
+    }
+
+
+    protected void setGuideNextLeft() {
+        CommonUtil.setGuidImage(MainActivity.this, R.id.main, R.drawable.index_up_down, "guide1", new ApiCallback() {
+
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+        });
     }
 
 

@@ -4,7 +4,7 @@
 
     <item android:state_pressed="false" android:drawable="@mipmap/v2_card_ok">
         <shape android:shape="rectangle">
-            <corners android:radius="5dip" />
+            <corners android:radius="0dip" />
 
         </shape>
 
