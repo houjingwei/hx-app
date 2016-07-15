@@ -18,6 +18,8 @@ import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.model.Live;
+import com.huixiangtv.liveshow.model.Other;
+import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.service.LoginCallBack;
 import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
@@ -120,7 +122,7 @@ public class UserWindow extends BasePopupWindow implements OnClickListener {
             llReport.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CommonHelper.showTip(context,"举报成功");
+                    jubao();
                 }
             });
             llFans.setOnClickListener(this);
@@ -141,6 +143,18 @@ public class UserWindow extends BasePopupWindow implements OnClickListener {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * 举报
+     */
+    private void jubao() {
+        CommonHelper.jubao("0", "", live.getLid(), new ApiCallback<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                CommonHelper.showTip(context,"举报成功");
+            }
+        });
     }
 
     @Override

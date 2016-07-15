@@ -42,6 +42,7 @@ import com.huixiangtv.liveshow.model.User;
 import com.huixiangtv.liveshow.pop.CameraWindow;
 import com.huixiangtv.liveshow.pop.GiftWindow;
 import com.huixiangtv.liveshow.pop.InputWindow;
+import com.huixiangtv.liveshow.pop.MenuWindow;
 import com.huixiangtv.liveshow.pop.ShareWindow;
 import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.service.ChatTokenCallBack;
@@ -49,6 +50,7 @@ import com.huixiangtv.liveshow.service.LoginCallBack;
 import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
+import com.huixiangtv.liveshow.ui.menuView.PopClickEvent;
 import com.huixiangtv.liveshow.utils.AnimHelper;
 import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
@@ -585,7 +587,8 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 break;
             case R.id.ivCamera:
                 if(isVisitor){
-                    ImageUtils.catImage(activity);
+                    //ImageUtils.catImage(activity);
+                    cutAndJubao();
                 }else{
                     if (null == App.getLoginUser()) {
                         CommonHelper.showLoginPopWindow(activity, R.id.liveMain, new LoginCallBack() {
@@ -644,6 +647,34 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 CommonHelper.showUserPopWindow(activity, R.id.liveMain, live);
                 break;
         }
+    }
+
+    private void cutAndJubao() {
+        MenuWindow  mPop = new MenuWindow(activity);
+        mPop.setOnPopClickEvent(new PopClickEvent() {
+            @Override
+            public void onClick(int flag) {
+                if(flag==1){
+                    jubao();
+                }else if(flag==2){
+                    ImageUtils.catImage(activity);
+                }
+            }
+        });
+        mPop.show(ivCamera);
+    }
+
+
+    /**
+     * 举报
+     */
+    private void jubao() {
+        CommonHelper.jubao("0", "", live.getLid(), new ApiCallback<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                CommonHelper.showTip(activity,"举报成功");
+            }
+        });
     }
 
     private void showChatInputView() {

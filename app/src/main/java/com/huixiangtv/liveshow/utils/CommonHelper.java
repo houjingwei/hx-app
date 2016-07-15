@@ -349,6 +349,28 @@ public class CommonHelper {
     }
 
     /**
+     * 举报
+     * @param apiCallback
+     */
+    public static void jubao(String type,String content,String bid,final ApiCallback<Other> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("type",type);
+        params.put("content",content);
+        params.put("bid",bid);
+        RequestUtils.sendPostRequest(Api.TIP_OFF, params, new ResponseCallBack<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                super.onSuccess(data);
+                apiCallback.onSuccess(data);
+            }
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+            }
+        }, Other.class);
+    }
+
+    /**
      * 关注
      * @param artistId
      * @param apiCallback

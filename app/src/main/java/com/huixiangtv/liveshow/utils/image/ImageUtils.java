@@ -324,6 +324,10 @@ public final class ImageUtils {
     public static void catImage(final Activity activity)
     {
 
+//        String filePath = Environment.getExternalStorageDirectory() + "/DCIM/"
+//                + "javaapk.png";
+//        ScreenShot.shoot(this, new File(filePath));
+
         //1.构建Bitmap
         WindowManager windowManager = activity.getWindowManager();
         Display display = windowManager.getDefaultDisplay();
