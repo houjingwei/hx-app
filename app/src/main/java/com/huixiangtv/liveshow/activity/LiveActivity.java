@@ -271,7 +271,7 @@ public class LiveActivity extends BaseBackActivity{
      * 屏幕截图保存
      */
     public void cutScreen() {
-        ImageUtils.catImage(LiveActivity.this);
+        ImageUtils.catImage(LiveActivity.this, flCover);
     }
 
 

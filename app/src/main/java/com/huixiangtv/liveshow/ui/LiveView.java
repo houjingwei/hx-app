@@ -28,7 +28,6 @@ import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.activity.LiveRecordActivity;
 import com.huixiangtv.liveshow.adapter.LiveMsgAdapter;
 import com.huixiangtv.liveshow.adapter.LiveOnlineUsersAdapter;
-import com.huixiangtv.liveshow.adapter.RecyclerviewListener;
 import com.huixiangtv.liveshow.model.ChatMessage;
 import com.huixiangtv.liveshow.model.HistoryMsg;
 import com.huixiangtv.liveshow.model.Live;
@@ -468,12 +467,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     public void initLoadOnlineUsers() {
         mAdapter = new LiveOnlineUsersAdapter(null);
-        mAdapter.setOnItemClickListener(new RecyclerviewListener() {
-            @Override
-            public void onItemClick(View view, Object data) {
-                CommonHelper.showTip(activity, ((User) data).getNickName());
-            }
-        });
+
         mRecyclerView = (RecyclerView) findViewById(R.id.mRecylerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
@@ -650,14 +644,14 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
     }
 
     private void cutAndJubao() {
-        MenuWindow  mPop = new MenuWindow(activity);
+        final MenuWindow  mPop = new MenuWindow(activity);
         mPop.setOnPopClickEvent(new PopClickEvent() {
             @Override
             public void onClick(int flag) {
                 if(flag==1){
                     jubao();
                 }else if(flag==2){
-                    ImageUtils.catImage(activity);
+                    ImageUtils.catImage(activity,flLive);
                 }
             }
         });

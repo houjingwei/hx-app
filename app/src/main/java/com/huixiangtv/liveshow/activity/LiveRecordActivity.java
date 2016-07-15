@@ -736,7 +736,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
      * 屏幕截图保存
      */
     public void cutScreen() {
-        ImageUtils.catImage(LiveRecordActivity.this);
+        ImageUtils.catImage(LiveRecordActivity.this, flCover);
     }
 
 

@@ -55,7 +55,7 @@
 
     <ImageView
         android:layout_marginTop="-5dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="20dp"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:src="@drawable/v2_icon_menu_jb" />

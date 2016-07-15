@@ -45,6 +45,10 @@ public class MenuWindow {
                 location[1] - popupHeight);
     }
 
+    public void hide() {
+        popupWindow.dismiss();
+    }
+
     public void setOnPopClickEvent(PopClickEvent mEvent) {
         this.mEvent = mEvent;
     }
@@ -54,16 +58,17 @@ public class MenuWindow {
             tvJubao.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    popupWindow.dismiss();
                     mEvent.onClick(1);
                 }
             });
             tvCut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    popupWindow.dismiss();
                     mEvent.onClick(2);
                 }
             });
-            popupWindow.dismiss();
 
         }
     }

@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
@@ -23,8 +22,6 @@ import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
 import com.huixiangtv.liveshow.utils.CommonHelper;
-import com.huixiangtv.liveshow.utils.GaussUtils;
-import com.huixiangtv.liveshow.utils.StringUtil;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -327,49 +324,14 @@ public final class ImageUtils {
     /**
      * 获取和保存当前屏幕的截图
      */
-    public static void catImage(final Activity activity)
+    public static void catImage(final Activity activity,final View view)
     {
 
 
         (new AsyncTask<String, String, String>() {
             @Override
             protected String doInBackground(String... params) {
-                File file = null;
-                WindowManager windowManager = activity.getWindowManager();
-                Display display = windowManager.getDefaultDisplay();
-                int w = display.getWidth();
-                int h = display.getHeight();
-                Bitmap bmp = Bitmap.createBitmap( w, h, Bitmap.Config.ARGB_8888 );
-                //2.获取屏幕
-                View decorview = activity.getWindow().getDecorView();
-                decorview.setDrawingCacheEnabled(true);
-                bmp = decorview.getDrawingCache();
-                String SavePath = getSDCardPath()+"/huixiang_screen_images";
-                //3.保存Bitmap
-                try {
-                    File path = new File(SavePath);
-                    //文件
-                    String filepath = SavePath + "/"+ System.currentTimeMillis()+".png";
-                    file = new File(filepath);
-                    if(!path.exists()){
-                        path.mkdirs();
-                    }
-                    if (!file.exists()) {
-                        file.createNewFile();
-                    }
-
-                    FileOutputStream fos = null;
-                    fos = new FileOutputStream(file);
-                    if (null != fos) {
-                        bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
-                        fos.flush();
-                        fos.close();
-
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                File file = cutAndSave(activity);
                 return file.getAbsolutePath();
             }
 
@@ -381,6 +343,46 @@ public final class ImageUtils {
         }).execute();
 
 
+    }
+
+    private static File cutAndSave(Activity activity) {
+        File file = null;
+        WindowManager windowManager = activity.getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        int w = display.getWidth();
+        int h = display.getHeight();
+        Bitmap bmp = Bitmap.createBitmap( w, h, Bitmap.Config.ARGB_8888 );
+        //2.获取屏幕
+        View decorview = activity.getWindow().getDecorView();
+        decorview.setDrawingCacheEnabled(true);
+        bmp = decorview.getDrawingCache();
+        String SavePath = getSDCardPath()+"/huixiang_screen_images";
+        //3.保存Bitmap
+        try {
+            File path = new File(SavePath);
+            //文件
+            String filepath = SavePath + "/"+ System.currentTimeMillis()+".png";
+            file = new File(filepath);
+            if(!path.exists()){
+                path.mkdirs();
+            }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileOutputStream fos = null;
+            fos = new FileOutputStream(file);
+            if (null != fos) {
+                bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                fos.flush();
+                fos.close();
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 
 
