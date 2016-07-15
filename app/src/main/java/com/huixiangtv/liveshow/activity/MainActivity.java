@@ -341,10 +341,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     CommonHelper.showTip(MainActivity.this, "艺人身份未认证,请先认证");
                 } else if (data.getStatus().equals("1")) {
                     checkCardStatus();
-                } else if (data.getStatus().equals("2")) {
-                    CommonHelper.showTip(MainActivity.this, "艺人身份认证中");
-                } else if (data.getStatus().equals("3")) {
-                    CommonHelper.showTip(MainActivity.this, "艺人身份认证不通过");
+                }else if(data.getStatus().equals("2")){
+                    CommonHelper.showTip(MainActivity.this,"艺人身份认证中");
+                }else if(data.getStatus().equals("-1")){
+                    CommonHelper.showTip(MainActivity.this,"艺人身份认证不通过");
                 }
             }
         });

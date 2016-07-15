@@ -2,17 +2,21 @@ package com.huixiangtv.liveshow.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.model.DynamicImage;
+import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import com.huixiangtv.liveshow.utils.widget.SquareLayout;
+import com.huixiangtv.liveshow.utils.widget.WidgetUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +33,7 @@ public class GridViewFriendAdapter extends BaseAdapter {
     private List<DynamicImage> images;
     private Context context;
     private int size = 0;
+    private int videoWidth = 0;
 
     public GridViewFriendAdapter(Context context, List<DynamicImage> images, int size) {
         this.context = context;
@@ -95,18 +100,37 @@ public class GridViewFriendAdapter extends BaseAdapter {
                 previewImg(arg0, showImgList);
             }
         });
+        ViewGroup.LayoutParams  layoutParams =  viewHolder.mImageView.getLayoutParams();
+
+
+        videoWidth = App.screenWidth - WidgetUtil.dip2px(context, 80);
         double height = 0;
         if (size == 1) {
-            height = 0.46;
+            if(StringUtil.isNotNull(dynamicImage.getRate())){
+                height = (int) (videoWidth/Float.parseFloat(images.get(0).getRate()));
+            }else{
+                height = (int) (videoWidth*0.75);
+            }
+            layoutParams.width = videoWidth;
+            layoutParams.height =(int) height;
         } else if (size == 2) {
-            height = 0.35;
+
+            int width = (int) (videoWidth*0.5-WidgetUtil.dip2px(context,4));
+            //layoutParams = new LinearLayout.LayoutParams(width,width);
+            //layoutParams.rightMargin = WidgetUtil.dip2px(context,2);
+
+            layoutParams.width = width;
+            layoutParams.height =width;
+
+
         } else {
-            height = 0.25;
+            int width = videoWidth/3-WidgetUtil.dip2px(context,4);
+            layoutParams.width = width;
+            layoutParams.height =width;
+            //layoutParams.rightMargin = WidgetUtil.dip2px(context,2);
+
         }
 
-        ViewGroup.LayoutParams layoutParams = viewHolder.mImageView.getLayoutParams();
-        layoutParams.width = App.screenWidth;
-        layoutParams.height = (int) (App.screenWidth * height);
         viewHolder.mImageView.setLayoutParams(layoutParams);
         ImageUtils.display(viewHolder.mImageView, dynamicImage.getSmall());
 

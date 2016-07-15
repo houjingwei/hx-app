@@ -64,7 +64,7 @@
                     android:id="@+id/ivVideo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/default_43"
+                    android:background="@color/gray02"
                     app:radius="1dp"
                     app:shape_type="rectangle"/>
                 <LinearLayout

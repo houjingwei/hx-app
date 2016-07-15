@@ -5,6 +5,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import com.huixiangtv.liveshow.service.ServiceException;
 import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.DateUtils;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
+import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import com.huixiangtv.liveshow.utils.widget.ActionItem;
 import com.huixiangtv.liveshow.utils.widget.ListViewCircle;
@@ -246,9 +248,9 @@ public class FriendCircleAdapter extends BaseAdapter {
                     } else {
                         if (null != dynamic.getPlayUrl() && dynamic.getPlayUrl().length() > 0) {
                             if (dynamic.setIsPlay) {
-                                toPause(viewHolder, current,dynamic);
+                                toPause(viewHolder, current, dynamic);
                             } else {
-                                play(viewHolder, current,dynamic);
+                                play(viewHolder, current, dynamic);
                             }
                             viewHolder.llVideoView.setVisibility(View.VISIBLE);
                         } else {
@@ -259,7 +261,12 @@ public class FriendCircleAdapter extends BaseAdapter {
                 }
             });
             videoWidth = App.screenWidth - WidgetUtil.dip2px(context, 80);
-            videoHeight = (int) (videoWidth*0.75);
+            if(StringUtil.isNotNull(dynamic.getRate())){
+                videoHeight = (int) (videoWidth/Float.parseFloat(dynamic.getRate()));
+            }else{
+                videoHeight = (int) (videoWidth*0.75);
+            }
+
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)viewHolder.rlVideo.getLayoutParams();
             params.width = videoWidth;
             params.height = videoHeight;
@@ -374,22 +381,44 @@ public class FriendCircleAdapter extends BaseAdapter {
 
 
                 if (item.mTitle.equals("赞")) {
-                    dynamic.setIsZan(true);
-                    titlePopup.setComment("取消");
-                    addPraise(ll_comment_head, headCommentGridViewAdapter, item.dynamicId + "");
+
+                    if (null != App.getLoginUser()) {
+
+                        dynamic.setIsZan(true);
+                        titlePopup.setComment("取消");
+                        addPraise(ll_comment_head, headCommentGridViewAdapter, item.dynamicId + "");
+
+                    } else {
+                        ForwardUtils.target((Activity)context, Constant.LOGIN, null);
+                    }
 
                 }
                 if (item.mTitle.equals("取消")) {
-                    titlePopup.setComment("赞");
-                    dynamic.setIsZan(false);
-                    removePraise(ll_comment_head, headCommentGridViewAdapter, item.dynamicId + "");
+
+                    if (null != App.getLoginUser()) {
+
+                        titlePopup.setComment("赞");
+                        dynamic.setIsZan(false);
+                        removePraise(ll_comment_head, headCommentGridViewAdapter, item.dynamicId + "");
+
+                    } else {
+                        ForwardUtils.target((Activity)context, Constant.LOGIN, null);
+                    }
                 }
 
                 if (item.mTitle.equals("评论")) {
-                    Message msg = new Message();
-                    msg.what =10;
-                    msg.obj = dynamic;
-                    handler.sendMessage(msg);
+
+                    if (null != App.getLoginUser()) {
+
+                        Message msg = new Message();
+                        msg.what =10;
+                        msg.obj = dynamic;
+                        handler.sendMessage(msg);
+
+                    } else {
+                        ForwardUtils.target((Activity)context, Constant.LOGIN, null);
+                    }
+
                 }
             }
         });

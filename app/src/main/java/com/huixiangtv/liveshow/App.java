@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import io.rong.imlib.RongIMClient;
 
@@ -146,7 +147,7 @@ public class App extends MultiDexApplication {
                 }
             }
         });
-        service.startAuth(getContext(),Constant.APP_KEY, Constant.APP_SECRET,Constant.SPACE);
+        service.startAuth(getContext(),"2088b26127ebe67", "b898e3010acf4299a7a5d3ec6e99bb2c", UUID.randomUUID().toString().replace("-",""));
     }
 
 

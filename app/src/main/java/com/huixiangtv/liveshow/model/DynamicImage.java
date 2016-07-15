@@ -7,6 +7,15 @@ public class DynamicImage {
 
     private String small;
     private String big;
+    private String rate;
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
 
     public String getSmall() {
         return small;
