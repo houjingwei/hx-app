@@ -147,7 +147,7 @@ public class App extends MultiDexApplication {
                 }
             }
         });
-        service.startAuth(getContext(),"2088b26127ebe67", "b898e3010acf4299a7a5d3ec6e99bb2c", UUID.randomUUID().toString().replace("-",""));
+        service.startAuth(getContext(),Constant.APP_KEY, Constant.APP_SECRET,Constant.SPACE);
     }
 
 

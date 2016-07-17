@@ -374,6 +374,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
             case LiveStreamStatus.CONNECTION_START:
                 break;
             case LiveStreamStatus.CONNECTION_ESTABLISHED:
+                Log.i("living","living");
                 msg.what=NET_OK;
                 pushHandler.sendMessage(msg);
                 break;
