@@ -9,6 +9,8 @@ import com.huixiangtv.liveshow.activity.AccountActivity;
 import com.huixiangtv.liveshow.activity.AttentionMeActivity;
 import com.huixiangtv.liveshow.activity.CouponActivity;
 import com.huixiangtv.liveshow.activity.DynamicDetialActivity;
+import com.huixiangtv.liveshow.activity.GroupChatInfoActivity;
+import com.huixiangtv.liveshow.activity.GroupListActivity;
 import com.huixiangtv.liveshow.activity.H5Activity;
 import com.huixiangtv.liveshow.activity.LiveActivity;
 import com.huixiangtv.liveshow.activity.LiveRecordActivity;
@@ -142,9 +144,14 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, CouponActivity.class);
                 toIntent(oriActivity,params,intent);
             }
-
-
-
+            else if (url.equals(Constant.GROUP_LIST)){
+                Intent intent = new Intent(oriActivity, GroupListActivity.class);
+                toIntent(oriActivity,params,intent);
+            }
+            else if (url.equals(Constant.GROUP_CHAT_INFO)){
+                Intent intent = new Intent(oriActivity, GroupChatInfoActivity.class);
+                toIntent(oriActivity,params,intent);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

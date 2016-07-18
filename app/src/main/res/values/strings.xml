@@ -234,8 +234,9 @@
     <string name="dynamic_detial">动态详情</string>
     <string name="push_dynamic">发布动态</string>
 
-
-
+    <string name="group_head_name">群申请</string>
+    <string name="group_name">群聊</string>
+    <string name="group_chat_info">聊天信息</string>
     <string-array name="dynamic_video">
         <item>录制拍摄</item>
         <item>本地视频</item>

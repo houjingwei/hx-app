@@ -55,6 +55,15 @@ public class Constant {
     public static String MY_LOVES = BASE_PRE+"my_loves";
 
 
+    public static String GROUP_LIST = BASE_PRE+"group_list";
+
+
+
+    public static String GROUP_CHAT_INFO = BASE_PRE+"group_chat_info";
+
+
+
+
 
 
 
