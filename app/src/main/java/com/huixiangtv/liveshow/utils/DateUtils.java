@@ -12,11 +12,6 @@ public class DateUtils {
 
 
 
-    /**
-     * 得到现在分钟
-     *
-     * @return
-     */
     public static Date strToDate(String str,String pattern) {
         SimpleDateFormat format = new SimpleDateFormat(pattern);
         Date date = null;
@@ -26,6 +21,11 @@ public class DateUtils {
             e.printStackTrace();
         }
         return date;
+    }
+
+    public static String dateToStr(Date date,String pattern) {
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        return format.format(date);
     }
 
 
@@ -142,5 +142,30 @@ public class DateUtils {
     public static String dateToString(Date date, String pattern) {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern) ;
         return sdf.format(date);
+    }
+
+
+    /**
+
+     * 把毫秒转化成日期
+
+     * @param dateFormat(日期格式，例如：MM/ dd/yyyy HH:mm:ss)
+
+     * @param millSec(毫秒数)
+
+     * @return
+
+     */
+
+    public static String msgTime(String dateFormat,Long millSec){
+
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+
+        Date date= new Date(millSec);
+
+        String time = dateToStr(date,"yyyy-MM-dd HH:mm:ss");
+
+        return formatDisplayTime(time,"yyyy-MM-dd HH:mm:ss");
+
     }
 }

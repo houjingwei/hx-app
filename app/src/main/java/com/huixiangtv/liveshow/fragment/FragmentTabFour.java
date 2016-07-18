@@ -29,7 +29,7 @@ public class FragmentTabFour extends Fragment {
 	private View mDecorView;
 	private ViewPager mViewPager;
 	private CommonTabLayout mTabLayout;
-	private String[] mTitles = new String[]{"圈子","账户"};
+	private String[] mTitles = new String[]{"圈子","聊天","账户"};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,14 +48,15 @@ public class FragmentTabFour extends Fragment {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			window.setStatusBarColor(getResources().getColor(R.color.mainColor));
 		}
-
-
 		FragmentCircle circle = new FragmentCircle();
 		FragmentMe me = new FragmentMe();
+		FragmentChat chat = new FragmentChat();
 		mMyFragments.add(circle);
+		mMyFragments.add(chat);
 		mMyFragments.add(me);
 		mTabEntities.add(new TabEntity(mTitles[0], 0, 0));
 		mTabEntities.add(new TabEntity(mTitles[1], 0, 0));
+		mTabEntities.add(new TabEntity(mTitles[2], 0, 0));
 
 		mDecorView = activity.getWindow().getDecorView();
 		mViewPager = (ViewPager) mRootView.findViewById(R.id.vp);
@@ -72,6 +73,10 @@ public class FragmentTabFour extends Fragment {
 		mTabLayout.setTabData(mTabEntities);
 		mTabLayout.setCurrentTab(1);
 		mViewPager.setCurrentItem(1);
+
+		mTabLayout.showDot(0);
+		mTabLayout.showMsg(1,5);
+
 		mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

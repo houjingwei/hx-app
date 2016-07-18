@@ -42,7 +42,7 @@
 
     <color name="normal_color">#222222</color>
     <color name="trans">#00000000</color>
-    <color name="split_color">#50999999</color>
+    <color name="split_color">#aa999999</color>
     <color name="comm_hint_color">#999999</color>
     <color name="clear">#55ffffff</color>
     <color name="bolder_color_01">#999999</color>

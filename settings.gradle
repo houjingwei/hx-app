@@ -1,4 +1,4 @@
-include ':app', ':ijkplayer-java', ':ijkplayer-exo', ':sharelib', ':pulltorefresh', ':PhotoPicker', ':Qupaisdk-release'
+include ':app', ':ijkplayer-java', ':ijkplayer-exo', ':sharelib', ':pulltorefresh', ':PhotoPicker', ':Qupaisdk-release', ':FlycoTabLayout_Lib', ':SwipeMenu'
 
 
 
