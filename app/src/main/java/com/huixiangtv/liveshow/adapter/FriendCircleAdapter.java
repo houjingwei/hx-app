@@ -260,11 +260,11 @@ public class FriendCircleAdapter extends BaseAdapter {
                     }
                 }
             });
-            videoWidth = App.screenWidth - WidgetUtil.dip2px(context, 80);
+            videoWidth = (int)((App.screenWidth - WidgetUtil.dip2px(context, 40)) * 0.6);
             if(StringUtil.isNotNull(dynamic.getRate())){
                 videoHeight = (int) (videoWidth/Float.parseFloat(dynamic.getRate()));
             }else{
-                videoHeight = (int) (videoWidth*0.6);
+                videoHeight = (int) (videoWidth*0.75);
             }
 
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)viewHolder.rlVideo.getLayoutParams();
