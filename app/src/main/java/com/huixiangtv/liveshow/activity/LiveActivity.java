@@ -183,7 +183,7 @@ public class LiveActivity extends BaseBackActivity{
         mVideoView.setOnErrorListener(new IMediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(IMediaPlayer mp, int what, int extra) {
-                CommonHelper.showTip(LiveActivity.this,"直播错误");
+                //CommonHelper.showTip(LiveActivity.this,"直播错误");
                 showOffline();
                 return false;
             }
