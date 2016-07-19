@@ -266,14 +266,18 @@
 
         <activity
             android:name=".activity.DynamicDetialActivity"
-            android:theme="@style/backStyle"
             android:screenOrientation="portrait"
+            android:theme="@style/backStyle"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".activity.FriendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-        <activity android:name=".activity.UserDetialActivity"
+        <activity
+            android:name=".activity.UserInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle" />
+        <activity android:name=".activity.AddFriendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle"/>
     </application>

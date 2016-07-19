@@ -132,6 +132,8 @@ dependencies {
     compile 'com.afollestad.material-dialogs:commons:0.8.6.1'
     compile project(':FlycoTabLayout_Lib')
     compile project(':SwipeMenu')
+
+    compile 'com.maning:librarymclearedittext:1.0.0'
 }
 
 //镜像仓库

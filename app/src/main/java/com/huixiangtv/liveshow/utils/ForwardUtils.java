@@ -29,7 +29,7 @@ import com.huixiangtv.liveshow.activity.RegPicListActivity;
 import com.huixiangtv.liveshow.activity.SearchActivity;
 import com.huixiangtv.liveshow.activity.SettingActivity;
 import com.huixiangtv.liveshow.activity.TopicActivity;
-import com.huixiangtv.liveshow.activity.UserDetialActivity;
+import com.huixiangtv.liveshow.activity.UserInfoActivity;
 import com.huixiangtv.liveshow.activity.UserTagActivity;
 import com.huixiangtv.liveshow.activity.MyInfoActivity;
 import com.huixiangtv.liveshow.activity.WebActivity;
@@ -65,7 +65,7 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, MyInfoActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.equals(Constant.USER_INFO)) {
-                Intent intent = new Intent(oriActivity, UserDetialActivity.class);
+                Intent intent = new Intent(oriActivity, UserInfoActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.equals(Constant.USERTAG)) {
                 Intent intent = new Intent(oriActivity, UserTagActivity.class);
@@ -149,6 +149,12 @@ public class ForwardUtils {
             }else if (url.equals(Constant.FRIEND)){
                 Intent intent = new Intent(oriActivity, FriendActivity.class);
                 toIntent(oriActivity,params,intent);
+            }else if(url.equals(Constant.ADD_FRIEND)){
+                Intent intent = new Intent(oriActivity, FriendActivity.class);
+                setIntentInfo(intent,params);
+                oriActivity.startActivityForResult(intent, 1);
+                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+
             }
 
 

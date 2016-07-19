@@ -58,7 +58,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
             }
 
 
-            CommonHelper.myFansCount(new ApiCallback<Other>() {
+            CommonHelper.myFansCount(null,new ApiCallback<Other>() {
                 @Override
                 public void onSuccess(Other data) {
                     if (null != data) {
