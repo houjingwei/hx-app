@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.model.Live;
+import com.huixiangtv.liveshow.utils.DateUtils;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import com.huixiangtv.liveshow.utils.widget.LinearLayoutForListView;
 
@@ -21,6 +22,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.MessageContent;
 
 /**
  * Created by hjw on 16/5/13.
@@ -30,7 +34,7 @@ public class GroupListAdapter extends BaseAdapter {
 
     Activity activity;
     Context context;
-    List<Live> voList = new ArrayList<Live>();
+    List<Conversation> voList = new ArrayList<Conversation>();
 
 
     private Map<Integer, View> viewMap = new HashMap<Integer, View>();
@@ -64,28 +68,49 @@ public class GroupListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
-        Live live = (Live) getItem(position);
+        Conversation conver = (Conversation) getItem(position);
         if(convertView == null)
         {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.group_list_item, parent, false);
-            holder.rlRoot = (LinearLayout) convertView.findViewById(R.id.llroot);
-            holder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+            holder.tvUnRead = (TextView) convertView.findViewById(R.id.tvUnRead);
+            holder.tvNickName = (TextView) convertView.findViewById(R.id.tvNickName);
+            holder.tvMsg = (TextView) convertView.findViewById(R.id.tvMsg);
             holder.ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
-            holder.tvContext = (TextView) convertView.findViewById(R.id.tvContext);
+            holder.ivFlag =(ImageView) convertView.findViewById(R.id.ivFlag);
             convertView.setTag(holder);
-        }else
-        {
+        }else{
             holder = (ViewHolder)convertView.getTag();
         }
-        String city = live.getCity()==null || live.getCity().trim().length()==0?"":"."+live.getCity();
-        String title = live.getTitle()==null || live.getTitle().trim().length()==0?"":"."+live.getTitle();
-        holder.tvTitle.setText(live.getNickName()+" "+city+title);
-        holder.tvContext.setText(live.getNickName());
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.rlRoot.getLayoutParams();
-        params.height = (int) (App.screenWidth * 0.2);
-        holder.rlRoot.setLayoutParams(params);
-        ImageUtils.display(holder.ivPhoto, live.getImg2());
+
+
+        holder.tvMsg.setText(conver.getConversationTitle());
+        MessageContent msgContent = conver.getLatestMessage();
+
+
+        //设置未读消息
+        if(conver.getUnreadMessageCount()>0) {
+            holder.tvUnRead.setVisibility(View.VISIBLE);
+            holder.tvUnRead.setText(conver.getUnreadMessageCount()+"");
+        }else{
+            holder.tvUnRead.setVisibility(View.GONE);
+        }
+
+
+        //设置消息用户信息
+        if(null!=msgContent){
+            if(null!=msgContent.getUserInfo()){
+                holder.tvNickName.setText(msgContent.getUserInfo().getName());
+                ImageUtils.displayAvator(holder.ivPhoto,msgContent.getUserInfo().getPortraitUri().toString());
+            }
+        }
+
+        //如果群聊显示群聊图标，否则隐藏
+        if(conver.getConversationType() == Conversation.ConversationType.GROUP){
+            holder.ivFlag.setVisibility(View.VISIBLE);
+        }else if(conver.getConversationType() == Conversation.ConversationType.PRIVATE){
+            holder.ivFlag.setVisibility(View.GONE);
+        }
 
         return convertView;
     }
@@ -95,7 +120,7 @@ public class GroupListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void addList(List<Live> ls) {
+    public void addList(List<Conversation> ls) {
         if (ls != null) {
             voList.addAll(ls);
         }
@@ -106,16 +131,10 @@ public class GroupListAdapter extends BaseAdapter {
 
     static class ViewHolder
     {
-
-        public LinearLayout rlRoot;
-        public TextView tvTitle;
-        public TextView tvContext;
+        public TextView tvUnRead;
+        public TextView tvNickName;
+        public TextView tvMsg;
         public ImageView ivPhoto;
-
-
-
-
-
-
+        public ImageView ivFlag;
     }
 }

@@ -237,7 +237,14 @@
     <string name="group_name">群聊</string>
     <string name="group_chat_info">聊天信息</string>
     <string name="friend">朋友</string>
-
+    <string name="group_names">群聊名称</string>
+    <string name="group_message">消息免打扰</string>
+    <string name="group_all_member">全部成员(130)</string>
+    <string name="group_member">群成员(130)</string>
+    <string name="group_clean_record">清空聊天记录</string>
+    <string name="group_zd">置顶聊天</string>
+    <string name="group_ts">投拆</string>
+    <string name="group_member_gx">贡献:  </string>
     <string-array name="dynamic_video">
         <item>录制拍摄</item>
         <item>本地视频</item>

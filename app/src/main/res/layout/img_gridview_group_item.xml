@@ -7,8 +7,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content" >
 
         <com.huixiangtv.liveshow.utils.image.RoundImageView
             android:id="@+id/iv_gridview_img"
@@ -20,6 +19,7 @@
             zhy:corner_radius="2dp"
             zhy:mutate_background="true"
             zhy:oval="false" />
+
 
         <TextView
             android:layout_marginTop="2dp"

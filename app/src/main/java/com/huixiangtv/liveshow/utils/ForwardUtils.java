@@ -11,6 +11,7 @@ import com.huixiangtv.liveshow.activity.CouponActivity;
 import com.huixiangtv.liveshow.activity.DynamicDetialActivity;
 import com.huixiangtv.liveshow.activity.GroupChatInfoActivity;
 import com.huixiangtv.liveshow.activity.GroupListActivity;
+import com.huixiangtv.liveshow.activity.GroupMemberListActivity;
 import com.huixiangtv.liveshow.activity.H5Activity;
 import com.huixiangtv.liveshow.activity.LiveActivity;
 import com.huixiangtv.liveshow.activity.LiveRecordActivity;
@@ -150,6 +151,10 @@ public class ForwardUtils {
             }
             else if (url.equals(Constant.GROUP_CHAT_INFO)){
                 Intent intent = new Intent(oriActivity, GroupChatInfoActivity.class);
+                toIntent(oriActivity,params,intent);
+            }
+            else if (url.equals(Constant.GROUP_MEMBER_LIST_ACTIVITY)){
+                Intent intent = new Intent(oriActivity, GroupMemberListActivity.class);
                 toIntent(oriActivity,params,intent);
             }
 

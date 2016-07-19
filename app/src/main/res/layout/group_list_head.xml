@@ -1,46 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:background="@color/sysBg"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_margin="10dp"
-        android:background="@color/white"
         android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center_vertical"
-        android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@mipmap/v3_group_head" />
+        <com.huixiangtv.liveshow.ui.ZJImageView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ivAdd"
+            android:layout_toRightOf="@+id/tvDate"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@mipmap/v3_group_head"
+            app:radius="2dp"
+            app:shape_type="rectangle" />
 
         <TextView
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"
-            android:textStyle="bold"
-            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/group_head_name" />
+            android:text="@string/group_head_name"
+            android:layout_marginLeft="10dp"
+            style="@style/black_bigger_style"/>
 
         <TextView
+            android:id="@+id/tvUnRead"
+            android:visibility="visible"
+            android:minWidth="20dp"
             android:layout_width="wrap_content"
+            android:layout_height="20dp"
             android:text="1"
-            android:paddingLeft="10dp"
-            android:textColor="@color/white"
-            android:paddingRight="10dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:background="@drawable/tv_group_radius"
-            android:layout_height="wrap_content" />
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:paddingLeft="7.5dp"
+            android:paddingRight="7.5dp"
+            android:background="@drawable/msg_unread_bg"
+            style="@style/white_smaller_style"/>
 
     </LinearLayout>
-<View
-    android:layout_width="match_parent"
-    android:background="#E3E4E7"
-    android:layout_height="5dp"/>
 </LinearLayout>

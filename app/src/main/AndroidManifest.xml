@@ -238,15 +238,20 @@
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
 
-        <activity android:name=".activity.GroupListActivity"
+        <activity
+            android:name=".activity.GroupListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"
-            ></activity>
+            android:theme="@style/backStyle"></activity>
 
-        <activity android:name=".activity.GroupChatInfoActivity"
+        <activity
+            android:name=".activity.GroupChatInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"
-            ></activity>
+            android:theme="@style/backStyle"></activity>
+
+        <activity
+            android:name=".activity.GroupMemberListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle" />
 
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
@@ -274,7 +279,8 @@
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService"></service>
 
-        <activity android:name=".activity.DynamicDetialActivity"
+        <activity
+            android:name=".activity.DynamicDetialActivity"
             android:theme="@style/backStyle"
             android:windowSoftInputMode="adjustPan|stateHidden" />
     </application>

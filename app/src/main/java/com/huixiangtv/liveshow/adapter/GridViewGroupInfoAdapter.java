@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huixiangtv.liveshow.App;
@@ -14,6 +15,7 @@ import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.model.DynamicImage;
 import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
+import com.huixiangtv.liveshow.utils.image.RoundImageView;
 import com.huixiangtv.liveshow.utils.widget.SquareLayout;
 import com.huixiangtv.liveshow.utils.widget.WidgetUtil;
 
@@ -58,7 +60,7 @@ public class GridViewGroupInfoAdapter extends BaseAdapter {
 
     public class ViewHolder {
 
-        private ImageView mImageView;
+        private RoundImageView mImageView;
         private TextView tvName;
         private SquareLayout rlSL;
 
@@ -73,7 +75,7 @@ public class GridViewGroupInfoAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.img_gridview_group_item, null);
             viewHolder = new ViewHolder();
-            viewHolder.mImageView = (ImageView) convertView
+            viewHolder.mImageView = (RoundImageView) convertView
                     .findViewById(R.id.iv_gridview_img);
             viewHolder.rlSL = (SquareLayout) convertView.findViewById(R.id.rlSL);
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvName);
@@ -82,32 +84,29 @@ public class GridViewGroupInfoAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        final ArrayList<String> showImgList = new ArrayList<String>();
-
-
-
         viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
         });
-        ViewGroup.LayoutParams  layoutParams =  viewHolder.mImageView.getLayoutParams();
-
-
-        videoWidth = (int)((App.screenWidth - WidgetUtil.dip2px(context, 40)) * 0.6);
         double height = 0;
 
-            videoWidth = App.screenWidth - WidgetUtil.dip2px(context, 80);
-            int width = videoWidth/3-WidgetUtil.dip2px(context,4);
-            layoutParams.width = width;
-            layoutParams.height =width;
-            //layoutParams.rightMargin = WidgetUtil.dip2px(context,2);
+        height = 0.2;
 
-
-
+        ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams) viewHolder.mImageView.getLayoutParams();
+        layoutParams.width = App.screenWidth;
+        layoutParams.height = (int) (App.screenWidth * height);
         viewHolder.mImageView.setLayoutParams(layoutParams);
-        ImageUtils.display(viewHolder.mImageView, dynamicImage.getSmall());
-        viewHolder.tvName.setText("刘德华");
+
+        if(images.size()-1 == arg0)
+        {
+            viewHolder.tvName.setText("邀请成员");
+            viewHolder.mImageView.setImageDrawable(context.getResources().getDrawable(R.mipmap.v3_group_chat_defind));
+        }
+        else {
+            ImageUtils.display(viewHolder.mImageView, dynamicImage.getSmall());
+            viewHolder.tvName.setText("刘德华");
+        }
 
         return convertView;
     }

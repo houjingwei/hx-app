@@ -61,6 +61,8 @@ public class Constant {
 
     public static String GROUP_CHAT_INFO = BASE_PRE+"group_chat_info";
 
+    public static String GROUP_MEMBER_LIST_ACTIVITY = BASE_PRE + "group_member_list_activity";
+
 
 
 
