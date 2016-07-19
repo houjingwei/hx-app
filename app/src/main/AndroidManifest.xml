@@ -273,7 +273,7 @@
             android:name=".activity.FriendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-        <activity android:name=".activity.UserInfoActivity"
+        <activity android:name=".activity.UserDetialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle"/>
     </application>

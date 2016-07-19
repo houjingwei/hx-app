@@ -18,7 +18,7 @@ import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-public class UserInfoActivity extends BaseBackActivity {
+public class UserDetialActivity extends BaseBackActivity {
 
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
@@ -56,7 +56,7 @@ public class UserInfoActivity extends BaseBackActivity {
             initView();
             loadData();
         }else{
-            CommonHelper.showTip(UserInfoActivity.this, "访问用户信息出错");
+            CommonHelper.showTip(UserDetialActivity.this, "访问用户信息出错");
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     onBackPressed();
@@ -82,7 +82,7 @@ public class UserInfoActivity extends BaseBackActivity {
                 if (data.getStatus().equals("1")) {
                     tvArtist.setText("形象卡");
                     GradientDrawable gd = (GradientDrawable) tvArtist.getBackground();
-                    gd.setColor(UserInfoActivity.this.getResources().getColor(R.color.card_blue));
+                    gd.setColor(UserDetialActivity.this.getResources().getColor(R.color.card_blue));
                     tvArtist.setBackgroundDrawable(gd);
                 }
             }
