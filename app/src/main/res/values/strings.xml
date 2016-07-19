@@ -214,6 +214,7 @@
     <string name="labenHot">人气</string>
     <string name="labenHotRank">人气贡献榜</string>
     <string name="attention_me">关注我的人</string>
+    <string name="attention">关注</string>
     <string name="empty_des">暂无数据</string>
     <string name="bann_details">内容详情</string>
     <string name="qianming">签名</string>
@@ -234,6 +235,13 @@
     <string name="dynamic_detial">动态详情</string>
     <string name="push_dynamic">发布动态</string>
     <string name="friend">朋友</string>
+    <string name="newFriend">新朋友</string>
+    <string name="group_chat">群聊</string>
+    <string name="inviteFriend">邀请的朋友</string>
+    <string name="userInfo">详细资料</string>
+    <string name="setRemark">设置备注</string>
+    <string name="userTag">标签</string>
+    <string name="localArea">地区</string>
 
 
     <string-array name="dynamic_video">

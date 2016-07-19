@@ -49,6 +49,7 @@ public class UserWindow extends BasePopupWindow implements OnClickListener {
     private LinearLayout llDynamic;
     private LinearLayout llCard;
     private LinearLayout llTags;
+    private LinearLayout llMsg;
 
 
 
@@ -95,7 +96,7 @@ public class UserWindow extends BasePopupWindow implements OnClickListener {
             llFans = (LinearLayout) view.findViewById(R.id.llFans);
             llDynamic = (LinearLayout) view.findViewById(R.id.llDynamic);
             llCard = (LinearLayout) view.findViewById(R.id.llCard);
-
+            llMsg = (LinearLayout) view.findViewById(R.id.llMsg);
             llTags = (LinearLayout) view.findViewById(R.id.llTags);
 
             if(null!=live){
@@ -128,7 +129,7 @@ public class UserWindow extends BasePopupWindow implements OnClickListener {
             llFans.setOnClickListener(this);
             llDynamic.setOnClickListener(this);
             llCard.setOnClickListener(this);
-            
+            llMsg.setOnClickListener(this);
             
             super.setFocusable(true);
             super.setOutsideTouchable(true);
@@ -197,6 +198,21 @@ public class UserWindow extends BasePopupWindow implements OnClickListener {
                     ForwardUtils.target(context, Constant.PIC_LIST, params);
                 }else if(null==App.getLoginUser()){
                     ForwardUtils.target(context, Constant.PIC_LIST, params);
+                }
+                break;
+            case R.id.llMsg:
+                dismiss();
+                if (null != App.getLoginUser()) {
+                    Map<String,String> map = new HashMap<>();
+                    map.put("uid",live.getUid());
+                    ForwardUtils.target(context, Constant.USER_INFO, null);
+                }else{
+                    CommonHelper.showLoginPopWindow(context, R.id.liveMain, new LoginCallBack() {
+                        @Override
+                        public void loginSuccess() {
+                            ForwardUtils.target(context, Constant.OWN_CIRCLE, null);
+                        }
+                    });
                 }
                 break;
             default:

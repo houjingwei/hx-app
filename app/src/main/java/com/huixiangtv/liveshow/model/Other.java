@@ -13,6 +13,7 @@ public class Other {
     private String balance;
     private String loves;
     private String status;
+    private String result;
 
     public String getIsFollowed() {
         return isFollowed;
@@ -69,5 +70,14 @@ public class Other {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 }

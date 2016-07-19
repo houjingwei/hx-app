@@ -89,6 +89,7 @@ public class Api {
     public static final String TIP_OFF = BASE_URL+"message/tip-off";
 
 
+
     //我关注的人
     public static String GETCOLLECTARTIST = BASE_URL+"fans/getCollectArtist";
     //我的粉丝
@@ -182,6 +183,13 @@ public class Api {
     public static final String GETCOLLECTARTISTDYNAMIC = BASE_URL + "dynamic/getCollectArtistDynamic";
 
 
+    /**
+     * 聊天相关
+     */
+    //我的朋友
+    public static final String MY_FRIEND = BASE_URL + "friend/myFriend";
+    //是否是朋友
+    public static final String IS_FRIEND = BASE_URL + "friend/isFriend";
 
 
 }

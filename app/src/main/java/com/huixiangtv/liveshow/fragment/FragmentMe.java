@@ -113,7 +113,7 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.rlUserInfo:
                 if (null != App.getLoginUser()) {
-                    ForwardUtils.target(getActivity(), Constant.USERINFO, null);
+                    ForwardUtils.target(getActivity(), Constant.MY_INFO, null);
                 } else {
                     ForwardUtils.target(getActivity(), Constant.LOGIN, null);
                 }

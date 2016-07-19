@@ -353,7 +353,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void checkCardStatus() {
         //判断有没有上传艺人卡
-        CommonHelper.cardStatus(new ApiCallback<Other>() {
+        CommonHelper.cardStatus(null, new ApiCallback<Other>() {
             @Override
             public void onSuccess(Other data) {
                 if (data.getStatus().equals("0")) {
