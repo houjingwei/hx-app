@@ -13,7 +13,8 @@ public class Constant {
 
     public static final String BASE_PRE = "huixiang://huixiang/";
     public static final String ACCOUNT = BASE_PRE+"account";
-    public static final String USERINFO = BASE_PRE+"userinfo";
+    public static final String MY_INFO = BASE_PRE+"myinfo";
+    public static final String USER_INFO = BASE_PRE+"userinfo";
     public static final String USERTAG = BASE_PRE+"tag";
     public static final String LOGIN = BASE_PRE+"login";
     public static final String START_LIVE = BASE_PRE+"push";
@@ -27,6 +28,7 @@ public class Constant {
     public static final String REG_LIVE_MAIN = BASE_PRE+"main";
     public static final String REG_LIVE_DES = BASE_PRE+"details";
     public static final String BINNER_URL = BASE_PRE+"banner";
+    public static final String FRIEND = BASE_PRE+"friend";
 
     public static final String HELP = "http://119.29.94.122:8888/h5/help.html";
     public static final String GYWM = "http://119.29.94.122:8888/h5/about.html";

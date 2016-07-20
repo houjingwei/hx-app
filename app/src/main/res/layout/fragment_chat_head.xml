@@ -13,8 +13,8 @@
         android:padding="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/listview"
         android:gravity="center_vertical"
-        android:background="@color/white"
         android:orientation="horizontal">
 
         <com.huixiangtv.liveshow.ui.ZJImageView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -36,7 +36,6 @@
 
         <TextView
             android:id="@+id/tvUnRead"
-            android:visibility="gone"
             android:minWidth="20dp"
             android:layout_width="wrap_content"
             android:layout_height="20dp"

@@ -49,7 +49,7 @@ import org.xutils.x;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserinfoActivity extends BaseBackActivity implements View.OnClickListener {
+public class MyInfoActivity extends BaseBackActivity implements View.OnClickListener {
 
 
     @ViewInject(R.id.id_flowlayout)
@@ -82,7 +82,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_userinfo);
+        setContentView(R.layout.activity_my_info);
         x.view().inject(this);
         initView();
 
@@ -132,7 +132,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
         tvSave.setOnClickListener(this);
 
         //隐藏键盘
-        KeyBoardUtils.closeKeybord(etNickName,UserinfoActivity.this);
+        KeyBoardUtils.closeKeybord(etNickName,MyInfoActivity.this);
 
         findViewById(R.id.rl_tag).setOnClickListener(this);
         findViewById(R.id.rl_sex).setOnClickListener(this);
@@ -145,7 +145,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     }
 
     private void initTags(String[] tags) {
-        final LayoutInflater mInflater = LayoutInflater.from(UserinfoActivity.this);
+        final LayoutInflater mInflater = LayoutInflater.from(MyInfoActivity.this);
         adapter = new TagAdapter<String>(tags) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
@@ -167,7 +167,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             case R.id.rl_tag:
                 Map<String,String> tags = new HashMap<String,String>();
                 tags.put("tags",tagStr);
-                ForwardUtils.target(UserinfoActivity.this, Constant.USERTAG,tags);
+                ForwardUtils.target(MyInfoActivity.this, Constant.USERTAG,tags);
                 break;
             case R.id.back:
                 onBackPressed();
@@ -207,9 +207,9 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
      */
     private void saveUserInfo() {
         if(TextUtils.isEmpty(etNickName.getText().toString())){
-            ShowUtils.showTip(UserinfoActivity.this, "请设置昵称~");
+            ShowUtils.showTip(MyInfoActivity.this, "请设置昵称~");
         }
-        cp = ColaProgress.show(UserinfoActivity.this, "正在保存", false, true, null);
+        cp = ColaProgress.show(MyInfoActivity.this, "正在保存", false, true, null);
         Map<String,String> params = new HashMap<String,String>();
         params.put("photo",photo);
         params.put("nickName",etNickName.getText().toString());
@@ -224,7 +224,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
                     cp.dismiss();
                 }
                 App.saveLoginUser(data);
-                CommonHelper.showTip(UserinfoActivity.this, "用户信息保存成功");
+                CommonHelper.showTip(MyInfoActivity.this, "用户信息保存成功");
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         onBackPressed();
@@ -236,7 +236,7 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
-                CommonHelper.showTip(UserinfoActivity.this, e.getMessage());
+                CommonHelper.showTip(MyInfoActivity.this, e.getMessage());
                 if(null!=cp){
                     cp.dismiss();
                 }
@@ -247,8 +247,8 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
     }
 
     private void upHeadPhoto() {
-        SelectPicWayWindow selectPicWayWindow = new SelectPicWayWindow(UserinfoActivity.this, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        selectPicWayWindow.showAtLocation(UserinfoActivity.this.findViewById(R.id.main), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        SelectPicWayWindow selectPicWayWindow = new SelectPicWayWindow(MyInfoActivity.this, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        selectPicWayWindow.showAtLocation(MyInfoActivity.this.findViewById(R.id.main), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
         selectPicWayWindow.update();
         selectPicWayWindow.setListener(new SelectPicWayWindow.SelectPicListener() {
             @Override
@@ -258,8 +258,8 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
                 } else {
                     pictureHelper.selectFrom(PictureHelper.FROM_CAMERA);
 
-                    if ((ContextCompat.checkSelfPermission(UserinfoActivity.this, "android.permission.CAMERA"))!= PackageManager.PERMISSION_GRANTED ){
-                        ActivityCompat.requestPermissions(UserinfoActivity.this,new String[]{"android.permission.CAMERA"},5);
+                    if ((ContextCompat.checkSelfPermission(MyInfoActivity.this, "android.permission.CAMERA"))!= PackageManager.PERMISSION_GRANTED ){
+                        ActivityCompat.requestPermissions(MyInfoActivity.this,new String[]{"android.permission.CAMERA"},5);
                     }else{
                         pictureHelper.selectFrom(PictureHelper.FROM_CAMERA);
                     }
@@ -282,8 +282,8 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
 
     //选择性别。
     private void upSex() {
-        UpdateSexWindow updateSexWindow = new UpdateSexWindow(UserinfoActivity.this, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        updateSexWindow.showAtLocation(UserinfoActivity.this.findViewById(R.id.main), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        UpdateSexWindow updateSexWindow = new UpdateSexWindow(MyInfoActivity.this, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        updateSexWindow.showAtLocation(MyInfoActivity.this.findViewById(R.id.main), Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
         updateSexWindow.update();
         updateSexWindow.setListener(new UpdateSexWindow.SelectSexListener() {
             @Override
@@ -303,20 +303,20 @@ public class UserinfoActivity extends BaseBackActivity implements View.OnClickLi
                 return;
             }
             ImageUtils.display(ivPhoto,picUri);
-            cp = ColaProgress.show(UserinfoActivity.this, "头像上传中", false, true, null);
+            cp = ColaProgress.show(MyInfoActivity.this, "头像上传中", false, true, null);
             Map<String,String> params = new HashMap<String,String>();
             params.put("type","1");
             ImageUtils.upFileInfo(params,new ApiCallback<Upfile>() {
                 @Override
                 public void onSuccess(Upfile data) {
-                    ImageUtils.upFile(UserinfoActivity.this,data, picUri, new ApiCallback<FileInfo>() {
+                    ImageUtils.upFile(MyInfoActivity.this,data, picUri, new ApiCallback<FileInfo>() {
                         @Override
                         public void onSuccess(FileInfo file) {
                             photo = file.url;
                             if(null!=cp){
                                 cp.dismiss();
                             }
-                            CommonHelper.showTip(UserinfoActivity.this,"头像上传成功");
+                            CommonHelper.showTip(MyInfoActivity.this,"头像上传成功");
                         }
                     });
                 }

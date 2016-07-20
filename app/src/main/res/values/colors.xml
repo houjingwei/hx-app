@@ -73,5 +73,6 @@
 
 
     <color name="white90">#dcffffff</color>
+    <color name="card_blue">#71a8e6</color>
 
 </resources>

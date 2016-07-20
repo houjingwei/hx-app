@@ -12,6 +12,7 @@ import com.huixiangtv.liveshow.activity.DynamicDetialActivity;
 import com.huixiangtv.liveshow.activity.GroupChatInfoActivity;
 import com.huixiangtv.liveshow.activity.GroupListActivity;
 import com.huixiangtv.liveshow.activity.GroupMemberListActivity;
+import com.huixiangtv.liveshow.activity.FriendActivity;
 import com.huixiangtv.liveshow.activity.H5Activity;
 import com.huixiangtv.liveshow.activity.LiveActivity;
 import com.huixiangtv.liveshow.activity.LiveRecordActivity;
@@ -31,8 +32,9 @@ import com.huixiangtv.liveshow.activity.RegPicListActivity;
 import com.huixiangtv.liveshow.activity.SearchActivity;
 import com.huixiangtv.liveshow.activity.SettingActivity;
 import com.huixiangtv.liveshow.activity.TopicActivity;
+import com.huixiangtv.liveshow.activity.UserDetialActivity;
 import com.huixiangtv.liveshow.activity.UserTagActivity;
-import com.huixiangtv.liveshow.activity.UserinfoActivity;
+import com.huixiangtv.liveshow.activity.MyInfoActivity;
 import com.huixiangtv.liveshow.activity.WebActivity;
 
 import java.net.URLDecoder;
@@ -62,8 +64,11 @@ public class ForwardUtils {
             }else if (url.equals(Constant.ACCOUNT)) {
                 Intent intent = new Intent(oriActivity, LoginOrRegActivity.class);
                 toIntent(oriActivity, params, intent);
-            }else if (url.equals(Constant.USERINFO)) {
-                Intent intent = new Intent(oriActivity, UserinfoActivity.class);
+            }else if (url.equals(Constant.MY_INFO)) {
+                Intent intent = new Intent(oriActivity, MyInfoActivity.class);
+                toIntent(oriActivity, params, intent);
+            }else if (url.equals(Constant.USER_INFO)) {
+                Intent intent = new Intent(oriActivity, UserDetialActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.equals(Constant.USERTAG)) {
                 Intent intent = new Intent(oriActivity, UserTagActivity.class);
@@ -143,6 +148,9 @@ public class ForwardUtils {
                 toIntent(oriActivity,params,intent);
             }else if (url.equals(Constant.COUPON)){
                 Intent intent = new Intent(oriActivity, CouponActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.equals(Constant.FRIEND)){
+                Intent intent = new Intent(oriActivity, FriendActivity.class);
                 toIntent(oriActivity,params,intent);
             }
             else if (url.equals(Constant.GROUP_LIST)){

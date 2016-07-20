@@ -95,7 +95,7 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
         switch (view.getId()) {
             case R.id.ivPhoto:
                 if (null != App.getLoginUser()) {
-                    ForwardUtils.target(getActivity(), Constant.USERINFO, null);
+                    ForwardUtils.target(getActivity(), Constant.MY_INFO, null);
                 } else {
                     ForwardUtils.target(getActivity(), Constant.LOGIN, null);
                 }
@@ -118,7 +118,7 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
                 break;
             case R.id.tvUserName:
                 if (null != App.getLoginUser()) {
-                    ForwardUtils.target(getActivity(), Constant.USERINFO, null);
+                    ForwardUtils.target(getActivity(), Constant.MY_INFO, null);
                 } else {
                     ForwardUtils.target(getActivity(), Constant.LOGIN, null);
                 }
@@ -180,7 +180,7 @@ public class FragmentTabThree extends Fragment implements View.OnClickListener{
             }
 
 
-            CommonHelper.myFansCount(new ApiCallback<Other>() {
+            CommonHelper.myFansCount(null,new ApiCallback<Other>() {
                 @Override
                 public void onSuccess(Other data) {
                     if (null != data) {

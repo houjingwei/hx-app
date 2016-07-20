@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.huixiangtv.liveshow.App;
+import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.adapter.ChatAdapter;
 import com.huixiangtv.liveshow.model.MsgContent;
+import com.huixiangtv.liveshow.utils.ForwardUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +96,12 @@ public class FragmentChat extends Fragment implements View.OnClickListener {
     private void initView() {
         mListView = (ListView) mRootView.findViewById(R.id.listView);
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_chat_head, null, false);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ForwardUtils.target(getActivity(), Constant.FRIEND,null);
+            }
+        });
         mListView.addHeaderView(view);
 
         adapter = new ChatAdapter(getActivity());

@@ -25,32 +25,32 @@ public class RequestUtils {
 
 
     /**
-     *
-     * @param url  请求地址
-     * @param paramsMap  请求参数
-     * @param callBack   回调
-     * @param clazz      bean类
+     * @param url       请求地址
+     * @param paramsMap 请求参数
+     * @param callBack  回调
+     * @param clazz     bean类
      * @param <T>
      */
-    public static<T> void sendPostRequest(String url , Map<String, String> paramsMap, ResponseCallBack<T> callBack,Class<T> clazz) {
+    public static <T> void sendPostRequest(String url, Map<String, String> paramsMap, ResponseCallBack<T> callBack, Class<T> clazz) {
         sendRequest(HttpMethod.POST, url, paramsMap, callBack, clazz);
     }
 
 
+
+
     /**
-     *
-     * @param url  请求地址
-     * @param paramsMap  请求参数
-     * @param callBack   回调
-     * @param clazz      bean类
+     * @param url       请求地址
+     * @param paramsMap 请求参数
+     * @param callBack  回调
+     * @param clazz     bean类
      * @param <T>
      */
-    public static<T> void sendGetRequest(String url , Map<String, String> paramsMap, ResponseCallBack<T> callBack,Class<T> clazz) {
+    public static <T> void sendGetRequest(String url, Map<String, String> paramsMap, ResponseCallBack<T> callBack, Class<T> clazz) {
         sendRequest(HttpMethod.GET, url, paramsMap, callBack, clazz);
     }
 
 
-    public static <T> void sendRequest(HttpMethod method, final String url, Map<String, String> paramsMap,final ResponseCallBack<T> callBack, final Class<T> clazz) {
+    public static <T> void sendRequest(HttpMethod method, final String url, Map<String, String> paramsMap, final ResponseCallBack<T> callBack, final Class<T> clazz) {
         if (TextUtils.isEmpty(url)) {
             return;
         }
@@ -61,35 +61,44 @@ public class RequestUtils {
 
         RequestParams reParams = new RequestParams(url);
         reParams.setCharset("utf-8");
-        reParams.addBodyParameter("deviceId",App.deviceVersion+"");
-        if(null!= App.getLoginUser() && (paramsMap==null || !paramsMap.containsKey("uid"))){
-            reParams.addBodyParameter("uid", App.getLoginUser().getUid()+"");
-            reParams.addBodyParameter("token",App.getLoginUser().getToken()+"");
+        reParams.addBodyParameter("deviceId", App.deviceVersion + "");
+
+        boolean hasUid = paramsMap.containsKey("uid");
+        if (!hasUid) {
+            if (null != App.getLoginUser() && (paramsMap == null || !paramsMap.containsKey("uid"))) {
+                reParams.addBodyParameter("uid", App.getLoginUser().getUid() + "");
+                reParams.addBodyParameter("token", App.getLoginUser().getToken() + "");
+            }
         }
 
         //解析封装参数
-        if(null!=paramsMap && paramsMap.size()>0) {
+        if (null != paramsMap && paramsMap.size() > 0) {
             for (String key : paramsMap.keySet()) {
                 reParams.addBodyParameter(key, paramsMap.get(key));
             }
         }
+
+
+
+
+
         x.http().request(method, reParams, new Callback.CommonCallback<String>() {
 
 
             @Override
             public void onSuccess(String result) {
                 Log.d(Constant.TAG, "解析后内容 >> " + result);
-                BaseResponse response = JSON.parseObject(result,BaseResponse.class);
-                if(null!=response){
-                    if(response.getCode()!=0){
+                BaseResponse response = JSON.parseObject(result, BaseResponse.class);
+                if (null != response) {
+                    if (response.getCode() != 0) {
                         callBack.onFailure(new ServiceException(response.getMsg()));
-                    }else{
+                    } else {
                         String jsonStr = String.valueOf(response.getData());
-                        String firstChar = jsonStr.substring(0,1);
-                        if(firstChar.equals("[")){
-                            callBack.onSuccessList(JSON.parseArray(jsonStr,clazz));
-                        }else{
-                            callBack.onSuccess(JSON.parseObject(jsonStr,clazz));
+                        String firstChar = jsonStr.substring(0, 1);
+                        if (firstChar.equals("[")) {
+                            callBack.onSuccessList(JSON.parseArray(jsonStr, clazz));
+                        } else {
+                            callBack.onSuccess(JSON.parseObject(jsonStr, clazz));
                         }
                     }
                 }
@@ -113,6 +122,7 @@ public class RequestUtils {
 
 
     }
+
 
 
 }

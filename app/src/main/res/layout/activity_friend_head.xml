@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:background="@color/sysBg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llNewFriend"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/listview"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.huixiangtv.liveshow.ui.ZJImageView
+            android:layout_toRightOf="@+id/tvDate"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@mipmap/v3_add_friend"
+            app:radius="2dp"
+            app:shape_type="rectangle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/newFriend"
+            android:layout_marginLeft="10dp"
+            style="@style/black_bigger_style"/>
+
+        <TextView
+            android:id="@+id/tvFriendUnRead"
+            android:minWidth="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="1"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:paddingLeft="7.5dp"
+            android:paddingRight="7.5dp"
+            android:background="@drawable/msg_unread_bg"
+            style="@style/white_smaller_style"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llGroupChat"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:padding="10dp"
+        android:background="@drawable/listview"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.huixiangtv.liveshow.ui.ZJImageView
+            android:layout_toRightOf="@+id/tvDate"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@mipmap/v3_add_group"
+            app:radius="2dp"
+            app:shape_type="rectangle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_chat"
+            android:layout_marginLeft="10dp"
+            style="@style/black_bigger_style"/>
+
+        <TextView
+            android:id="@+id/tvGroupMsgUnRead"
+            android:minWidth="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="1"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:paddingLeft="7.5dp"
+            android:paddingRight="7.5dp"
+            android:background="@drawable/msg_unread_bg"
+            style="@style/white_smaller_style"/>
+
+    </LinearLayout>
+    <View
+        style="@style/split_line"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+    <LinearLayout
+        android:id="@+id/llInvite"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.huixiangtv.liveshow.ui.ZJImageView
+            android:id="@+id/ivAdd"
+            android:layout_toRightOf="@+id/tvDate"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@mipmap/v3_invite_friend"
+            app:radius="2dp"
+            app:shape_type="rectangle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/inviteFriend"
+            android:layout_marginLeft="10dp"
+            style="@style/black_bigger_style"/>
+
+        <TextView
+            android:id="@+id/tvUnRead"
+            android:minWidth="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="1"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:paddingLeft="7.5dp"
+            android:paddingRight="7.5dp"
+            android:background="@drawable/msg_unread_bg"
+            style="@style/white_smaller_style"/>
+
+    </LinearLayout>
+    <View
+        style="@style/split_line"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+</LinearLayout>

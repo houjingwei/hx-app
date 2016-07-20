@@ -22,10 +22,12 @@ import android.widget.Toast;
 
 import com.huixiangtv.liveshow.Api;
 import com.huixiangtv.liveshow.model.DynamicComment;
+import com.huixiangtv.liveshow.model.Friend;
 import com.huixiangtv.liveshow.model.Live;
 import com.huixiangtv.liveshow.model.Other;
 import com.huixiangtv.liveshow.model.PlayUrl;
 import com.huixiangtv.liveshow.model.Share;
+import com.huixiangtv.liveshow.model.User;
 import com.huixiangtv.liveshow.pop.CameraWindow;
 import com.huixiangtv.liveshow.pop.LoginWindow;
 import com.huixiangtv.liveshow.pop.ShareTwoWindow;
@@ -304,6 +306,7 @@ public class CommonHelper {
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
+                apiCallback.onFailure(e);
             }
         }, Other.class);
     }
@@ -324,6 +327,7 @@ public class CommonHelper {
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
+                apiCallback.onFailure(e);
             }
         }, Other.class);
     }
@@ -331,10 +335,14 @@ public class CommonHelper {
 
     /**
      * 艺人卡上传状态
+     * @param uid
      * @param apiCallback
      */
-    public static void cardStatus(final ApiCallback<Other> apiCallback) {
+    public static void cardStatus(String uid, final ApiCallback<Other> apiCallback) {
         Map<String, String> params = new HashMap<String, String>();
+        if(StringUtil.isNotNull(uid)){
+            params.put("uid",uid);
+        }
         RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD_STATUS, params, new ResponseCallBack<Other>() {
             @Override
             public void onSuccess(Other data) {
@@ -344,9 +352,11 @@ public class CommonHelper {
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
+                apiCallback.onFailure(e);
             }
         }, Other.class);
     }
+
 
     /**
      * 举报
@@ -366,8 +376,32 @@ public class CommonHelper {
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
+                apiCallback.onFailure(e);
             }
         }, Other.class);
+    }
+
+
+    /**
+     * 我的朋友
+     * @param apiCallback
+     */
+    public static void myFriend(final ApiCallback<List<Friend>> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("page","1");
+        params.put("pageSize","10000");
+        RequestUtils.sendPostRequest(Api.MY_FRIEND, params, new ResponseCallBack<Friend>() {
+            @Override
+            public void onSuccessList(List<Friend> data) {
+                super.onSuccessList(data);
+                apiCallback.onSuccess(data);
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                apiCallback.onFailure(e);
+            }
+        }, Friend.class);
     }
 
     /**
@@ -394,6 +428,7 @@ public class CommonHelper {
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
+                apiCallback.onFailure(e);
             }
         }, Other.class);
     }
@@ -426,8 +461,11 @@ public class CommonHelper {
      * 我的粉丝数量
      * @param apiCallback
      */
-    public static void myFansCount(final ApiCallback<Other> apiCallback) {
+    public static void myFansCount(String uid,final ApiCallback<Other> apiCallback) {
         Map<String, String> params = new HashMap<String, String>();
+        if(StringUtil.isNotNull(uid)){
+            params.put("uid",uid);
+        }
         RequestUtils.sendPostRequest(Api.FANS_COUNT, params, new ResponseCallBack<Other>() {
             @Override
             public void onSuccess(Other data) {
@@ -443,6 +481,7 @@ public class CommonHelper {
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
+                apiCallback.onFailure(e);
             }
         }, Other.class);
     }
@@ -464,6 +503,62 @@ public class CommonHelper {
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
+            }
+        }, Other.class);
+    }
+
+
+    /**
+     * 用户信息
+     * @param apiCallback
+     */
+    public static void userInfo(String uid,final ApiCallback<User> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        if(StringUtil.isNotNull(uid)){
+            params.put("uid",uid);
+        }
+        RequestUtils.sendPostRequest(Api.USER_INFO, params, new ResponseCallBack<User>() {
+            @Override
+            public void onSuccess(User data) {
+                super.onSuccess(data);
+                if(null!=data){
+                    apiCallback.onSuccess(data);
+                }else{
+                    apiCallback.onSuccess(null);
+                }
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                apiCallback.onFailure(e);
+            }
+        }, User.class);
+    }
+
+
+    /**
+     * 是否是好友
+     * @param apiCallback
+     */
+    public static void isFriend(String fid,final ApiCallback<Other> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("fid",fid);
+        RequestUtils.sendPostRequest(Api.IS_FRIEND, params, new ResponseCallBack<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                super.onSuccess(data);
+                if(null!=data){
+                    apiCallback.onSuccess(data);
+                }else{
+                    apiCallback.onSuccess(null);
+                }
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                apiCallback.onFailure(e);
             }
         }, Other.class);
     }
