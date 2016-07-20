@@ -1,92 +1,52 @@
 [
+
   {
-    "uid":"1",
-    "nickName":"林平之",
-    "photo": "http://img3.imgtn.bdimg.com/it/u=672526831,213964364&fm=21&gp=0.jpg",
-    "hots": "1287",
-    "fans": "9897",
-    "rank": "rank",
-    "dateTime": "2015-09-08",
-    "isfans": "1"
-  },
-  {
-    "uid":"1",
-    "nickName":"东方不败",
-    "photo": "http://img1.imgtn.bdimg.com/it/u=2597855832,456420733&fm=21&gp=0.jpg",
-    "hots": "1287",
-    "fans": "9897",
-    "rank": "rank",
-    "dateTime": "2015-09-08",
-    "isfans": "1"
-  },
-  {
-    "uid":"1",
-    "nickName":"令狐冲",
-    "photo": "http://img0.imgtn.bdimg.com/it/u=3248078955,2375036731&fm=21&gp=0.jpg",
-    "hots": "1287",
-    "fans": "9897",
-    "rank": "rank",
-    "dateTime": "2015-09-08",
-    "isfans": "1"
-  },
-  {
-    "uid":"1",
-    "nickName":"任盈盈",
-    "photo": "http://img4.imgtn.bdimg.com/it/u=375750296,2468568392&fm=21&gp=0.jpg",
-    "hots": "1287",
-    "fans": "9897",
-    "rank": "rank",
-    "dateTime": "2015-09-08",
-    "isfans": "1"
-  },
-  {
-    "uid":"1",
-    "nickName":"田伯光",
-    "photo": "http://img4.imgtn.bdimg.com/it/u=1749913734,2574211436&fm=21&gp=0.jpg",
-    "hots": "1287",
-    "fans": "9897",
-    "rank": "rank",
-    "dateTime": "2015-09-08",
-    "isfans": "1"
-  },
-  {
-    "uid":"1",
-    "nickName":"一灯大师",
-    "photo": "http://www.ipb.cc/uploads/allimg/c150225/1424U495540220-33G19.jpg",
-    "hots": "1287",
-    "fans": "9897",
-    "rank": "rank",
-    "dateTime": "2015-09-08",
-    "isfans": "1"
-  },
-  {
-    "uid":"1",
-    "nickName":"令狐冲",
-    "photo": "http://img0.imgtn.bdimg.com/it/u=3248078955,2375036731&fm=21&gp=0.jpg",
-    "hots": "1287",
-    "fans": "9897",
-    "rank": "rank",
-    "dateTime": "2015-09-08",
-    "isfans": "1"
-  },
-  {
-    "uid":"1",
-    "nickName":"任盈盈",
-    "photo": "http://img4.imgtn.bdimg.com/it/u=375750296,2468568392&fm=21&gp=0.jpg",
-    "hots": "1287",
-    "fans": "9897",
-    "rank": "rank",
-    "dateTime": "2015-09-08",
-    "isfans": "1"
-  },
-  {
-    "uid":"1",
-    "nickName":"田伯光",
-    "photo": "http://img4.imgtn.bdimg.com/it/u=1749913734,2574211436&fm=21&gp=0.jpg",
-    "hots": "1287",
-    "fans": "9897",
-    "rank": "rank",
-    "dateTime": "2015-09-08",
-    "isfans": "1"
+    "content":"有男朋友时是什么样的感觉？",
+    "ext":{
+      "photo":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=284716577,4094007226&fm=116&gp=0.jpg",
+      "msgType":"0"
+    }
+  },{
+  "content":"变得连矿泉水瓶都拧不开了。",
+  "ext":{
+    "photo":"http://img2.imgtn.bdimg.com/it/u=3379878376,4165357778&fm=21&gp=0.jpg",
+    "msgType":"1"
   }
+},{
+  "content":"你最孤独的时刻是什么？",
+  "ext":{
+    "photo":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=284716577,4094007226&fm=116&gp=0.jpg",
+    "msgType":"0"
+  }
+},{
+  "content":"第二杯半价。",
+  "ext":{
+    "photo":"http://img2.imgtn.bdimg.com/it/u=3379878376,4165357778&fm=21&gp=0.jpg",
+    "msgType":"1"
+  }
+},{
+  "content":"男生长相到底有多重要？",
+  "ext":{
+    "photo":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=284716577,4094007226&fm=116&gp=0.jpg",
+    "msgType":"0"
+  }
+},{
+  "content":"三分天注定，七分靠打拼，剩下的九十分全部看长相。",
+  "ext":{
+    "photo":"http://img2.imgtn.bdimg.com/it/u=3379878376,4165357778&fm=21&gp=0.jpg",
+    "msgType":"1"
+  }
+},{
+  "content":"And how did he then go about actually setting up the business?",
+  "ext":{
+    "photo":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=284716577,4094007226&fm=116&gp=0.jpg",
+    "msgType":"0"
+  }
+},{
+  "content":"Well, he looked for any left-handed products that might already be on the market which were very few. And then contacted the manufactures with the idea of having products produced for him, mainly in the scissors range to start with.",
+  "ext":{
+    "photo":"http://img2.imgtn.bdimg.com/it/u=3379878376,4165357778&fm=21&gp=0.jpg",
+    "msgType":"1"
+  }
+}
 ]

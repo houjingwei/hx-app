@@ -6,7 +6,9 @@ import android.content.Intent;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.activity.AccountActivity;
+import com.huixiangtv.liveshow.activity.AddFriendActivity;
 import com.huixiangtv.liveshow.activity.AttentionMeActivity;
+import com.huixiangtv.liveshow.activity.ChatMsgActivity;
 import com.huixiangtv.liveshow.activity.CouponActivity;
 import com.huixiangtv.liveshow.activity.DynamicDetialActivity;
 import com.huixiangtv.liveshow.activity.FriendActivity;
@@ -150,11 +152,14 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, FriendActivity.class);
                 toIntent(oriActivity,params,intent);
             }else if(url.equals(Constant.ADD_FRIEND)){
-                Intent intent = new Intent(oriActivity, FriendActivity.class);
+                Intent intent = new Intent(oriActivity, AddFriendActivity.class);
                 setIntentInfo(intent,params);
                 oriActivity.startActivityForResult(intent, 1);
                 oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
 
+            }else if (url.equals(Constant.CHAT_MSG)){
+                Intent intent = new Intent(oriActivity, ChatMsgActivity.class);
+                toIntent(oriActivity,params,intent);
             }
 
 

@@ -30,6 +30,7 @@ public class Constant {
     public static final String BINNER_URL = BASE_PRE+"banner";
     public static final String FRIEND = BASE_PRE+"friend";
     public static final String ADD_FRIEND =  BASE_PRE+"addFriend";
+    public static final String CHAT_MSG = BASE_PRE+"chatMsg";
 
     public static final String HELP = "http://119.29.94.122:8888/h5/help.html";
     public static final String GYWM = "http://119.29.94.122:8888/h5/about.html";
@@ -54,6 +55,7 @@ public class Constant {
 
     public static final String COUPON =BASE_PRE+"coupon";
     public static final String DYNAMIC_DETAIL = BASE_PRE+"dynamic_detial";
+
 
 
     public static String MY_LOVES = BASE_PRE+"my_loves";

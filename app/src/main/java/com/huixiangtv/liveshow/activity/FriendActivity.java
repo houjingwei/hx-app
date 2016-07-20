@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.adapter.FriendAdapter;
 import com.huixiangtv.liveshow.model.Friend;
@@ -18,6 +20,7 @@ import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.service.ServiceException;
 import com.huixiangtv.liveshow.ui.CommonTitle;
 import com.huixiangtv.liveshow.utils.CommonHelper;
+import com.huixiangtv.liveshow.utils.ForwardUtils;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -77,6 +80,16 @@ public class FriendActivity extends BaseBackActivity {
 
 
         mListView.addHeaderView(view);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i>0){
+                    ForwardUtils.target(FriendActivity.this, Constant.CHAT_MSG,null);
+
+                }
+
+            }
+        });
 
         adapter = new FriendAdapter(FriendActivity.this);
         mListView.setAdapter(adapter);
@@ -161,6 +174,8 @@ public class FriendActivity extends BaseBackActivity {
             public void onSuccess(List<Friend> data) {
                 if(null!=data && data.size()>0){
                     adapter.addList(data);
+                }else {
+                    testData();
                 }
             }
 

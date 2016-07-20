@@ -1,9 +1,9 @@
 package com.huixiangtv.liveshow.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
 import com.huixiangtv.liveshow.Api;
 import com.huixiangtv.liveshow.R;
@@ -24,6 +24,9 @@ public class AddFriendActivity extends BaseBackActivity {
 
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
+
+    @ViewInject(R.id.tvApplyMsg)
+    EditText tvApplyMsg;
 
     String fid = "";
 
@@ -56,7 +59,7 @@ public class AddFriendActivity extends BaseBackActivity {
     private void addFriend() {
         Map<String,String> params = new HashMap<>();
         params.put("fid",fid);
-        params.put("content","");
+        params.put("content",tvApplyMsg.getText().toString());
         RequestUtils.sendPostRequest(Api.ADD_FRIEND, params, new ResponseCallBack<String>() {
             @Override
             public void onSuccess(String data) {

@@ -38,9 +38,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Message;
 
 /**
  * Created by hjw on 16/5/4.
@@ -128,6 +128,17 @@ public class App extends MultiDexApplication {
             System.loadLibrary(str);
         }
         qupaiAuth(null);
+
+        chatMsgListener();
+    }
+
+    private void chatMsgListener() {
+        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+            @Override
+            public boolean onReceived(Message message, int i) {
+                return false;
+            }
+        });
     }
 
     public static void qupaiAuth(final ApiCallback<String> callback) {
