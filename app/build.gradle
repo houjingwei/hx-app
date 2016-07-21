@@ -134,6 +134,8 @@ dependencies {
     compile project(':SwipeMenu')
 
     compile 'com.maning:librarymclearedittext:1.0.0'
+
+    compile 'org.greenrobot:eventbus:3.0.0'
 }
 
 //镜像仓库
