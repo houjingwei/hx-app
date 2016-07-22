@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.huixiangtv.liveshow.Api;
 import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.Constant;
@@ -46,6 +45,7 @@ import com.huixiangtv.liveshow.pop.ShareWindow;
 import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.service.ChatTokenCallBack;
 import com.huixiangtv.liveshow.service.LoginCallBack;
+import com.huixiangtv.liveshow.service.MessageEvent;
 import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
@@ -59,6 +59,10 @@ import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,8 +71,6 @@ import java.util.Map;
 import java.util.Set;
 
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Message;
-import io.rong.message.TextMessage;
 import simbest.com.sharelib.ShareModel;
 
 /**
@@ -281,6 +283,10 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     public void loadLive() {
 
+        //注册eventBus
+        EventBus.getDefault().register(activity);
+        Log.i("eventBus","注册eventBus");
+
         //检测当前登录用户是否已经关注了艺人
         if(null!=App.getLoginUser()) {
             fendStatus();
@@ -383,7 +389,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
         App.imClient.joinChatRoom(live.getChatroom(), -1, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
-                RongIMClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
+
             }
 
             @Override
@@ -900,29 +906,21 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
 
-    private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
-        @Override
-        public boolean onReceived(Message message, int i) {
-            if (message.getContent() instanceof TextMessage) {
-                TextMessage tm = (TextMessage) message.getContent();
-                final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
-                Log.i("myCloseclose",msg.getMsgType()+"");
-                msg.setContent(tm.getContent().toString());
-                if(null!=App.getLoginUser() && !msg.getUid().equals(App.getLoginUser().getUid())){
-                    msgRecive(msg);
-                }else if(null==App.getLoginUser()){
-                    msgRecive(msg);
-                }
 
-
-            }
-            return false;
-        }
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onUserEvent(MessageEvent event) {
+        Log.i("eventBus","接收到了消息");
+        msgRecive(event.getMsg());
     }
 
-    private void msgRecive(final LiveMsg msg) {
-        if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
 
+
+
+
+    private void msgRecive(final LiveMsg msg) {
+
+        if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
+            Log.i("eventBus","开始执行");
             msgListView.post(new Runnable() {
 
                 public void run() {

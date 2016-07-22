@@ -281,16 +281,41 @@
 
         <activity
             android:name=".activity.DynamicDetialActivity"
-            android:theme="@style/backStyle"
             android:screenOrientation="portrait"
+            android:theme="@style/backStyle"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".activity.FriendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-        <activity android:name=".activity.UserDetialActivity"
+        <activity
+            android:name=".activity.UserInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"/>
+            android:theme="@style/backStyle" />
+        <activity
+            android:name=".activity.AddFriendActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle" />
+        <activity
+            android:name=".activity.ChatMsgActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle" />
+
+        <activity
+            android:name=".activity.AddGroupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle" />
+
+        <receiver
+            android:name=".service.RongIMNotificationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

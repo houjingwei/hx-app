@@ -205,7 +205,7 @@ public class UserWindow extends BasePopupWindow implements OnClickListener {
                 if (null != App.getLoginUser()) {
                     Map<String,String> map = new HashMap<>();
                     map.put("uid",live.getUid());
-                    ForwardUtils.target(context, Constant.USER_INFO, null);
+                    ForwardUtils.target(context, Constant.USER_INFO, map);
                 }else{
                     CommonHelper.showLoginPopWindow(context, R.id.liveMain, new LoginCallBack() {
                         @Override

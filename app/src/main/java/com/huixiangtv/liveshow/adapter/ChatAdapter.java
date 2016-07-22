@@ -67,7 +67,7 @@ public class ChatAdapter extends BaseAdapter {
         if(convertView == null)
         {
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.fragment_chat_item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.fragment_chatitem, parent, false);
             holder.tvUnRead = (TextView) convertView.findViewById(R.id.tvUnRead);
             holder.tvNickName = (TextView) convertView.findViewById(R.id.tvNickName);
             holder.tvMsg = (TextView) convertView.findViewById(R.id.tvMsg);

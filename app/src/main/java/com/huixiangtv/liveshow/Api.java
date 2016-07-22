@@ -89,7 +89,6 @@ public class Api {
     public static final String TIP_OFF = BASE_URL+"message/tip-off";
 
 
-
     //我关注的人
     public static String GETCOLLECTARTIST = BASE_URL+"fans/getCollectArtist";
     //我的粉丝
@@ -190,11 +189,17 @@ public class Api {
     public static final String MY_FRIEND = BASE_URL + "friend/myFriend";
     //是否是朋友
     public static final String IS_FRIEND = BASE_URL + "friend/isFriend";
+    //申请加为朋友
+    public static final String ADD_FRIEND =BASE_URL + "friend/applyAddFriend";
+    //删除好友
+    public static final String DEL_FRIEND =BASE_URL + "friend/removeFriend";
 
     public static final String MY_JOIN_GROUPS = BASE_URL + "friend/myJoinGroups";
 
     public static final String GET_GROUP_MEMBER = BASE_URL + "friend/getGroupMember";
 
     public static final String GET_GROUP_INFO = BASE_URL + "friend/getGroupInfo";
+
+    public static  final String CREATE_GROUP = BASE_URL + "friend/createGroup";
 
 }

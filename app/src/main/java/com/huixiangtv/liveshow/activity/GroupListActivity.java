@@ -37,6 +37,7 @@ import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Group;
 import io.rong.imlib.model.UserInfo;
 
 /**
@@ -74,7 +75,7 @@ public class GroupListActivity extends BaseBackActivity {
         commonTitleImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ForwardUtils.target(GroupListActivity.this, Constant.GROUP_CHAT_INFO, null);
+                ForwardUtils.target(GroupListActivity.this, Constant.ADD_GROUP, null);
             }
         });
 
@@ -94,8 +95,9 @@ public class GroupListActivity extends BaseBackActivity {
         refreshView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
+                if(position>1) {
+                    ForwardUtils.target(GroupListActivity.this, Constant.CHAT_MSG, null);
+                }
             }
         });
     }

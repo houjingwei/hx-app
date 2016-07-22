@@ -6,7 +6,10 @@ import android.content.Intent;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.activity.AccountActivity;
+import com.huixiangtv.liveshow.activity.AddFriendActivity;
+import com.huixiangtv.liveshow.activity.AddGroupActivity;
 import com.huixiangtv.liveshow.activity.AttentionMeActivity;
+import com.huixiangtv.liveshow.activity.ChatMsgActivity;
 import com.huixiangtv.liveshow.activity.CouponActivity;
 import com.huixiangtv.liveshow.activity.DynamicDetialActivity;
 import com.huixiangtv.liveshow.activity.GroupChatInfoActivity;
@@ -32,7 +35,7 @@ import com.huixiangtv.liveshow.activity.RegPicListActivity;
 import com.huixiangtv.liveshow.activity.SearchActivity;
 import com.huixiangtv.liveshow.activity.SettingActivity;
 import com.huixiangtv.liveshow.activity.TopicActivity;
-import com.huixiangtv.liveshow.activity.UserDetialActivity;
+import com.huixiangtv.liveshow.activity.UserInfoActivity;
 import com.huixiangtv.liveshow.activity.UserTagActivity;
 import com.huixiangtv.liveshow.activity.MyInfoActivity;
 import com.huixiangtv.liveshow.activity.WebActivity;
@@ -68,7 +71,7 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, MyInfoActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.equals(Constant.USER_INFO)) {
-                Intent intent = new Intent(oriActivity, UserDetialActivity.class);
+                Intent intent = new Intent(oriActivity, UserInfoActivity.class);
                 toIntent(oriActivity, params, intent);
             }else if (url.equals(Constant.USERTAG)) {
                 Intent intent = new Intent(oriActivity, UserTagActivity.class);
@@ -152,6 +155,15 @@ public class ForwardUtils {
             }else if (url.equals(Constant.FRIEND)){
                 Intent intent = new Intent(oriActivity, FriendActivity.class);
                 toIntent(oriActivity,params,intent);
+            }else if(url.equals(Constant.ADD_FRIEND)){
+                Intent intent = new Intent(oriActivity, AddFriendActivity.class);
+                setIntentInfo(intent,params);
+                oriActivity.startActivityForResult(intent, 1);
+                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+
+            }else if (url.equals(Constant.CHAT_MSG)){
+                Intent intent = new Intent(oriActivity, ChatMsgActivity.class);
+                toIntent(oriActivity,params,intent);
             }
             else if (url.equals(Constant.GROUP_LIST)){
                 Intent intent = new Intent(oriActivity, GroupListActivity.class);
@@ -165,6 +177,12 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, GroupMemberListActivity.class);
                 toIntent(oriActivity,params,intent);
             }
+            else if (url.equals(Constant.ADD_GROUP)){
+                Intent intent = new Intent(oriActivity, AddGroupActivity.class);
+                toIntent(oriActivity,params,intent);
+            }
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
