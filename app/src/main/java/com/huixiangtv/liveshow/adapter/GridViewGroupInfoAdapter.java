@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.model.DynamicImage;
+import com.huixiangtv.liveshow.ui.ZJImageView;
 import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import com.huixiangtv.liveshow.utils.image.RoundImageView;
@@ -60,7 +62,7 @@ public class GridViewGroupInfoAdapter extends BaseAdapter {
 
     public class ViewHolder {
 
-        private RoundImageView mImageView;
+        private ZJImageView mImageView;
         private TextView tvName;
         private SquareLayout rlSL;
 
@@ -75,7 +77,7 @@ public class GridViewGroupInfoAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.img_gridview_group_item, null);
             viewHolder = new ViewHolder();
-            viewHolder.mImageView = (RoundImageView) convertView
+            viewHolder.mImageView = (ZJImageView) convertView
                     .findViewById(R.id.iv_gridview_img);
             viewHolder.rlSL = (SquareLayout) convertView.findViewById(R.id.rlSL);
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvName);

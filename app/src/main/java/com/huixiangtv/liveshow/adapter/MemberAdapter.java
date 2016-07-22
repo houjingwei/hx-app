@@ -79,7 +79,7 @@ public class MemberAdapter extends BaseAdapter {
         }
 
 
-        ImageUtils.display(holder.ivPhoto,member.ivPhone);
+        ImageUtils.display(holder.ivPhoto,member.photo);
 
         holder.tvGX.setText(member.gx);
         holder.tvTitle.setText(member.title);

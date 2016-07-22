@@ -191,5 +191,10 @@ public class Api {
     //是否是朋友
     public static final String IS_FRIEND = BASE_URL + "friend/isFriend";
 
+    public static final String MY_JOIN_GROUPS = BASE_URL + "friend/myJoinGroups";
+
+    public static final String GET_GROUP_MEMBER = BASE_URL + "friend/getGroupMember";
+
+    public static final String GET_GROUP_INFO = BASE_URL + "friend/getGroupInfo";
 
 }

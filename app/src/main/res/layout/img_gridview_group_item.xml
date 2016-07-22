@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <com.huixiangtv.liveshow.utils.widget.SquareLayout
         xmlns:zhy="http://schemas.android.com/apk/res-auto"
         android:id="@+id/rlSL"
@@ -9,22 +9,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-        <com.huixiangtv.liveshow.utils.image.RoundImageView
+
+        <com.huixiangtv.liveshow.ui.ZJImageView
             android:id="@+id/iv_gridview_img"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            zhy:border_color_riv="@color/white"
-            zhy:border_width_riv="1dp"
-            zhy:corner_radius="2dp"
-            zhy:mutate_background="true"
-            zhy:oval="false" />
+            android:src="@drawable/default_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            zhy:radius="2dp"
+            zhy:shape_type="rectangle" />
 
 
         <TextView
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:id="@+id/tvName"
+            android:textSize="12sp"
+            android:visibility="gone"
             android:singleLine="true"
             android:gravity="center"
             android:layout_below="@id/iv_gridview_img"
