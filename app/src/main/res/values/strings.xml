@@ -242,6 +242,7 @@
     <string name="setRemark">设置备注</string>
     <string name="userTag">标签</string>
     <string name="localArea">地区</string>
+    <string name="add">添加</string>
 
 
     <string-array name="dynamic_video">

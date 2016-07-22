@@ -281,22 +281,26 @@
             android:name=".activity.AddFriendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-        <activity android:name=".activity.ChatMsgActivity"
+        <activity
+            android:name=".activity.ChatMsgActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"/>
-
-
-
+            android:theme="@style/backStyle" />
+        <activity android:name=".activity.NewFriendActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle" />
         <receiver
-            android:exported="true"
-            android:name=".service.RongIMNotificationReceiver">
+            android:name=".service.RongIMNotificationReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
                 <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
                 <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
                 <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
+                <action android:name="com.hjw.test"/>
             </intent-filter>
         </receiver>
+
+
     </application>
 
 </manifest>

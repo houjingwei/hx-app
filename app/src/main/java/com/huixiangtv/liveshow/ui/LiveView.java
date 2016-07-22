@@ -45,7 +45,6 @@ import com.huixiangtv.liveshow.pop.ShareWindow;
 import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.service.ChatTokenCallBack;
 import com.huixiangtv.liveshow.service.LoginCallBack;
-import com.huixiangtv.liveshow.service.MessageEvent;
 import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
@@ -58,10 +57,6 @@ import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -283,9 +278,7 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
     public void loadLive() {
 
-        //注册eventBus
-        EventBus.getDefault().register(activity);
-        Log.i("eventBus","注册eventBus");
+
 
         //检测当前登录用户是否已经关注了艺人
         if(null!=App.getLoginUser()) {
@@ -369,7 +362,6 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
                 }
             });
         }
-        App.imClient.logout();
         final RongyunUtils utils = new RongyunUtils(App.getContext());
         utils.chatToken(new ChatTokenCallBack() {
             @Override
@@ -907,17 +899,9 @@ public class LiveView extends RelativeLayout implements View.OnClickListener {
 
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
-    public void onUserEvent(MessageEvent event) {
-        Log.i("eventBus","接收到了消息");
-        msgRecive(event.getMsg());
-    }
 
 
-
-
-
-    private void msgRecive(final LiveMsg msg) {
+    public void msgRecive(final LiveMsg msg) {
 
         if (msg.getMsgType().equals(Constant.MSG_TYPE_BASE)) {
             Log.i("eventBus","开始执行");

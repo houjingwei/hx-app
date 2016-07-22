@@ -12,15 +12,13 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.duanqu.qupai.auth.AuthService;
 import com.duanqu.qupai.auth.QupaiAuthListener;
 import com.huixiangtv.liveshow.model.Gift;
-import com.huixiangtv.liveshow.model.LiveMsg;
 import com.huixiangtv.liveshow.model.User;
 import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.service.ChatTokenCallBack;
-import com.huixiangtv.liveshow.service.MessageEvent;
+import com.huixiangtv.liveshow.service.MyReceiveMessageListener;
 import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
@@ -29,8 +27,6 @@ import com.huixiangtv.liveshow.utils.RongyunUtils;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.xutils.x;
 
 import java.lang.reflect.Field;
@@ -45,8 +41,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Message;
-import io.rong.message.TextMessage;
 
 /**
  * Created by hjw on 16/5/4.
@@ -72,6 +66,8 @@ public class App extends MultiDexApplication {
     private List<Activity> listActivity = new LinkedList<Activity>();
     //屏幕宽度，屏幕高度
     public static int screenWidth, screenHeight, statuBarHeight;
+
+    MyReceiveMessageListener _myReceiveMessageListener;
 
 
 
@@ -121,13 +117,20 @@ public class App extends MultiDexApplication {
                 "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
             RongIMClient.init(this);
         }
+
+        _myReceiveMessageListener = MyReceiveMessageListener.getInstance();
         imClient = RongIMClient.getInstance();
-        final RongyunUtils rongyun = new RongyunUtils(this);
-        rongyun.chatToken(new ChatTokenCallBack() {
+        RongIMClient.setOnReceiveMessageListener(_myReceiveMessageListener);
+        final RongyunUtils utils = new RongyunUtils(App.getContext());
+        utils.chatToken(new ChatTokenCallBack() {
             @Override
             public void getTokenSuccess(String token) {
-
-                rongyun.connect(token,null);
+                utils.connect(token, new ChatTokenCallBack() {
+                    @Override
+                    public void getTokenSuccess(String token) {
+                        Log.e("eventBus", "jianting");
+                    }
+                });
             }
         });
         for (String str : new String[]{"gnustl_shared", "qupai-media-thirdparty", "qupai-media-jni"}) {
@@ -135,42 +138,8 @@ public class App extends MultiDexApplication {
         }
         qupaiAuth(null);
 
-
-        EventBus.getDefault().register(this);
-        Log.i("eventBus","App注册eventBus");
-        msgListener();
     }
 
-    private void msgListener() {
-        RongIMClient.setOnReceiveMessageListener(new MyReceiveMessageListener());
-    }
-
-    @Subscribe
-    public void handleMessage(MessageEvent event) {
-        EventBus.getDefault().post(new MessageEvent(event.getMsg()));
-    }
-
-
-
-
-    private class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
-        @Override
-        public boolean onReceived(Message message, int i) {
-            Log.i("eventBus","收到了消息");
-            if (message.getContent() instanceof TextMessage) {
-                TextMessage tm = (TextMessage) message.getContent();
-                final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
-                msg.setContent(tm.getContent().toString());
-
-                if(null!=App.getLoginUser() && !msg.getUid().equals(App.getLoginUser().getUid())){
-                    handleMessage(new MessageEvent(msg));
-                }else if(null==App.getLoginUser()){
-                    handleMessage(new MessageEvent(msg));
-                }
-            }
-            return false;
-        }
-    }
 
 
     public static void qupaiAuth(final ApiCallback<String> callback) {

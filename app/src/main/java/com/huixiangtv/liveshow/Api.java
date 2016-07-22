@@ -89,6 +89,7 @@ public class Api {
     public static final String TIP_OFF = BASE_URL+"message/tip-off";
 
 
+
     //我关注的人
     public static String GETCOLLECTARTIST = BASE_URL+"fans/getCollectArtist";
     //我的粉丝
@@ -193,6 +194,8 @@ public class Api {
     public static final String ADD_FRIEND =BASE_URL + "friend/applyAddFriend";
     //删除好友
     public static final String DEL_FRIEND =BASE_URL + "friend/removeFriend";
+    //申请加我为好友的列表
+    public static final String APPLY_ADD_ME_LIST =BASE_URL + "friend/applyAddFriendForMe";
 
 
 }

@@ -18,6 +18,7 @@ import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.ijk.widget.media.IjkVideoView;
 import com.huixiangtv.liveshow.model.Live;
+import com.huixiangtv.liveshow.model.LiveMsg;
 import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
@@ -28,7 +29,9 @@ import com.huixiangtv.liveshow.utils.MeizuSmartBarUtils;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import com.umeng.socialize.UMShareAPI;
 
-import org.greenrobot.eventbus.EventBus;
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -71,6 +74,10 @@ public class LiveActivity extends BaseBackActivity{
         setContentView(R.layout.activity_live);
         x.view().inject(this);
 
+        //注册eventBus
+        EventBus.getDefault().register(this);
+        Log.i("eventBus","注册eventBus");
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
         }
@@ -93,6 +100,14 @@ public class LiveActivity extends BaseBackActivity{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
         }
+    }
+
+    @Subscriber(tag = "live_tag", mode = ThreadMode.MAIN)
+    public void reciveLive(LiveMsg msg) {
+        if(null!=liveView){
+            liveView.msgRecive(msg);
+        }
+
     }
 
 

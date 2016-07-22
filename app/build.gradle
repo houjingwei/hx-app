@@ -132,10 +132,9 @@ dependencies {
     compile 'com.afollestad.material-dialogs:commons:0.8.6.1'
     compile project(':FlycoTabLayout_Lib')
     compile project(':SwipeMenu')
-
     compile 'com.maning:librarymclearedittext:1.0.0'
 
-    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'org.simple:androideventbus:1.0.5.1'
 }
 
 //镜像仓库

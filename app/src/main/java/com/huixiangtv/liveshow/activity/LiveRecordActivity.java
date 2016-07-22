@@ -60,7 +60,9 @@ import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import com.umeng.socialize.UMShareAPI;
 
-import org.greenrobot.eventbus.EventBus;
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -107,6 +109,9 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live);
         x.view().inject(this);
+        //注册eventBus
+        EventBus.getDefault().register(this);
+        Log.i("eventBus","注册eventBus");
         if (MeizuSmartBarUtils.hasSmartBar()) {
             View decorView = getWindow().getDecorView();
             MeizuSmartBarUtils.hide(decorView);
@@ -129,7 +134,13 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
 
 
 
+    @Subscriber(tag = "live_tag", mode = ThreadMode.MAIN)
+    public void reciveLive(LiveMsg msg) {
+        if(null!=liveView){
+            liveView.msgRecive(msg);
+        }
 
+    }
 
 
     @TargetApi(19)

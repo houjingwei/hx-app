@@ -63,13 +63,12 @@ public class RequestUtils {
         reParams.setCharset("utf-8");
         reParams.addBodyParameter("deviceId", App.deviceVersion + "");
 
-        boolean hasUid = paramsMap.containsKey("uid");
-        if (!hasUid) {
-            if (null != App.getLoginUser() && (paramsMap == null || !paramsMap.containsKey("uid"))) {
-                reParams.addBodyParameter("uid", App.getLoginUser().getUid() + "");
-                reParams.addBodyParameter("token", App.getLoginUser().getToken() + "");
-            }
+
+        if (null != App.getLoginUser() && (paramsMap == null || !paramsMap.containsKey("uid"))) {
+            reParams.addBodyParameter("uid", App.getLoginUser().getUid() + "");
+            reParams.addBodyParameter("token", App.getLoginUser().getToken() + "");
         }
+
 
         //解析封装参数
         if (null != paramsMap && paramsMap.size() > 0) {

@@ -356,7 +356,7 @@ public class AnimHelper {
         final View barrageView = View.inflate(activity, R.layout.gift_barrage, null);
         flLive.addView(barrageView);
         TextView tvNickName = (TextView) barrageView.findViewById(R.id.tvNickName);
-        TextView tvMsg = (TextView) barrageView.findViewById(R.id.tvMsg);
+        final TextView tvMsg = (TextView) barrageView.findViewById(R.id.tvMsg);
         final ImageView ivPhoto = (ImageView) barrageView.findViewById(R.id.ivPhoto);
         final ImageView ivGift = (ImageView) barrageView.findViewById(R.id.ivGift);
 
@@ -378,6 +378,7 @@ public class AnimHelper {
                 public void onSuccess(Object data) {
                     if(null!=App.giftMap.get(msg.getGid())){
                         ImageUtils.displayAvator(ivGift,App.giftMap.get(msg.getGid()).getIcon());
+                        tvMsg.setText(msg.getContent());
                     }
 
                 }

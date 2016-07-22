@@ -9,6 +9,10 @@ public class Friend {
     private String nickName;
     private String photo;
     private String sex;
+    private String content;
+    private String status;
+    private String applyTime;
+    private String replyContent;
 
     public String getUid() {
         return uid;
@@ -40,6 +44,38 @@ public class Friend {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getApplyTime() {
+        return applyTime;
+    }
+
+    public void setApplyTime(String applyTime) {
+        this.applyTime = applyTime;
+    }
+
+    public String getReplyContent() {
+        return replyContent;
+    }
+
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent;
     }
 
     public Friend(String uid, String nickName, String photo, String sex) {

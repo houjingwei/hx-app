@@ -44,6 +44,9 @@ import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -51,6 +54,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.rong.imlib.model.Message;
 import me.drakeet.materialdialog.MaterialDialog;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -98,12 +102,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setGuidle();
         CheckVersion();
         isBigImage();
+
+
+
     }
 
     private void initWindow() {
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.colorPrimary);
+    }
+
+    @Subscriber(tag = "no_execute", mode = ThreadMode.MAIN)
+    public void reciveLive(Message msg) {
+        Log.i("eventBus","永不执行");
     }
 
 
@@ -560,5 +572,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+        Log.i("eventBus","MainActivity注册eventBus");
+    }
 }
