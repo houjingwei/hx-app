@@ -196,6 +196,8 @@ public class Api {
     public static final String DEL_FRIEND =BASE_URL + "friend/removeFriend";
     //申请加我为好友的列表
     public static final String APPLY_ADD_ME_LIST =BASE_URL + "friend/applyAddFriendForMe";
+    //回复添加好友
+    public static final String REPLY_ADD_FRIEND = BASE_URL + "friend/replyAddFriend";
 
 
 }

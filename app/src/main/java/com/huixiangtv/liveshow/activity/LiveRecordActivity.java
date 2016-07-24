@@ -960,8 +960,7 @@ public class LiveRecordActivity extends Activity implements View.OnClickListener
         super.onDestroy();
         _Client.stopPreview();
         _Client = null;
-        EventBus.getDefault().unregister(this);
-        Log.i("eventBus","反注册eventBus");
+
     }
 
     public void setIsLocal(int isLocal) {

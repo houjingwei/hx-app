@@ -21,6 +21,7 @@ import com.huixiangtv.liveshow.activity.MyAttentionActivity;
 import com.huixiangtv.liveshow.activity.MyCircleActivity;
 import com.huixiangtv.liveshow.activity.MyHotsActivity;
 import com.huixiangtv.liveshow.activity.MylovesActivity;
+import com.huixiangtv.liveshow.activity.NewFriendActivity;
 import com.huixiangtv.liveshow.activity.PhoneBindActivity;
 import com.huixiangtv.liveshow.activity.PushDynamicActivity;
 import com.huixiangtv.liveshow.activity.RegLiveActivity;
@@ -159,6 +160,9 @@ public class ForwardUtils {
 
             }else if (url.equals(Constant.CHAT_MSG)){
                 Intent intent = new Intent(oriActivity, ChatMsgActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.equals(Constant.NEW_FRIEND)){
+                Intent intent = new Intent(oriActivity, NewFriendActivity.class);
                 toIntent(oriActivity,params,intent);
             }
 

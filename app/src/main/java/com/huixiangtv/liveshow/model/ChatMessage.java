@@ -6,6 +6,7 @@ package com.huixiangtv.liveshow.model;
 public class ChatMessage {
 
     private String content;
+    private String sendStatus;
     private MsgExt ext;
 
     public String getContent() {
@@ -22,5 +23,13 @@ public class ChatMessage {
 
     public void setExt(MsgExt ext) {
         this.ext = ext;
+    }
+
+    public String getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(String sendStatus) {
+        this.sendStatus = sendStatus;
     }
 }

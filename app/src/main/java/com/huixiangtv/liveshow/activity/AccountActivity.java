@@ -1,6 +1,7 @@
 package com.huixiangtv.liveshow.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +33,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.message.TextMessage;
+
 public class AccountActivity extends BaseBackActivity implements View.OnClickListener{
 
 
-
-
+    private static final String TAG = "AccountActivity";
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 
@@ -49,6 +53,11 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
 
     @ViewInject(R.id.listView)
     ListView listView;
+
+
+    @ViewInject(R.id.t1)
+    TextView t1;
+
 
 
     PayCoinAdapter adapter;
@@ -179,6 +188,24 @@ public class AccountActivity extends BaseBackActivity implements View.OnClickLis
         });
 
         tvXieyi.setOnClickListener(this);
+
+        t1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                App.imClient.sendMessage(Conversation.ConversationType.PRIVATE, "4",
+                        TextMessage.obtain("我是消息内容"), null, null, new RongIMClient.SendMessageCallback() {
+                            @Override
+                            public void onSuccess(Integer integer) {
+                                Log.d(TAG, "发送成功");
+                            }
+
+                            @Override
+                            public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
+                                Log.d(TAG, "发送失败");
+                            }
+                        }, null);
+            }
+        });
 
     }
 

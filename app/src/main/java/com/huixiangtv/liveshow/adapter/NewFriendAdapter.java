@@ -2,6 +2,7 @@ package com.huixiangtv.liveshow.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.huixiangtv.liveshow.Api;
 import com.huixiangtv.liveshow.R;
+import com.huixiangtv.liveshow.activity.NewFriendActivity;
 import com.huixiangtv.liveshow.model.Friend;
+import com.huixiangtv.liveshow.service.RequestUtils;
+import com.huixiangtv.liveshow.service.ResponseCallBack;
+import com.huixiangtv.liveshow.service.ServiceException;
+import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 
 import java.util.ArrayList;
@@ -48,7 +55,7 @@ public class NewFriendAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         Friend friend = (Friend) getItem(position);
-        if(!friend.getStatus().equals("0")){
+        if(friend.getStatus().equals("0")){
             return YES;
         }
         return NO;
@@ -80,7 +87,7 @@ public class NewFriendAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder = null;
-        Friend friend = (Friend) getItem(position);
+        final Friend friend = (Friend) getItem(position);
         if(getItemViewType(position)==NO){
             if(convertView == null)
             {
@@ -116,7 +123,7 @@ public class NewFriendAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     //添加好友
-
+                    replyAddFriend(friend);
                 }
             });
             holder.tvValues.setText("贡献值:"+1987);
@@ -131,6 +138,31 @@ public class NewFriendAdapter extends BaseAdapter {
 
 
         return convertView;
+    }
+
+    private void replyAddFriend(final Friend friend) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("type","2");
+        params.put("content","");
+        params.put("fid",friend.getUid());
+        RequestUtils.sendPostRequest(Api.REPLY_ADD_FRIEND, params, new ResponseCallBack<Friend>() {
+            @Override
+            public void onSuccessList(List<Friend> data) {
+                super.onSuccessList(data);
+                CommonHelper.showTip(context,"已成功添加好友");
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        ((NewFriendActivity)activity).refresh();
+                    }
+                }, 1000);
+
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                CommonHelper.showTip(context,e.getMessage());
+            }
+        }, Friend.class);
     }
 
     public void clear() {

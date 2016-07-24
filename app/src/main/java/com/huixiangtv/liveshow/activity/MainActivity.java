@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.huixiangtv.liveshow.Api;
@@ -54,7 +55,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.message.TextMessage;
 import me.drakeet.materialdialog.MaterialDialog;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -78,7 +82,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @ViewInject(R.id.iv3)
     ImageView iv3;
 
-    @ViewInject(R.id.main)
+
+
 
 
     FragmentTabOne fragmentOne;
@@ -111,6 +116,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.colorPrimary);
+
+
+
+
     }
 
     @Subscriber(tag = "no_execute", mode = ThreadMode.MAIN)
@@ -576,6 +585,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
-        Log.i("eventBus","MainActivity注册eventBus");
     }
 }

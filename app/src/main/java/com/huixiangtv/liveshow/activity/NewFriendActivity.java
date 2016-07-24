@@ -49,14 +49,18 @@ public class NewFriendActivity extends BaseBackActivity {
         loadData();
     }
 
+    String page = "1";
     private void loadData() {
         Map<String, String> params = new HashMap<String, String>();
-        params.put("page","1");
+        params.put("page",page);
         params.put("pageSize","10000");
         RequestUtils.sendPostRequest(Api.APPLY_ADD_ME_LIST, params, new ResponseCallBack<Friend>() {
             @Override
             public void onSuccessList(List<Friend> data) {
                 super.onSuccessList(data);
+                if(page.equals("1")){
+                    adapter.clear();
+                }
                 adapter.addList(data);
             }
 
@@ -133,8 +137,7 @@ public class NewFriendActivity extends BaseBackActivity {
     }
 
 
-
-
-
-
+    public void refresh() {
+        loadData();
+    }
 }

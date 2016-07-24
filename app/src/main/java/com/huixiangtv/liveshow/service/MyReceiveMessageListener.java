@@ -35,18 +35,25 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
     }
 
 
+
+
     @Override
     public boolean onReceived(Message message, int i) {
         Log.i("eventBus","收到了消息"+message.getContent());
-        handleChatMessage(message);
 
 
         if(message.getConversationType().equals(Conversation.ConversationType.PRIVATE)){
             Log.i("eventBus","收到了私聊消息"+message.getContent());
+            handleChatMessage(message);
         }else if(message.getConversationType().equals(Conversation.ConversationType.GROUP)){
             Log.i("eventBus","收到了群聊消息"+message.getContent());
         }else if(message.getConversationType().equals(Conversation.ConversationType.SYSTEM)){
             Log.i("eventBus","收到了系统消息"+message.getContent());
+            if(message.getContent() instanceof  TextMessage){
+                TextMessage tm = (TextMessage) message.getContent();
+                final LiveMsg msg = JSON.parseObject(String.valueOf(tm.getExtra()), LiveMsg.class);
+                Log.i("eventBus","收到了系统消息"+msg.getMsgType());
+            }
         }else if(message.getConversationType().equals(Conversation.ConversationType.CHATROOM)){
             Log.i("eventBus","收到了聊天室消息"+message.getContent());
             if (message.getContent() instanceof TextMessage) {
@@ -60,14 +67,11 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
                 }
             }
         }
-
-
-
         return false;
     }
 
     private void handleChatMessage(Message message) {
-        EventBus.getDefault().post(message,"no_execute");
+        EventBus.getDefault().post(message,"msg");
     }
 
     public void handleLiveMessage(LiveMsg msg) {

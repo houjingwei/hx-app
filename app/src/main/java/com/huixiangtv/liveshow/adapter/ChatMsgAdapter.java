@@ -18,6 +18,8 @@ import com.huixiangtv.liveshow.utils.image.ImageUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.imlib.model.Message;
+
 /**
  * Created by hjw on 16/5/13.
  */
@@ -60,10 +62,10 @@ public class ChatMsgAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         ChatMessage msg = (ChatMessage) getItem(position);
-        if(null!=msg && msg.getExt().getMsgType().equals("0")){
-                return LEFT;
+        if(null!=msg && msg.getSendStatus().equals(Message.SentStatus.SENT.name())){
+                return RIGHT;
         }
-        return RIGHT;
+        return LEFT;
     }
 
     @Override
@@ -125,6 +127,10 @@ public class ChatMsgAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void add(ChatMessage msg) {
+        voList.add(msg);
+        notifyDataSetChanged();
+    }
 
 
     static class ViewHolder

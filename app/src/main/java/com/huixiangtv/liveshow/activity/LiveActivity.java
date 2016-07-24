@@ -371,8 +371,7 @@ public class LiveActivity extends BaseBackActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        Log.i("eventBus","反注册eventBus");
+
         if (null != mVideoView) {
             if (!mVideoView.isBackgroundPlayEnabled()) {
                 mVideoView.stopPlayback();

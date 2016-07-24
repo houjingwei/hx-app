@@ -9,7 +9,6 @@
     android:orientation="vertical"
     tools:context="com.huixiangtv.liveshow.activity.MainActivity">
 
-
     <!-- 内容界面 -->
     <FrameLayout
         android:layout_above="@+id/spline"

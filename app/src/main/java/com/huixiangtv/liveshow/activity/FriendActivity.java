@@ -26,7 +26,9 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FriendActivity extends BaseBackActivity {
 
@@ -60,7 +62,7 @@ public class FriendActivity extends BaseBackActivity {
         view.findViewById(R.id.llNewFriend).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                ForwardUtils.target(FriendActivity.this,Constant.NEW_FRIEND,null);
             }
         });
         //群聊
@@ -83,10 +85,13 @@ public class FriendActivity extends BaseBackActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i>0){
-                    ForwardUtils.target(FriendActivity.this, Constant.CHAT_MSG,null);
 
-                }
+                Friend friend = (Friend) adapter.getItem(i-1);
+                Map<String,String> map = new HashMap<String,String>();
+                map.put("targetId",friend.getUid());
+                map.put("userName",friend.getNickName());
+                ForwardUtils.target(FriendActivity.this, Constant.CHAT_MSG,map);
+
 
             }
         });
