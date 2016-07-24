@@ -79,10 +79,10 @@ public class MemberAdapter extends BaseAdapter {
         }
 
 
-        ImageUtils.display(holder.ivPhoto,member.photo);
+        ImageUtils.display(holder.ivPhoto,member.getPhoto());
 
-        holder.tvGX.setText(member.gx);
-        holder.tvTitle.setText(member.title);
+        holder.tvGX.setText(member.getGx());
+        holder.tvTitle.setText(member.getNickName());
 
 
         return convertView;

@@ -3,32 +3,37 @@ package com.huixiangtv.liveshow.fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.adapter.ChatAdapter;
+import com.huixiangtv.liveshow.model.Friend;
 import com.huixiangtv.liveshow.model.MsgContent;
+import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
+import me.drakeet.materialdialog.MaterialDialog;
 
 
-public class FragmentChat extends Fragment implements View.OnClickListener {
+public class FragmentChat extends BaseFragment  implements View.OnClickListener {
 
     View mRootView;
-
-
     private ListView mListView;
     private ChatAdapter adapter;
 
@@ -38,8 +43,8 @@ public class FragmentChat extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_chat, container, false);
+        Log.i("fetchData","onCreateViewFragmentChat");
         initView();
-        initData();
         return mRootView;
     }
 
@@ -51,37 +56,10 @@ public class FragmentChat extends Fragment implements View.OnClickListener {
         App.imClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
             @Override
             public void onSuccess(List<Conversation> conversations) {
+                adapter.clear();
                 if(null!=conversations && conversations.size()>0){
                     adapter.addList(conversations);
-                }else{
-                    List<Conversation> ccc = new ArrayList<Conversation>();
-                    Conversation cs = new Conversation();
-                    cs.setConversationTitle("hahahah");
-                    cs.setReceivedTime(1468835349);
-                    cs.setUnreadMessageCount(5);
-                    MsgContent mc = new MsgContent();
-                    UserInfo ui = new UserInfo("1","zijing", Uri.parse("http://img0.imgtn.bdimg.com/it/u=1850159850,51447102&fm=21&gp=0.jpg"));
-                    mc.setUserInfo(ui);
-                    cs.setLatestMessage(mc);
-                    cs.setConversationType(Conversation.ConversationType.GROUP);
-
-
-                    Conversation cs1 = new Conversation();
-                    cs1.setConversationTitle("这是什么呀");
-                    cs1.setReceivedTime(1468835499);
-                    cs1.setUnreadMessageCount(0);
-                    MsgContent mc1 = new MsgContent();
-                    UserInfo ui1 = new UserInfo("2","代言", Uri.parse("http://img1.imgtn.bdimg.com/it/u=2266405879,637065588&fm=23&gp=0.jpg"));
-                    mc1.setUserInfo(ui1);
-                    cs1.setLatestMessage(mc1);
-                    cs1.setConversationType(Conversation.ConversationType.PRIVATE);
-
-
-                    ccc.add(cs);
-                    ccc.add(cs1);
-                    adapter.addList(ccc);
                 }
-
             }
 
             @Override
@@ -106,9 +84,59 @@ public class FragmentChat extends Fragment implements View.OnClickListener {
 
         adapter = new ChatAdapter(getActivity());
         mListView.setAdapter(adapter);
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Conversation cs = (Conversation) adapter.getItem(position-1);
+                delete(cs);
+                return true;
+            }
+        });
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Conversation cs = (Conversation) adapter.getItem(position-1);
+                Map<String,String> map = new HashMap<String,String>();
+                map.put("targetId",cs.getTargetId());
+                ForwardUtils.target(getActivity(), Constant.CHAT_MSG,map);
+            }
+        });
+
+
 
     }
 
+    private void delete(final Conversation cs) {
+        final MaterialDialog mMaterialDialog = new MaterialDialog(getActivity());
+        mMaterialDialog.setPositiveButton("删除", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMaterialDialog.dismiss();
+                App.imClient.removeConversation(cs.getConversationType(), cs.getTargetId(), new RongIMClient.ResultCallback<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean aBoolean) {
+                        CommonHelper.showTip(getActivity(),"删除成功");
+                        initData();
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+
+                    }
+                });
+            }
+        }).setNegativeButton("放弃", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mMaterialDialog.dismiss();
+                    }
+                });
+        mMaterialDialog.setTitle("回想提示");
+        mMaterialDialog.setMessage("确定要删除会话吗");
+        mMaterialDialog.show();
+
+    }
 
 
     @Override
@@ -128,9 +156,16 @@ public class FragmentChat extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        prepareFetchData(true);
 
     }
 
+
+    @Override
+    public void fetchData() {
+        Log.i("fetchData","queryFragmentChat");
+        initData();
+    }
 
 
 }

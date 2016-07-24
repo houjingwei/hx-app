@@ -28,14 +28,12 @@ public class AddFriendActivity extends BaseBackActivity {
     @ViewInject(R.id.tvApplyMsg)
     EditText tvApplyMsg;
 
-    String fid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
         x.view().inject(this);
-        fid = getIntent().getStringExtra("fid");
         initView();
     }
 
@@ -57,25 +55,11 @@ public class AddFriendActivity extends BaseBackActivity {
      * 添加朋友
      */
     private void addFriend() {
-        Map<String,String> params = new HashMap<>();
-        params.put("fid",fid);
-        params.put("content",tvApplyMsg.getText().toString());
-        RequestUtils.sendPostRequest(Api.ADD_FRIEND, params, new ResponseCallBack<String>() {
-            @Override
-            public void onSuccess(String data) {
-                Intent intent=new Intent();
-                intent.putExtra("status","1");
-                setResult(RESULT_OK, intent);
-                onBackPressed();
-            }
 
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-                CommonHelper.showTip(AddFriendActivity.this,e.getMessage());
-
-            }
-        }, String.class);
+        Intent intent=new Intent();
+        intent.putExtra("msg",tvApplyMsg.getText().toString());
+        setResult(RESULT_OK, intent);
+        onBackPressed();
 
     }
 }

@@ -253,12 +253,10 @@
     <string name="setRemark">设置备注</string>
     <string name="userTag">标签</string>
     <string name="localArea">地区</string>
-<<<<<<< HEAD
+
     <string name="add">添加</string>
 
-=======
     <string name="create_group">创建群</string>
->>>>>>> 2719bc81130816e273fc577833feaa7f8a349d4b
 
     <string-array name="dynamic_video">
         <item>录制拍摄</item>

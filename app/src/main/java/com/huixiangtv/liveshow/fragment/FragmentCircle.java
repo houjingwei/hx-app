@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FragmentCircle extends Fragment {
+public class FragmentCircle extends BaseFragment {
 
     private final String PAGESIZE = "10";
     View mRootView;
@@ -54,12 +54,13 @@ public class FragmentCircle extends Fragment {
     int page = 1;
     private FrameLayout main;
     public LinearLayout commentLinear;
-    private EditText commentEdit;        //评论输入框
+    private EditText commentEdit;//评论输入框
     private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_circle, container, false);
+        Log.i("fetchData","onCreateViewFragmentCircle");
         initView();
         return mRootView;
     }
@@ -139,7 +140,7 @@ public class FragmentCircle extends Fragment {
 
             }
         });
-        loadData();
+
 
     }
 
@@ -187,10 +188,6 @@ public class FragmentCircle extends Fragment {
                     } else {
                         adapter.addList(data);
                     }
-                } else {
-//                    if (page == 1) {
-//                        CommonHelper.noData("暂无动态", refreshView.getRefreshableView(), getActivity(), 2);
-//                    }
                 }
                 refreshView.onRefreshComplete();
             }
@@ -363,4 +360,9 @@ public class FragmentCircle extends Fragment {
         }
     }
 
+    @Override
+    public void fetchData() {
+        Log.i("fetchData","queryFragmentCircle");
+        loadData();
+    }
 }

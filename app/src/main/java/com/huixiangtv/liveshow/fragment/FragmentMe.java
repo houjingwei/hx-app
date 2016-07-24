@@ -2,6 +2,7 @@ package com.huixiangtv.liveshow.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import com.huixiangtv.liveshow.utils.ForwardUtils;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 
 
-public class FragmentMe extends Fragment implements View.OnClickListener {
+public class FragmentMe extends BaseFragment implements View.OnClickListener {
 
     View mRootView;
 
@@ -37,8 +38,8 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_me, container, false);
+        Log.i("fetchData","onCreateViewFragmentMe");
         initView();
-        initData();
         return mRootView;
     }
 
@@ -199,29 +200,9 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
 
 
 
-    private void ArtistCardInfoStatus() {
-        RequestUtils.sendPostRequest(Api.GET_USER_ARTISTCARD_STATUS, null, new ResponseCallBack<User>() {
-            @Override
-            public void onSuccess(User data) {
-                if (data != null) {
-
-                    if (data.getStatus().equals("1")) //status
-                    {
-                        mRootView.findViewById(R.id.rlCard).setVisibility(View.VISIBLE);
-                        mRootView.findViewById(R.id.rlAuth).setVisibility(View.GONE);
-                    }
-                    else
-                    {
-                        mRootView.findViewById(R.id.rlCard).setVisibility(View.GONE);
-                        mRootView.findViewById(R.id.rlAuth).setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-            }
-        }, User.class);
+    @Override
+    public void fetchData() {
+        Log.i("fetchData","queryFragmentMe");
+        initData();
     }
 }

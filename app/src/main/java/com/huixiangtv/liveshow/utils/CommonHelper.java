@@ -563,6 +563,29 @@ public class CommonHelper {
         }, Other.class);
     }
 
+
+    public static void joinFansGroup(String fid, final ApiCallback<Other> apiCallback) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("aid",fid);
+        RequestUtils.sendPostRequest(Api.JOIN_FANS_GROUP, params, new ResponseCallBack<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                super.onSuccess(data);
+                if(null!=data){
+                    apiCallback.onSuccess(data);
+                }else{
+                    apiCallback.onSuccess(null);
+                }
+            }
+
+            @Override
+            public void onFailure(ServiceException e) {
+                super.onFailure(e);
+                apiCallback.onFailure(e);
+            }
+        }, Other.class);
+    }
+
     public static void cutScreen(Activity activity)  {
         String dir = getSDCardPath();
         String filepath = dir+"/"+ System.currentTimeMillis()+".png";
@@ -751,4 +774,6 @@ public class CommonHelper {
             }
         }, PlayUrl.class);
     }
+
+
 }

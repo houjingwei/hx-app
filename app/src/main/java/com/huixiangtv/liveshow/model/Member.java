@@ -4,25 +4,93 @@ package com.huixiangtv.liveshow.model;
  * Created by Stone on 16/7/19.
  */
 public class Member {
-    public String uid;
+    private String uid;
 
-    public String nickName;
+    private String nickName;
 
-    public String photo;
+    private String photo;
 
-    public String title;
+    private String title;
 
-    public String gx;
+    private String gx;
 
-    public String sex;
+    private String sex;
 
-    public String isAdmin;
+    private String isAdmin;
 
-    public String joinTime;
+    private String joinTime;
 
-    public String memoName;
+    private String memoName;
 
+    public String getUid() {
+        return uid;
+    }
 
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
+    public String getNickName() {
+        return nickName;
+    }
 
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getGx() {
+        return gx;
+    }
+
+    public void setGx(String gx) {
+        this.gx = gx;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(String isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public String getJoinTime() {
+        return joinTime;
+    }
+
+    public void setJoinTime(String joinTime) {
+        this.joinTime = joinTime;
+    }
+
+    public String getMemoName() {
+        return memoName;
+    }
+
+    public void setMemoName(String memoName) {
+        this.memoName = memoName;
+    }
 }

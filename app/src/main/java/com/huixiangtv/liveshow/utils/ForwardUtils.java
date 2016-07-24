@@ -12,7 +12,7 @@ import com.huixiangtv.liveshow.activity.AttentionMeActivity;
 import com.huixiangtv.liveshow.activity.ChatMsgActivity;
 import com.huixiangtv.liveshow.activity.CouponActivity;
 import com.huixiangtv.liveshow.activity.DynamicDetialActivity;
-import com.huixiangtv.liveshow.activity.GroupChatInfoActivity;
+import com.huixiangtv.liveshow.activity.GroupInfoActivity;
 import com.huixiangtv.liveshow.activity.GroupListActivity;
 import com.huixiangtv.liveshow.activity.GroupMemberListActivity;
 import com.huixiangtv.liveshow.activity.FriendActivity;
@@ -162,6 +162,12 @@ public class ForwardUtils {
                 oriActivity.startActivityForResult(intent, 1);
                 oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
 
+            }else if(url.equals(Constant.APPLY_ADD_GROUP)){
+                Intent intent = new Intent(oriActivity, AddFriendActivity.class);
+                setIntentInfo(intent,params);
+                oriActivity.startActivityForResult(intent, 2);
+                oriActivity.overridePendingTransition(R.anim.push_left_in1, R.anim.push_right_out1);
+
             }else if (url.equals(Constant.CHAT_MSG)){
                 Intent intent = new Intent(oriActivity, ChatMsgActivity.class);
                 toIntent(oriActivity,params,intent);
@@ -174,7 +180,7 @@ public class ForwardUtils {
                 toIntent(oriActivity,params,intent);
             }
             else if (url.equals(Constant.GROUP_CHAT_INFO)){
-                Intent intent = new Intent(oriActivity, GroupChatInfoActivity.class);
+                Intent intent = new Intent(oriActivity, GroupInfoActivity.class);
                 toIntent(oriActivity,params,intent);
             }
             else if (url.equals(Constant.GROUP_MEMBER_LIST_ACTIVITY)){

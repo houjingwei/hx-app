@@ -15,6 +15,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.huixiangtv.liveshow.Api;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
+import com.huixiangtv.liveshow.model.Friend;
 import com.huixiangtv.liveshow.model.Other;
 import com.huixiangtv.liveshow.model.User;
 import com.huixiangtv.liveshow.service.ApiCallback;
@@ -26,6 +27,7 @@ import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
 import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
+import com.tencent.connect.UserInfo;
 import com.umeng.socialize.UMShareAPI;
 
 import org.xutils.view.annotation.ViewInject;
@@ -55,9 +57,13 @@ public class UserInfoActivity extends BaseBackActivity {
     TextView tvHots;
     @ViewInject(R.id.tvAddFriend)
     TextView tvAddFriend;
+    @ViewInject(R.id.tvAddGroup)
+    TextView tvAddGroup;
+
 
 
     String uid;
+    private User user;
 
     private String isFriend = "0";
 
@@ -88,6 +94,7 @@ public class UserInfoActivity extends BaseBackActivity {
         CommonHelper.userInfo(uid, new ApiCallback<User>() {
             @Override
             public void onSuccess(User data) {
+                user = data;
                 tvNickName.setText(data.getNickName());
                 ImageUtils.displayAvator(ivPhoto, data.getPhoto());
             }
@@ -145,7 +152,30 @@ public class UserInfoActivity extends BaseBackActivity {
                 }
             });
         }
+
+        //查询有没有加入粉丝群
+        CommonHelper.joinFansGroup(uid, new ApiCallback<Other>() {
+            @Override
+            public void onSuccess(Other data) {
+                if (StringUtil.isNotNull(data.getResult())) {
+                    isFriend = data.getResult();
+                    if (data.getResult().equals("0")) {
+                        tvAddGroup.setText("加入粉丝群");
+                        tvAddGroup.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                applyJoinGroup();
+                            }
+                        });
+                    } else {
+                        tvAddGroup.setText("已加入粉丝群");
+                    }
+                }
+            }
+        });
+
     }
+
 
 
     /**
@@ -187,6 +217,13 @@ public class UserInfoActivity extends BaseBackActivity {
      * 跳转到聊天页面
      */
     private void toChat() {
+       if(null!=user){
+           Map<String,String> map = new HashMap<String,String>();
+           map.put("targetId",user.getUid());
+           map.put("userName",user.getNickName());
+           ForwardUtils.target(UserInfoActivity.this, Constant.CHAT_MSG,map);
+       }
+
 
     }
 
@@ -194,10 +231,14 @@ public class UserInfoActivity extends BaseBackActivity {
      * 添加朋友
      */
     private void toAddFriend() {
-        Map<String,String> map = new HashMap<String,String>();
-        map.put("fid",uid);
-        ForwardUtils.target(UserInfoActivity.this, Constant.ADD_FRIEND,map);
+        ForwardUtils.target(UserInfoActivity.this, Constant.ADD_FRIEND,null);
     }
+
+
+    private void applyJoinGroup() {
+        ForwardUtils.target(UserInfoActivity.this, Constant.APPLY_ADD_GROUP,null);
+    }
+
 
     private void initView() {
         commonTitle.setActivity(this);
@@ -213,7 +254,43 @@ public class UserInfoActivity extends BaseBackActivity {
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK && requestCode == 1) {
-                    CommonHelper.showTip(UserInfoActivity.this,"请求已发出");
+                    Map<String,String> params = new HashMap<>();
+                    params.put("fid",uid);
+                    params.put("content",getIntent().getStringExtra("msg"));
+                    RequestUtils.sendPostRequest(Api.ADD_FRIEND, params, new ResponseCallBack<String>() {
+                        @Override
+                        public void onSuccess(String data) {
+                            CommonHelper.showTip(UserInfoActivity.this,"请求已发出");
+                        }
+
+                        @Override
+                        public void onFailure(ServiceException e) {
+                            super.onFailure(e);
+                            CommonHelper.showTip(UserInfoActivity.this,e.getMessage());
+
+                        }
+                    }, String.class);
+
+                }
+                break;
+            case 2:
+                if (resultCode == RESULT_OK && requestCode == 2) {
+                    Map<String,String> params = new HashMap<>();
+                    params.put("aid",uid);
+                    params.put("content",getIntent().getStringExtra("msg"));
+                    RequestUtils.sendPostRequest(Api.APPLY_ADD_GROUP, params, new ResponseCallBack<String>() {
+                        @Override
+                        public void onSuccess(String data) {
+                            CommonHelper.showTip(UserInfoActivity.this,"请求已发出");
+                        }
+
+                        @Override
+                        public void onFailure(ServiceException e) {
+                            super.onFailure(e);
+                            CommonHelper.showTip(UserInfoActivity.this,e.getMessage());
+
+                        }
+                    }, String.class);
                 }
                 break;
             default:

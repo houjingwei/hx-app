@@ -4,13 +4,12 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/white"
+        android:background="@drawable/listview"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="10dp">
@@ -40,74 +39,19 @@
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <TextView
+            android:id="@+id/tvName"
+            style="@style/black_bigger_style"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="2dp"
-            android:layout_toRightOf="@+id/rlLeft"
-            android:orientation="vertical">
+            android:text="白面包热牛奶" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tvNickName"
-                    style="@style/black_bigger_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:text="@string/friend" />
-
-                <!--<TextView-->
-                    <!--android:id="@+id/tvTime"-->
-                    <!--android:visibility="gone"-->
-                    <!--style="@style/gray_smaller_style"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:text="45s" />-->
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp">
-
-                <TextView
-                    android:id="@+id/tvMsg"
-                    style="@style/gray_normal_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="漫漫人生路，谁都难免会遭" />
-
-                <TextView
-                    android:id="@+id/tvUnRead"
-                    android:visibility="gone"
-                    style="@style/white_smaller_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/msg_unread_bg"
-                    android:gravity="center"
-                    android:minWidth="20dp"
-                    android:paddingLeft="7.5dp"
-                    android:paddingRight="7.5dp"
-                    android:text="0" />
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         style="@style/split_line"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="5dp"
         android:layout_marginRight="10dp" />
 </LinearLayout>

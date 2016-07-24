@@ -244,7 +244,7 @@
             android:theme="@style/backStyle"></activity>
 
         <activity
-            android:name=".activity.GroupChatInfoActivity"
+            android:name=".activity.GroupInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle"></activity>
 
@@ -282,8 +282,7 @@
         <activity
             android:name=".activity.DynamicDetialActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:theme="@style/backStyle"/>
         <activity
             android:name=".activity.FriendActivity"
             android:screenOrientation="portrait"
@@ -291,7 +290,7 @@
         <activity
             android:name=".activity.UserInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle" />
+            android:theme="@style/backStyle"/>
         <activity
             android:name=".activity.AddFriendActivity"
             android:screenOrientation="portrait"
@@ -300,18 +299,18 @@
             android:name=".activity.ChatMsgActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-<<<<<<< HEAD
+
         <activity android:name=".activity.NewFriendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-=======
+
 
         <activity
             android:name=".activity.AddGroupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
 
->>>>>>> 2719bc81130816e273fc577833feaa7f8a349d4b
+
         <receiver
             android:name=".service.RongIMNotificationReceiver"
             android:exported="true">

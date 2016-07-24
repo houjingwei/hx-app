@@ -20,6 +20,7 @@ import java.util.Map;
 
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.MessageContent;
+import io.rong.message.TextMessage;
 
 /**
  * Created by hjw on 16/5/13.
@@ -78,9 +79,12 @@ public class ChatAdapter extends BaseAdapter {
         }else{
             holder = (ViewHolder)convertView.getTag();
         }
+        if(conver.getLatestMessage() instanceof TextMessage){
+            TextMessage tm = (TextMessage) conver.getLatestMessage();
+            holder.tvMsg.setText(tm.getContent());
+        }
 
 
-        holder.tvMsg.setText(conver.getConversationTitle());
         holder.tvTime.setText(DateUtils.msgTime("yyyy-MM-dd HH:mm:ss",conver.getReceivedTime()));
         MessageContent msgContent = conver.getLatestMessage();
 

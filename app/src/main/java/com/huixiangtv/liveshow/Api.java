@@ -207,4 +207,8 @@ public class Api {
 
     public static  final String CREATE_GROUP = BASE_URL + "friend/createGroup";
 
+
+    public static final String JOIN_FANS_GROUP = BASE_URL + "friend/isjoinedFansGroup";
+    public static final String APPLY_ADD_GROUP = BASE_URL + "friend/applyIntoFansGroup";
+
 }

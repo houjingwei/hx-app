@@ -69,7 +69,7 @@ public class FriendActivity extends BaseBackActivity {
         view.findViewById(R.id.llGroupChat).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                ForwardUtils.target(FriendActivity.this, Constant.GROUP_LIST, null);
             }
         });
         //邀请的朋友
@@ -163,27 +163,16 @@ public class FriendActivity extends BaseBackActivity {
             public void onSuccess(List<Friend> data) {
                 if(null!=data && data.size()>0){
                     adapter.addList(data);
-                }else {
-                    testData();
                 }
             }
 
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
-                testData();
+
             }
         });
     }
 
-    private void testData() {
-        List<Friend> friendList = new ArrayList<Friend>();
 
-        Friend f = new Friend("1","lele","https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=4040074045,1463637776&fm=21&gp=0.jpg","0");
-
-        Friend f2 = new Friend("2","dingding","http://img5.imgtn.bdimg.com/it/u=117954092,421964103&fm=23&gp=0.jpg","1");
-        friendList.add(f);
-        friendList.add(f2);
-        adapter.addList(friendList);
-    }
 }

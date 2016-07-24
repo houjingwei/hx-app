@@ -34,8 +34,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_height="20dp"
                 android:textSize="16sp"
-                android:layout_centerVertical="true"
-                android:text="@string/friend" />
+                android:layout_centerVertical="true"/>
 
 
             <LinearLayout
@@ -53,7 +52,7 @@
 
                 <TextView
                     android:id="@+id/tvGX"
-                    android:layout_width="70dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="89272365"
@@ -66,9 +65,9 @@
     </RelativeLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/split_color"
+        style="@style/split_line"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
         />
 </LinearLayout>

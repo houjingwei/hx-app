@@ -31,8 +31,6 @@ import java.util.Map;
 public class GroupMemberListActivity extends BaseBackActivity {
 
 
-    private String gid = "";
-
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 
@@ -40,27 +38,22 @@ public class GroupMemberListActivity extends BaseBackActivity {
     PullToRefreshListView refreshView;
     private MemberAdapter adapter;
     private int page = 1;
-    private String pageSize = "5";
-
+    private String pageSize = "500";
+    String groupId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groupmember);
         x.view().inject(this);
+        groupId = getIntent().getStringExtra("groupId");
         initView();
-        initLayout();
         initData();
     }
 
     private void initView() {
         commonTitle.setActivity(this);
         commonTitle.setTitleText(getResources().getString(R.string.group_member));
-    }
-
-
-    protected void initLayout() {
-
         refreshView.setMode(PullToRefreshBase.Mode.BOTH);
         refreshView.setHeaderLayout(new HuixiangLoadingLayout(this));
         refreshView.setFooterLayout(new HuixiangLoadingLayout(this));
@@ -76,12 +69,9 @@ public class GroupMemberListActivity extends BaseBackActivity {
 
 
 
+
+
     protected void initData() {
-
-        gid = getIntent().getStringExtra("gid");
-
-        if(null !=gid && gid.trim().length()>0) {
-
             adapter = new MemberAdapter(this);
             refreshView.setAdapter(adapter);
             refreshView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
@@ -90,7 +80,7 @@ public class GroupMemberListActivity extends BaseBackActivity {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
                             page = 1;
-                            loadData(gid);
+                            loadData();
                         }
                     }, 1000);
 
@@ -101,20 +91,13 @@ public class GroupMemberListActivity extends BaseBackActivity {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
                             page++;
-                            loadData(gid);
+                            loadData();
                         }
                     }, 1000);
 
                 }
             });
-
-
-            loadData(gid);
-        }
-        else
-        {
-            CommonHelper.showTip( GroupMemberListActivity.this,"群组ID有误");
-        }
+            loadData();
 
 
     }
@@ -122,12 +105,12 @@ public class GroupMemberListActivity extends BaseBackActivity {
     /**
      * 加载列表数据
      */
-    private void loadData(String gid) {
+    private void loadData() {
 
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", page + "");
         paramsMap.put("pageSize", pageSize + "");
-        paramsMap.put("gid", gid);
+        paramsMap.put("gid", groupId);
 
 
         RequestUtils.sendPostRequest(Api.GET_GROUP_MEMBER, paramsMap, new ResponseCallBack<Member>() {

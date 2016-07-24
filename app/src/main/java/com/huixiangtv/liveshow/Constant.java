@@ -56,7 +56,7 @@ public class Constant {
 
     public static final String COUPON =BASE_PRE+"coupon";
     public static final String DYNAMIC_DETAIL = BASE_PRE+"dynamic_detial";
-
+    public static final String APPLY_ADD_GROUP = BASE_PRE+"apply_add_group";;
 
 
     public static String MY_LOVES = BASE_PRE+"my_loves";
