@@ -7,10 +7,14 @@ import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.activity.AccountActivity;
 import com.huixiangtv.liveshow.activity.AddFriendActivity;
+import com.huixiangtv.liveshow.activity.AddGroupActivity;
 import com.huixiangtv.liveshow.activity.AttentionMeActivity;
 import com.huixiangtv.liveshow.activity.ChatMsgActivity;
 import com.huixiangtv.liveshow.activity.CouponActivity;
 import com.huixiangtv.liveshow.activity.DynamicDetialActivity;
+import com.huixiangtv.liveshow.activity.GroupChatInfoActivity;
+import com.huixiangtv.liveshow.activity.GroupListActivity;
+import com.huixiangtv.liveshow.activity.GroupMemberListActivity;
 import com.huixiangtv.liveshow.activity.FriendActivity;
 import com.huixiangtv.liveshow.activity.H5Activity;
 import com.huixiangtv.liveshow.activity.LiveActivity;
@@ -165,7 +169,22 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, NewFriendActivity.class);
                 toIntent(oriActivity,params,intent);
             }
-
+            else if (url.equals(Constant.GROUP_LIST)){
+                Intent intent = new Intent(oriActivity, GroupListActivity.class);
+                toIntent(oriActivity,params,intent);
+            }
+            else if (url.equals(Constant.GROUP_CHAT_INFO)){
+                Intent intent = new Intent(oriActivity, GroupChatInfoActivity.class);
+                toIntent(oriActivity,params,intent);
+            }
+            else if (url.equals(Constant.GROUP_MEMBER_LIST_ACTIVITY)){
+                Intent intent = new Intent(oriActivity, GroupMemberListActivity.class);
+                toIntent(oriActivity,params,intent);
+            }
+            else if (url.equals(Constant.ADD_GROUP)){
+                Intent intent = new Intent(oriActivity, AddGroupActivity.class);
+                toIntent(oriActivity,params,intent);
+            }
 
 
 

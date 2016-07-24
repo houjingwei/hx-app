@@ -75,7 +75,7 @@ public class FragmentTabFour extends Fragment {
 		mViewPager.setCurrentItem(1);
 
 		mTabLayout.showDot(0);
-		mTabLayout.showMsg(1,5);
+		mTabLayout.showMsg(1,-1);
 
 		mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override

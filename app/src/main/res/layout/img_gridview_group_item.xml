@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <com.huixiangtv.liveshow.utils.widget.SquareLayout
+        xmlns:zhy="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rlSL"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+
+        <com.huixiangtv.liveshow.ui.ZJImageView
+            android:id="@+id/iv_gridview_img"
+            android:src="@drawable/default_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            zhy:radius="2dp"
+            zhy:shape_type="rectangle" />
+
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:id="@+id/tvName"
+            android:textSize="12sp"
+            android:visibility="gone"
+            android:singleLine="true"
+            android:gravity="center"
+            android:layout_below="@id/iv_gridview_img"
+            android:layout_height="wrap_content" />
+
+
+    </com.huixiangtv.liveshow.utils.widget.SquareLayout>
+</LinearLayout>

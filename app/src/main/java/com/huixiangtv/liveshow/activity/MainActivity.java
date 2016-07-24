@@ -467,15 +467,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 editor.commit();
                 dlg.dismiss();
 
-                if(null != App.getPreferencesValue("indexStyle") && App.getPreferencesValue("indexStyle").equals("1")) {
-
-                    setGuideNextUp();
-                }
-                else
-                {
-                    setGuideNextLeft();
-
-                }
+//                if(null != App.getPreferencesValue("indexStyle") && App.getPreferencesValue("indexStyle").equals("1")) {
+//
+//                    setGuideNextUp();
+//                }
+//                else
+//                {
+//                    setGuideNextLeft();
+//
+//                }
 
             }
         });

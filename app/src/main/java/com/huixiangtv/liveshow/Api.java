@@ -199,5 +199,12 @@ public class Api {
     //回复添加好友
     public static final String REPLY_ADD_FRIEND = BASE_URL + "friend/replyAddFriend";
 
+    public static final String MY_JOIN_GROUPS = BASE_URL + "friend/myJoinGroups";
+
+    public static final String GET_GROUP_MEMBER = BASE_URL + "friend/getGroupMember";
+
+    public static final String GET_GROUP_INFO = BASE_URL + "friend/getGroupInfo";
+
+    public static  final String CREATE_GROUP = BASE_URL + "friend/createGroup";
 
 }

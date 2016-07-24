@@ -1507,6 +1507,7 @@ public class RegPicListActivity extends BaseBackActivity {
             @Override
             public void onFailure(ServiceException e) {
                 super.onFailure(e);
+                Toast.makeText(RegPicListActivity.this,e.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         }, User.class);
@@ -1562,6 +1563,7 @@ public class RegPicListActivity extends BaseBackActivity {
                         user.setImgLoc5(WriteFileImgLoc((Bitmap) ss2.get(4), 4));
                         App.saveBodyLocPic(user);
                     } catch (IOException e) {
+                        Toast.makeText(RegPicListActivity.this,e.getMessage(), Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
 
@@ -1594,6 +1596,7 @@ public class RegPicListActivity extends BaseBackActivity {
                 user.setImg4(WriteFileImgLoc(bitmap, 4));
                 user.setImg5(WriteFileImgLoc(bitmap, 5));
             } catch (IOException e) {
+
                 e.printStackTrace();
             }
             user.setDrawableImg2(new BitmapDrawable(bitmap));
@@ -1616,6 +1619,7 @@ public class RegPicListActivity extends BaseBackActivity {
                 ss2.add(bm);
                 return bm;
             } catch (Exception ex) {
+                Toast.makeText(RegPicListActivity.this,ex.getMessage(), Toast.LENGTH_LONG).show();
                 return null;
             }
         }

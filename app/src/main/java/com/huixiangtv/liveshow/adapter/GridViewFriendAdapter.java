@@ -103,18 +103,18 @@ public class GridViewFriendAdapter extends BaseAdapter {
         ViewGroup.LayoutParams  layoutParams =  viewHolder.mImageView.getLayoutParams();
 
 
-        videoWidth = App.screenWidth - WidgetUtil.dip2px(context, 80);
+        videoWidth = (int)((App.screenWidth - WidgetUtil.dip2px(context, 40)) * 0.6);
         double height = 0;
         if (size == 1) {
             if(StringUtil.isNotNull(dynamicImage.getRate())){
                 height = (int) (videoWidth/Float.parseFloat(images.get(0).getRate()));
             }else{
-                height = (int) (videoWidth*0.6);
+                height = (int) (videoWidth*0.75);
             }
             layoutParams.width = videoWidth;
             layoutParams.height =(int) height;
         } else if (size == 2) {
-
+            videoWidth = App.screenWidth - WidgetUtil.dip2px(context, 80);
             int width = (int) (videoWidth*0.5-WidgetUtil.dip2px(context,4));
             //layoutParams = new LinearLayout.LayoutParams(width,width);
             //layoutParams.rightMargin = WidgetUtil.dip2px(context,2);
@@ -124,6 +124,7 @@ public class GridViewFriendAdapter extends BaseAdapter {
 
 
         } else {
+            videoWidth = App.screenWidth - WidgetUtil.dip2px(context, 80);
             int width = videoWidth/3-WidgetUtil.dip2px(context,4);
             layoutParams.width = width;
             layoutParams.height =width;

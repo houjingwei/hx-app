@@ -238,6 +238,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
 
+        <activity
+            android:name=".activity.GroupListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle"></activity>
+
+        <activity
+            android:name=".activity.GroupChatInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle"></activity>
+
+        <activity
+            android:name=".activity.GroupMemberListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle" />
+
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="4z3hlwrv39zlt" />
@@ -285,9 +300,18 @@
             android:name=".activity.ChatMsgActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
+<<<<<<< HEAD
         <activity android:name=".activity.NewFriendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
+=======
+
+        <activity
+            android:name=".activity.AddGroupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle" />
+
+>>>>>>> 2719bc81130816e273fc577833feaa7f8a349d4b
         <receiver
             android:name=".service.RongIMNotificationReceiver"
             android:exported="true">

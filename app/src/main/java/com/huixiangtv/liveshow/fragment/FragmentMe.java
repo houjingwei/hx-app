@@ -162,7 +162,8 @@ public class FragmentMe extends Fragment implements View.OnClickListener {
 
             case R.id.rlCoupon:
                 if (null != App.getLoginUser()) {
-                    ForwardUtils.target(getActivity(), Constant.COUPON, null);
+                    //ForwardUtils.target(getActivity(), Constant.COUPON, null);
+                    ForwardUtils.target(getActivity(), Constant.GROUP_LIST, null);
                 } else {
                     ForwardUtils.target(getActivity(), Constant.LOGIN, null);
                 }

@@ -381,13 +381,13 @@ public class FragmentTabOne extends Fragment {
                         if (!hasLoadBig) {
                             loadBigViewData();
                         }
-                    setGuideNextUp();
+                    //setGuideNextUp();
 
                     } else if (intent.getStringExtra("type").toString().equals("1")) {
                         mRootView.findViewById(R.id.rotRl).setVisibility(View.VISIBLE);
                         refreshView.setVisibility(View.VISIBLE);
 
-                    setGuideNextLeft();
+                    //setGuideNextLeft();
 
 
                 }
