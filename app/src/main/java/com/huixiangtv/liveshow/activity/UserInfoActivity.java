@@ -13,6 +13,7 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.huixiangtv.liveshow.Api;
+import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.model.Friend;
@@ -35,6 +36,9 @@ import org.xutils.x;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.rong.imlib.RongIMClient;
+import me.drakeet.materialdialog.MaterialDialog;
 
 public class UserInfoActivity extends BaseBackActivity {
 
@@ -196,21 +200,37 @@ public class UserInfoActivity extends BaseBackActivity {
      * 删除好友
      */
     private void deleteFriend() {
-        Map<String,String> params = new HashMap<>();
-        params.put("fid",uid);
-        RequestUtils.sendPostRequest(Api.DEL_FRIEND, params, new ResponseCallBack<String>() {
+        final MaterialDialog mMaterialDialog = new MaterialDialog(UserInfoActivity.this);
+        mMaterialDialog.setPositiveButton("删除", new View.OnClickListener() {
             @Override
-            public void onSuccess(String data) {
+            public void onClick(View v) {
+                mMaterialDialog.dismiss();
+                Map<String,String> params = new HashMap<>();
+                params.put("fid",uid);
+                RequestUtils.sendPostRequest(Api.DEL_FRIEND, params, new ResponseCallBack<String>() {
+                    @Override
+                    public void onSuccess(String data) {
+
+                    }
+
+                    @Override
+                    public void onFailure(ServiceException e) {
+                        super.onFailure(e);
+                        CommonHelper.showTip(UserInfoActivity.this,e.getMessage());
+
+                    }
+                }, String.class);
 
             }
-
+        }).setNegativeButton("放弃", new View.OnClickListener() {
             @Override
-            public void onFailure(ServiceException e) {
-                super.onFailure(e);
-                CommonHelper.showTip(UserInfoActivity.this,e.getMessage());
-
+            public void onClick(View v) {
+                mMaterialDialog.dismiss();
             }
-        }, String.class);
+        });
+        mMaterialDialog.setTitle("回想提示");
+        mMaterialDialog.setMessage("确定要删除好友吗");
+        mMaterialDialog.show();
     }
 
     /**

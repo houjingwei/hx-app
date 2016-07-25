@@ -67,7 +67,7 @@ public class App extends MultiDexApplication {
     //屏幕宽度，屏幕高度
     public static int screenWidth, screenHeight, statuBarHeight;
 
-    MyReceiveMessageListener _myReceiveMessageListener;
+    public static MyReceiveMessageListener _myReceiveMessageListener;
 
 
 

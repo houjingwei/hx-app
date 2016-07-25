@@ -20,6 +20,10 @@ import com.huixiangtv.liveshow.model.MsgContent;
 import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
 
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +31,7 @@ import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 import me.drakeet.materialdialog.MaterialDialog;
 
@@ -43,9 +48,17 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_chat, container, false);
+        EventBus.getDefault().register(this);
+        Log.i("eventBus","registerFragmentChat");
         Log.i("fetchData","onCreateViewFragmentChat");
         initView();
         return mRootView;
+    }
+
+
+    @Subscriber(tag = "sys_msg", mode = ThreadMode.MAIN)
+    public void reciveSysMsg(Message msg) {
+        Log.i("eventBus","永不执行"+App._myReceiveMessageListener.count.toString());
     }
 
 

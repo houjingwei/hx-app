@@ -122,10 +122,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    @Subscriber(tag = "no_execute", mode = ThreadMode.MAIN)
-    public void reciveLive(Message msg) {
-        Log.i("eventBus","永不执行");
-    }
+
 
 
     /**
@@ -584,6 +581,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        EventBus.getDefault().register(this);
     }
 }

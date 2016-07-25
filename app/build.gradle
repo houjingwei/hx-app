@@ -49,10 +49,10 @@ android {
     lintOptions {
         abortOnError false
     }
-    dexOptions {
-        incremental true
-        javaMaxHeapSize "4g"
-        preDexLibraries = false
+
+    dexOptions{
+        maxProcessCount 4 // this is the default value
+        javaMaxHeapSize "2g"
     }
 
 
