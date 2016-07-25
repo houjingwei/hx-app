@@ -3,15 +3,18 @@ package com.huixiangtv.liveshow.activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.adapter.FriendAdapter;
@@ -22,10 +25,12 @@ import com.huixiangtv.liveshow.ui.CommonTitle;
 import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
 
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,15 +46,45 @@ public class FriendActivity extends BaseBackActivity {
 
     FriendAdapter adapter ;
 
+
+    TextView tvFriendUnRead;
+    TextView tvGroupMsgUnRead;
+    TextView tvInviteUnRead;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend);
         x.view().inject(this);
+        EventBus.getDefault().register(this);
         initView();
         loadData();
     }
 
+    @Subscriber(tag = "new_friend", mode = ThreadMode.MAIN)
+    public void friend(Object obj) {
+        Log.i("eventBus","永不执行"+ App._myReceiveMessageListener.count.toString());
+        if(null!=tvFriendUnRead && null!=tvGroupMsgUnRead && null!=tvInviteUnRead){
+            setCount();
+        }
+    }
+
+    private void setCount() {
+        App._myReceiveMessageListener.calcuCount();
+        if(App._myReceiveMessageListener.count.getGroupUnReadCount()>0){
+            tvGroupMsgUnRead.setText(App._myReceiveMessageListener.count.getTotalCount()+"");
+            tvGroupMsgUnRead.setVisibility(View.VISIBLE);
+        }else{
+            tvGroupMsgUnRead.setVisibility(View.GONE);
+        }
+
+        if(App._myReceiveMessageListener.count.getNewFriendUnReadCount()>0){
+            tvFriendUnRead.setText(App._myReceiveMessageListener.count.getTotalCount()+"");
+            tvFriendUnRead.setVisibility(View.VISIBLE);
+        }else{
+            tvFriendUnRead.setVisibility(View.GONE);
+        }
+    }
 
 
     private void initView() {
@@ -58,11 +93,16 @@ public class FriendActivity extends BaseBackActivity {
 
 
         View view = LayoutInflater.from(this).inflate(R.layout.activity_friend_head, null, false);
+        tvFriendUnRead = (TextView) view.findViewById(R.id.tvFriendUnRead);
+        tvGroupMsgUnRead = (TextView) view.findViewById(R.id.tvGroupMsgUnRead);
+        tvInviteUnRead = (TextView) view.findViewById(R.id.tvInviteUnRead);
+        setCount();
         //新朋友
         view.findViewById(R.id.llNewFriend).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ForwardUtils.target(FriendActivity.this,Constant.NEW_FRIEND,null);
+                App._myReceiveMessageListener.setMsgRead(1);
             }
         });
         //群聊
@@ -70,6 +110,7 @@ public class FriendActivity extends BaseBackActivity {
             @Override
             public void onClick(View view) {
                 ForwardUtils.target(FriendActivity.this, Constant.GROUP_LIST, null);
+                App._myReceiveMessageListener.setMsgRead(2);
             }
         });
         //邀请的朋友
@@ -104,6 +145,8 @@ public class FriendActivity extends BaseBackActivity {
         //滑动菜单
         initSwipeMenu();
     }
+
+
 
 
     /**
@@ -174,5 +217,9 @@ public class FriendActivity extends BaseBackActivity {
         });
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        friend(null);
+    }
 }

@@ -202,13 +202,13 @@ public class MyCircleActivity extends BaseBackActivity {
         for (Dynamic dn : data) {
             if(StringUtil.isNotEmpty(dn.getDate())){
                 String strTime = DateUtils.formatDisplayTime2(dn.getDate(),"yyyy-MM-dd HH:mm:ss");
-                Log.i("toDay",disTime+"****"+strTime);
+
                 if(strTime.equals(disTime)){
                     dn.setMarginTop(false);
                     dn.setMonth("");
                     dn.setDay("");
                     dn.setLastDate("");
-                    Log.i("toDay",disTime+"****"+strTime + "***" + dn.getContent()+"****"+dn.getMarginTop());
+
                 }else{
                     disTime = strTime;
                     dn.setMarginTop(true);

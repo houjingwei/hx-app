@@ -1,7 +1,6 @@
 package com.huixiangtv.liveshow.activity;
 
 import android.os.Bundle;
-import android.os.Parcel;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -9,14 +8,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.adapter.ChatMsgAdapter;
 import com.huixiangtv.liveshow.model.ChatMessage;
-import com.huixiangtv.liveshow.model.LiveMsg;
 import com.huixiangtv.liveshow.model.MsgExt;
+import com.huixiangtv.liveshow.model.User;
+import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.ui.CommonTitle;
 import com.huixiangtv.liveshow.utils.CommonHelper;
 
@@ -26,15 +28,14 @@ import org.simple.eventbus.ThreadMode;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
-import io.rong.imlib.model.MessageContent;
 import io.rong.message.TextMessage;
 
 public class ChatMsgActivity extends BaseBackActivity {
@@ -54,7 +55,7 @@ public class ChatMsgActivity extends BaseBackActivity {
 
 
 
-
+    User toUser = null;
 
     ChatMsgAdapter adapter ;
 
@@ -91,6 +92,16 @@ public class ChatMsgActivity extends BaseBackActivity {
     }
 
     private void loadData() {
+        //查询目标对象
+        CommonHelper.userInfo(targetId, new ApiCallback<User>() {
+            @Override
+            public void onSuccess(User data) {
+                toUser = data;
+            }
+        });
+
+
+
 
         App.imClient.getLatestMessages(Conversation.ConversationType.PRIVATE, targetId, 100,new RongIMClient.ResultCallback<List<Message>>(){
 
@@ -154,39 +165,74 @@ public class ChatMsgActivity extends BaseBackActivity {
         tvSendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMsg();
+                try {
+                    sendMsg();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    private void sendMsg() {
-        if (TextUtils.isEmpty(etChatMsg.getText().toString())) {
-            CommonHelper.showTip(ChatMsgActivity.this, "不可以发送空消息哦~");
-            etChatMsg.requestFocus();
-            return;
-        }
+    private void sendMsg() throws Exception{
 
+            if (TextUtils.isEmpty(etChatMsg.getText().toString())) {
+                CommonHelper.showTip(ChatMsgActivity.this, "不可以发送空消息哦~");
+                etChatMsg.requestFocus();
+                return;
+            }
+            final TextMessage tm = TextMessage.obtain(etChatMsg.getText().toString());
+            final Map<String,String> map = new HashMap<String,String>();
+            map.put("photo",App.getLoginUser().getPhoto());
+            map.put("nickName",App.getLoginUser().getNickName());
+            map.put("uid",App.getLoginUser().getUid());
+            final ObjectMapper mapper = new ObjectMapper();
+            if(null!=toUser){
+                map.put("toPhoto",toUser.getPhoto());
+                map.put("toNickName",toUser.getNickName());
+                map.put("toUid",toUser.getUid());
 
-        App.imClient.sendMessage(Conversation.ConversationType.PRIVATE, targetId,
-                TextMessage.obtain(etChatMsg.getText().toString()), null, null, new RongIMClient.SendMessageCallback() {
+                String jsonStr = mapper.writeValueAsString(map);
+                tm.setExtra(jsonStr);
+            }else{
+                CommonHelper.userInfo(targetId, new ApiCallback<User>() {
                     @Override
-                    public void onSuccess(Integer integer) {
-                        ChatMessage msg = new ChatMessage();
-                        MsgExt ext = new MsgExt();
-                        ext.setMsgType("1");
-                        ext.setNickName(App.getLoginUser().getNickName());
-                        ext.setPhoto(App.getLoginUser().getPhoto());
-                        msg.setExt(ext);
-                        msg.setSendStatus(Message.SentStatus.SENT.name());
-                        msg.setContent(etChatMsg.getText().toString());
-                        adapter.add(msg);
+                    public void onSuccess(User data)  {
+                        map.put("toPhoto",toUser.getPhoto());
+                        map.put("toNickName",toUser.getNickName());
+                        map.put("toUid",toUser.getUid());
+                        String jsonStr = null;
+                        try {
+                            jsonStr = mapper.writeValueAsString(map);
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                        }
+                        tm.setExtra(jsonStr);
                     }
+                });
+            }
 
-                    @Override
-                    public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
+            App.imClient.sendMessage(Conversation.ConversationType.PRIVATE, targetId,
+                    tm, null, null, new RongIMClient.SendMessageCallback() {
+                        @Override
+                        public void onSuccess(Integer integer) {
+                            ChatMessage msg = new ChatMessage();
+                            MsgExt ext = new MsgExt();
+                            ext.setMsgType("1");
+                            ext.setNickName(App.getLoginUser().getNickName());
+                            ext.setPhoto(App.getLoginUser().getPhoto());
+                            msg.setExt(ext);
+                            msg.setSendStatus(Message.SentStatus.SENT.name());
+                            msg.setContent(etChatMsg.getText().toString());
+                            adapter.add(msg);
+                        }
 
-                    }
-                }, null);
+                        @Override
+                        public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
+
+                        }
+                    }, null);
+
 
 
     }

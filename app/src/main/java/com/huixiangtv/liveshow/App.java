@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.duanqu.qupai.auth.AuthService;
 import com.duanqu.qupai.auth.QupaiAuthListener;
+import com.huixiangtv.liveshow.model.CustomMessage;
 import com.huixiangtv.liveshow.model.Gift;
 import com.huixiangtv.liveshow.model.User;
 import com.huixiangtv.liveshow.service.ApiCallback;
@@ -40,6 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import io.rong.imlib.AnnotationNotFoundException;
 import io.rong.imlib.RongIMClient;
 
 /**
@@ -60,8 +62,12 @@ public class App extends MultiDexApplication {
 
     //动态有删除，需要返回时刷新
     public static boolean refreshMyCircleActivity = false;
+    //创建群回来是否刷新
+    public static boolean refreshGrouplist = false;
+
     //直播间跳转到其他页面暂停回来继续播放
     public static boolean goPlay = false;
+
 
     private List<Activity> listActivity = new LinkedList<Activity>();
     //屏幕宽度，屏幕高度
@@ -116,10 +122,16 @@ public class App extends MultiDexApplication {
         if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext())) ||
                 "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
             RongIMClient.init(this);
+            try {
+                RongIMClient.registerMessageType(CustomMessage.class);
+            } catch (AnnotationNotFoundException e) {
+                e.printStackTrace();
+            }
         }
 
         _myReceiveMessageListener = MyReceiveMessageListener.getInstance();
         imClient = RongIMClient.getInstance();
+
         RongIMClient.setOnReceiveMessageListener(_myReceiveMessageListener);
         final RongyunUtils utils = new RongyunUtils(App.getContext());
         utils.chatToken(new ChatTokenCallBack() {

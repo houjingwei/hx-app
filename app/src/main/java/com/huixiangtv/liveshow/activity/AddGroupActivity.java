@@ -1,20 +1,12 @@
 package com.huixiangtv.liveshow.activity;
 
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.view.LayoutInflater;
+import android.os.Handler;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.huixiangtv.liveshow.Api;
+import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.R;
-import com.huixiangtv.liveshow.model.ChatMessage;
-import com.huixiangtv.liveshow.model.HistoryMsg;
-import com.huixiangtv.liveshow.model.Live;
-import com.huixiangtv.liveshow.model.MsgExt;
 import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
@@ -93,6 +85,12 @@ public class AddGroupActivity extends BaseBackActivity {
                     cp.dismiss();
 
                 CommonHelper.showTip(AddGroupActivity.this, "创建群组成功");
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        App.refreshGrouplist = true;
+                        onBackPressed();
+                    }
+                }, 1000);
             }
 
             @Override

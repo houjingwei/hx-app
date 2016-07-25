@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.model.ChatMessage;
 import com.huixiangtv.liveshow.model.MsgExt;
@@ -17,8 +18,6 @@ import com.huixiangtv.liveshow.utils.image.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.rong.imlib.model.Message;
 
 /**
  * Created by hjw on 16/5/13.
@@ -62,8 +61,8 @@ public class ChatMsgAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         ChatMessage msg = (ChatMessage) getItem(position);
-        if(null!=msg && msg.getSendStatus().equals(Message.SentStatus.SENT.name())){
-                return RIGHT;
+        if(msg.getExt().getUid().equals(App.getLoginUser().getUid())){
+            return RIGHT;
         }
         return LEFT;
     }

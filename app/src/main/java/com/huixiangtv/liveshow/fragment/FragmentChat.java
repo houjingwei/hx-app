@@ -1,8 +1,6 @@
 package com.huixiangtv.liveshow.fragment;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -10,13 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.adapter.ChatAdapter;
-import com.huixiangtv.liveshow.model.Friend;
-import com.huixiangtv.liveshow.model.MsgContent;
 import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
 
@@ -24,15 +21,12 @@ import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.Message;
-import io.rong.imlib.model.UserInfo;
 import me.drakeet.materialdialog.MaterialDialog;
 
 
@@ -41,6 +35,8 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
     View mRootView;
     private ListView mListView;
     private ChatAdapter adapter;
+
+    TextView tvUnRead;
 
 
 
@@ -57,8 +53,21 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
 
 
     @Subscriber(tag = "sys_msg", mode = ThreadMode.MAIN)
-    public void reciveSysMsg(Message msg) {
+    public void chatMsg(Object obj) {
         Log.i("eventBus","永不执行"+App._myReceiveMessageListener.count.toString());
+        if(null!=tvUnRead){
+            setCount();
+        }
+    }
+
+    private void setCount(){
+        App._myReceiveMessageListener.calcuCount();
+        if(App._myReceiveMessageListener.count.getTotalCount()>0){
+            tvUnRead.setText(App._myReceiveMessageListener.count.getTotalCount()+"");
+            tvUnRead.setVisibility(View.VISIBLE);
+        }else{
+            tvUnRead.setVisibility(View.GONE);
+        }
     }
 
 
@@ -66,6 +75,7 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
      * 获取数据
      */
     private void initData() {
+        Conversation.ConversationType[] types = new Conversation.ConversationType[]{Conversation.ConversationType.PRIVATE,Conversation.ConversationType.GROUP};
         App.imClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
             @Override
             public void onSuccess(List<Conversation> conversations) {
@@ -79,7 +89,7 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
             public void onError(RongIMClient.ErrorCode errorCode) {
 
             }
-        });
+        },types);
     }
 
 
@@ -87,6 +97,8 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
     private void initView() {
         mListView = (ListView) mRootView.findViewById(R.id.listView);
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_chat_head, null, false);
+        tvUnRead = (TextView) view.findViewById(R.id.tvUnRead);
+        setCount();
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

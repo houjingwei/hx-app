@@ -2,21 +2,15 @@ package com.huixiangtv.liveshow.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.huixiangtv.liveshow.Api;
-import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
-import com.huixiangtv.liveshow.model.Friend;
 import com.huixiangtv.liveshow.model.Other;
 import com.huixiangtv.liveshow.model.User;
 import com.huixiangtv.liveshow.service.ApiCallback;
@@ -28,8 +22,6 @@ import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
 import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
-import com.tencent.connect.UserInfo;
-import com.umeng.socialize.UMShareAPI;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -37,7 +29,6 @@ import org.xutils.x;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.rong.imlib.RongIMClient;
 import me.drakeet.materialdialog.MaterialDialog;
 
 public class UserInfoActivity extends BaseBackActivity {
@@ -210,7 +201,8 @@ public class UserInfoActivity extends BaseBackActivity {
                 RequestUtils.sendPostRequest(Api.DEL_FRIEND, params, new ResponseCallBack<String>() {
                     @Override
                     public void onSuccess(String data) {
-
+                        CommonHelper.showTip(UserInfoActivity.this, "删除好友成功");
+                        loadData();
                     }
 
                     @Override
@@ -281,6 +273,7 @@ public class UserInfoActivity extends BaseBackActivity {
                         @Override
                         public void onSuccess(String data) {
                             CommonHelper.showTip(UserInfoActivity.this,"请求已发出");
+                            loadData();
                         }
 
                         @Override

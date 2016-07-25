@@ -8,10 +8,12 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Parcel;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.huixiangtv.liveshow.Api;
+import com.huixiangtv.liveshow.model.CustomMessage;
 import com.huixiangtv.liveshow.model.DynamicComment;
 import com.huixiangtv.liveshow.model.Friend;
 import com.huixiangtv.liveshow.model.Live;
@@ -42,14 +45,19 @@ import com.huixiangtv.liveshow.ui.ColaProgressTip;
 import com.huixiangtv.liveshow.ui.EmptyView;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.rong.imlib.model.UserInfo;
 import simbest.com.sharelib.IShareCallback;
 import simbest.com.sharelib.ShareModel;
 import simbest.com.sharelib.ShareUtils;
@@ -776,4 +784,47 @@ public class CommonHelper {
     }
 
 
+    /**
+     * 组装自定义消息
+     * @param msgContent
+     * @param uid
+     * @param uname
+     * @param uphoto
+     * @return
+     */
+    public static CustomMessage initMessageContent(final String msgContent, String uid, String uname, String uphoto) {
+        CustomMessage mc = new CustomMessage() {
+            @Override
+            public byte[] encode() {
+                JSONObject jsonObj = new JSONObject();
+
+                try {
+                    jsonObj.put("content", msgContent);
+                } catch (JSONException e) {
+                    Log.e("JSONException", e.getMessage());
+                }
+
+                try {
+                    return jsonObj.toString().getBytes("UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel parcel, int i) {
+
+            }
+
+        };
+        UserInfo user = new UserInfo(uid,uname, Uri.parse(uphoto));
+        mc.setUserInfo(user);
+        return mc;
+    }
 }
