@@ -79,6 +79,7 @@ public class GroupListAdapter extends BaseAdapter {
             holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
             holder.ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
             holder.ivFlag =(ImageView) convertView.findViewById(R.id.ivFlag);
+            holder.llChat = (LinearLayout) convertView.findViewById(R.id.llChat);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder)convertView.getTag();
@@ -91,6 +92,16 @@ public class GroupListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 toGroupDetial(group.getGid());
+            }
+        });
+        holder.llChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Map<String,String> map = new HashMap<String,String>();
+                map.put("targetId",group.getGid());
+                map.put("type","2");
+                map.put("userName",group.getgName());
+                ForwardUtils.target(activity, Constant.CHAT_MSG, map);
             }
         });
 
@@ -125,5 +136,6 @@ public class GroupListAdapter extends BaseAdapter {
         public TextView tvName;
         public ImageView ivPhoto;
         public ImageView ivFlag;
+        public LinearLayout llChat;
     }
 }

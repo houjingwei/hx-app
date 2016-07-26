@@ -17,11 +17,13 @@ import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.adapter.GroupListAdapter;
 import com.huixiangtv.liveshow.model.ChatGroup;
 import com.huixiangtv.liveshow.model.UnreadCount;
+import com.huixiangtv.liveshow.model.User;
 import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
 import com.huixiangtv.liveshow.ui.CommonTitle;
+import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
 
 import org.simple.eventbus.EventBus;
@@ -34,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 
 /**
@@ -106,17 +109,17 @@ public class GroupListActivity extends BaseBackActivity {
 
         refreshView.setMode(PullToRefreshBase.Mode.DISABLED);
         View groupListHeadView = LayoutInflater.from(this).inflate(R.layout.group_list_head, null, false);
+
         tvUnRead = (TextView) groupListHeadView.findViewById(R.id.tvUnRead);
         refreshView.getRefreshableView().addHeaderView(groupListHeadView);
-
-        refreshView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        groupListHeadView.findViewById(R.id.llGroup).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position>1) {
-                    ForwardUtils.target(GroupListActivity.this, Constant.CHAT_MSG, null);
-                }
+            public void onClick(View v) {
+                ForwardUtils.target(GroupListActivity.this,Constant.NEW_GROUP,null);
+                App._myReceiveMessageListener.setMsgRead(2);
             }
         });
+
         adapter = new GroupListAdapter(this);
         refreshView.setAdapter(adapter);
 

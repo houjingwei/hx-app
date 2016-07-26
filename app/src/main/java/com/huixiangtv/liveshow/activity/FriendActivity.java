@@ -59,18 +59,17 @@ public class FriendActivity extends BaseBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend);
         x.view().inject(this);
-        EventBus.getDefault().register(this);
+
         initView();
         loadData();
     }
 
-    @Subscriber(tag = "new_friend", mode = ThreadMode.MAIN)
-    public void friend(Message msg) {
+    @Subscriber(tag = "sys_msg", mode = ThreadMode.ASYNC)
+    public void sysMsg(Message msg) {
+        Log.i("eventBus","msg");
+        Log.i("qunimade","FragmentChat+msg");
+        setCount();
 
-        if(null!=tvFriendUnRead && null!=tvGroupMsgUnRead && null!=tvInviteUnRead){
-            Log.i("qunimade","FriendActivity+friend");
-            setCount();
-        }
     }
 
     private void setCount() {
@@ -120,7 +119,7 @@ public class FriendActivity extends BaseBackActivity {
             @Override
             public void onClick(View view) {
                 ForwardUtils.target(FriendActivity.this, Constant.GROUP_LIST, null);
-                App._myReceiveMessageListener.setMsgRead(2);
+
             }
         });
         //邀请的朋友
@@ -232,7 +231,15 @@ public class FriendActivity extends BaseBackActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("qunimade","FriendActivity+onResume");
+        EventBus.getDefault().register(this);
+        Log.i("eventBus","register_fri");
         setCount();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("eventBus","unregister_fri");
+        EventBus.getDefault().unregister(this);
     }
 }

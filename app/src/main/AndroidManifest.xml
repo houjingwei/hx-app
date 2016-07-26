@@ -237,17 +237,14 @@
             android:name=".activity.CouponActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-
         <activity
             android:name=".activity.GroupListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"></activity>
-
+            android:theme="@style/backStyle" />
         <activity
             android:name=".activity.GroupInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"></activity>
-
+            android:theme="@style/backStyle" />
         <activity
             android:name=".activity.GroupMemberListActivity"
             android:screenOrientation="portrait"
@@ -282,7 +279,7 @@
         <activity
             android:name=".activity.DynamicDetialActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"/>
+            android:theme="@style/backStyle" />
         <activity
             android:name=".activity.FriendActivity"
             android:screenOrientation="portrait"
@@ -290,7 +287,7 @@
         <activity
             android:name=".activity.UserInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/backStyle"/>
+            android:theme="@style/backStyle" />
         <activity
             android:name=".activity.AddFriendActivity"
             android:screenOrientation="portrait"
@@ -299,17 +296,17 @@
             android:name=".activity.ChatMsgActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-
-        <activity android:name=".activity.NewFriendActivity"
+        <activity
+            android:name=".activity.NewApplyFriendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-
-
         <activity
             android:name=".activity.AddGroupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/backStyle" />
-
+        <activity android:name=".activity.NewApplyGroupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/backStyle"/>
 
         <receiver
             android:name=".service.RongIMNotificationReceiver"
@@ -319,7 +316,7 @@
                 <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
                 <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
                 <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
-                <action android:name="com.hjw.test"/>
+                <action android:name="com.hjw.test" />
             </intent-filter>
         </receiver>
 

@@ -257,6 +257,7 @@
     <string name="add">添加</string>
 
     <string name="create_group">创建群</string>
+    <string name="newGroup">加群申请</string>
 
     <string-array name="dynamic_video">
         <item>录制拍摄</item>

@@ -198,6 +198,10 @@ public class Api {
     public static final String APPLY_ADD_ME_LIST =BASE_URL + "friend/applyAddFriendForMe";
     //回复添加好友
     public static final String REPLY_ADD_FRIEND = BASE_URL + "friend/replyAddFriend";
+    //回复加入群组
+    public static final String REPLY_ADD_GROUP = BASE_URL + "friend/replyIntoGroup";
+    //申请加群的列表
+    public static final String APPLY_ADD_GROUP_LIST = BASE_URL+"friend/getApplyIntoGroupList" ;
 
     public static final String MY_JOIN_GROUPS = BASE_URL + "friend/myJoinGroups";
 

@@ -32,6 +32,7 @@ public class Constant {
     public static final String ADD_FRIEND =  BASE_PRE+"addFriend";
     public static final String CHAT_MSG = BASE_PRE+"chatMsg";
     public static final String NEW_FRIEND = BASE_PRE+"newFriend";
+    public static final String NEW_GROUP = BASE_PRE+"newGroup";
 
     public static final String HELP = "http://119.29.94.122:8888/h5/help.html";
     public static final String GYWM = "http://119.29.94.122:8888/h5/about.html";
@@ -57,6 +58,7 @@ public class Constant {
     public static final String COUPON =BASE_PRE+"coupon";
     public static final String DYNAMIC_DETAIL = BASE_PRE+"dynamic_detial";
     public static final String APPLY_ADD_GROUP = BASE_PRE+"apply_add_group";;
+
 
 
     public static String MY_LOVES = BASE_PRE+"my_loves";

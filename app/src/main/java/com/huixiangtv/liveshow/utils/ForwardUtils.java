@@ -25,7 +25,8 @@ import com.huixiangtv.liveshow.activity.MyAttentionActivity;
 import com.huixiangtv.liveshow.activity.MyCircleActivity;
 import com.huixiangtv.liveshow.activity.MyHotsActivity;
 import com.huixiangtv.liveshow.activity.MylovesActivity;
-import com.huixiangtv.liveshow.activity.NewFriendActivity;
+import com.huixiangtv.liveshow.activity.NewApplyFriendActivity;
+import com.huixiangtv.liveshow.activity.NewApplyGroupActivity;
 import com.huixiangtv.liveshow.activity.PhoneBindActivity;
 import com.huixiangtv.liveshow.activity.PushDynamicActivity;
 import com.huixiangtv.liveshow.activity.RegLiveActivity;
@@ -172,7 +173,10 @@ public class ForwardUtils {
                 Intent intent = new Intent(oriActivity, ChatMsgActivity.class);
                 toIntent(oriActivity,params,intent);
             }else if (url.equals(Constant.NEW_FRIEND)){
-                Intent intent = new Intent(oriActivity, NewFriendActivity.class);
+                Intent intent = new Intent(oriActivity, NewApplyFriendActivity.class);
+                toIntent(oriActivity,params,intent);
+            }else if (url.equals(Constant.NEW_GROUP)){
+                Intent intent = new Intent(oriActivity, NewApplyGroupActivity.class);
                 toIntent(oriActivity,params,intent);
             }
             else if (url.equals(Constant.GROUP_LIST)){

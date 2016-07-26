@@ -238,7 +238,13 @@ public class ChatMsgActivity extends BaseBackActivity {
                 });
             }
 
-            App.imClient.sendMessage(Conversation.ConversationType.PRIVATE, targetId,
+        Conversation.ConversationType t = null;
+            if(type.equals("1")){
+                t = Conversation.ConversationType.PRIVATE;
+            }else if(type.equals("2")){
+                t = Conversation.ConversationType.GROUP;
+            }
+            App.imClient.sendMessage(t, targetId,
                     tm, tm.getContent(), tm.getExtra(), new RongIMClient.SendMessageCallback() {
                         @Override
                         public void onSuccess(Integer integer) {

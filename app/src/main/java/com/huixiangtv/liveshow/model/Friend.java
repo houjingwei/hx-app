@@ -6,6 +6,7 @@ package com.huixiangtv.liveshow.model;
 public class Friend {
 
     private String uid;
+    private String gid;
     private String nickName;
     private String photo;
     private String sex;
@@ -76,6 +77,14 @@ public class Friend {
 
     public void setReplyContent(String replyContent) {
         this.replyContent = replyContent;
+    }
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
     }
 
     public Friend(String uid, String nickName, String photo, String sex) {

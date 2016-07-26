@@ -8,13 +8,14 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/llGroup"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:padding="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:gravity="center_vertical"
-        android:background="@color/white"
+        android:background="@drawable/listview"
         android:orientation="horizontal">
 
         <com.huixiangtv.liveshow.ui.ZJImageView xmlns:android="http://schemas.android.com/apk/res/android"

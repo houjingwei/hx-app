@@ -49,17 +49,22 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_chat, container, false);
-        EventBus.getDefault().register(this);
-        Log.i("eventBus","registerFragmentChat");
-        Log.i("fetchData","onCreateViewFragmentChat");
+
         initView();
         return mRootView;
     }
 
 
-    @Subscriber(tag = "msg", mode = ThreadMode.MAIN)
+    @Subscriber(tag = "msg", mode = ThreadMode.ASYNC)
     public void msg(Message msg) {
-        Log.i("eventBus","永不执行"+App._myReceiveMessageListener.count.toString());
+        Log.i("eventBus","msg");
+        Log.i("qunimade","FragmentChat+msg");
+        setCount();
+
+    }
+
+    @Subscriber(tag = "sys_msg", mode = ThreadMode.ASYNC)
+    public void sysMsg(Message msg) {
         Log.i("eventBus","msg");
         Log.i("qunimade","FragmentChat+msg");
         setCount();
@@ -71,7 +76,7 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
         App._myReceiveMessageListener.calcuCount(new ApiCallback<UnreadCount>() {
             @Override
             public void onSuccess(UnreadCount data) {
-                if(App._myReceiveMessageListener.count.getTotalCount()>0){
+                if(data.getTotalCount()>0){
                     tvUnRead.setText(data.getTotalCount()+"");
                     tvUnRead.setVisibility(View.VISIBLE);
                 }else{
@@ -220,11 +225,18 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("qunimade","FragmentChat+onResume");
+        EventBus.getDefault().register(this);
+        Log.i("eventBus","register_chat");
         setCount();
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i("eventBus","unregister_chat");
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     public void fetchData() {

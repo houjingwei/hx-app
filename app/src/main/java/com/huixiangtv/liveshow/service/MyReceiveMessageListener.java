@@ -26,11 +26,10 @@ import io.rong.message.TextMessage;
 public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
 
 
-    public static UnreadCount count = new UnreadCount();
+    public static UnreadCount count ;
 
     /* 持有私有静态实例，防止被引用，此处赋值为null，目的是实现延迟加载 */
     private static MyReceiveMessageListener instance = null;
-    private static int finalTotalCount = 0;
 
     /* 私有构造方法，防止被实例化 */
     private MyReceiveMessageListener() {
@@ -89,8 +88,8 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
 
 
     public static  void calcuCount(final ApiCallback<UnreadCount> back) {
-        clearCount();
-        finalTotalCount = 0;
+        count = new UnreadCount();
+        final int[] finalTotalCount = {0};
         Conversation.ConversationType[] types = new Conversation.ConversationType[]{Conversation.ConversationType.SYSTEM};
         App.imClient.getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
             @Override
@@ -99,7 +98,7 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
                     int i = 0;
                     for (Conversation cs : conversations) {
                         i++;
-                        finalTotalCount+=cs.getUnreadMessageCount();
+                        finalTotalCount[0] +=cs.getUnreadMessageCount();
 
                         final int finalI = i;
                         messagesCount(cs, new ApiCallback<UnreadCount>(){
@@ -109,7 +108,7 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
                                 count.setNewFriendUnReadCount(count.getNewFriendUnReadCount()+data.getNewFriendUnReadCount());
                                 if(finalI ==conversations.size()){
                                     if(null!=back){
-                                        count.setTotalCount(finalTotalCount);
+                                        count.setTotalCount(finalTotalCount[0]);
                                         back.onSuccess(count);
                                     }
 
@@ -249,7 +248,7 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
         EventBus.getDefault().post(message,"msg");
     }
 
-    private void handleSystemMessage(Message message) {EventBus.getDefault().post(message,"msg");}
+    private void handleSystemMessage(Message message) {EventBus.getDefault().post(message,"sys_msg");}
 
     private void handleApplyJoinGroupMessage(Message message) {
         EventBus.getDefault().post(message,"apply_join_gruop");
