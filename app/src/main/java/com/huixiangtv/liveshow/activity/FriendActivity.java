@@ -19,6 +19,7 @@ import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.adapter.FriendAdapter;
 import com.huixiangtv.liveshow.model.Friend;
+import com.huixiangtv.liveshow.model.UnreadCount;
 import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.service.ServiceException;
 import com.huixiangtv.liveshow.ui.CommonTitle;
@@ -34,6 +35,8 @@ import org.xutils.x;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.rong.imlib.model.Message;
 
 public class FriendActivity extends BaseBackActivity {
 
@@ -62,28 +65,36 @@ public class FriendActivity extends BaseBackActivity {
     }
 
     @Subscriber(tag = "new_friend", mode = ThreadMode.MAIN)
-    public void friend(Object obj) {
-        Log.i("eventBus","永不执行"+ App._myReceiveMessageListener.count.toString());
+    public void friend(Message msg) {
+
         if(null!=tvFriendUnRead && null!=tvGroupMsgUnRead && null!=tvInviteUnRead){
+            Log.i("qunimade","FriendActivity+friend");
             setCount();
         }
     }
 
     private void setCount() {
-        App._myReceiveMessageListener.calcuCount();
-        if(App._myReceiveMessageListener.count.getGroupUnReadCount()>0){
-            tvGroupMsgUnRead.setText(App._myReceiveMessageListener.count.getTotalCount()+"");
-            tvGroupMsgUnRead.setVisibility(View.VISIBLE);
-        }else{
-            tvGroupMsgUnRead.setVisibility(View.GONE);
-        }
+        App._myReceiveMessageListener.calcuCount(new ApiCallback<UnreadCount>() {
+            @Override
+            public void onSuccess(UnreadCount data) {
+                if(data.getGroupUnReadCount()>0){
+                    tvGroupMsgUnRead.setText(data.getGroupUnReadCount()+"");
+                    tvGroupMsgUnRead.setVisibility(View.VISIBLE);
+                }else{
+                    tvGroupMsgUnRead.setVisibility(View.GONE);
+                }
 
-        if(App._myReceiveMessageListener.count.getNewFriendUnReadCount()>0){
-            tvFriendUnRead.setText(App._myReceiveMessageListener.count.getTotalCount()+"");
-            tvFriendUnRead.setVisibility(View.VISIBLE);
-        }else{
-            tvFriendUnRead.setVisibility(View.GONE);
-        }
+                if(data.getNewFriendUnReadCount()>0){
+                    tvFriendUnRead.setText(data.getNewFriendUnReadCount()+"");
+                    tvFriendUnRead.setVisibility(View.VISIBLE);
+                }else{
+                    tvFriendUnRead.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        
+
     }
 
 
@@ -96,7 +107,6 @@ public class FriendActivity extends BaseBackActivity {
         tvFriendUnRead = (TextView) view.findViewById(R.id.tvFriendUnRead);
         tvGroupMsgUnRead = (TextView) view.findViewById(R.id.tvGroupMsgUnRead);
         tvInviteUnRead = (TextView) view.findViewById(R.id.tvInviteUnRead);
-        setCount();
         //新朋友
         view.findViewById(R.id.llNewFriend).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +141,7 @@ public class FriendActivity extends BaseBackActivity {
                 Map<String,String> map = new HashMap<String,String>();
                 map.put("targetId",friend.getUid());
                 map.put("userName",friend.getNickName());
+                map.put("type","1");
                 ForwardUtils.target(FriendActivity.this, Constant.CHAT_MSG,map);
 
 
@@ -162,12 +173,12 @@ public class FriendActivity extends BaseBackActivity {
 
                 // create "delete" item
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
-                        getApplicationContext());
+                        FriendActivity.this);
                 // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(248,
+                        79, 130)));
                 // set item width
-                deleteItem.setWidth(dp2px(90));
+                deleteItem.setWidth(dp2px(60));
                 // set a icon
                 deleteItem.setIcon(R.mipmap.v3_item_remove);
                 // add to menu
@@ -205,6 +216,7 @@ public class FriendActivity extends BaseBackActivity {
             @Override
             public void onSuccess(List<Friend> data) {
                 if(null!=data && data.size()>0){
+                    adapter.clear();
                     adapter.addList(data);
                 }
             }
@@ -220,6 +232,7 @@ public class FriendActivity extends BaseBackActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        friend(null);
+        Log.i("qunimade","FriendActivity+onResume");
+        setCount();
     }
 }

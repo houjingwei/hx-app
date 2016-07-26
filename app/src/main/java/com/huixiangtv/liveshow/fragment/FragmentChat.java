@@ -14,6 +14,10 @@ import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.adapter.ChatAdapter;
+import com.huixiangtv.liveshow.model.UnreadCount;
+import com.huixiangtv.liveshow.model.User;
+import com.huixiangtv.liveshow.service.ApiCallback;
+import com.huixiangtv.liveshow.service.ServiceException;
 import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
 
@@ -27,6 +31,7 @@ import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 import me.drakeet.materialdialog.MaterialDialog;
 
 
@@ -52,22 +57,31 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
     }
 
 
-    @Subscriber(tag = "sys_msg", mode = ThreadMode.MAIN)
-    public void chatMsg(Object obj) {
+    @Subscriber(tag = "msg", mode = ThreadMode.MAIN)
+    public void msg(Message msg) {
         Log.i("eventBus","永不执行"+App._myReceiveMessageListener.count.toString());
-        if(null!=tvUnRead){
-            setCount();
-        }
+        Log.i("eventBus","msg");
+        Log.i("qunimade","FragmentChat+msg");
+        setCount();
+
     }
 
+
     private void setCount(){
-        App._myReceiveMessageListener.calcuCount();
-        if(App._myReceiveMessageListener.count.getTotalCount()>0){
-            tvUnRead.setText(App._myReceiveMessageListener.count.getTotalCount()+"");
-            tvUnRead.setVisibility(View.VISIBLE);
-        }else{
-            tvUnRead.setVisibility(View.GONE);
-        }
+        App._myReceiveMessageListener.calcuCount(new ApiCallback<UnreadCount>() {
+            @Override
+            public void onSuccess(UnreadCount data) {
+                if(App._myReceiveMessageListener.count.getTotalCount()>0){
+                    tvUnRead.setText(data.getTotalCount()+"");
+                    tvUnRead.setVisibility(View.VISIBLE);
+                }else{
+                    tvUnRead.setVisibility(View.GONE);
+                }
+                initData();
+            }
+        });
+
+
     }
 
 
@@ -98,7 +112,7 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
         mListView = (ListView) mRootView.findViewById(R.id.listView);
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_chat_head, null, false);
         tvUnRead = (TextView) view.findViewById(R.id.tvUnRead);
-        setCount();
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,15 +135,40 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Conversation cs = (Conversation) adapter.getItem(position-1);
-                Map<String,String> map = new HashMap<String,String>();
+                final Conversation cs = (Conversation) adapter.getItem(position-1);
+                final Map<String,String> map = new HashMap<String,String>();
                 map.put("targetId",cs.getTargetId());
-                ForwardUtils.target(getActivity(), Constant.CHAT_MSG,map);
+                if(cs.getConversationType().equals(Conversation.ConversationType.PRIVATE)){
+                    map.put("type","1");
+                }else if(cs.getConversationType().equals(Conversation.ConversationType.GROUP)){
+                    map.put("type","2");
+                }
+                CommonHelper.userInfo(cs.getTargetId(), new ApiCallback<User>() {
+                    @Override
+                    public void onSuccess(User data) {
+                        map.put("userName",data.getNickName());
+                        ForwardUtils.target(getActivity(), Constant.CHAT_MSG,map);
+                        celarCount(cs.getConversationType(),cs.getTargetId());
+                    }
+
+                    @Override
+                    public void onFailure(ServiceException e) {
+                        super.onFailure(e);
+                        CommonHelper.showTip(getActivity(),"对话用户出错");
+                    }
+                });
+
             }
         });
 
 
 
+
+
+    }
+
+    private void celarCount(Conversation.ConversationType conversationType, String targetId) {
+        CommonHelper.clearMessagesUnReadStatus(conversationType,targetId);
     }
 
     private void delete(final Conversation cs) {
@@ -181,7 +220,8 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
-        prepareFetchData(true);
+        Log.i("qunimade","FragmentChat+onResume");
+        setCount();
 
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.huixiangtv.liveshow.model.User;
 import com.huixiangtv.liveshow.service.ApiCallback;
 import com.huixiangtv.liveshow.ui.CommonTitle;
 import com.huixiangtv.liveshow.utils.CommonHelper;
+import com.huixiangtv.liveshow.utils.KeyBoardUtils;
 
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
@@ -29,6 +31,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +63,7 @@ public class ChatMsgActivity extends BaseBackActivity {
     ChatMsgAdapter adapter ;
 
     String targetId = "";
+    String type = "";
     String userName = "";
 
     private final String  TAG = "ChatMsgActivity";
@@ -71,6 +75,7 @@ public class ChatMsgActivity extends BaseBackActivity {
         x.view().inject(this);
         targetId = getIntent().getStringExtra("targetId");
         userName =  getIntent().getStringExtra("userName");
+        type = getIntent().getStringExtra("type");
         initView();
         loadData();
 
@@ -82,13 +87,15 @@ public class ChatMsgActivity extends BaseBackActivity {
 
     @Subscriber(tag = "msg", mode = ThreadMode.MAIN)
     public void chatMsg(Message message) {
-        TextMessage tm = (TextMessage) message.getContent();
-        ChatMessage cm = new ChatMessage();
-        cm.setSendStatus(message.getSentStatus().name());
-        final MsgExt msgExt = JSON.parseObject(String.valueOf(tm.getExtra()), MsgExt.class);
-        cm.setContent(tm.getContent().toString());
-        cm.setExt(msgExt);
-        adapter.add(cm);
+        if(message.getTargetId().equals(targetId)) {
+            TextMessage tm = (TextMessage) message.getContent();
+            ChatMessage cm = new ChatMessage();
+            cm.setSendStatus(message.getSentStatus().name());
+            final MsgExt msgExt = JSON.parseObject(String.valueOf(tm.getExtra()), MsgExt.class);
+            cm.setContent(tm.getContent().toString());
+            cm.setExt(msgExt);
+            adapter.add(cm);
+        }
     }
 
     private void loadData() {
@@ -100,10 +107,7 @@ public class ChatMsgActivity extends BaseBackActivity {
             }
         });
 
-
-
-
-        App.imClient.getLatestMessages(Conversation.ConversationType.PRIVATE, targetId, 100,new RongIMClient.ResultCallback<List<Message>>(){
+        App.imClient.getHistoryMessages(Conversation.ConversationType.PRIVATE, targetId, -1,100,new RongIMClient.ResultCallback<List<Message>>(){
 
             @Override
             public void onSuccess(List<Message> messages) {
@@ -120,7 +124,10 @@ public class ChatMsgActivity extends BaseBackActivity {
                     }
                 }
 
+
                 if(ls.size()>0){
+                    //倒序排列
+                    Collections.reverse(ls);
                     adapter.addList(ls);
                 }
             }
@@ -161,6 +168,18 @@ public class ChatMsgActivity extends BaseBackActivity {
         adapter = new ChatMsgAdapter(ChatMsgActivity.this);
         refreshView.setMode(PullToRefreshBase.Mode.DISABLED);
         refreshView.setAdapter(adapter);
+        refreshView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                hideKeyBoard();
+            }
+        });
+        refreshView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideKeyBoard();
+            }
+        });
 
         tvSendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,8 +193,15 @@ public class ChatMsgActivity extends BaseBackActivity {
         });
     }
 
-    private void sendMsg() throws Exception{
+    /**
+     * 关闭键盘
+     */
+    private void hideKeyBoard() {
+        KeyBoardUtils.closeKeybord(etChatMsg,ChatMsgActivity.this);
+    }
 
+    private void sendMsg() throws Exception{
+        final String[] jsonStr = {null};
             if (TextUtils.isEmpty(etChatMsg.getText().toString())) {
                 CommonHelper.showTip(ChatMsgActivity.this, "不可以发送空消息哦~");
                 etChatMsg.requestFocus();
@@ -192,8 +218,8 @@ public class ChatMsgActivity extends BaseBackActivity {
                 map.put("toNickName",toUser.getNickName());
                 map.put("toUid",toUser.getUid());
 
-                String jsonStr = mapper.writeValueAsString(map);
-                tm.setExtra(jsonStr);
+                jsonStr[0] = mapper.writeValueAsString(map);
+                tm.setExtra(jsonStr[0]);
             }else{
                 CommonHelper.userInfo(targetId, new ApiCallback<User>() {
                     @Override
@@ -201,30 +227,34 @@ public class ChatMsgActivity extends BaseBackActivity {
                         map.put("toPhoto",toUser.getPhoto());
                         map.put("toNickName",toUser.getNickName());
                         map.put("toUid",toUser.getUid());
-                        String jsonStr = null;
+
                         try {
-                            jsonStr = mapper.writeValueAsString(map);
+                            jsonStr[0] = mapper.writeValueAsString(map);
                         } catch (JsonProcessingException e) {
                             e.printStackTrace();
                         }
-                        tm.setExtra(jsonStr);
+                        tm.setExtra(jsonStr[0]);
                     }
                 });
             }
 
             App.imClient.sendMessage(Conversation.ConversationType.PRIVATE, targetId,
-                    tm, null, null, new RongIMClient.SendMessageCallback() {
+                    tm, tm.getContent(), tm.getExtra(), new RongIMClient.SendMessageCallback() {
                         @Override
                         public void onSuccess(Integer integer) {
+
                             ChatMessage msg = new ChatMessage();
                             MsgExt ext = new MsgExt();
-                            ext.setMsgType("1");
-                            ext.setNickName(App.getLoginUser().getNickName());
                             ext.setPhoto(App.getLoginUser().getPhoto());
+                            ext.setNickName(App.getLoginUser().getNickName());
+                            ext.setUid(App.getLoginUser().getUid());
+                            ext.setToPhoto(toUser.getPhoto());
+                            ext.setToNickName(toUser.getNickName());
+                            ext.setToUid(toUser.getUid());
                             msg.setExt(ext);
-                            msg.setSendStatus(Message.SentStatus.SENT.name());
                             msg.setContent(etChatMsg.getText().toString());
                             adapter.add(msg);
+                            etChatMsg.setText("");
                         }
 
                         @Override
@@ -233,7 +263,16 @@ public class ChatMsgActivity extends BaseBackActivity {
                         }
                     }, null);
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(type.equals("1")){
+            CommonHelper.clearMessagesUnReadStatus(Conversation.ConversationType.PRIVATE,targetId);
+        }else if(type.equals("2")){
+            CommonHelper.clearMessagesUnReadStatus(Conversation.ConversationType.GROUP,targetId);
+        }
 
     }
 }

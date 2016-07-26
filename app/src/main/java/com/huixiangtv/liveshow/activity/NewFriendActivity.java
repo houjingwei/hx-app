@@ -103,13 +103,12 @@ public class NewFriendActivity extends BaseBackActivity {
             @Override
             public void create(SwipeMenu menu) {
                 // create "delete" item
-                SwipeMenuItem deleteItem = new SwipeMenuItem(
-                        getApplicationContext());
+                SwipeMenuItem deleteItem = new SwipeMenuItem(NewFriendActivity.this);
                 // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(248,
+                        79, 130)));
                 // set item width
-                deleteItem.setWidth(WidgetUtil.dip2px(NewFriendActivity.this,90));
+                deleteItem.setWidth(WidgetUtil.dip2px(NewFriendActivity.this,60));
                 // set a icon
                 deleteItem.setIcon(R.mipmap.v3_item_remove);
                 // add to menu
@@ -123,10 +122,10 @@ public class NewFriendActivity extends BaseBackActivity {
         mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-
+                Friend f = (Friend) adapter.getItem(position);
                 switch (index) {
                     case 0:
-                        CommonHelper.showTip(NewFriendActivity.this,"delete");
+                        CommonHelper.showTip(NewFriendActivity.this,"delete"+f.getNickName());
                         break;
                 }
                 return false;

@@ -9,8 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.huixiangtv.liveshow.R;
+import com.huixiangtv.liveshow.model.MsgExt;
 import com.huixiangtv.liveshow.utils.DateUtils;
+import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 
 import java.util.ArrayList;
@@ -81,7 +84,17 @@ public class ChatAdapter extends BaseAdapter {
         }
         if(conver.getLatestMessage() instanceof TextMessage){
             TextMessage tm = (TextMessage) conver.getLatestMessage();
-            holder.tvMsg.setText(tm.getContent());
+
+            String content = "";
+            if(StringUtil.isNotNull(tm.getContent())){
+                if(tm.getContent().length()>15){
+                    content = tm.getContent().substring(0,15)+"...";
+                }else{
+                    content = tm.getContent();
+                }
+            }
+
+            holder.tvMsg.setText(content);
         }
 
 
@@ -100,9 +113,17 @@ public class ChatAdapter extends BaseAdapter {
 
         //设置消息用户信息
         if(null!=msgContent){
-            if(null!=msgContent.getUserInfo()){
-                holder.tvNickName.setText(msgContent.getUserInfo().getName());
-                ImageUtils.displayAvator(holder.ivPhoto,msgContent.getUserInfo().getPortraitUri().toString());
+            if(msgContent instanceof TextMessage){
+                TextMessage tm = (TextMessage) msgContent;
+                if(StringUtil.isNotNull(tm.getExtra())){
+                    MsgExt msgExt = JSON.parseObject(String.valueOf(tm.getExtra()), MsgExt.class);
+                    if(null!=msgExt){
+                        holder.tvNickName.setText(msgExt.getToNickName());
+                        ImageUtils.displayAvator(holder.ivPhoto,msgExt.getToPhoto());
+                    }
+                }
+
+
             }
         }
 

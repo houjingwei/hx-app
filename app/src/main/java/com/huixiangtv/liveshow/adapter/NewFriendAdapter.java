@@ -147,15 +147,14 @@ public class NewFriendAdapter extends BaseAdapter {
         params.put("fid",friend.getUid());
         RequestUtils.sendPostRequest(Api.REPLY_ADD_FRIEND, params, new ResponseCallBack<Friend>() {
             @Override
-            public void onSuccessList(List<Friend> data) {
-                super.onSuccessList(data);
+            public void onSuccess(Friend data) {
+                super.onSuccess(data);
                 CommonHelper.showTip(context,"已成功添加好友");
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         ((NewFriendActivity)activity).refresh();
                     }
                 }, 1000);
-
             }
 
             @Override

@@ -233,6 +233,7 @@ public class UserInfoActivity extends BaseBackActivity {
            Map<String,String> map = new HashMap<String,String>();
            map.put("targetId",user.getUid());
            map.put("userName",user.getNickName());
+           map.put("type","1");
            ForwardUtils.target(UserInfoActivity.this, Constant.CHAT_MSG,map);
        }
 

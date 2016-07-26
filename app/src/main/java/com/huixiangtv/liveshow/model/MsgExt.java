@@ -11,6 +11,9 @@ public class MsgExt {
     private String photo;
     private String role;
     private String online;
+    private String toUid;
+    private String toNickName;
+    private String toPhoto;
 
     public String getMsgType() {
         return msgType;
@@ -58,5 +61,29 @@ public class MsgExt {
 
     public void setOnline(String online) {
         this.online = online;
+    }
+
+    public String getToUid() {
+        return toUid;
+    }
+
+    public void setToUid(String toUid) {
+        this.toUid = toUid;
+    }
+
+    public String getToNickName() {
+        return toNickName;
+    }
+
+    public void setToNickName(String toNickName) {
+        this.toNickName = toNickName;
+    }
+
+    public String getToPhoto() {
+        return toPhoto;
+    }
+
+    public void setToPhoto(String toPhoto) {
+        this.toPhoto = toPhoto;
     }
 }

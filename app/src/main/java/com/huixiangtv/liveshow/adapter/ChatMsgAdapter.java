@@ -14,6 +14,7 @@ import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.model.ChatMessage;
 import com.huixiangtv.liveshow.model.MsgExt;
+import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 
 import java.util.ArrayList;
@@ -61,10 +62,17 @@ public class ChatMsgAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         ChatMessage msg = (ChatMessage) getItem(position);
-        if(msg.getExt().getUid().equals(App.getLoginUser().getUid())){
-            return RIGHT;
+        if(null==msg.getExt()){
+            return LEFT;
+        }else{
+            if(StringUtil.isNotNull(msg.getExt().getUid())){
+                if(msg.getExt().getUid().equals(App.getLoginUser().getUid())){
+                    return RIGHT;
+                }
+            }
+            return LEFT;
         }
-        return LEFT;
+
     }
 
     @Override

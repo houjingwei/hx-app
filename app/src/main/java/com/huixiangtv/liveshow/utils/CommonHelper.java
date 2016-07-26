@@ -23,6 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.huixiangtv.liveshow.Api;
+import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.model.CustomMessage;
 import com.huixiangtv.liveshow.model.DynamicComment;
 import com.huixiangtv.liveshow.model.Friend;
@@ -57,6 +58,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 import simbest.com.sharelib.IShareCallback;
 import simbest.com.sharelib.ShareModel;
@@ -826,5 +829,19 @@ public class CommonHelper {
         UserInfo user = new UserInfo(uid,uname, Uri.parse(uphoto));
         mc.setUserInfo(user);
         return mc;
+    }
+
+    public static void clearMessagesUnReadStatus(Conversation.ConversationType conversationType, String targetId) {
+        App.imClient.clearMessagesUnreadStatus(conversationType, targetId, new RongIMClient.ResultCallback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean aBoolean) {
+
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+        });
     }
 }
