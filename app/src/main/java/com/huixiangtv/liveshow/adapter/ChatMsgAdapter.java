@@ -32,7 +32,7 @@ public class ChatMsgAdapter extends BaseAdapter {
     Activity activity;
     Context context;
     List<ChatMessage> voList = new ArrayList<ChatMessage>();
-
+    private String msgType;
 
 
     public ChatMsgAdapter(Activity activity) {
@@ -137,6 +137,10 @@ public class ChatMsgAdapter extends BaseAdapter {
     public void add(ChatMessage msg) {
         voList.add(msg);
         notifyDataSetChanged();
+    }
+
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
     }
 
 

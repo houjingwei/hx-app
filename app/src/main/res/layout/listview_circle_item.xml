@@ -99,8 +99,8 @@
 
                     <ImageView
                         android:id="@+id/ivPlay"
-                        android:layout_width="62dp"
-                        android:layout_height="62dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentBottom="true"
                         android:src="@mipmap/v2_play_pic" />

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.model.Fans;
+import com.huixiangtv.liveshow.utils.CommonHelper;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class AttentionMeAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
-        Fans fans = (Fans) getItem(position);
+        final Fans fans = (Fans) getItem(position);
         if(convertView == null)
         {
             holder = new ViewHolder();
@@ -79,7 +80,12 @@ public class AttentionMeAdapter extends BaseAdapter {
         holder.tvHots.setText(fans.getHots());
         holder.tvNickName.setText(fans.getNickName());
         ImageUtils.displayAvator(holder.ivPhoto,fans.getPhoto());
-
+        holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonHelper.userMsg(fans.getUid(),activity);
+            }
+        });
         return convertView;
     }
 

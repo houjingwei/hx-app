@@ -151,7 +151,7 @@ public class UserInfoActivity extends BaseBackActivity {
         //查询有没有加入粉丝群
         CommonHelper.joinFansGroup(uid, new ApiCallback<Other>() {
             @Override
-            public void onSuccess(Other data) {
+            public void onSuccess(final Other data) {
                 if (StringUtil.isNotNull(data.getResult())) {
                     isFriend = data.getResult();
                     if (data.getResult().equals("0")) {
@@ -163,13 +163,20 @@ public class UserInfoActivity extends BaseBackActivity {
                             }
                         });
                     } else {
-                        tvAddGroup.setText("已加入粉丝群");
+                        tvAddGroup.setText("发群消息");
+                        tvAddGroup.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                toGroupChat(data);
+                            }
+                        });
                     }
                 }
             }
         });
 
     }
+
 
 
 
@@ -202,6 +209,7 @@ public class UserInfoActivity extends BaseBackActivity {
                     @Override
                     public void onSuccess(String data) {
                         CommonHelper.showTip(UserInfoActivity.this, "删除好友成功");
+                        commonTitle.saveShow(View.GONE);
                         loadData();
                     }
 
@@ -236,8 +244,17 @@ public class UserInfoActivity extends BaseBackActivity {
            map.put("type","1");
            ForwardUtils.target(UserInfoActivity.this, Constant.CHAT_MSG,map);
        }
+    }
 
 
+    private void toGroupChat(Other data) {
+        if(null!=user){
+            Map<String,String> map = new HashMap<String,String>();
+            map.put("targetId",data.getGid());
+            map.put("userName",data.getgName());
+            map.put("type","2");
+            ForwardUtils.target(UserInfoActivity.this, Constant.CHAT_MSG,map);
+        }
     }
 
     /**
@@ -269,7 +286,7 @@ public class UserInfoActivity extends BaseBackActivity {
                 if (resultCode == RESULT_OK && requestCode == 1) {
                     Map<String,String> params = new HashMap<>();
                     params.put("fid",uid);
-                    params.put("content",getIntent().getStringExtra("msg"));
+                    params.put("content",data.getStringExtra("msg"));
                     RequestUtils.sendPostRequest(Api.ADD_FRIEND, params, new ResponseCallBack<String>() {
                         @Override
                         public void onSuccess(String data) {
@@ -291,7 +308,7 @@ public class UserInfoActivity extends BaseBackActivity {
                 if (resultCode == RESULT_OK && requestCode == 2) {
                     Map<String,String> params = new HashMap<>();
                     params.put("aid",uid);
-                    params.put("content",getIntent().getStringExtra("msg"));
+                    params.put("content",data.getStringExtra("msg"));
                     RequestUtils.sendPostRequest(Api.APPLY_ADD_GROUP, params, new ResponseCallBack<String>() {
                         @Override
                         public void onSuccess(String data) {

@@ -19,6 +19,7 @@ import com.huixiangtv.liveshow.service.RequestUtils;
 import com.huixiangtv.liveshow.service.ResponseCallBack;
 import com.huixiangtv.liveshow.service.ServiceException;
 import com.huixiangtv.liveshow.utils.CommonHelper;
+import com.huixiangtv.liveshow.utils.StringUtil;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
 
 import java.util.ArrayList;
@@ -127,7 +128,14 @@ public class NewApplyFriendAdapter extends BaseAdapter {
                 }
             });
             holder.tvValues.setText("贡献值:"+1987);
-            holder.tvMsg.setText(friend.getReplyContent());
+            if(StringUtil.isNotNull(friend.getContent())){
+                if(friend.getContent().length()>15){
+                    holder.tvMsg.setText(friend.getContent().substring(0,15)+"...");
+                }else{
+                    holder.tvMsg.setText(friend.getContent());
+                }
+            }
+
         }
 
 

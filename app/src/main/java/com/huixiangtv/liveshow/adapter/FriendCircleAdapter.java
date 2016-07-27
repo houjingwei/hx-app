@@ -5,7 +5,6 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +57,7 @@ public class FriendCircleAdapter extends BaseAdapter {
     private     ScalableVideoView  mVideoView;
     private boolean isPlay = false;
     public static int currTag = 100000;
+    private Activity activity;
 
 
     /**
@@ -65,8 +65,9 @@ public class FriendCircleAdapter extends BaseAdapter {
      */
     int videoIndex = 10000;
 
-    public FriendCircleAdapter( Context context, Handler handler) {
+    public FriendCircleAdapter( Activity context, Handler handler) {
         this.context = context;
+        this.activity = context;
         this.handler = handler;
     }
 
@@ -167,6 +168,13 @@ public class FriendCircleAdapter extends BaseAdapter {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("did",dynamic.getDynamicId());
                 ForwardUtils.target((Activity)context, Constant.DYNAMIC_DETAIL, params);
+            }
+        });
+
+        viewHolder.ivDmPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toMsg(dynamic);
             }
         });
 
@@ -320,6 +328,13 @@ public class FriendCircleAdapter extends BaseAdapter {
         });
 
         return convertView;
+    }
+
+
+
+    private void toMsg(Dynamic dynamic) {
+        CommonHelper.userMsg(dynamic.getUid(),activity);
+
     }
 
     public void isSingleton() {

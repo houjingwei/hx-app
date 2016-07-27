@@ -112,20 +112,37 @@ public class ChatAdapter extends BaseAdapter {
 
 
         //设置消息用户信息
-        if(null!=msgContent){
-            if(msgContent instanceof TextMessage){
-                TextMessage tm = (TextMessage) msgContent;
-                if(StringUtil.isNotNull(tm.getExtra())){
-                    MsgExt msgExt = JSON.parseObject(String.valueOf(tm.getExtra()), MsgExt.class);
-                    if(null!=msgExt){
-                        holder.tvNickName.setText(msgExt.getToNickName());
-                        ImageUtils.displayAvator(holder.ivPhoto,msgExt.getToPhoto());
+        if(conver.getConversationType().equals(Conversation.ConversationType.GROUP)){
+            holder.ivPhoto.setImageDrawable(activity.getResources().getDrawable(R.mipmap.v3_group_caht));
+            if(null!=msgContent){
+                if(msgContent instanceof TextMessage){
+                    TextMessage tm = (TextMessage) msgContent;
+                    if(StringUtil.isNotNull(tm.getExtra())){
+                        MsgExt msgExt = JSON.parseObject(String.valueOf(tm.getExtra()), MsgExt.class);
+                        if(null!=msgExt){
+                            holder.tvNickName.setText(msgExt.getNickName());
+                        }
                     }
                 }
+            }
+        }else{
+            if(null!=msgContent){
+                if(msgContent instanceof TextMessage){
+                    TextMessage tm = (TextMessage) msgContent;
+                    if(StringUtil.isNotNull(tm.getExtra())){
+                        MsgExt msgExt = JSON.parseObject(String.valueOf(tm.getExtra()), MsgExt.class);
+                        if(null!=msgExt){
+                            holder.tvNickName.setText(msgExt.getToNickName());
+                            ImageUtils.displayAvator(holder.ivPhoto, msgExt.getToPhoto());
+
+                        }
+                    }
 
 
+                }
             }
         }
+
 
         //如果群聊显示群聊图标，否则隐藏
         if(conver.getConversationType() == Conversation.ConversationType.GROUP){

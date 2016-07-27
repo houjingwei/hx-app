@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.huixiangtv.liveshow.Api;
 import com.huixiangtv.liveshow.App;
+import com.huixiangtv.liveshow.Constant;
+import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.model.CustomMessage;
 import com.huixiangtv.liveshow.model.DynamicComment;
 import com.huixiangtv.liveshow.model.Friend;
@@ -843,5 +845,20 @@ public class CommonHelper {
 
             }
         });
+    }
+
+    public static void userMsg(String id, final Activity activity) {
+        if (null != App.getLoginUser()) {
+            Map<String,String> map = new HashMap<>();
+            map.put("uid",id);
+            ForwardUtils.target(activity, Constant.USER_INFO, map);
+        }else{
+            CommonHelper.showLoginPopWindow(activity, R.id.liveMain, new LoginCallBack() {
+                @Override
+                public void loginSuccess() {
+                    ForwardUtils.target(activity, Constant.OWN_CIRCLE, null);
+                }
+            });
+        }
     }
 }

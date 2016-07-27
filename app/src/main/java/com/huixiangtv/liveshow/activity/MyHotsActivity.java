@@ -178,27 +178,49 @@ public class MyHotsActivity extends BaseBackActivity {
         }
         if (null != top3) {
             for (int i = 0; i < top3.size(); i++) {
-                Fans fans = top3.get(i);
+                final Fans fans = top3.get(i);
                 if (i == 0) {
                     ll1.setVisibility(View.VISIBLE);
                     ImageUtils.displayAvator(ivPhoto1, fans.getPhoto());
                     tvNickName1.setText(fans.getNickName());
                     tvHot1.setText(fans.getDevoteValue());
+                    ivPhoto1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            userMsg(fans);
+                        }
+                    });
                 } else if (i == 1) {
                     ll2.setVisibility(View.VISIBLE);
                     ImageUtils.displayAvator(ivPhoto2, fans.getPhoto());
                     tvNickName2.setText(fans.getNickName());
                     tvHot2.setText(fans.getDevoteValue());
+                    ivPhoto2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            userMsg(fans);
+                        }
+                    });
                 } else if (i == 2) {
                     ll3.setVisibility(View.VISIBLE);
                     ImageUtils.displayAvator(ivPhoto3, fans.getPhoto());
                     tvNickName3.setText(fans.getNickName());
                     tvHot3.setText(fans.getDevoteValue());
+                    ivPhoto3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            userMsg(fans);
+                        }
+                    });
                 }
             }
         }
 
         return fansList;
+    }
+
+    private void userMsg(Fans fans) {
+        CommonHelper.userMsg(fans.getUid(),MyHotsActivity.this);
     }
 
 

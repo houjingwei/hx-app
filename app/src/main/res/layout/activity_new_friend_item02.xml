@@ -27,15 +27,7 @@
                 android:src="@drawable/default_head"
                 app:civ_border_color="@color/white" />
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/ivFlag"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:src="@mipmap/v3_group_chat_flag"
-                app:civ_border_color="@color/white"
-                app:civ_border_width="1dp" />
+
 
         </RelativeLayout>
 
@@ -78,7 +70,6 @@
                     style="@style/gray_normal_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ffff"
                     android:layout_centerVertical="true"/>
 
 

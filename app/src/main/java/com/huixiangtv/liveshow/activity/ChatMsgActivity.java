@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -65,6 +64,7 @@ public class ChatMsgActivity extends BaseBackActivity {
     String targetId = "";
     String type = "";
     String userName = "";
+    private String groupPhoto = "";
 
     private final String  TAG = "ChatMsgActivity";
 
@@ -76,6 +76,7 @@ public class ChatMsgActivity extends BaseBackActivity {
         targetId = getIntent().getStringExtra("targetId");
         userName =  getIntent().getStringExtra("userName");
         type = getIntent().getStringExtra("type");
+        groupPhoto = getIntent().getStringExtra("groupPhoto");
         initView();
         loadData();
 
@@ -99,15 +100,22 @@ public class ChatMsgActivity extends BaseBackActivity {
     }
 
     private void loadData() {
-        //查询目标对象
-        CommonHelper.userInfo(targetId, new ApiCallback<User>() {
-            @Override
-            public void onSuccess(User data) {
-                toUser = data;
-            }
-        });
 
-        App.imClient.getHistoryMessages(Conversation.ConversationType.PRIVATE, targetId, -1,100,new RongIMClient.ResultCallback<List<Message>>(){
+
+        Conversation.ConversationType t = null;
+        if(type.equals("1")){
+            t = Conversation.ConversationType.PRIVATE;
+            //查询目标对象
+            CommonHelper.userInfo(targetId, new ApiCallback<User>() {
+                @Override
+                public void onSuccess(User data) {
+                    toUser = data;
+                }
+            });
+        }else if(type.equals("2")){
+            t = Conversation.ConversationType.GROUP;
+        }
+        App.imClient.getHistoryMessages(t, targetId, -1,100,new RongIMClient.ResultCallback<List<Message>>(){
 
             @Override
             public void onSuccess(List<Message> messages) {
@@ -166,6 +174,7 @@ public class ChatMsgActivity extends BaseBackActivity {
         });
 
         adapter = new ChatMsgAdapter(ChatMsgActivity.this);
+        adapter.setMsgType(type);
         refreshView.setMode(PullToRefreshBase.Mode.DISABLED);
         refreshView.setAdapter(adapter);
         refreshView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -208,37 +217,32 @@ public class ChatMsgActivity extends BaseBackActivity {
                 return;
             }
             final TextMessage tm = TextMessage.obtain(etChatMsg.getText().toString());
+            tm.setContent(etChatMsg.getText().toString());
+
             final Map<String,String> map = new HashMap<String,String>();
             map.put("photo",App.getLoginUser().getPhoto());
             map.put("nickName",App.getLoginUser().getNickName());
             map.put("uid",App.getLoginUser().getUid());
             final ObjectMapper mapper = new ObjectMapper();
-            if(null!=toUser){
+            if(type.equals("1") && null!=toUser){
                 map.put("toPhoto",toUser.getPhoto());
                 map.put("toNickName",toUser.getNickName());
                 map.put("toUid",toUser.getUid());
 
-                jsonStr[0] = mapper.writeValueAsString(map);
-                tm.setExtra(jsonStr[0]);
-            }else{
+
+            }else if(type.equals("1") && null==toUser){
                 CommonHelper.userInfo(targetId, new ApiCallback<User>() {
                     @Override
                     public void onSuccess(User data)  {
-                        map.put("toPhoto",toUser.getPhoto());
-                        map.put("toNickName",toUser.getNickName());
-                        map.put("toUid",toUser.getUid());
-
-                        try {
-                            jsonStr[0] = mapper.writeValueAsString(map);
-                        } catch (JsonProcessingException e) {
-                            e.printStackTrace();
-                        }
-                        tm.setExtra(jsonStr[0]);
+                    map.put("toPhoto",toUser.getPhoto());
+                    map.put("toNickName",toUser.getNickName());
+                    map.put("toUid",toUser.getUid());
                     }
                 });
             }
-
-        Conversation.ConversationType t = null;
+            jsonStr[0] = mapper.writeValueAsString(map);
+            tm.setExtra(jsonStr[0]);
+            Conversation.ConversationType t = null;
             if(type.equals("1")){
                 t = Conversation.ConversationType.PRIVATE;
             }else if(type.equals("2")){
@@ -254,9 +258,6 @@ public class ChatMsgActivity extends BaseBackActivity {
                             ext.setPhoto(App.getLoginUser().getPhoto());
                             ext.setNickName(App.getLoginUser().getNickName());
                             ext.setUid(App.getLoginUser().getUid());
-                            ext.setToPhoto(toUser.getPhoto());
-                            ext.setToNickName(toUser.getNickName());
-                            ext.setToUid(toUser.getUid());
                             msg.setExt(ext);
                             msg.setContent(etChatMsg.getText().toString());
                             adapter.add(msg);

@@ -8,26 +8,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.model.ChatGroup;
-import com.huixiangtv.liveshow.model.Live;
-import com.huixiangtv.liveshow.utils.DateUtils;
 import com.huixiangtv.liveshow.utils.ForwardUtils;
 import com.huixiangtv.liveshow.utils.image.ImageUtils;
-import com.huixiangtv.liveshow.utils.widget.LinearLayoutForListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.MessageContent;
 
 /**
  * Created by hjw on 16/5/13.
@@ -88,6 +80,7 @@ public class GroupListAdapter extends BaseAdapter {
         holder.tvName.setText(group.getgName());
         ImageUtils.displayAvator(holder.ivPhoto,group.getImage());
 
+        holder.ivPhoto.setImageDrawable(activity.getResources().getDrawable(R.mipmap.v3_group_caht));
         holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

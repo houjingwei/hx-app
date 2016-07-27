@@ -14,6 +14,8 @@ public class Other {
     private String loves;
     private String status;
     private String result;
+    private String gid;
+    private String gName;
 
     public String getIsFollowed() {
         return isFollowed;
@@ -79,5 +81,21 @@ public class Other {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
+    }
+
+    public String getgName() {
+        return gName;
+    }
+
+    public void setgName(String gName) {
+        this.gName = gName;
     }
 }
