@@ -14,6 +14,7 @@ public class MsgExt {
     private String toUid;
     private String toNickName;
     private String toPhoto;
+    private String title = "";
 
     public String getMsgType() {
         return msgType;
@@ -85,5 +86,13 @@ public class MsgExt {
 
     public void setToPhoto(String toPhoto) {
         this.toPhoto = toPhoto;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

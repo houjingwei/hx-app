@@ -2,7 +2,6 @@ package com.huixiangtv.liveshow.activity;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +13,6 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.huixiangtv.liveshow.Api;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
-import com.huixiangtv.liveshow.adapter.NewApplyFriendAdapter;
 import com.huixiangtv.liveshow.adapter.NewApplyGroupdAdapter;
 import com.huixiangtv.liveshow.model.Friend;
 import com.huixiangtv.liveshow.service.RequestUtils;
@@ -32,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NewApplyGroupActivity extends AppCompatActivity {
+public class NewApplyGroupActivity extends BaseBackActivity {
     @ViewInject(R.id.myTitle)
     CommonTitle commonTitle;
 

@@ -63,7 +63,7 @@ public class ChatMsgActivity extends BaseBackActivity {
 
     String targetId = "";
     String type = "";
-    String userName = "";
+    String title = "";
     private String groupPhoto = "";
 
     private final String  TAG = "ChatMsgActivity";
@@ -74,7 +74,7 @@ public class ChatMsgActivity extends BaseBackActivity {
         setContentView(R.layout.activity_chat_msg);
         x.view().inject(this);
         targetId = getIntent().getStringExtra("targetId");
-        userName =  getIntent().getStringExtra("userName");
+        title =  getIntent().getStringExtra("userName");
         type = getIntent().getStringExtra("type");
         groupPhoto = getIntent().getStringExtra("groupPhoto");
         initView();
@@ -152,13 +152,19 @@ public class ChatMsgActivity extends BaseBackActivity {
 
     private void initView() {
         commonTitle.setActivity(this);
-        commonTitle.setTitleText(userName);
+        commonTitle.setTitleText(title);
         commonTitle.saveShow(View.VISIBLE);
         commonTitle.getSave().setText("清空");
         commonTitle.getSave().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.imClient.clearMessages(Conversation.ConversationType.PRIVATE, targetId, new RongIMClient.ResultCallback<Boolean>() {
+                Conversation.ConversationType t = null;
+                if(type.equals("1")){
+                    t = Conversation.ConversationType.PRIVATE;
+                }else if(type.equals("2")){
+                    t = Conversation.ConversationType.GROUP;
+                }
+                App.imClient.clearMessages(t, targetId, new RongIMClient.ResultCallback<Boolean>() {
                     @Override
                     public void onSuccess(Boolean aBoolean) {
                         Log.i(TAG,aBoolean+"");
@@ -223,13 +229,12 @@ public class ChatMsgActivity extends BaseBackActivity {
             map.put("photo",App.getLoginUser().getPhoto());
             map.put("nickName",App.getLoginUser().getNickName());
             map.put("uid",App.getLoginUser().getUid());
+            map.put("title",title);
             final ObjectMapper mapper = new ObjectMapper();
             if(type.equals("1") && null!=toUser){
                 map.put("toPhoto",toUser.getPhoto());
                 map.put("toNickName",toUser.getNickName());
                 map.put("toUid",toUser.getUid());
-
-
             }else if(type.equals("1") && null==toUser){
                 CommonHelper.userInfo(targetId, new ApiCallback<User>() {
                     @Override

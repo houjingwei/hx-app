@@ -10,10 +10,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.huixiangtv.liveshow.App;
 import com.huixiangtv.liveshow.Constant;
 import com.huixiangtv.liveshow.R;
 import com.huixiangtv.liveshow.adapter.ChatAdapter;
+import com.huixiangtv.liveshow.model.MsgExt;
 import com.huixiangtv.liveshow.model.UnreadCount;
 import com.huixiangtv.liveshow.model.User;
 import com.huixiangtv.liveshow.service.ApiCallback;
@@ -32,6 +34,7 @@ import java.util.Map;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.message.TextMessage;
 import me.drakeet.materialdialog.MaterialDialog;
 
 
@@ -145,23 +148,32 @@ public class FragmentChat extends BaseFragment  implements View.OnClickListener 
                 map.put("targetId",cs.getTargetId());
                 if(cs.getConversationType().equals(Conversation.ConversationType.PRIVATE)){
                     map.put("type","1");
+                    CommonHelper.userInfo(cs.getTargetId(), new ApiCallback<User>() {
+                        @Override
+                        public void onSuccess(User data) {
+                            map.put("userName",data.getNickName());
+                            ForwardUtils.target(getActivity(), Constant.CHAT_MSG,map);
+                            celarCount(cs.getConversationType(),cs.getTargetId());
+                        }
+
+                        @Override
+                        public void onFailure(ServiceException e) {
+                            super.onFailure(e);
+                            CommonHelper.showTip(getActivity(),"对话用户出错");
+                        }
+                    });
                 }else if(cs.getConversationType().equals(Conversation.ConversationType.GROUP)){
                     map.put("type","2");
-                }
-                CommonHelper.userInfo(cs.getTargetId(), new ApiCallback<User>() {
-                    @Override
-                    public void onSuccess(User data) {
-                        map.put("userName",data.getNickName());
-                        ForwardUtils.target(getActivity(), Constant.CHAT_MSG,map);
-                        celarCount(cs.getConversationType(),cs.getTargetId());
+                    if(cs.getLatestMessage() instanceof TextMessage){
+                        TextMessage tm = (TextMessage) cs.getLatestMessage();
+                        MsgExt msgExt = JSON.parseObject(String.valueOf(tm.getExtra()), MsgExt.class);
+                        map.put("userName", msgExt.getTitle());
                     }
+                    ForwardUtils.target(getActivity(), Constant.CHAT_MSG,map);
+                    celarCount(cs.getConversationType(),cs.getTargetId());
 
-                    @Override
-                    public void onFailure(ServiceException e) {
-                        super.onFailure(e);
-                        CommonHelper.showTip(getActivity(),"对话用户出错");
-                    }
-                });
+                }
+
 
             }
         });
